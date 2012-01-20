@@ -5,11 +5,12 @@
 # Which server to fetch files from
 MIRROR=mirrors.omniti.com
 
-# Default prefix for packages (may be overridden)
-PREFIX=/opt/omni
+# Default is no special prefix for packages (may be overridden)
+PREFIX=
 
 # Prefix for package names - e.g. OMNIfoo, CSWfoo, SUNWfoo
-PKGPREFIX=OMNI
+# Not currently used
+PKGPREFIX=
 
 # Temporary directory
 TMPDIR=/tmp
@@ -37,8 +38,8 @@ if test -z "$PKGFMT"; then
     fi
 fi
 
-# IPS package server URL (publisher: custom.omniti.com)
-PKGSRVR=http://pkg.omniti.com:10003/
+# IPS package server URL (omni-os-pilot, publisher: os.omniti.com)
+PKGSRVR=http://pkg.omniti.com:10006/
 
 #############################################################################
 # Perl stuff
