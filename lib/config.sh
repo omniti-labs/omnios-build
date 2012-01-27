@@ -5,8 +5,8 @@
 # Which server to fetch files from
 MIRROR=mirrors.omniti.com
 
-# Default is no special prefix for packages (may be overridden)
-PREFIX=
+# Default prefix for packages (may be overridden)
+PREFIX=/usr
 
 # Prefix for package names - e.g. OMNIfoo, CSWfoo, SUNWfoo
 # Not currently used
@@ -140,8 +140,15 @@ CONFIGURE_CMD="./configure"
 # This is a function so it can be called again if you change $PREFIX
 # This is far from ideal, but works
 reset_configure_opts() {
+    # If it's the global default (/usr), we want sysconfdir to be /etc
+    # otherwise put it under PREFIX
+    if [[ $PREFIX == "/usr" ]]; then
+        SYSCONFDIR=/etc
+    else
+        SYSCONFDIR=$PREFIX/etc
+    fi
     CONFIGURE_OPTS_32="--prefix=$PREFIX
-        --sysconfdir=$PREFIX/etc
+        --sysconfdir=$SYSCONFDIR
         --includedir=$PREFIX/include
         --bindir=$PREFIX/bin/$ISAPART
         --sbindir=$PREFIX/sbin/$ISAPART
@@ -149,7 +156,7 @@ reset_configure_opts() {
         --libexecdir=$PREFIX/libexec"
 
     CONFIGURE_OPTS_64="--prefix=$PREFIX
-        --sysconfdir=$PREFIX/etc
+        --sysconfdir=$SYSCONFDIR
         --includedir=$PREFIX/include/$ISAPART64
         --bindir=$PREFIX/bin/$ISAPART64
         --sbindir=$PREFIX/sbin/$ISAPART64

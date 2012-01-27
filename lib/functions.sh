@@ -118,6 +118,16 @@ ask_to_continue() {
     logmsg "===== Error occured, user chose to continue anyway. ====="
 }
 
+#############################################################################
+# URL encoding for package names, at least
+#############################################################################
+# This isn't real URL encoding, just a couple of common substitutions
+url_encode() {
+    [ $# -lt 1 ] && logerr "Not enough arguments to url_encode().  Expecting a string to encode."
+    local encoded="$1";
+    encoded=`echo $encoded | sed -e 's!/!%2F!g' -e 's!+!%2B!g'`
+    echo $encoded
+}
 
 #############################################################################
 # Some initialization
@@ -279,7 +289,9 @@ prep_build() {
     fi
 
     logmsg "--- Creating temporary install dir"
-    DESTDIR=$DTMPDIR/${PKG}_pkg
+    # We might need to encode some special chars
+    PKGE=$(url_encode $PKG)
+    DESTDIR=$DTMPDIR/${PKGE}_pkg
     if [[ -z $DONT_REMOVE_INSTALL_DIR ]]; then
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove old temporary install dir"
