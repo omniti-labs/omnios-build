@@ -3,12 +3,12 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=zlib       # App name
-VER=1.2.5       # App version
-PVER=1          # Package Version
-PKG=$PROG       # Package name (without prefix)
+PROG=zlib         # App name
+VER=1.2.6         # App version
+PVER=1            # Package Version
+PKG=library/zlib  # Package name (without prefix)
 SUMMARY="$PROG - A massively spiffy yet delicately unobtrusive compression library"
-DESC="$SUMMARY (OmniTI roll)"
+DESC="$SUMMARY"
 
 CFLAGS="-Kpic"
 
