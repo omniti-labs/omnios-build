@@ -3,12 +3,17 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libxml2   # App name
-VER=2.7.8      # App version
-PVER=2         # Package Version
-PKG=libxml2    # Package name (without prefix)
+PATH=/opt/gcc-4.6.2/bin:$PATH
+export PATH
+CC=/opt/gcc-4.6.2/bin/gcc
+CXX=/opt/gcc-4.6.2/bin/g++
+
+PROG=libxml2        # App name
+VER=2.7.8           # App version
+PVER=3              # Package Version
+PKG=library/libxml2 # Package name (without prefix)
 SUMMARY="$PROG - XML C parser and toolkit"
-DESC="$SUMMARY (OmniTI roll)"
+DESC="$SUMMARY"
 
 LDFLAGS32="-L/opt/omni/lib -R/opt/omni/lib"
 LDFLAGS64="-L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
