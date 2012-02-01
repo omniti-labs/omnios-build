@@ -15,6 +15,8 @@ PKG=library/libxml2 # Package name (without prefix)
 SUMMARY="$PROG - XML C parser and toolkit"
 DESC="$SUMMARY"
 
+DEPENDS_IPS="libgcc_s@4.6.2 library/zlib@1.2.6"
+
 LDFLAGS32="-L/opt/omni/lib -R/opt/omni/lib"
 LDFLAGS64="-L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
 
