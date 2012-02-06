@@ -108,9 +108,9 @@ else
     ISAPART64=sparcv9
 fi
 
-# Change these in the build script if you _have_ to use gcc
-CC=cc
-CXX=CC
+# For jeos we always want GCC
+CC=/opt/gcc-4.6.2/bin/gcc
+CXX=/opt/gcc-4.6.2/bin/g++
 
 # CFLAGS applies to both builds, 32/64 only gets applied to the respective
 # build
