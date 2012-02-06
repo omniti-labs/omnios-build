@@ -3,11 +3,6 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PATH=/opt/gcc-4.6.2/bin:$PATH
-export PATH
-CC=/opt/gcc-4.6.2/bin/gcc
-CXX=/opt/gcc-4.6.2/bin/g++
-
 PROG=binutils               # App name
 VER=2.22                    # App version
 VERHUMAN=$VER               # Human-readable version

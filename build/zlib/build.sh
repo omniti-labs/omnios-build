@@ -10,7 +10,7 @@ PKG=library/zlib  # Package name (without prefix)
 SUMMARY="$PROG - A massively spiffy yet delicately unobtrusive compression library"
 DESC="$SUMMARY"
 
-CFLAGS="-Kpic"
+CFLAGS="-DNO_VIZ"
 
 CONFIGURE_OPTS_32="--prefix=$PREFIX
     --includedir=$PREFIX/include
