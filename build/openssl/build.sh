@@ -3,14 +3,14 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=openssl    # App name
-VER=1.0.0g      # App version
-PVER=1          # Package Version (numeric only)
-PKG=$PROG       # Package name (without prefix)
+PROG=openssl                 # App name
+VER=1.0.0g                   # App version
+PVER=1                       # Package Version (numeric only)
+PKG=library/security/openssl # Package name (without prefix)
 SUMMARY="$PROG - A toolkit for Secure Sockets Layer (SSL v2/v3) and Transport Layer (TLS v1) protocols and general purpose cryptographic library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="library/zlib@1.2.6"
+DEPENDS_IPS="libgcc_s@4.6.2 library/zlib@1.2.6"
 
 NO_PARALLEL_MAKE=1
 
@@ -31,7 +31,7 @@ configure32() {
     logmsg "--- Configure (32-bit) $SSLPLAT"
     logcmd ./Configure $SSLPLAT shared threads zlib --prefix=$PREFIX ||
         logerr "Failed to run configure"
-    SHARED_LDFLAGS="-G -dy -z text"
+    SHARED_LDFLAGS="-shared -Wl,-z,text"
 }
 configure64() {
     if [ -n "`isalist | grep sparc`" ]; then
@@ -43,7 +43,7 @@ configure64() {
     logcmd ./Configure $SSLPLAT shared threads zlib \
         --prefix=$PREFIX ||
         logerr "Failed ot run configure"
-    SHARED_LDFLAGS="-m64 -G -dy -z text"
+    SHARED_LDFLAGS="-m64 -shared -Wl,-z,text"
 }
 
 make_install() {
@@ -80,5 +80,5 @@ prep_build
 build
 make_isa_stub
 fix_permissions
-#make_package
-#clean_up
+make_package
+clean_up
