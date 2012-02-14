@@ -14,14 +14,21 @@ DESC="$SUMMARY"
 BUILD_DEPENDS_IPS="gcc46"
 [[ "$BUILDARCH" == "both" ]] && BUILDARCH=32
 
-CONFIGURE_OPTS="--enable-ld=no --enable-gold=no --exec-prefix=/usr/gnu --program-prefix=g"
+CONFIGURE_OPTS="--enable-gold=no --exec-prefix=/usr/gnu --program-prefix=g"
+
+make_prog() {
+    [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
+    logmsg "--- make"
+    logcmd $MAKE SHELL=/bin/bash $MAKE_JOBS || \
+        logerr "--- Make failed"
+}
 
 make_sfw_links() {
     logmsg "Creating SFW symlinks"
     logcmd mkdir -p $DESTDIR/$PREFIX/sfw/bin
     pushd $DESTDIR/$PREFIX/sfw/bin > /dev/null
-    for file in gaddr2line gar gas gc++filt gelfedit ggprof gnm gobjcopy \
-                gobjdump granlib greadelf gsize gstrings gstrip
+    for file in gaddr2line gar gas gc++filt gelfedit ggprof gld gnm \
+                gobjcopy gobjdump granlib greadelf gsize gstrings gstrip
         do logcmd ln -s ../../bin/$file $file || \
             logerr "Failed to create link for $file"
         done
