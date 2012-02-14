@@ -279,12 +279,7 @@ prep_build() {
     # Get the current date/time for the package timestamp
     if [[ -n "$USEIPS" ]]; then
         DATETIME=`TZ=UTC /usr/bin/date +"%Y%m%dT%H%M%SZ"`
-        if [[ -d /usr/include/openssl && -z $USE_SYSTEM_SSL_HEADERS ]]; then
-            mv /usr/include/openssl /usr/include/openssl.omnibuild.safety
-        fi
     else
-        pkginfo SUNWopenssl-include > /dev/null 2>&1 && \
-            logerr "You have other openssl headers installed. Wicked bad."
         DATETIME=`/usr/bin/date +"%Y%m%d%H%M"`
     fi
 
@@ -1036,9 +1031,6 @@ clean_up() {
         REALOUTDIR=`cd $OUTDIR;echo $PWD`
         logmsg "If all went well, the package is now in $REALOUTDIR:"
         logmsg `ls -l $OUTDIR | grep $PKGFILE`
-        if [[ -d /usr/include/openssl.omnibuild.safety ]]; then
-            mv /usr/include/openssl.omnibuild.safety /usr/include/openssl
-        fi
     fi
 }
 
