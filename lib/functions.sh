@@ -782,10 +782,26 @@ make_prog() {
         logerr "--- Make failed"
 }
 
+make_prog32() {
+    make_prog
+}
+
+make_prog64() {
+    make_prog
+}
+
 make_install() {
     logmsg "--- make install"
     logcmd $MAKE DESTDIR=${DESTDIR} install || \
         logerr "--- Make install failed"
+}
+
+make_install32() {
+    make_install
+}
+
+make_install64() {
+    make_install
 }
 
 make_pure_install() {
@@ -834,8 +850,8 @@ build32() {
     export ISALIST="$ISAPART"
     make_clean
     configure32
-    make_prog
-    make_install
+    make_prog32
+    make_install64
     popd > /dev/null
     unset ISALIST
     export ISALIST
@@ -846,8 +862,8 @@ build64() {
     logmsg "Building 64-bit"
     make_clean
     configure64
-    make_prog
-    make_install
+    make_prog64
+    make_install64
     popd > /dev/null
 }
 
