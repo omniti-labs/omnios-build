@@ -861,7 +861,7 @@ build32() {
     make_clean
     configure32
     make_prog32
-    make_install64
+    make_install32
     popd > /dev/null
     unset ISALIST
     export ISALIST
