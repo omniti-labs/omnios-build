@@ -29,8 +29,8 @@ CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 BASECFLAGS=-m64"
 
 preprep_build() {
     pushd $TMPDIR/$BUILDDIR > /dev/null || logerr "Cannot change to build directory"
-    autoheader || logerr "autoheaer failed"
-    autoconf || logerr "autoreconf failed"
+    /opt/omni/bin/autoheader || logerr "autoheaer failed"
+    /opt/omni/bin/autoconf || logerr "autoreconf failed"
     popd > /dev/null
 }
 
