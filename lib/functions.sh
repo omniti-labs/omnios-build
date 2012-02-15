@@ -283,6 +283,16 @@ prep_build() {
         DATETIME=`/usr/bin/date +"%Y%m%d%H%M"`
     fi
 
+    logmsg "--- Moving SSL .so symlinks to 1.0 versions"
+    for DIR in /lib /lib/amd64; do
+        echo $DIR
+        pushd $DIR > /dev/null
+        logcmd rm -f libssl.so libcrypto.so
+        logcmd ln -s libssl.so.1.0.0 libssl.so
+        logcmd ln -s libcrypto.so.1.0.0 libcrypto.so
+        popd > /dev/null
+    done
+
     logmsg "--- Creating temporary install dir"
     # We might need to encode some special chars
     PKGE=$(url_encode $PKG)
