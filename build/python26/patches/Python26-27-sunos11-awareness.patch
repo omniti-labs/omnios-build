@@ -1,6 +1,6 @@
-diff -ruN Python-2.6.7-orig/configure.in Python-2.6.7/configure.in
+diff -ru Python-2.6.7-orig/configure.in Python-2.6.7/configure.in
 --- Python-2.6.7-orig/configure.in	2010-05-25 02:27:03.000000000 +0000
-+++ Python-2.6.7/configure.in	2012-02-15 21:28:00.409780555 +0000
++++ Python-2.6.7/configure.in	2012-02-16 04:16:13.796197134 +0000
 @@ -372,7 +372,7 @@
    # except for Solaris 10, where it must not be defined, 
    # as it implies XPG4.2
@@ -10,3 +10,17 @@ diff -ruN Python-2.6.7-orig/configure.in Python-2.6.7/configure.in
        ;;
      *)
        AC_DEFINE(_XOPEN_SOURCE_EXTENDED, 1,
+diff -ru Python-2.6.7-orig/Lib/distutils/sysconfig.py Python-2.6.7/Lib/distutils/sysconfig.py
+--- Python-2.6.7-orig/Lib/distutils/sysconfig.py	2010-08-03 21:18:06.000000000 +0000
++++ Python-2.6.7/Lib/distutils/sysconfig.py	2012-02-16 04:19:04.453088064 +0000
+@@ -225,7 +225,9 @@
+         return os.path.join(os.path.dirname(os.path.realpath(sys.executable)),
+                             "Makefile")
+     lib_dir = get_python_lib(plat_specific=1, standard_lib=1)
+-    return os.path.join(lib_dir, "config", "Makefile")
++    if sys.maxint == 2147483647L:
++        return os.path.join(lib_dir, "config", "Makefile")
++    return os.path.join(lib_dir, "config", "Makefile.64")
+ 
+ 
+ def parse_config_h(fp, g=None):

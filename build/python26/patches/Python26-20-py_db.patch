@@ -1,7 +1,7 @@
-diff --git Python-2.6.4/Makefile.pre.in.orig Python-2.6.4/Makefile.pre.in
---- Python-2.6.4/Makefile.pre.in.orig	Sun Feb 13 19:37:16 2011
-+++ Python-2.6.4/Makefile.pre.in	Sun Feb 13 20:55:04 2011
-@@ -354,7 +354,7 @@
+diff -ruN Python-2.6.7-orig/Makefile.pre.in Python-2.6.7/Makefile.pre.in
+--- Python-2.6.7-orig/Makefile.pre.in	2010-08-01 22:05:31.000000000 +0000
++++ Python-2.6.7/Makefile.pre.in	2012-02-16 03:15:25.704717695 +0000
+@@ -352,7 +352,7 @@
  
  # Default target
  all:		build_all
@@ -10,7 +10,7 @@ diff --git Python-2.6.4/Makefile.pre.in.orig Python-2.6.4/Makefile.pre.in
  
  # Compile a binary with gcc profile guided optimization.
  profile-opt:
-@@ -677,6 +677,20 @@
+@@ -663,6 +663,19 @@
  
  $(LIBRARY_OBJS) $(MODOBJS) Modules/python.o: $(PYTHON_HEADERS)
  
@@ -27,24 +27,21 @@ diff --git Python-2.6.4/Makefile.pre.in.orig Python-2.6.4/Makefile.pre.in
 +install-py_db:	libpython2.6_db.so.1.0 check_offset
 +	$(INSTALL_SHARED) libpython2.6_db.so.1.0 $(DESTDIR)$(LIBDIR)
 +	$(INSTALL_PROGRAM) check_offset $(DESTDIR)$(BINDIR)
-+
- install-pycc:	$(srcdir)/pycc
-        $(INSTALL_SCRIPT $< $(DESTDIR)$(BINLIBDEST)
-
-@@ -742,7 +755,7 @@
+ 
+ ######################################################################
+ 
+@@ -726,7 +739,7 @@
  		$(TESTPYTHON) $(TESTPROG) $(MEMTESTOPTS)
  
  # Install everything
--install:	@FRAMEWORKINSTALLFIRST@ altinstall bininstall maninstall @FRAMEWORKINSTALLLAST@ install-pycc
-+install:	@FRAMEWORKINSTALLFIRST@ altinstall bininstall maninstall @FRAMEWORKINSTALLLAST@ install-py_db install-pycc
+-install:	@FRAMEWORKINSTALLFIRST@ altinstall bininstall maninstall @FRAMEWORKINSTALLLAST@
++install:	@FRAMEWORKINSTALLFIRST@ altinstall bininstall maninstall @FRAMEWORKINSTALLLAST@ install-py_db
  
  # Install almost everything without disturbing previous versions
  altinstall:	@FRAMEWORKALTINSTALLFIRST@ altbininstall libinstall inclinstall libainstall \
-
-diff --git Python-2.6.4/py_db/check_offsets.c Python-2.6.4/py_db/check_offsets.c
-new file mode 100644
---- /dev/null
-+++ Python-2.6.4/py_db/check_offsets.c
+diff -ruN Python-2.6.7-orig/py_db/check_offsets.c Python-2.6.7/py_db/check_offsets.c
+--- Python-2.6.7-orig/py_db/check_offsets.c	1970-01-01 00:00:00.000000000 +0000
++++ Python-2.6.7/py_db/check_offsets.c	2012-02-16 03:13:33.350841679 +0000
 @@ -0,0 +1,88 @@
 +/*
 + * CDDL HEADER START
@@ -134,10 +131,135 @@ new file mode 100644
 +
 +	return (0);
 +}
-diff --git Python-2.6.4/py_db/libpython26_db.c Python-2.6.4/py_db/libpython26_db.c
-new file mode 100644
---- /dev/null
-+++ Python-2.6.4/py_db/libpython26_db.c
+diff -ruN Python-2.6.7-orig/py_db/libpython26_db_32.h Python-2.6.7/py_db/libpython26_db_32.h
+--- Python-2.6.7-orig/py_db/libpython26_db_32.h	1970-01-01 00:00:00.000000000 +0000
++++ Python-2.6.7/py_db/libpython26_db_32.h	2012-02-16 03:13:33.351452724 +0000
+@@ -0,0 +1,122 @@
++/*
++ * CDDL HEADER START
++ *
++ * The contents of this file are subject to the terms of the
++ * Common Development and Distribution License (the "License").
++ * You may not use this file except in compliance with the License.
++ *
++ * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
++ * or http://www.opensolaris.org/os/licensing.
++ * See the License for the specific language governing permissions
++ * and limitations under the License.
++ *
++ * When distributing Covered Code, include this CDDL HEADER in each
++ * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
++ * If applicable, add the following below this CDDL HEADER, with the
++ * fields enclosed by brackets "[]" replaced with your own identifying
++ * information: Portions Copyright [yyyy] [name of copyright owner]
++ *
++ * CDDL HEADER END
++ */
++/*
++ * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
++ * Use is subject to license terms.
++ */
++
++#ifndef	_LIBPYTHON26_DB_32_H
++#define	_LIBPYTHON26_DB_32_H
++
++#ifdef	__cplusplus
++extern "C" {
++#endif
++
++#include <sys/types.h>
++
++/*
++ * Define 32-bit Python data structures for use by the 64-bit debugger.  This
++ * is so that a 64-bit debugger may properly examine a 32-bit process.
++ *
++ * In many cases, the debug library is only concerned with a few fields in the
++ * Python structure.  In that case, the other ancillary fields are elided.
++ */
++
++typedef uint32_t uintptr32_t;
++typedef int32_t Py_ssize32_t;
++
++typedef struct _is32 {
++	uintptr32_t	next;
++	uintptr32_t	tstate_head;
++} PyInterpreterState32;
++
++typedef struct _ts32 {
++	uintptr32_t	next;
++	uintptr32_t	interp;
++	uintptr32_t	frame;
++} PyThreadState32;
++
++#define	PyObject_HEAD32			\
++	Py_ssize32_t	ob_refcnt;	\
++	uintptr32_t	ob_type;
++
++#define	PyObject_VAR_HEAD32		\
++	PyObject_HEAD32			\
++	Py_ssize32_t	ob_size;
++
++typedef struct {
++	PyObject_HEAD32
++} PyObject32;
++
++typedef struct {
++	PyObject_VAR_HEAD32
++} PyVarObject32;
++
++typedef struct {
++	PyObject_VAR_HEAD32
++	int32_t		ob_shash;
++	int		ob_sstate;
++	char		ob_sval[1];
++} PyStringObject32;
++
++#define	Py_SIZE32(ob)			(((PyVarObject32*)(ob))->ob_size)
++#define	PyString_GET_SIZE32(op)		Py_SIZE32(op)
++#define	PyString_AS_STRING32(op)	(((PyStringObject32 *)(op))->ob_sval)
++
++typedef struct {
++	PyObject_VAR_HEAD32
++	uintptr32_t	f_back;
++	uintptr32_t	f_code;
++	uintptr32_t	f_builtins;
++	uintptr32_t	f_globals;
++	uintptr32_t	f_locals;
++	uintptr32_t	f_valuestack;
++	uintptr32_t	f_stacktop;
++	uintptr32_t	f_trace;
++	uintptr32_t	f_exc_typpe, f_exc_value, f_exc_traceback;
++	uintptr32_t	f_tstate;
++	int		f_lasti;
++	int		f_lineno;
++} PyFrameObject32;
++
++typedef struct {
++	PyObject_HEAD32
++	int		co_argcount;
++	int		co_nlocals;
++	int		co_stacksize;
++	int		co_flags;
++	uintptr32_t	co_code;
++	uintptr32_t	co_consts;
++	uintptr32_t	co_names;
++	uintptr32_t	co_varnames;
++	uintptr32_t	co_freevars;
++	uintptr32_t	co_cellvars;
++	uintptr32_t	co_filename;
++	uintptr32_t	co_name;
++	int		co_firstlineno;
++	uintptr32_t	co_lnotab;
++} PyCodeObject32;
++
++#ifdef	__cplusplus
++}
++#endif
++
++#endif	/* _LIBPYTHON26_DB_32_H */
+diff -ruN Python-2.6.7-orig/py_db/libpython26_db.c Python-2.6.7/py_db/libpython26_db.c
+--- Python-2.6.7-orig/py_db/libpython26_db.c	1970-01-01 00:00:00.000000000 +0000
++++ Python-2.6.7/py_db/libpython26_db.c	2012-02-16 03:13:33.351199719 +0000
 @@ -0,0 +1,655 @@
 +/*
 + * CDDL HEADER START
@@ -794,10 +916,9 @@ new file mode 100644
 +
 +	free(iter);
 +}
-diff --git Python-2.6.4/py_db/libpython26_db.h Python-2.6.4/py_db/libpython26_db.h
-new file mode 100644
---- /dev/null
-+++ Python-2.6.4/py_db/libpython26_db.h
+diff -ruN Python-2.6.7-orig/py_db/libpython26_db.h Python-2.6.7/py_db/libpython26_db.h
+--- Python-2.6.7-orig/py_db/libpython26_db.h	1970-01-01 00:00:00.000000000 +0000
++++ Python-2.6.7/py_db/libpython26_db.h	2012-02-16 03:13:33.351318662 +0000
 @@ -0,0 +1,74 @@
 +/*
 + * CDDL HEADER START
@@ -873,137 +994,9 @@ new file mode 100644
 +#endif
 +
 +#endif	/* _LIBPYTHON26_DB_H */
-diff --git Python-2.6.4/py_db/libpython26_db_32.h Python-2.6.4/py_db/libpython26_db_32.h
-new file mode 100644
---- /dev/null
-+++ Python-2.6.4/py_db/libpython26_db_32.h
-@@ -0,0 +1,122 @@
-+/*
-+ * CDDL HEADER START
-+ *
-+ * The contents of this file are subject to the terms of the
-+ * Common Development and Distribution License (the "License").
-+ * You may not use this file except in compliance with the License.
-+ *
-+ * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
-+ * or http://www.opensolaris.org/os/licensing.
-+ * See the License for the specific language governing permissions
-+ * and limitations under the License.
-+ *
-+ * When distributing Covered Code, include this CDDL HEADER in each
-+ * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
-+ * If applicable, add the following below this CDDL HEADER, with the
-+ * fields enclosed by brackets "[]" replaced with your own identifying
-+ * information: Portions Copyright [yyyy] [name of copyright owner]
-+ *
-+ * CDDL HEADER END
-+ */
-+/*
-+ * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
-+ * Use is subject to license terms.
-+ */
-+
-+#ifndef	_LIBPYTHON26_DB_32_H
-+#define	_LIBPYTHON26_DB_32_H
-+
-+#ifdef	__cplusplus
-+extern "C" {
-+#endif
-+
-+#include <sys/types.h>
-+
-+/*
-+ * Define 32-bit Python data structures for use by the 64-bit debugger.  This
-+ * is so that a 64-bit debugger may properly examine a 32-bit process.
-+ *
-+ * In many cases, the debug library is only concerned with a few fields in the
-+ * Python structure.  In that case, the other ancillary fields are elided.
-+ */
-+
-+typedef uint32_t uintptr32_t;
-+typedef int32_t Py_ssize32_t;
-+
-+typedef struct _is32 {
-+	uintptr32_t	next;
-+	uintptr32_t	tstate_head;
-+} PyInterpreterState32;
-+
-+typedef struct _ts32 {
-+	uintptr32_t	next;
-+	uintptr32_t	interp;
-+	uintptr32_t	frame;
-+} PyThreadState32;
-+
-+#define	PyObject_HEAD32			\
-+	Py_ssize32_t	ob_refcnt;	\
-+	uintptr32_t	ob_type;
-+
-+#define	PyObject_VAR_HEAD32		\
-+	PyObject_HEAD32			\
-+	Py_ssize32_t	ob_size;
-+
-+typedef struct {
-+	PyObject_HEAD32
-+} PyObject32;
-+
-+typedef struct {
-+	PyObject_VAR_HEAD32
-+} PyVarObject32;
-+
-+typedef struct {
-+	PyObject_VAR_HEAD32
-+	int32_t		ob_shash;
-+	int		ob_sstate;
-+	char		ob_sval[1];
-+} PyStringObject32;
-+
-+#define	Py_SIZE32(ob)			(((PyVarObject32*)(ob))->ob_size)
-+#define	PyString_GET_SIZE32(op)		Py_SIZE32(op)
-+#define	PyString_AS_STRING32(op)	(((PyStringObject32 *)(op))->ob_sval)
-+
-+typedef struct {
-+	PyObject_VAR_HEAD32
-+	uintptr32_t	f_back;
-+	uintptr32_t	f_code;
-+	uintptr32_t	f_builtins;
-+	uintptr32_t	f_globals;
-+	uintptr32_t	f_locals;
-+	uintptr32_t	f_valuestack;
-+	uintptr32_t	f_stacktop;
-+	uintptr32_t	f_trace;
-+	uintptr32_t	f_exc_typpe, f_exc_value, f_exc_traceback;
-+	uintptr32_t	f_tstate;
-+	int		f_lasti;
-+	int		f_lineno;
-+} PyFrameObject32;
-+
-+typedef struct {
-+	PyObject_HEAD32
-+	int		co_argcount;
-+	int		co_nlocals;
-+	int		co_stacksize;
-+	int		co_flags;
-+	uintptr32_t	co_code;
-+	uintptr32_t	co_consts;
-+	uintptr32_t	co_names;
-+	uintptr32_t	co_varnames;
-+	uintptr32_t	co_freevars;
-+	uintptr32_t	co_cellvars;
-+	uintptr32_t	co_filename;
-+	uintptr32_t	co_name;
-+	int		co_firstlineno;
-+	uintptr32_t	co_lnotab;
-+} PyCodeObject32;
-+
-+#ifdef	__cplusplus
-+}
-+#endif
-+
-+#endif	/* _LIBPYTHON26_DB_32_H */
-diff --git Python-2.6.4/py_db/mapfile-vers Python-2.6.4/py_db/mapfile-vers
-new file mode 100644
---- /dev/null
-+++ Python-2.6.4/py_db/mapfile-vers
+diff -ruN Python-2.6.7-orig/py_db/mapfile-vers Python-2.6.7/py_db/mapfile-vers
+--- Python-2.6.7-orig/py_db/mapfile-vers	1970-01-01 00:00:00.000000000 +0000
++++ Python-2.6.7/py_db/mapfile-vers	2012-02-16 03:13:33.351553918 +0000
 @@ -0,0 +1,40 @@
 +#
 +# CDDL HEADER START

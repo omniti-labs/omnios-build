@@ -1,7 +1,7 @@
 Python26-00-filemagic.patch -p1
 Python26-01-solaris-lib-dirs.patch -p1
-Python26-02-pycc.patch -p1
-Python26-03-distutils-pycc.patch -p1
+#Python26-02-pycc.patch -p1
+#Python26-03-distutils-pycc.patch -p1
 Python26-04-distutils-log.patch -p1
 Python26-05-isalibs.patch -p1
 Python26-06-write_compiled_module-atomic.patch -p1

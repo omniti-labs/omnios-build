@@ -5,8 +5,8 @@
 
 PATH=/opt/gcc-4.6.2/bin:$PATH
 export PATH
-CC=/opt/gcc-4.6.2/bin/gcc
-CXX=/opt/gcc-4.6.2/bin/g++
+CC=gcc
+CXX=g++
 
 PROG=Python         # App name
 VER=2.6.7           # App version
@@ -24,8 +24,6 @@ CONFIGURE_OPTS="--enable-shared
 	--with-system-ffi
 	ac_cv_opt_olimit_ok=no
 	ac_cv_olimit_ok=no"
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 BASECFLAGS=-m32"
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 BASECFLAGS=-m64"
 
 preprep_build() {
     pushd $TMPDIR/$BUILDDIR > /dev/null || logerr "Cannot change to build directory"
@@ -40,6 +38,18 @@ post_config() {
     perl -pi -e 's/^(\#define _XOPEN_SOURCE.*)/\/* $$1 *\//' pyconfig.h
     perl -pi -e 's/^(\#define _XOPEN_SOURCE_EXTENDED.*)/\/* $$1 *\//' pyconfig.h
     popd > /dev/null
+}
+
+configure64() {
+    logmsg "--- configure (64-bit)"
+    CFLAGS="$CFLAGS $CFLAGS64" \
+    CXXFLAGS="$CXXFLAGS $CXXFLAGS64" \
+    CPPFLAGS="$CPPFLAGS $CPPFLAGS64" \
+    LDFLAGS="$LDFLAGS $LDFLAGS64" \
+    CC="$CC -m64" CXX=$CXX \
+    logcmd $CONFIGURE_CMD $CONFIGURE_OPTS_64 \
+    $CONFIGURE_OPTS || \
+        logerr "--- Configure failed"
 }
 
 make_prog32() {
@@ -61,6 +71,7 @@ make_prog64() {
 make_install32() {
     make_install
     rm $DESTDIR/usr/bin/i386/python || logerr "--- cannot remove arch hardlink"
+    mv $DESTDIR/usr/lib/python2.6/config/Makefile $DESTDIR/usr/lib/python2.6/config/Makefile.32 || logerr "--- Makefile backup (32)"
 }
 make_install64() {
     logmsg "--- make install"
@@ -68,6 +79,8 @@ make_install64() {
         logerr "--- Make install failed"
     rm $DESTDIR/usr/bin/amd64/python || logerr "--- cannot remove arch hardlink"
     (cd $DESTDIR/usr/bin && ln -s python2.6 python) ||  logerr "--- could not setup python softlink"
+    mv $DESTDIR/usr/lib/python2.6/config/Makefile $DESTDIR/usr/lib/python2.6/config/Makefile.64 || logerr "--- Makefile backup (64)"
+    mv $DESTDIR/usr/lib/python2.6/config/Makefile.32 $DESTDIR/usr/lib/python2.6/config/Makefile || logerr "--- Makefile restore (32)"
 }
 
 init
