@@ -1,0 +1,2 @@
+pycurl-nostaticlibs.patch -p1
+pycurl-mondo.patch -p0
