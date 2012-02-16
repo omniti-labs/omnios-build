@@ -63,12 +63,17 @@ move_libs() {
         logerr "Failed to move libs (64-bit)"
     logmsg "--- Making usr/lib symlinks"
     pushd $DESTDIR/usr/lib > /dev/null
-    for i in libssl.so libssl.so.1.0.0 libcrypto.so libcrypto.so.1.0.0
-        do logcmd ln -s ../../lib/$i ; done
+    logcmd ln -s /lib/libssl.so.1.0.0 libssl.so
+    logcmd ln -s /lib/libssl.so.1.0.0 libssl.so.1.0.0
+    logcmd ln -s /lib/libcrypto.so.1.0.0 libcrypto.so
+    logcmd ln -s /lib/libcrypto.so.1.0.0 libcrypto.so.1.0.0
     popd > /dev/null
     pushd $DESTDIR/usr/lib/amd64 > /dev/null
-    for i in libssl.so libssl.so.1.0.0 libcrypto.so libcrypto.so.1.0.0
-        do logcmd ln -s ../../lib/amd64/$i ; done
+    logcmd ln -s /lib/amd64/libssl.so.1.0.0 libssl.so
+    logcmd ln -s /lib/amd64/libssl.so.1.0.0 libssl.so.1.0.0
+    logcmd ln -s /lib/amd64/libcrypto.so.1.0.0 libcrypto.so
+    logcmd ln -s /lib/amd64/libcrypto.so.1.0.0 libcrypto.so.1.0.0
+    popd > /dev/null
 }
 
 
