@@ -19,6 +19,8 @@ DEPENDS_IPS="libgcc_s@4.6.2 library/zlib@1.2.6"
 
 export CCSHARED="-fPIC"
 CFLAGS="$CFLAGS -std=c99"
+LDFLAGS32="-L/usr/gnu/lib -R/usr/gnu/lib"
+LDFLAGS64="-L/usr/gnu/lib/amd64 -R/usr/gnu/lib/amd64"
 CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses -D_LARGEFILE64_SOURCE"
 CONFIGURE_OPTS="--enable-shared
 	--with-system-ffi
@@ -78,6 +80,7 @@ make_install64() {
     logcmd $MAKE DESTDIR=${DESTDIR} install DESTSHARED=/usr/lib/python2.6/lib-dynload || \
         logerr "--- Make install failed"
     rm $DESTDIR/usr/bin/amd64/python || logerr "--- cannot remove arch hardlink"
+    rm $DESTDIR/usr/lib/python2.6/config/libpython2.6.a || logerr "--- cannot remove static lib"
     (cd $DESTDIR/usr/bin && ln -s python2.6 python) ||  logerr "--- could not setup python softlink"
     mv $DESTDIR/usr/lib/python2.6/config/Makefile $DESTDIR/usr/lib/python2.6/config/Makefile.64 || logerr "--- Makefile backup (64)"
     mv $DESTDIR/usr/lib/python2.6/config/Makefile.32 $DESTDIR/usr/lib/python2.6/config/Makefile || logerr "--- Makefile restore (32)"
@@ -90,6 +93,7 @@ preprep_build
 prep_build
 build
 make_isa_stub
+strip_install -x
 fix_permissions
 make_package
 clean_up
