@@ -153,7 +153,7 @@ process_opts $@
 #############################################################################
 # Make sure we are running as root
 #############################################################################
-if [[ "$UID" != "0" ]]; then
+if [[ -z "$SKIP_ROOT_CHECK" && "$UID" != "0" ]]; then
     logerr "--- This build script should be run as root or via sudo"
 fi
 
