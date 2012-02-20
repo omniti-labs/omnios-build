@@ -1,0 +1,12 @@
+--- pycurl-7.19.0-orig/setup.py	2008-09-09 17:40:34.000000000 +0000
++++ pycurl-7.19.0/setup.py	2012-02-16 15:47:08.364168228 +0000
+@@ -97,8 +97,7 @@
+         else:
+             extra_compile_args.append(e)
+     libs = split_quoted(
+-        os.popen("'%s' --libs" % CURL_CONFIG).read()+\
+-        os.popen("'%s' --static-libs" % CURL_CONFIG).read())
++        os.popen("'%s' --libs" % CURL_CONFIG).read())
+     for e in libs:
+         if e[:2] == "-l":
+             libraries.append(e[2:])

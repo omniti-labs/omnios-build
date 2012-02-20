@@ -1,0 +1,29 @@
+Python26-00-filemagic.patch -p1
+Python26-01-solaris-lib-dirs.patch -p1
+#Python26-02-pycc.patch -p1
+#Python26-03-distutils-pycc.patch -p1
+Python26-04-distutils-log.patch -p1
+Python26-05-isalibs.patch -p1
+Python26-06-write_compiled_module-atomic.patch -p1
+Python26-07-dtrace.patch -p1
+Python26-08-ctypes.patch -p1
+Python26-09-ucred.patch -p1
+Python26-10-gethostname.patch -p1
+Python26-11-dlpi.patch -p1
+Python26-12-encoding-alias.patch -p1
+Python26-13-cflags.patch -p1
+Python26-14-ctypes-util-find-library.patch -p1
+Python26-15-getcwd.patch -p1
+Python26-16-privrbac.patch -p1
+Python26-17-netpacket-packet-h.patch -p1
+Python26-18-readline.patch -p1
+Python26-19-ext-stdio.patch -p1
+Python26-20-py_db.patch -p1
+#Python26-21-getpass.patch -p1 (this was accepted upstream)
+#Python26-22-bindir.patch -p1 (this was accepted upstream)
+Python26-23-none-on-connect.patch -p1
+Python26-24-makedev.patch -p1
+Python26-24-symbolic.patch -p1
+Python26-25-closerange.patch -p1
+Python26-26-pybench.patch -p1
+Python26-27-sunos11-awareness.patch -p1
