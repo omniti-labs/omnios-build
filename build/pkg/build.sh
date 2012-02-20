@@ -8,7 +8,7 @@ SKIP_ROOT_CHECK=1
 . ../../lib/functions.sh
 
 PROG=pkg
-VER=121df6c723e2
+VER=4c75a21e8b6c
 BUILDNUM=151002
 PKGPUBLISHER=jeos.omniti.com
 
