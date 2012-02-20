@@ -136,7 +136,7 @@ url_encode() {
 LANG=C
 export LANG
 # Set the path - This can be overriden/extended in the build script
-PATH="/opt/gcc-4.6.2/bin:/opt/omni/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/sfw/bin:/opt/csw/bin"
+PATH="/opt/gcc-4.6.2/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/opt/omni/bin:/usr/sfw/bin:/opt/csw/bin"
 export PATH
 # The dir where this file is located - used for sourcing further files
 MYDIR=$PWD/`dirname $BASH_SOURCE[0]`
@@ -279,14 +279,19 @@ prep_build() {
     # Get the current date/time for the package timestamp
     if [[ -n "$USEIPS" ]]; then
         DATETIME=`TZ=UTC /usr/bin/date +"%Y%m%dT%H%M%SZ"`
-        if [[ -d /usr/include/openssl && -z $USE_SYSTEM_SSL_HEADERS ]]; then
-            mv /usr/include/openssl /usr/include/openssl.omnibuild.safety
-        fi
     else
-        pkginfo SUNWopenssl-include > /dev/null 2>&1 && \
-            logerr "You have other openssl headers installed. Wicked bad."
         DATETIME=`/usr/bin/date +"%Y%m%d%H%M"`
     fi
+
+    logmsg "--- Moving SSL .so symlinks to 1.0 versions"
+    for DIR in /lib /lib/amd64; do
+        echo $DIR
+        pushd $DIR > /dev/null
+        logcmd rm -f libssl.so libcrypto.so
+        logcmd ln -s libssl.so.1.0.0 libssl.so
+        logcmd ln -s libcrypto.so.1.0.0 libcrypto.so
+        popd > /dev/null
+    done
 
     logmsg "--- Creating temporary install dir"
     # We might need to encode some special chars
@@ -787,10 +792,26 @@ make_prog() {
         logerr "--- Make failed"
 }
 
+make_prog32() {
+    make_prog
+}
+
+make_prog64() {
+    make_prog
+}
+
 make_install() {
     logmsg "--- make install"
     logcmd $MAKE DESTDIR=${DESTDIR} install || \
         logerr "--- Make install failed"
+}
+
+make_install32() {
+    make_install
+}
+
+make_install64() {
+    make_install
 }
 
 make_pure_install() {
@@ -839,8 +860,8 @@ build32() {
     export ISALIST="$ISAPART"
     make_clean
     configure32
-    make_prog
-    make_install
+    make_prog32
+    make_install32
     popd > /dev/null
     unset ISALIST
     export ISALIST
@@ -851,8 +872,8 @@ build64() {
     logmsg "Building 64-bit"
     make_clean
     configure64
-    make_prog
-    make_install
+    make_prog64
+    make_install64
     popd > /dev/null
 }
 
@@ -1021,6 +1042,30 @@ test_if_core() {
 }
 
 #############################################################################
+# Scan the destination install and strip the non-stipped ELF objects
+#############################################################################
+strip_install() {
+    logmsg "Stripping installation"
+    pushd $DESTDIR > /dev/null || logerr "Cannot change to installation directory"
+    while read file
+    do
+        if [[ "$1" = "-x" ]]; then
+            ACTION=$(file $file | grep ELF | egrep -v "(, stripped|debugging)")
+        else
+            ACTION=$(file $file | grep ELF | grep -v "not stripped")
+        fi
+        if [[ -n "$ACTION" ]]; then
+          logmsg "------ stripping $file"
+          MODE=$(stat -c %a "$file")
+          chmod 644 "$file" || logerr "chmod failed: $file"
+          strip $* "$file" || logerr "strip failed: $file"
+          chmod $MODE "$file" || logerr "chmod failed: $file"
+        fi
+    done < <(find . -depth -type f)
+    popd > /dev/null
+}
+
+#############################################################################
 # Clean up and print Done message
 #############################################################################
 clean_up() {
@@ -1036,9 +1081,6 @@ clean_up() {
         REALOUTDIR=`cd $OUTDIR;echo $PWD`
         logmsg "If all went well, the package is now in $REALOUTDIR:"
         logmsg `ls -l $OUTDIR | grep $PKGFILE`
-        if [[ -d /usr/include/openssl.omnibuild.safety ]]; then
-            mv /usr/include/openssl.omnibuild.safety /usr/include/openssl
-        fi
     fi
 }
 
