@@ -8,13 +8,16 @@ SKIP_ROOT_CHECK=1
 . ../../lib/functions.sh
 
 PROG=pkg
-VER=a9ba687c5423
+VER=121df6c723e2
 BUILDNUM=151002
+PKGPUBLISHER=jeos.omniti.com
 
 GIT=/opt/omni/bin/git
 HG=/opt/omni/bin/hg
 HEADERS="libbrand.h libuutil.h libzonecfg.h"
 BRAND_CFLAGS="-I./gate-include"
+
+DEPENDS_IPS="runtime/python-26@2.6.7"
 
 clone_gate(){
     logmsg "gate -> $TMPDIR/$BUILDDIR/illumos-omni-os"
@@ -51,7 +54,9 @@ clone_source(){
 }
 
 build(){
-    pushd $TMPDIR/$BUILDDIR/pkg-omni/src > /dev/null
+    pushd $TMPDIR/$BUILDDIR/pkg-omni/src > /dev/null || logerr "Cannot change to src dir"
+    find . -depth -name \*.mo -exec touch {} \;
+    touch `find gui/help -depth -name \*.in | sed -e 's/\.in$//'`
     pushd $TMPDIR/$BUILDDIR/pkg-omni/src/brand > /dev/null
     logmsg "--- brand subbuild"
     ISALIST=i386 CC=gcc CFLAGS="$BRAND_CFLAGS" logcmd make || logerr "brand make failed"
@@ -66,7 +71,13 @@ package(){
     pushd $TMPDIR/$BUILDDIR/pkg-omni/src/pkg > /dev/null
     logmsg "--- packaging"
     ISALIST=i386 CC=gcc logcmd make BUILDNUM=$BUILDNUM || logerr "pkg make failed"
-    ISALIST=i386 CC=gcc logcmd make BUILDNUM=$BUILDNUM publish || logerr "publish failed"
+    ISALIST=i386 CC=gcc logcmd make publish-pkgs \
+        BUILDNUM=$BUILDNUM \
+        PKGSEND_OPTS="" \
+        PKGPUBLISHER=$PKGPUBLISHER \
+        PKGREPOTGT="" \
+        PKGREPOLOC="$PKGSRVR" \
+        || logerr "publish failed"
     popd > /dev/null
 }
 
