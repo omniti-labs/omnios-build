@@ -148,6 +148,9 @@ SRCDIR=$PWD/`dirname $0`
 # Load configuration options
 #############################################################################
 . $MYDIR/config.sh
+if [[ -f $LOGFILE ]]; then
+    mv $LOGFILE $LOGFILE.1
+fi
 process_opts $@
 
 #############################################################################
