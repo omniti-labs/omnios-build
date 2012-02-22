@@ -6,7 +6,7 @@
 PROG=trousers   # App name
 VER=0.3.8       # App version
 VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
+PVER=2          # Package Version (numeric only)
 PKG=library/security/trousers  # Package name (without prefix)
 SUMMARY="trousers - TCG Software Stack - software for accessing a TPM device"
 DESC="$SUMMARY ($VER)"
@@ -34,6 +34,13 @@ preprep_build() {
   popd > /dev/null
 }
 
+cleanup_configure() {
+    for makefile in src/trspi/Makefile src/tspi/Makefile; do
+        mv $makefile $makefile.unneeded
+        cat $makefile.unneeded | sed -e 's/LIBS = .*/LIBS = -lnsl -lsocket -lgen/;' > $makefile
+    done
+}
+
 configure32() {
     logmsg "--- configure (32-bit)"
     CFLAGS="$CFLAGS $CFLAGS32" \
@@ -45,6 +52,7 @@ configure32() {
     logcmd $CONFIGURE_CMD $CONFIGURE_OPTS_32 \
     $CONFIGURE_OPTS || \
         logerr "--- Configure failed"
+    cleanup_configure
 }
 
 configure64() {
@@ -58,6 +66,7 @@ configure64() {
     logcmd $CONFIGURE_CMD $CONFIGURE_OPTS_64 \
     $CONFIGURE_OPTS || \
         logerr "--- Configure failed"
+    cleanup_configure
 }
 
 init
