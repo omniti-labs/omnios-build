@@ -168,3 +168,6 @@ reset_configure_opts
 # Configure options to apply to both builds - this is the one you usually want
 # to change for things like --enable-feature
 CONFIGURE_OPTS=""
+
+# Vim hints
+# vim:ts=4:sw=4:et:

@@ -1,0 +1,13 @@
+# GNU locale files
+<transform dir path=usr/share/locale/.* -> set group other>
+<transform dir path=usr/share/locale$ -> set group other>
+
+# GNU info shit
+<transform file path=usr/share/info/dir$ -> drop>
+
+# Other upper-level directories
+<transform dir path=usr/share$ -> set group sys>
+
+# These always exists due to SUNWcs, so we never need to worry about them
+<transform dir path=opt$ -> drop>
+<transform dir path=usr$ -> drop>

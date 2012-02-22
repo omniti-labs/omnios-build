@@ -283,16 +283,6 @@ prep_build() {
         DATETIME=`/usr/bin/date +"%Y%m%d%H%M"`
     fi
 
-    logmsg "--- Moving SSL .so symlinks to 1.0 versions"
-    for DIR in /lib /lib/amd64; do
-        echo $DIR
-        pushd $DIR > /dev/null
-        logcmd rm -f libssl.so libcrypto.so
-        logcmd ln -s libssl.so.1.0.0 libssl.so
-        logcmd ln -s libcrypto.so.1.0.0 libcrypto.so
-        popd > /dev/null
-    done
-
     logmsg "--- Creating temporary install dir"
     # We might need to encode some special chars
     PKGE=$(url_encode $PKG)
@@ -507,42 +497,46 @@ make_package() {
     if [[ -n "$FLAVORSTR" ]]; then
         DESCSTR="$DESCSTR ($FLAVOR)"
     fi
+    # IPS package
     if [[ -n "$USEIPS" ]]; then
+        PKGSEND=/usr/bin/pkgsend
+        PKGMOGRIFY=/usr/bin/pkgmogrify
+        PKGFMT=/usr/bin/pkgfmt
+        P5M_INT=/tmp/${PKGE}.p5m.1
+        P5M_FINAL=/tmp/${PKGE}.p5m.2
+        GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
+        MY_MOG_FILE=/tmp/${PKGE}.mog
+
         ## Strip leading zeros in version components.
         VER=`echo $VER | sed -e 's/\.0*\([1-9]\)/.\1/g;'`
-	if [[ -n "$FLAVOR" ]]; then
-	    # We use FLAVOR here because we don't need the trailing dash as in SVR4
-            PUBLISHCMD="pkgsend -s $PKGSRVR open -n ${PKGPREFIX}${PKG}-${FLAVOR}@${VER},${SUNOSVER}-${PVER}"
-	else
-            PUBLISHCMD="pkgsend -s $PKGSRVR open -n ${PKGPREFIX}${PKG}@${VER},${SUNOSVER}-${PVER}"
-	fi
-        logmsg "Opening new package transaction with '$PUBLISHCMD'"
-        logcmd export PKG_TRANS_ID=$($PUBLISHCMD || echo "ERROR")
-        if [[ "$PKG_TRANS_ID" == "ERROR" ]]; then
-            logerr "Failed to open new package transaction"
+	    if [[ -n "$FLAVOR" ]]; then
+	        # We use FLAVOR instead of FLAVORSTR as we don't want the trailing dash
+	        FMRI="${PKGPREFIX}${PKG}-${FLAVOR}@${VER},${SUNOSVER}-${PVER}"
+	    else
+	        FMRI="${PKGPREFIX}${PKG}@${VER},${SUNOSVER}-${PVER}"
+	    fi
+        if [[ -n "$DESTDIR" ]]; then
+            logmsg "--- Generating package manifest from $DESTDIR"
+            logmsg "------ Running: $PKGSEND generate $DESTDIR > $P5M_INT"
+            $PKGSEND generate $DESTDIR > $P5M_INT || \
+                logerr "------ Failed to generate manifest"
+        else
+            logmsg "--- Looks like a meta-package. Creating empty manifest"
+            logcmd touch $P5M_INT || \
+                logerr "------ Failed to create empty manifest"
         fi
+        logmsg "--- Generating package metadata"
+        echo "set name=pkg.fmri value=$FMRI" > $MY_MOG_FILE
         # Set human-readable version, if it exists
         if [[ -n "$VERHUMAN" ]]; then
-            logmsg "Setting human-readable version"
-            logcmd pkgsend -s $PKGSRVR add set name=pkg.human-version value="$VERHUMAN"
+            logmsg "------ Setting human-readable version"
+            echo "set name=pkg.human-version value=\"$VERHUMAN\"" >> $MY_MOG_FILE
         fi
-        # If DESTDIR is unset, then we're probably making a metapackage
-        #   so there won't be anything to import
-        if [[ -n "$DESTDIR" ]]; then
-            logmsg "Sending files from $DESTDIR"
-            if logcmd pkgsend -s $PKGSRVR import $DESTDIR; then
-		logmsg "--- Finished sending files"
-            else
-		logcmd pkgsend -s $PKGSRVR close -A
-                logmsg "Aborting: Failed to send pkg correctly"
-		exit
-            fi
-        fi
-        logcmd pkgsend -s $PKGSRVR add set name=pkg.summary value="$SUMMARY"
-        logcmd pkgsend -s $PKGSRVR add set name=pkg.descr value="$DESCSTR"
-        logcmd pkgsend -s $PKGSRVR add set name=publisher value="sa@omniti.com"
+        echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
+        echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
+        echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
         if [[ -n "$DEPENDS_IPS" ]]; then
-            logmsg "Adding dependencies"
+            logmsg "------ Adding dependencies"
             for i in $DEPENDS_IPS; do
                 # IPS dependencies have multiple types, of which we care about four:
                 #    require, optional, incorporate, exclude
@@ -564,12 +558,19 @@ make_package() {
                         i=${i:1}
                         ;;
                 esac
-                logcmd pkgsend -s $PKGSRVR add depend type=$DEPTYPE fmri=${i}
+                echo "depend type=$DEPTYPE fmri=${i}" >> $MY_MOG_FILE
             done
         fi
-        logmsg "Closing package transaction"
-        logcmd pkgsend -s $PKGSRVR close
+        logmsg "--- Applying transforms"
+        $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE | $PKGFMT -u > $P5M_FINAL
+        logerr "Intentional fail for testing, just before publication"
+        logmsg "--- Publishing package"
+        logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR $P5M_FINAL || \
+            logerr "------ Failed to publish package"
+        logmsg "--- Cleaning up temporary manifest and transform files"
+        logcmd rm -f $P5M_INT $P5M_FINAL $MY_MOG_FILE
     else
+	# SVR4 package
         PKGFILE=${PKGPREFIX}$PKG-$FLAVORSTR$VER-$PVER-$PLATFORM-$BUILDSTR$RELEASE
         local PKGINFODIR=/var/tmp/$PROG.pkginfo.$$
         logcmd rm -rf $PKGINFODIR || \
@@ -1093,3 +1094,6 @@ save_function() {
     local NEWNAME_FUNC="$2${ORIG_FUNC#$1}"
     eval "$NEWNAME_FUNC"
 }
+
+# Vim hints
+# vim:ts=4:sw=4:et:
