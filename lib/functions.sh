@@ -148,12 +148,15 @@ SRCDIR=$PWD/`dirname $0`
 # Load configuration options
 #############################################################################
 . $MYDIR/config.sh
+if [[ -f $LOGFILE ]]; then
+    mv $LOGFILE $LOGFILE.1
+fi
 process_opts $@
 
 #############################################################################
 # Make sure we are running as root
 #############################################################################
-if [[ "$UID" != "0" ]]; then
+if [[ -z "$SKIP_ROOT_CHECK" && "$UID" != "0" ]]; then
     logerr "--- This build script should be run as root or via sudo"
 fi
 

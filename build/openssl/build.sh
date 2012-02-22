@@ -5,7 +5,7 @@
 
 PROG=openssl                 # App name
 VER=1.0.0g                   # App version
-PVER=1                       # Package Version (numeric only)
+PVER=2                       # Package Version (numeric only)
 PKG=library/security/openssl # Package name (without prefix)
 SUMMARY="$PROG - A toolkit for Secure Sockets Layer (SSL v2/v3) and Transport Layer (TLS v1) protocols and general purpose cryptographic library"
 DESC="$SUMMARY"
