@@ -10,7 +10,7 @@ VER=0.21.1     # App version
 PVER=1         # Package Version
 PKG=library/python-2/m2crypto # Package name (without prefix)
 
-DEPENDS="runtime/python-26 library/security/openssl@1.0.0"
+DEPENDS_IPS="runtime/python-26 library/security/openssl@1.0.0"
 
 PYTHONPATH=/usr
 PYTHON=$PYTHONPATH/bin/python2.6
