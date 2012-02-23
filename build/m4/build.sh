@@ -7,6 +7,8 @@ PROG=m4         # App name
 VER=1.4.16      # App version
 PVER=2          # Package Version
 PKG=developer/macro/gnu-m4  # Package name (without prefix)
+SUMMARY="GNU m4"
+DESC="GNU m4 - A macro processor (gm4)"
 
 PREFIX=/usr/gnu
 reset_configure_opts
