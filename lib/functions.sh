@@ -205,6 +205,12 @@ init() {
     else
         logmsg "Extra dependency: $DEPVER"
     fi
+    # Ensure SUMMARY and DESC are non-empty
+    if [[ -z "$SUMMARY" ]]; then
+        logerr "SUMMARY may not be empty. Please update your build script"
+    elif [[ -z "$DESC" ]]; then
+        logerr "DESC may not be empty. Please update your build script"
+    fi
 
     # BUILDDIR can be used to manually specify what directory the program is
     # built in (i.e. what the tarball extracts to). This defaults to the name
@@ -566,7 +572,6 @@ make_package() {
         fi
         logmsg "--- Applying transforms"
         $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE | $PKGFMT -u > $P5M_FINAL
-        logerr "Intentional fail for testing, just before publication"
         logmsg "--- Publishing package"
         logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR $P5M_FINAL || \
             logerr "------ Failed to publish package"
