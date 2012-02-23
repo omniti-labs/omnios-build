@@ -9,9 +9,11 @@
 <transform dir path=usr/share$ -> set group sys>
 <transform dir path=usr/gnu/share$ -> set group sys>
 
-# These always exists due to SUNWcs, so we never need to worry about them
+# These always exist due to SUNWcs, so we never need to worry about them
 <transform dir path=opt$ -> drop>
 <transform dir path=usr$ -> drop>
 
 # This should only ever be in libiconv, but other GNU packages install it
 <transform file path=usr/gnu/lib/charset.alias$ -> drop>
+<transform file path=usr/lib/charset.alias$ -> drop>
+<transform file path=usr/lib/amd64/charset.alias$ -> drop>
