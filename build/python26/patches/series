@@ -27,3 +27,4 @@ Python26-24-symbolic.patch -p1
 Python26-25-closerange.patch -p1
 Python26-26-pybench.patch -p1
 Python26-27-sunos11-awareness.patch -p1
+Python26-28-no-libdl.patch -p1
