@@ -43,6 +43,5 @@ build
 make_isa_stub
 make_sfw_links
 fix_permissions
-logerr "Intentional fail-- check build"
 make_package
 clean_up
