@@ -1,0 +1,9 @@
+--- gio/tests/de.po.orig	Fri Feb 24 20:48:58 2012
++++ gio/tests/de.po	Fri Feb 24 20:49:22 2012
+@@ -12,6 +12,5 @@
+ msgid "\"Unnamed\""
+ msgstr "\"Unbenannt\""
+ 
+-msgctxt "keyboard label"
+ msgid "\"BackSpace\""
+ msgstr "\"Löschen\""
