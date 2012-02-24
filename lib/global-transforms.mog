@@ -7,10 +7,12 @@
 
 # Other upper-level directories
 <transform dir path=usr/share$ -> set group sys>
+<transform dir path=usr/share/doc$ -> set group other>
 <transform dir path=usr/gnu/share$ -> set group sys>
 <transform dir path=usr/lib/pkgconfig$ -> set group other>
 <transform dir path=usr/lib/amd64/pkgconfig$ -> set group other>
 <transform dir path=usr/share/aclocal$ -> set group other>
+<transform dir path=var/lib$ -> set group other>
 
 # These always exist due to SUNWcs, so we never need to worry about them
 <transform dir path=opt$ -> drop>
@@ -25,6 +27,7 @@
 <transform dir path=var/svc$ -> drop>
 <transform dir path=var/svc/manifest$ -> drop>
 <transform dir path=var/svc/manifest/application$ -> drop>
+<transform dir path=var/svc/manifest/system$ -> drop>
 <transform dir path=lib$ -> drop>
 <transform dir path=lib/svc$ -> drop>
 <transform dir path=lib/svc/manifest$ -> drop>
