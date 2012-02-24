@@ -21,6 +21,5 @@ prep_build
 build
 make_isa_stub
 fix_permissions
-logerr "Intentional fail-- check build"
 make_package
 clean_up
