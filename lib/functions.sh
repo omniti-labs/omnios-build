@@ -581,8 +581,8 @@ make_package() {
                 echo "depend type=$DEPTYPE fmri=${i}" >> $MY_MOG_FILE
             done
         fi
-        if [[ -f local.mog ]]; then
-            LOCAL_MOG_FILE=local.mog
+        if [[ -f $SRCDIR/local.mog ]]; then
+            LOCAL_MOG_FILE=$SRCDIR/local.mog
         fi
         logmsg "--- Applying transforms"
         $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
