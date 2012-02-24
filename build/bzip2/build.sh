@@ -82,9 +82,7 @@ download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
-logerr "Check shared lib status"
 make_isa_stub
 fix_permissions
-logerr "Sanity check"
 make_package
 clean_up
