@@ -55,11 +55,3 @@ mkdir $BUILDDIR/$NAME
 cp $BUILDDIR/template/${TYPE}-template.sh $BUILDDIR/$NAME/build.sh
 chmod +x $BUILDDIR/$NAME/build.sh
 mkdir $BUILDDIR/$NAME/patches
-echo
-echo "Please remember to set the svn:ignore property to ignore build.log, e.g.:"
-echo
-echo "svn add $NAME"
-echo "svn propset svn:ignore 'build.log' $NAME"
-echo
-echo "after adding your directory to the repository."
-echo
