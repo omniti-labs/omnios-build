@@ -1,0 +1,4 @@
+02-smf.patch -p0
+03-cups.pc.patch -p0
+cupsd-libnss3.patch -p0
+mkdir-p.patch -p1

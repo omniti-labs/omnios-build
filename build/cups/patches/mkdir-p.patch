@@ -1,0 +1,11 @@
+--- cups-1.5.2/install-sh	Fri Feb 24 05:39:30 2012
++++ cups-1.5.2/install-sh	Fri Feb 24 05:38:41 2012
+@@ -45,7 +45,7 @@
+ chgrpprog="${CHGRPPROG-chgrp}"
+ stripprog="${STRIPPROG-strip}"
+ rmprog="${RMPROG-rm}"
+-mkdirprog="${MKDIRPROG-mkdir}"
++mkdirprog="${MKDIRPROG-mkdir -p}"
+ 
+ transformbasename=""
+ transform_arg=""

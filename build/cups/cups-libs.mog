@@ -1,0 +1,40 @@
+<transform dir path=etc$ -> drop>
+<transform dir path=etc/.* -> drop>
+<transform file path=etc/.* -> drop>
+<transform link path=etc/.* -> drop>
+
+<transform dir path=var$ -> drop>
+<transform dir path=var/.* -> drop>
+<transform file path=var/.* -> drop>
+
+<transform dir path=usr/bin$ -> drop>
+<transform dir path=usr/bin/.* -> drop>
+<transform file path=usr/bin/.* -> drop>
+
+<transform dir path=usr/sbin$ -> drop>
+<transform dir path=usr/sbin/.* -> drop>
+<transform file path=usr/sbin/.* -> drop>
+<transform link path=usr/sbin/.* -> drop>
+
+<transform dir path=usr/share$ -> drop>
+<transform dir path=usr/share/.* -> drop>
+<transform file path=usr/share/.* -> drop>
+<transform link path=usr/share/.* -> drop>
+
+<transform file path=usr/.*/libcupscgi.* -> drop>
+<transform file path=usr/.*/libcupsdriver.* -> drop>
+<transform file path=usr/.*/libcupsmime.* -> drop>
+<transform file path=usr/.*/libcupsppdc.* -> drop>
+<transform link path=usr/.*/libcupscgi.* -> drop>
+<transform link path=usr/.*/libcupsdriver.* -> drop>
+<transform link path=usr/.*/libcupsmime.* -> drop>
+<transform link path=usr/.*/libcupsppdc.* -> drop>
+
+<transform dir path=usr/lib/locale -> drop>
+<transform file path=usr/lib/locale -> drop>
+
+<transform dir path=usr/lib/cups -> drop>
+<transform file path=usr/lib/cups -> drop>
+<transform link path=usr/lib/cups -> drop>
+
+<transform file path=lib/.*/cups\.xml$ -> drop>
