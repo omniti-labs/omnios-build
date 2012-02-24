@@ -15,6 +15,21 @@
 # These always exist due to SUNWcs, so we never need to worry about them
 <transform dir path=opt$ -> drop>
 <transform dir path=usr$ -> drop>
+<transform dir path=usr/bin$ -> drop>
+<transform dir path=usr/lib$ -> drop>
+<transform dir path=var$ -> drop>
+<transform dir path=var/run$ -> drop>
+<transform dir path=var/log$ -> drop>
+<transform dir path=var/spool$ -> drop>
+<transform dir path=var/cache$ -> drop>
+<transform dir path=var/svc$ -> drop>
+<transform dir path=var/svc/manifest$ -> drop>
+<transform dir path=var/svc/manifest/application$ -> drop>
+<transform dir path=lib$ -> drop>
+<transform dir path=lib/svc$ -> drop>
+<transform dir path=lib/svc/manifest$ -> drop>
+<transform dir path=lib/svc/manifest/application$ -> drop>
+<transform dir path=etc$ -> drop>
 
 # This should only ever be in libiconv, but other GNU packages install it
 <transform file path=usr/gnu/lib/charset.alias$ -> drop>

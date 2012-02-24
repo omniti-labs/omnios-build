@@ -585,9 +585,9 @@ make_package() {
             LOCAL_MOG_FILE=local.mog
         fi
         logmsg "--- Applying transforms"
-        $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE | $PKGFMT -u > $P5M_FINAL
-logerr "Sure?..."
+        $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
         logmsg "--- Publishing package"
+logerr "Check it."
         logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR $P5M_FINAL || \
             logerr "------ Failed to publish package"
         logmsg "--- Cleaning up temporary manifest and transform files"
