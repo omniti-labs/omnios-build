@@ -1,0 +1,9 @@
+<transform dir path=usr/share/doc$ -> drop>
+<transform dir path=usr/share/doc/.* -> drop>
+<transform file path=usr/share/doc/.* -> drop>
+<transform link path=usr/share/doc/.* -> drop>
+
+<transform dir path=usr/share/info$ -> drop>
+<transform dir path=usr/share/info/.* -> drop>
+<transform file path=usr/share/info/.* -> drop>
+<transform link path=usr/share/info/.* -> drop>

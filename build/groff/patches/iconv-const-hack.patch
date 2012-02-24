@@ -1,0 +1,20 @@
+--- src/preproc/preconv/preconv.cpp.orig	Fri Feb 24 15:19:22 2012
++++ src/preproc/preconv/preconv.cpp	Fri Feb 24 15:19:35 2012
+@@ -674,7 +674,7 @@
+   char *limit;
+   while (inbytes_left > 0) {
+     size_t status = iconv(handle,
+-			  (ICONV_CONST char **)&inptr, &inbytes_left,
++			  (char **)&inptr, &inbytes_left,
+ 			  &outptr, &outbytes_left);
+     if (status == (size_t)-1) {
+       if (errno == EILSEQ) {
+@@ -706,7 +706,7 @@
+     inbytes_left += read_bytes;
+     while (inbytes_left > 0) {
+       size_t status = iconv(handle,
+-			    (ICONV_CONST char **)&inptr, &inbytes_left,
++			    (char **)&inptr, &inbytes_left,
+ 			    &outptr, &outbytes_left);
+       if (status == (size_t)-1) {
+ 	if (errno == EILSEQ) {
