@@ -1,4 +1,7 @@
 #!/bin/bash
+
+umask 022
+
 #############################################################################
 # functions.sh
 #############################################################################
@@ -148,6 +151,12 @@ SRCDIR=$PWD/`dirname $0`
 # Load configuration options
 #############################################################################
 . $MYDIR/config.sh
+
+# Platform information
+PLATFORM=`uname -p` # i386/sparc
+SUNOSVER=`uname -r` # 5.10/5.11 (only used for IPS)
+RELEASE=${SUNOSVER/5./sol} # sol9/sol10/sol11
+
 if [[ -f $LOGFILE ]]; then
     mv $LOGFILE $LOGFILE.1
 fi
@@ -156,10 +165,15 @@ process_opts $@
 #############################################################################
 # Make sure we are running as root
 #############################################################################
-if [[ -z "$SKIP_ROOT_CHECK" && "$UID" != "0" ]]; then
-    logerr "--- This build script should be run as root or via sudo"
+if [[ "x$RELEASE" = "xsol11" ]]; then
+    if [[ "$UID" = "0" ]]; then
+        logerr "--- You cannot run this as root"
+    fi
+else
+    if [[ -z "$SKIP_ROOT_CHECK" && "$UID" != "0" ]]; then
+        logerr "--- This build script should be run as root or via sudo"
+    fi
 fi
-
 #############################################################################
 # Print startup message
 #############################################################################
@@ -168,11 +182,6 @@ logmsg "===== Build started at `date` ====="
 # Initialization function
 #############################################################################
 init() {
-    # Platform information
-    PLATFORM=`uname -p` # i386/sparc
-    SUNOSVER=`uname -r` # 5.10/5.11 (only used for IPS)
-    RELEASE=${SUNOSVER/5./sol} # sol9/sol10/sol11
-
     # Print out current settings
     # Package format
     if [[ "$PKGFMT" == "SVR4" ]]; then
@@ -467,11 +476,13 @@ fix_permissions() {
     # sudo. We haven't come across a situation where we need files installed
     # as a non-root user. If those come up, this function will have to be
     # overridden.
-    logmsg "Fixing ownership on installed files"
-
-    # -P says don't follow symlinks
-    logcmd chown -R -P root:root ${DESTDIR} ||
-        logerr "Failed to fix ownership on ${DESTDIR}"
+    if [[ -z "$USEIPS" ]]; then
+        logmsg "Fixing ownership on installed files"
+    
+        # -P says don't follow symlinks
+        logcmd chown -R -P root:root ${DESTDIR} ||
+            logerr "Failed to fix ownership on ${DESTDIR}"
+    fi
 }
 
 #############################################################################
@@ -570,8 +581,12 @@ make_package() {
                 echo "depend type=$DEPTYPE fmri=${i}" >> $MY_MOG_FILE
             done
         fi
+        if [[ -f local.mog ]]; then
+            LOCAL_MOG_FILE=local.mog
+        fi
         logmsg "--- Applying transforms"
-        $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE | $PKGFMT -u > $P5M_FINAL
+        $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE | $PKGFMT -u > $P5M_FINAL
+logerr "Sure?..."
         logmsg "--- Publishing package"
         logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR $P5M_FINAL || \
             logerr "------ Failed to publish package"
