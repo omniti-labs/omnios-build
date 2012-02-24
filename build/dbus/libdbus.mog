@@ -1,0 +1,21 @@
+<transform dir path=etc.* -> drop>
+<transform file path=etc.* -> drop>
+<transform link path=etc.* -> drop>
+<transform dir path=var.* -> drop>
+<transform file path=var.* -> drop>
+<transform link path=var.* -> drop>
+<transform dir path=lib.* -> drop>
+<transform file path=lib.* -> drop>
+<transform link path=lib.* -> drop>
+
+<transform dir path=usr/bin.* -> drop>
+<transform file path=usr/bin.* -> drop>
+<transform link path=usr/bin.* -> drop>
+<transform dir path=usr/libexec.* -> drop>
+<transform file path=usr/libexec.* -> drop>
+<transform link path=usr/libexec.* -> drop>
+<transform dir path=usr/share.* -> drop>
+<transform file path=usr/share.* -> drop>
+<transform link path=usr/share.* -> drop>
+
+<transform file path=usr/lib/dbus-daemon$ -> drop>

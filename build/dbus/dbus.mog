@@ -1,0 +1,9 @@
+<transform dir path=usr/lib$ -> drop>
+<transform dir path=usr/lib/.* -> drop>
+<transform file path=usr/lib/.*dbus-1.* -> drop>
+<transform link path=usr/lib/.*dbus-1.* -> drop>
+
+<transform dir path=usr/include.* -> drop>
+<transform file path=usr/include.* -> drop>
+<transform link path=usr/include.* -> drop>
+
