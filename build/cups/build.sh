@@ -3,10 +3,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=cups ##IGNORE##
+PROG=cups
 VER=1.5.2      # App version
 PVER=1          # Package Version
-PKG=cups    # Package name (without prefix)
+PKG=cups ##IGNORE##
 SUMMARY="$PROG - common UNIX printing system libraries"
 DESC="$SUMMARY"
 

@@ -7,6 +7,10 @@ fi
 SKIP_ROOT_CHECK=1
 . ../../lib/functions.sh
 
+# This are used so people can see what packages get built.. pkg actually publishes
+PKG=package/pkg
+PKG=system/zones/brand/ipkg
+
 PROG=pkg
 VER=4c75a21e8b6c
 BUILDNUM=151002

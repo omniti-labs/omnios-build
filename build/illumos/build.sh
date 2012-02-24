@@ -13,7 +13,7 @@ fi
 PROG=omni-os    # App name
 VER=151002    # App version
 PVER=1          # Package Version (numeric only)
-PKG=$PROG       # Package name (without prefix)
+PKG=illumos-gate # Package name (without prefix)
 SUMMARY="$PROG -- Open Maryland Not Indiana" # A short summary of what the app is, starting with its name
 DESC="$SUMMARY -- Illumos and some special sauce." # Longer description
 
@@ -21,7 +21,7 @@ DESC="$SUMMARY -- Illumos and some special sauce." # Longer description
 
 #BUILD_DEPENDS_IPS="data/docbook developer/astdev developer/build/make developer/build/onbld developer/gcc-3 developer/java/jdk developer/lexer/flex developer/object-file developer/parser/bison library/glib2 library/libxml2 library/libxslt library/nspr/header-nspr library/perl-5/xml-parser library/security/trousers print/cups print/filter/ghostscript runtime/perl-510 runtime/perl-510/extra system/library/math/header-math system/library/install system/library/dbus system/library/libdbus system/library/libdbus-glib system/library/mozilla-nss/header-nss system/management/product-registry system/management/snmp/net-snmp text/gnu-gettext library/python-2/python-extra-24 sunstudio12.1"
 
-GIT=/opt/omni/bin/git
+GIT=git
 
 USE_SYSTEM_SSL_HEADERS="TRUE"
 
@@ -33,7 +33,7 @@ BUILDDIR=$PROG-$VER
 CODEMGR_WS=$TMPDIR/$BUILDDIR/illumos-omni-os
 
 #Since these variables are used in a sed statment make sure to escape properly
-ILLUMOS_NO="NIGHTLY\_OPTIONS=\'\-nCmpr\'"
+ILLUMOS_NO="NIGHTLY\_OPTIONS=\'\-niCmpr\'"
 ILLUMOS_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/illumos\-omni\-os"
 #ILLUMOS_CLONE_WS="CLONE\_WS=\'ssh:\/\/anonhg@hg.illumos.org\/illumos\-gate\'"
 ILLUMOS_CLONE_WS="CLONE\_WS=\'src@src.omniti.com:~omni-os\/core\/illumos\-omni\-os\'"
