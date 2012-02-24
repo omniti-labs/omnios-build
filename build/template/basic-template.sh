@@ -20,3 +20,6 @@ make_isa_stub
 fix_permissions
 make_package
 clean_up
+
+# Vim hints
+# vim:ts=4:sw=4:et:

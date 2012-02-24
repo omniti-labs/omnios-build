@@ -49,3 +49,6 @@ buildperl
 fix_permissions
 make_package
 clean_up
+
+# Vim hints
+# vim:ts=4:sw=4:et:
