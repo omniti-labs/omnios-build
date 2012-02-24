@@ -3,7 +3,7 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=cups       # App name
+PROG=cups ##IGNORE##
 VER=1.5.2      # App version
 PVER=1          # Package Version
 PKG=cups    # Package name (without prefix)
