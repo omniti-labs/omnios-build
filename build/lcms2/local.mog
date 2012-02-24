@@ -1,0 +1,7 @@
+<transform dir path=usr/bin$ -> drop>
+<transform dir path=usr/bin/.* -> drop>
+<transform file path=usr/bin/.* -> drop>
+
+<transform dir path=usr/share$ -> drop>
+<transform dir path=usr/share/.* -> drop>
+<transform file path=usr/share/.* -> drop>
