@@ -1,0 +1,2 @@
+# uncompress is delivered by another package
+<transform file path=.*/uncompress$ -> drop>
