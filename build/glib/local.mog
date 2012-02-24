@@ -1,0 +1,24 @@
+<transform dir path=usr/share/gtk.* -> drop>
+<transform file path=usr/share/gtk.* -> drop>
+<transform link path=usr/share/gtk.* -> drop>
+<transform dir path=etc.* -> drop>
+<transform file path=etc.* -> drop>
+<transform link path=etc.* -> drop>
+
+<transform file path=usr/bin/gdbus.* -> drop>
+<transform file path=usr/bin/gtester-report$ -> drop>
+<transform file path=usr/bin/.*/gdbus.* -> drop>
+<transform file path=usr/bin/.*/gtester-report$ -> drop>
+
+<transform file path=usr/share/man/gdbus.* -> drop>
+<transform file path=usr/share/man/gtester-report$ -> drop>
+<transform file path=usr/share/man/.*/gdbus.* -> drop>
+<transform file path=usr/share/man/.*/gtester-report.* -> drop>
+
+<transform file path=.*charset\.alias$ -> drop>
+<transform dir path=usr/.*/codegen.* -> drop>
+<transform file path=usr/.*/codegen.* -> drop>
+<transform dir path=usr/lib/amd64/gdbus-2.0$ -> drop>
+<transform dir path=usr/lib/amd64/glib-2.0$ -> drop>
+<transform dir path=usr/lib/gdbus-2.0$ -> drop>
+<transform dir path=usr/lib/glib-2.0$ -> drop>
