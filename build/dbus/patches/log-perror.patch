@@ -1,0 +1,11 @@
+--- dbus/dbus-sysdeps-util-unix.c.orig	Fri Feb 24 19:04:32 2012
++++ dbus/dbus-sysdeps-util-unix.c	Fri Feb 24 19:04:10 2012
+@@ -425,7 +425,7 @@
+ void
+ _dbus_init_system_log (void)
+ {
+-#ifdef HAVE_DECL_LOG_PERROR
++#if HAVE_DECL_LOG_PERROR != 0
+   openlog ("dbus", LOG_PID | LOG_PERROR, LOG_DAEMON);
+ #else
+   openlog ("dbus", LOG_PID, LOG_DAEMON);
