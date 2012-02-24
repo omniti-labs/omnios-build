@@ -1,0 +1,7 @@
+<transform dir path=etc.* -> drop>
+<transform file path=etc.* -> drop>
+<transform link path=etc.* -> drop>
+
+<transform dir path=usr/share/gtk.* -> drop>
+<transform file path=usr/share/gtk.* -> drop>
+<transform link path=usr/share/gtk.* -> drop>

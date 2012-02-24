@@ -1,0 +1,12 @@
+diff -ru dbus-glib-0.98.orig/dbus/Makefile.in dbus-glib-0.98/dbus/Makefile.in
+--- dbus-glib-0.98.orig/dbus/Makefile.in	Fri Sep 30 11:07:03 2011
++++ dbus-glib-0.98/dbus/Makefile.in	Fri Feb 24 23:38:23 2012
+@@ -354,7 +354,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = . examples
++SUBDIRS = .
+ INCLUDES = \
+ 	-I$(top_srcdir)						\
+ 	-I$(top_builddir)					\
