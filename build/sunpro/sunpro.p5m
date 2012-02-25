@@ -1,0 +1,27 @@
+set name=pkg.fmri value=system/library/c++/sunpro@0.5.11,5.11-0.151002
+set name=pkg.summary value="Sun Workshop Compilers Bundled libC"
+set name=pkg.description value="Sun Workshop Compilers Bundled libC"
+set name=description value="Sun Workshop Compilers Bundled libC"
+set name=info.classification value=org.opensolaris.category.2008:Development/C++
+set name=variant.arch value=i386
+set name=variant.opensolaris.zone value=global value=nonglobal
+dir group=bin mode=0775 owner=root path=usr/include
+file usr/include/demangle.h group=bin mode=0644 owner=root path=usr/include/demangle.h
+dir group=bin mode=0775 owner=root path=usr/lib
+dir group=bin mode=0775 owner=root path=usr/lib/amd64
+file usr/lib/amd64/libCrun.so.1 group=bin mode=0755 owner=root path=usr/lib/amd64/libCrun.so.1
+file usr/lib/amd64/libCstd.so.1 group=bin mode=0755 owner=root path=usr/lib/amd64/libCstd.so.1
+link path=usr/lib/amd64/libdemangle.so target=./libdemangle.so.1
+link path=usr/lib/amd64/libdemangle.so target=./libdemangle.so.1
+file usr/lib/amd64/libdemangle.so.1 group=bin mode=0755 owner=root path=usr/lib/amd64/libdemangle.so.1
+file usr/lib/amd64/libiostream.so.1 group=bin mode=0755 owner=root path=usr/lib/amd64/libiostream.so.1
+file usr/lib/libC.so.5 group=bin mode=0755 owner=root path=usr/lib/libC.so.5
+file usr/lib/libCrun.so.1 group=bin mode=0755 owner=root path=usr/lib/libCrun.so.1
+file usr/lib/libCstd.so.1 group=bin mode=0755 owner=root path=usr/lib/libCstd.so.1
+link path=usr/lib/libdemangle.so target=./libdemangle.so.1
+link path=usr/lib/libdemangle.so target=./libdemangle.so.1
+file usr/lib/libdemangle.so.1 group=bin mode=0755 owner=root path=usr/lib/libdemangle.so.1
+file usr/lib/libiostream.so.1 group=bin mode=0755 owner=root path=usr/lib/libiostream.so.1
+legacy arch=i386 category=system desc="Sun Workshop Compilers Bundled libC" hotline="Please contact your local service provider" name="Sun Workshop Compilers Bundled libC" pkg=SUNWlibC vendor="Sun Microsystems, Inc." version=5.11,REV=2009.12.07
+license NOHASH license=SUNWlibC.copyright path=../SUNWlibC.copyright
+depend fmri=system/library@0.5.11 type=require
