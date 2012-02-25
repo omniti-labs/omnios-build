@@ -1,0 +1,36 @@
+set name=pkg.fmri value=system/library/math/header-math@0.5.11,5.11-0.151002
+set name=pkg.summary value="Math & Microtasking Library Headers & Lint Files"
+set name=pkg.description value="Math & Microtasking Library Headers & Lint Files"
+set name=description value="Math & Microtasking Library Headers & Lint Files"
+set name=info.classification value=org.opensolaris.category.2008:System/Libraries
+set name=variant.arch value=i386
+set name=variant.opensolaris.zone value=global value=nonglobal
+dir group=bin mode=0775 owner=root path=lib
+dir group=bin mode=0775 owner=root path=lib/amd64
+file lib/amd64/llib-lm.ln group=bin mode=0644 owner=root path=lib/amd64/llib-lm.ln
+file lib/llib-lm group=bin mode=0644 owner=root path=lib/llib-lm
+file lib/llib-lm.ln group=bin mode=0644 owner=root path=lib/llib-lm.ln
+dir group=bin mode=0775 owner=root path=usr
+dir group=bin mode=0775 owner=root path=usr/include
+file usr/include/complex.h group=bin mode=0644 owner=root path=usr/include/complex.h
+file usr/include/fenv.h group=bin mode=0644 owner=root path=usr/include/fenv.h
+file usr/include/floatingpoint.h group=bin mode=0644 owner=root path=usr/include/floatingpoint.h
+dir group=bin mode=0775 owner=root path=usr/include/iso
+file usr/include/iso/math_c99.h group=bin mode=0644 owner=root path=usr/include/iso/math_c99.h
+file usr/include/iso/math_iso.h group=bin mode=0644 owner=root path=usr/include/iso/math_iso.h
+file usr/include/libmtsk_db.h group=bin mode=0644 owner=root path=usr/include/libmtsk_db.h
+file usr/include/math.h group=bin mode=0644 owner=root path=usr/include/math.h
+file usr/include/omp.h group=bin mode=0644 owner=root path=usr/include/omp.h
+file usr/include/omp_collector_api.h group=bin mode=0644 owner=root path=usr/include/omp_collector_api.h
+dir group=bin mode=0775 owner=root path=usr/include/sys
+file usr/include/sys/ieeefp.h group=bin mode=0644 owner=root path=usr/include/sys/ieeefp.h
+file usr/include/tgmath.h group=bin mode=0644 owner=root path=usr/include/tgmath.h
+dir group=bin mode=0775 owner=root path=usr/lib
+dir group=bin mode=0775 owner=root path=usr/lib/amd64
+link path=usr/lib/amd64/llib-lm.ln target=../../../lib/amd64/llib-lm.ln
+link path=usr/lib/llib-lm target=../../lib/llib-lm
+link path=usr/lib/llib-lm.ln target=../../lib/llib-lm.ln
+legacy arch=i386 category=system desc="Math & Microtasking Library Headers & Lint Files (Usr)" hotline="Please contact your local service provider" name="Math & Microtasking Library Headers & Lint Files (Usr)" pkg=SUNWlibm vendor="Sun Microsystems, Inc." version=5.11,REV=2009.08.04
+legacy arch=i386 category=system desc="Math Library Lint Files (Root)" hotline="Please contact your local service provider" name="Math Library Lint Files (Root)" pkg=SUNWlibmr vendor="Sun Microsystems, Inc." version=5.11,REV=2009.08.04
+license NOHASH license=SUNWlibm.copyright path=../SUNWlibm.copyright
+license NOHASH license=SUNWlibmr.copyright path=../SUNWlibmr.copyright
