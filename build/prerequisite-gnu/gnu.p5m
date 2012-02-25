@@ -1,0 +1,25 @@
+set name=pkg.fmri value=pkg://jeos.omniti.com/system/prerequisite/gnu@0.5.11,5.11-0.151002:20120222T000000Z
+set name=org.opensolaris.consolidation value=sfw
+set name=variant.arch value=i386
+set name=info.classification value=org.opensolaris.category.2008:Development/GNU
+set name=variant.opensolaris.zone value=global value=nonglobal
+set name=description value="gcmn - Common GNU package"
+set name=pkg.description value="Common GNU package"
+set name=pkg.summary value="gcmn - Common GNU package"
+dir group=sys mode=0755 owner=root path=usr
+dir group=bin mode=0755 owner=root path=usr/sfw
+dir group=bin mode=0755 owner=root path=usr/sfw/lib
+dir group=bin mode=0755 owner=root path=usr/sfw/lib/locale
+dir group=bin mode=0755 owner=root path=usr/sfw/share
+dir group=bin mode=0755 owner=root path=usr/sfw/share/doc
+dir group=bin mode=0755 owner=root path=usr/sfw/share/info
+dir group=bin mode=0755 owner=root path=usr/sfw/share/man
+dir group=bin mode=0755 owner=root path=usr/sfw/share/src
+dir group=sys mode=0755 owner=root path=usr/share
+dir group=bin mode=0755 owner=root path=usr/share/info
+link path=usr/sfw/doc target=share/doc
+link path=usr/sfw/share/locale target=../lib/locale
+link path=usr/sfw/src target=share/src
+link path=usr/sfw/info target=share/info
+link path=usr/sfw/man target=share/man
+legacy arch=i386 category=system desc="Common GNU package" hotline="Please contact your local service provider" name="gcmn - Common GNU package" pkg=SUNWgcmn vendor="Oracle Corporation" version=11.11.0,REV=2011.07.16.16.13
