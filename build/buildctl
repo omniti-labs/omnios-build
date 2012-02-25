@@ -13,7 +13,7 @@ do
 done
 for manifest in */*.p5m
 do
-    for PKG in $(awk '/name=pkg.fmri/ {print $3;}' $manifest | sed -e 's/.*\/\/[^\/]*\///g' -e 's/@.*//')
+    for PKG in $(awk '/name=pkg.fmri/ {print $3;}' $manifest | sed -e 's/value=//' -e 's/.*\/\/[^\/]*\///g' -e 's/@.*//')
     do
         targets+=([$PKG]=$manifest)
     done
