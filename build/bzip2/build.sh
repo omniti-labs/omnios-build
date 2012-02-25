@@ -13,11 +13,12 @@ DESC="$SUMMARY"
 # We don't use configure, so explicitly export PREFIX
 PREFIX=/usr
 export PREFIX
+export CC
 
 configure32() {
   BINISA=$ISAPART
   LIBISA=""
-  CFLAGS="$CFLAGS $CFLAGS32"
+  CFLAGS="-m32 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall -Winline -O2"
   LDFLAGS="$LDFLAGS $LDFLAGS32"
   export BINISA LIBISA CFLAGS LDFLAGS
 }
@@ -25,7 +26,7 @@ configure32() {
 configure64() {
   BINISA=$ISAPART64
   LIBISA=$ISAPART64
-  CFLAGS="$CFLAGS $CFLAGS64"
+  CFLAGS="-m64 -D_LARGEFILE64_SOURCE -Wall -Winline -O2"
   LDFLAGS="$LDFLAGS $LDFLAGS64"
   export BINISA LIBISA CFLAGS LDFLAGS
 }
@@ -40,8 +41,13 @@ make_clean() {
 make_shlib() {
     [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
     logmsg "--- make (shared lib)"
+    OLD_CFLAGS=$CFLAGS
+    CFLAGS="-fPIC $CFLAGS"
+    export CFLAGS
     logcmd $MAKE $MAKE_JOBS -f Makefile-libbz2_so || \
         logerr "--- Make failed (shared lib)"
+    CFLAGS=$OLD_CFLAGS
+    export CFLAGS
 }
 
 make_shlib_install() {
@@ -73,6 +79,11 @@ build64() {
     make_shlib
     make_prog64
     make_install64
+    for src in libbz2.so libbz2.so.1
+    do
+        ln -s ./libbz2.so.1.0.6 $DESTDIR/usr/lib/$src
+        ln -s ./libbz2.so.1.0.6 $DESTDIR/usr/lib/$ISAPART64/$src
+    done
     popd > /dev/null
 }
 
@@ -84,5 +95,6 @@ prep_build
 build
 make_isa_stub
 fix_permissions
+strip_install
 make_package
 clean_up

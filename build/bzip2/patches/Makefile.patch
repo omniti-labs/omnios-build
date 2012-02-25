@@ -1,9 +1,18 @@
---- Makefile.orig	Fri Sep 10 22:46:02 2010
-+++ Makefile	Fri Feb 24 20:02:08 2012
-@@ -23,10 +23,6 @@
- BIGFILES=-D_FILE_OFFSET_BITS=64
- CFLAGS=-Wall -Winline -O2 -g $(BIGFILES)
+diff -ru bzip2-1.0.6.orig/Makefile bzip2-1.0.6/Makefile
+--- bzip2-1.0.6.orig/Makefile	Fri Sep 10 22:46:02 2010
++++ bzip2-1.0.6/Makefile	Sat Feb 25 15:33:10 2012
+@@ -15,18 +15,9 @@
+ SHELL=/bin/sh
  
+ # To assist in cross-compiling
+-CC=gcc
+ AR=ar
+ RANLIB=ranlib
+-LDFLAGS=
+ 
+-BIGFILES=-D_FILE_OFFSET_BITS=64
+-CFLAGS=-Wall -Winline -O2 -g $(BIGFILES)
+-
 -# Where you want it installed when you do 'make install'
 -PREFIX=/usr/local
 -
@@ -11,7 +20,7 @@
  OBJS= blocksort.o  \
        huffman.o    \
        crctable.o   \
-@@ -70,43 +66,46 @@
+@@ -70,43 +61,46 @@
  	@cat words3
  
  install: bzip2 bzip2recover
@@ -95,3 +104,25 @@
  
  clean: 
  	rm -f *.o libbz2.a bzip2 bzip2recover \
+diff -ru bzip2-1.0.6.orig/Makefile-libbz2_so bzip2-1.0.6/Makefile-libbz2_so
+--- bzip2-1.0.6.orig/Makefile-libbz2_so	Fri Sep 10 23:07:52 2010
++++ bzip2-1.0.6/Makefile-libbz2_so	Sat Feb 25 15:33:37 2012
+@@ -22,9 +22,6 @@
+ 
+ 
+ SHELL=/bin/sh
+-CC=gcc
+-BIGFILES=-D_FILE_OFFSET_BITS=64
+-CFLAGS=-fpic -fPIC -Wall -Winline -O2 -g $(BIGFILES)
+ 
+ OBJS= blocksort.o  \
+       huffman.o    \
+@@ -35,7 +32,7 @@
+       bzlib.o
+ 
+ all: $(OBJS)
+-	$(CC) -shared -Wl,-soname -Wl,libbz2.so.1.0 -o libbz2.so.1.0.6 $(OBJS)
++	$(CC) $(LDFLAGS) -shared -Wl,-soname -Wl,libbz2.so.1.0 -o libbz2.so.1.0.6 $(OBJS)
+ 	$(CC) $(CFLAGS) -o bzip2-shared bzip2.c libbz2.so.1.0.6
+ 	rm -f libbz2.so.1.0
+ 	ln -s libbz2.so.1.0.6 libbz2.so.1.0
