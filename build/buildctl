@@ -1,0 +1,66 @@
+#!/usr/bin/bash
+
+NOBANNER=1
+. ../lib/functions.sh
+
+declare -A targets
+for build in */build*.sh
+do
+    for PKG in $(grep -v '##IGNORE##' $build | sed -e 's/^ +//' -e 's/ +#.+//' -e 's/=/ /'g | awk '{if($1=="PKG"){print $2;}}')
+    do
+        targets+=([$PKG]=$build)
+    done
+done
+for manifest in */*.p5m
+do
+    for PKG in $(awk '/name=pkg.fmri/ {print $3;}' $manifest | sed -e 's/.*\/\/[^\/]*\///g' -e 's/@.*//')
+    do
+        targets+=([$PKG]=$manifest)
+    done
+done
+
+usage() {
+    echo $0
+    echo "    list [grep pattern]"
+    echo "    build <pkg>"
+    exit
+}
+bail() {
+    echo $*
+    exit
+}
+list() {
+    PAT=${1-.}
+    for target in "${!targets[@]}"
+    do
+        if [[ "$PAT" = "." ]]; then
+            echo " * $target"
+        elif [[ -n $(echo "$target" | grep "$PAT") ]]; then
+            echo " * $target"
+        fi
+    done | sort
+}
+build() {
+    if [[ -z "${targets[$1]}" ]]; then
+        bail "Unknown package: $1"
+    fi
+    DIR=$(dirname ${targets[$1]})
+    pushd $DIR > /dev/null || bail "Cannot chdir to $DIR"
+        SCRIPT=$(basename ${targets[$1]})
+        if [[ -n $(echo $SCRIPT | grep ".p5m$") ]]; then
+            echo "Simple manifest to import... importing to $PKGSRVR"
+            sed -e "s/@PKGPUBLISHER@/$PKGPUBLISHER/g" < $SCRIPT > $SCRIPT.final
+            pkgsend -s $PKGSRVR publish -d `pwd`/root $SCRIPT.final
+            rm $SCRIPT.final
+        else
+            $SCRIPT
+        fi
+    popd >/dev/null
+}
+case "$1" in
+    list) list $2 ; exit ;;
+    build) shift ;
+        for tgt in $* ; do build $tgt ; done
+        exit ;;
+    *) usage ;;
+esac

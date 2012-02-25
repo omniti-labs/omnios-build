@@ -38,7 +38,8 @@ if test -z "$PKGFMT"; then
     fi
 fi
 
-# IPS package server URL (omni-os-pilot, publisher: os.omniti.com)
+# IPS package server URL and publisher
+PKGPUBLISHER=jeos.omniti.com
 PKGSRVR=http://pkg.omniti.com:10006/
 
 #############################################################################

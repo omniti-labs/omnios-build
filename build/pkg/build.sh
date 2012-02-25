@@ -10,13 +10,18 @@ SKIP_ROOT_CHECK=1
 # This are used so people can see what packages get built.. pkg actually publishes
 PKG=package/pkg
 PKG=system/zones/brand/ipkg
+SUMMARY="This isn't used, it's in the makefiles for pkg"
+DESC="This isn't used, it's in the makefiles for pkg"
 
 PROG=pkg
 VER=4c75a21e8b6c
 BUILDNUM=151002
-PKGPUBLISHER=jeos.omniti.com
+if [[ -z "$PKGPUBLISHER" ]]; then
+    logerr "No PKGPUBLISHER specified in config.sh"
+    exit # Force it, we're fucked here.
+fi
 
-GIT=/opt/omni/bin/git
+GIT=/usr/bin/git
 HG=/opt/omni/bin/hg
 HEADERS="libbrand.h libuutil.h libzonecfg.h"
 BRAND_CFLAGS="-I./gate-include"
