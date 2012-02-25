@@ -3,16 +3,16 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PATH=/opt/gccstage/bin:$PATH
-export LD_LIBRARY_PATH=/opt/gccstage/lib
+PATH=/opt/gcc-4.6.2/bin:$PATH
+export LD_LIBRARY_PATH=/opt/gcc-4.6.2/lib
 
 PROG=libgcc_s    # App name
 VER=4.6.2        # App version
 VERHUMAN=$VER    # Human-readable version
 PVER=1           # Package Version (numeric only)
-PKG=libgcc_s     # Package name (without prefix)
-SUMMARY="libgcc_s" # You should change this
-DESC="$SUMMARY (OmniTI roll)" # Longer description
+PKG=system/library/gcc-4-runtime # Package name (without prefix)
+SUMMARY="gcc 4.6 runtime" # You should change this
+DESC="$SUMMARY" # Longer description
 
 BUILD_DEPENDS_IPS="gcc46"
 NO_PARALLEL_MAKE=1
