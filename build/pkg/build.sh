@@ -26,6 +26,7 @@ HG=/opt/omni/bin/hg
 HEADERS="libbrand.h libuutil.h libzonecfg.h"
 BRAND_CFLAGS="-I./gate-include"
 
+BUILD_DEPENDS_IPS="developer/versioning/git developer/versioning/mercurial"
 DEPENDS_IPS="runtime/python-26@2.6.7"
 
 clone_gate(){
