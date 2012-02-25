@@ -38,3 +38,14 @@
 <transform file path=usr/gnu/lib/charset.alias$ -> drop>
 <transform file path=usr/lib/charset.alias$ -> drop>
 <transform file path=usr/lib/amd64/charset.alias$ -> drop>
+
+<transform dir path=usr/sfw$ -> drop>
+<transform dir path=usr/sfw/lib$ -> drop>
+<transform dir path=usr/sfw/lib/locale$ -> drop>
+<transform dir path=usr/sfw/share$ -> drop>
+<transform dir path=usr/sfw/share/doc$ -> drop>
+<transform dir path=usr/sfw/share/info$ -> drop>
+<transform dir path=usr/sfw/share/man$ -> drop>
+<transform dir path=usr/sfw/share/src$ -> drop>
+<transform dir path=usr/share$ -> drop>
+<transform dir path=usr/share/info$ -> drop>

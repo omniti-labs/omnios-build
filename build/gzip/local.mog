@@ -1,2 +1,3 @@
 # uncompress is delivered by another package
-<transform file path=.*/uncompress$ -> drop>
+<transform hardlink path=.*/uncompress$ -> drop>
+<transform file path=usr/sfw/.* -> drop>

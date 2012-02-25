@@ -11,7 +11,7 @@ PKG=compress/gzip # Package name (without prefix)
 SUMMARY="The GNU Zip (gzip) compression utility"
 DESC="$SUMMARY $VER"
 
-CONFIGURE_OPTS="--infodir=/usr/sfw/share/info"
+CONFIGURE_OPTS="--bindir=/usr/bin --infodir=/usr/sfw/share/info"
 BUILDARCH=32
 
 # Solaris renames the z* utilities to gz* so we have to update the docs
@@ -30,7 +30,7 @@ rename_in_docs() {
 # Renames z* binaries and man pages to gz* in the DESTDIR
 rename_files() {
     logmsg "Renaming z->gz files in $DESTDIR"
-    for dir in $DESTDIR$PREFIX/bin/$ISAPART $DESTDIR$PREFIX/share/man/man1; do
+    for dir in $DESTDIR$PREFIX/bin $DESTDIR$PREFIX/share/man/man1; do
         pushd $dir
         for zfile in `ls z*`; do
             logcmd mv $zfile g$zfile
@@ -61,7 +61,6 @@ prep_build
 build
 make_isa_stub
 fix_permissions
-logerr "Intentional fail-- check contents"
 make_package
 clean_up
 
