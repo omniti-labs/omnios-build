@@ -50,6 +50,9 @@ build() {
         if [[ -n $(echo $SCRIPT | grep ".p5m$") ]]; then
             echo "Simple manifest to import... importing to $PKGSRVR"
             sed -e "s/@PKGPUBLISHER@/$PKGPUBLISHER/g" < $SCRIPT > $SCRIPT.final
+            if [[ -f root.tar.bz2 ]]; then
+                bzip2 -dc root.tar.bz2 | tar xf -
+            fi
             pkgsend -s $PKGSRVR publish -d `pwd`/root $SCRIPT.final
             rm $SCRIPT.final
         else
