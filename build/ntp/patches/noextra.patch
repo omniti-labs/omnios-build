@@ -1,0 +1,16 @@
+--- Makefile.in.orig	Wed Feb 22 05:45:30 2012
++++ Makefile.in	Sun Feb 26 21:37:21 2012
+@@ -378,13 +378,11 @@
+ 	ntpdate		\
+ 	ntpdc		\
+ 	ntpq		\
+-	ntpsnmpd	\
+ 	parseutil	\
+ 	adjtimed	\
+ 	clockstuff	\
+ 	kernel		\
+ 	util		\
+-	sntp		\
+ 	tests		\
+ 	$(NULL)
+ 

@@ -1,0 +1,11 @@
+--- ntpd/Makefile.in.orig	Wed Feb 22 05:45:26 2012
++++ ntpd/Makefile.in	Sun Feb 26 21:41:16 2012
+@@ -409,7 +409,7 @@
+ am__quote = @am__quote@
+ am__tar = @am__tar@
+ am__untar = @am__untar@
+-bindir = @bindir@
++bindir = @libexecdir@
+ build = @build@
+ build_alias = @build_alias@
+ build_cpu = @build_cpu@

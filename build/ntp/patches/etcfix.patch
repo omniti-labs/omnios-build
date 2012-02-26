@@ -1,0 +1,11 @@
+--- ./ntpd/refclock_oncore.c.orig	Tue Apr  5 07:35:33 2011
++++ ./ntpd/refclock_oncore.c	Sun Feb 26 21:30:59 2012
+@@ -1210,7 +1210,7 @@
+ 
+ 	FILE	*fd;
+ 	char	*cp, *cc, *ca, line[100], units[2], device[64], **cpp;
+-	char	*dirs[] = { "/etc/ntp", "/etc", 0 };
++	char	*dirs[] = { "/etc/inet", "/etc", 0 };
+ 	int	i, sign, lat_flg, long_flg, ht_flg, mode, mask;
+ 	double	f1, f2, f3;
+ 
