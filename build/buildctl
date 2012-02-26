@@ -46,6 +46,13 @@ build() {
     fi
     DIR=$(dirname ${targets[$1]})
     pushd $DIR > /dev/null || bail "Cannot chdir to $DIR"
+        PKGSRVR=$DEFAULT_PKGSRVR
+        PKGPUBLISHER=$DEFAULT_PKGPUBLISHER
+        PKGROOT=`pwd`/root
+        if [[ -f environment ]]; then
+            logmsg "--- Setting new environemtn"
+            . environment
+        fi
         SCRIPT=$(basename ${targets[$1]})
         if [[ -n $(echo $SCRIPT | grep ".p5m$") ]]; then
             echo "Simple manifest to import... importing to $PKGSRVR"
@@ -53,13 +60,17 @@ build() {
             if [[ -f root.tar.bz2 ]]; then
                 bzip2 -dc root.tar.bz2 | tar xf -
             fi
-            pkgsend -s $PKGSRVR publish -d `pwd`/root $SCRIPT.final
+            pkgsend -s $PKGSRVR publish -d $PKGROOT $SCRIPT.final
             rm $SCRIPT.final
         else
             $SCRIPT
         fi
     popd >/dev/null
 }
+
+DEFAULT_PKGSRVR=$PKGSRVR
+DEFAULT_PKGPUBLISHER=$PKGPUBLISHER
+
 case "$1" in
     list) list $2 ; exit ;;
     build) shift ;
