@@ -28,8 +28,9 @@ build() {
 }
 links() {
     logmsg "--- Setting up symlinks"
-    logcmd mkdir $DESTDIR/usr/lib
-    logcmd mkdir $DESTDIR/usr/lib/amd64
+    logcmd chmod 0755 $DESTDUR/usr
+    logcmd mkdir -m 0755 $DESTDIR/usr/lib
+    logcmd mkdir -m 0755 $DESTDIR/usr/lib/amd64
     logcmd ln -s ../../lib/libm.so.2 $DESTDIR/usr/lib/libm.so
     logcmd ln -s ../../lib/libmtsk.so.1 $DESTDIR/usr/lib/libmtsk.so
     logcmd ln -s ../../lib/libm.so.1 $DESTDIR/usr/lib/libm.so.1
@@ -62,14 +63,14 @@ links
 
 PKG=system/library/math
 VER=0.5.11
-PVER=0.2006.1.31
+PVER=1.2006.1.31
 SUMMARY="Math & Microtasking Libraries"
 DESC="Math & Microtasking Libraries"
 make_package math.mog
 
 PKG=system/library/math/header-math
 VER=0.5.11
-PVER=0.2006.1.31
+PVER=1.2006.1.31
 SUMMARY="Math & Microtasking Library Headers & Lint Files"
 DESC="Math & Microtasking Library Headers & Lint Files"
 make_package headers.mog

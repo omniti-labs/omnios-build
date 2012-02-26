@@ -2,3 +2,5 @@
 <transform link path=".*lib/lib.*" -> drop>
 <transform link path=".*amd64/lib.*" -> drop>
 <transform link path="lib/cpp$" -> drop>
+<transform link path=".*\.h$" -> set mode 0644>
+<transform dir -> default mode 0755>
