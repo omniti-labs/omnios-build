@@ -904,23 +904,37 @@ build64() {
 #############################################################################
 # Build function for python programs
 #############################################################################
-# Note: The path to the python binary needs to be set in the $PYTHON variable
-# you probably also need to add paths to the python libs in LDFLAGS depending
-# on what you are bulding (-L and -R maybe required)
-#############################################################################
 python_build() {
+    if [[ -z "$PYTHON" ]]; then logerr "PYTHON not set"; fi
+    if [[ -z "$PYTHONPATH" ]]; then logerr "PYTHONPATH not set"; fi
+    if [[ -z "$PYTHONLIB" ]]; then logerr "PYTHONLIB not set"; fi
     logmsg "Building using python setup.py"
     pushd $TMPDIR/$BUILDDIR > /dev/null
-    logmsg "--- setup.py build"
-    LDFLAGS="$LDFLAGS" CFLAGS="$CFLAGS" logcmd $PYTHON ./setup.py build ||
+
+    ISALIST=i386
+    export ISALIST
+    logmsg "--- setup.py (32) build"
+    logcmd $PYTHON ./setup.py build ||
         logerr "--- build failed"
-    logmsg "--- setup.py install"
-    LDFLAGS="$LDFLAGS" CFLAGS="$CFLAGS" logcmd $PYTHON \
+    logmsg "--- setup.py (32) install"
+    logcmd $PYTHON \
+        ./setup.py install --root=$DESTDIR ||
+        logerr "--- install failed"
+
+    ISALIST="amd64 i386"
+    export ISALIST
+    logmsg "--- setup.py (64) build"
+    logcmd $PYTHON ./setup.py build ||
+        logerr "--- build failed"
+    logmsg "--- setup.py (64) install"
+    logcmd $PYTHON \
         ./setup.py install --root=$DESTDIR ||
         logerr "--- install failed"
     popd > /dev/null
-}
 
+    mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages ||
+        logerr "Cannot move from site-packages to vendor-packages"
+}
 
 #############################################################################
 # Build/test function for perl modules
@@ -1076,7 +1090,7 @@ strip_install() {
         if [[ "$1" = "-x" ]]; then
             ACTION=$(file $file | grep ELF | egrep -v "(, stripped|debugging)")
         else
-            ACTION=$(file $file | grep ELF | grep -v "not stripped")
+            ACTION=$(file $file | grep ELF | grep "not stripped")
         fi
         if [[ -n "$ACTION" ]]; then
           logmsg "------ stripping $file"

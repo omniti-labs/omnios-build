@@ -134,6 +134,11 @@ CXXFLAGS=""
 CXXFLAGS32=""
 CXXFLAGS64="-m64"
 
+# Python
+PYTHONPATH=/usr
+PYTHON=$PYTHONPATH/bin/python2.6
+PYTHONLIB=$PYTHONPATH/lib
+
 # Default configure command - almost always sufficient
 CONFIGURE_CMD="./configure"
 
