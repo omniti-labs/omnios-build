@@ -20,7 +20,7 @@ PKG=developer/build/make ##IGNORE##
 SUMMARY="Omni-OS Bundled Development Tools"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="solstudio12.2 compatibility/ucb"
+BUILD_DEPENDS_IPS="sunstudio12.1 compatibility/ucb"
 DEPENDS_IPS="system/library SUNWcs system/library/math"
 
 CONFIGURE_OPTS=""
@@ -35,7 +35,7 @@ prebuild_clean() {
 build() {
     logmsg "Building and installing ($1)"
     pushd $TMPDIR/$1/usr/src > /dev/null || logerr "can't enter build harness"
-    logcmd env STUDIOBIN=/opt/solstudio12.2/bin DESTDIR=$DESTDIR ./build ||
+    logcmd env STUDIOBIN=/opt/sunstudio12.1/bin DESTDIR=$DESTDIR ./build ||
         logerr "make/install ($1) failed"
     popd > /dev/null
 }

@@ -10,7 +10,7 @@ PKG=system/library/math ##IGNORE##
 SUMMARY="tmp summary (replaced below)"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="solstudio12.2"
+BUILD_DEPENDS_IPS="sunstudio12.1"
 DEPENDS_IPS="system/library"
 
 CONFIGURE_OPTS=""
@@ -22,7 +22,7 @@ build() {
     PKGE=$(url_encode $PKG)
     DESTDIR=$DTMPDIR/math_pkg
     pushd $TMPDIR/$BUILDDIR/usr/src/harness > /dev/null || logerr "can't enter build harness"
-    logcmd make -f Makefile-os STUDIOBIN=/opt/solstudio12.2/bin BUILDNAME=omni-os STATDIR=$TMPDIR/$BUILDDIR/scratch DESTDIR=$DESTDIR ||
+    logcmd make -f Makefile-os STUDIOBIN=/opt/sunstudio12.1/bin BUILDNAME=omni-os STATDIR=$TMPDIR/$BUILDDIR/scratch DESTDIR=$DESTDIR ||
         logerr "make/install failed"
     popd > /dev/null
 }
