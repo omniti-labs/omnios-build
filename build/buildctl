@@ -50,7 +50,7 @@ build() {
         PKGPUBLISHER=$DEFAULT_PKGPUBLISHER
         PKGROOT=`pwd`/root
         if [[ -f environment ]]; then
-            logmsg "--- Setting new environemtn"
+            logmsg "--- Setting new environment"
             . environment
         fi
         SCRIPT=$(basename ${targets[$1]})
