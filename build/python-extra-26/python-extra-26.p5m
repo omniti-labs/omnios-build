@@ -1,0 +1,9 @@
+set name=pkg.fmri value=library/python-2/python-extra-26@0.5.11,5.11-0.151002
+set name=variant.arch value=i386
+set name=pkg.description value="Supplemental Python libraries and utilities"
+set name=variant.opensolaris.zone value=global value=nonglobal
+set name=description value="Supplemental Python libraries and utilities"
+set name=info.classification value=org.opensolaris.category.2008:Development/Python
+set name=pkg.summary value="Supplemental Python libraries and utilities"
+depend fmri=library/python-2/pyrex-26 type=require
+depend fmri=library/python-2/numpy-26 type=require
