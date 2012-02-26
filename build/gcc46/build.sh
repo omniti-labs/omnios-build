@@ -3,20 +3,20 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PATH=/opt/gcc-4.6.2/bin:$PATH
-export PATH
 export LD_LIBRARY_PATH=/opt/gcc-4.6.2/lib
+PATH=/usr/perl5/5.10.0/bin:$PATH
+export PATH
 
 PROG=gcc         # App name
 VER=4.6.2        # App version
 VERHUMAN=$VER    # Human-readable version
 PVER=3           # Package Version (numeric only)
-PKG=gcc46        # Package name (without prefix)
+PKG=developer/gcc46        # Package name (without prefix)
 SUMMARY="gcc 4.6.2" # You should change this
-DESC="$SUMMARY (OmniTI roll)" # Longer description
+DESC="$SUMMARY" # Longer description
 
-BUILD_DEPENDS_IPS="gcc46-libgmp gcc46-libmpfr gcc46-libmpc developer/gnu-binutils"
-DEPENDS_IPS="gcc46-libgmp gcc46-libmpfr gcc46-libmpc developer/gnu-binutils libgcc_s"
+DEPENDS_IPS="developer/gcc46/libgmp-gcc46 developer/gcc46/libmpfr-gcc46 developer/gcc46/libmpc-gcc46
+	developer/gnu-binutils system/library/gcc-4-runtime"
 NO_PARALLEL_MAKE=1
 
 # This stuff is in its own domain
@@ -45,17 +45,18 @@ export LD_OPTIONS="-zignore -zcombreloc -Bdirect -i"
 
 save_function configure32 configure32_orig
 configure32() {
-    chmod 644 /usr/gnu/i386-pc-solaris2.11/bin/ld
+    logmsg "This is evil... sudo chmod'ing gnu ld"
+    logcmd sudo chmod 644 /usr/gnu/i386-pc-solaris2.11/bin/ld
     configure32_orig
-    chmod 755 /usr/gnu/i386-pc-solaris2.11/bin/ld
+    logmsg "This is evil... chmodding gnu ld back"
+    logcmd sudo chmod 755 /usr/gnu/i386-pc-solaris2.11/bin/ld
 }
 
 init
-#download_source $PROG/releases/$PROG-$VER $PROG $VER
-#patch_source
-#prep_build
-#build
-#fix_permissions
-DESTDIR=/tmp/gcc46_pkg
+download_source $PROG/releases/$PROG-$VER $PROG $VER
+patch_source
+prep_build
+build
+fix_permissions
 make_package
 clean_up
