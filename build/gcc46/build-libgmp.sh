@@ -26,6 +26,7 @@ CFLAGS="-fexceptions"
 make_install32() {
     logcmd mkdir -p $DESTDIR/opt/gcc-4.6.2/share/info
     make_install
+    logcmd rm -rf $DESTDIR/opt/gcc-4.6.2/share/info
 }
 
 reset_configure_opts

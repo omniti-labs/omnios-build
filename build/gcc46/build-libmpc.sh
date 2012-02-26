@@ -21,6 +21,11 @@ PREFIX=/opt/gcc-4.6.2
 CC=gcc
 CONFIGURE_OPTS="--with-gmp=/opt/gcc-4.6.2 --with-mpfr=/opt/gcc-4.6.2"
 
+make_install32() {
+    make_install
+    logcmd rm -rf $DESTDIR/opt/gcc-4.6.2/share/info
+}
+
 reset_configure_opts
 init
 download_source $PROG $PROG $VER
