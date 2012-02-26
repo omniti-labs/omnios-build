@@ -1,0 +1,10 @@
+--- sudo-1.8.4p1/include/sudo_debug.h.orig	Sun Feb  5 15:18:50 2012
++++ sudo-1.8.4p1/include/sudo_debug.h	Sun Feb 26 16:14:03 2012
+@@ -17,6 +17,7 @@
+ #ifndef _SUDO_DEBUG_H
+ #define _SUDO_DEBUG_H
+ 
++#include "missing.h"
+ #include <stdarg.h>
+ 
+ /*
