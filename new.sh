@@ -15,7 +15,7 @@ if [[ -z $1 ]]; then
 fi
 
 BUILDDIR=`dirname $0`/build
-TYPESAVAIL="basic perl"
+TYPESAVAIL="basic perl python"
 # Default type if not specified
 TYPE="basic"
 NAME=$1
@@ -33,7 +33,7 @@ while getopts "hlt:" opt; do
         t)
             TYPE=$OPTARG
             NAME=$3
-            if [[ "$TYPE" != "basic" && "$TYPE" != "perl" ]]; then
+            if [[ "$TYPE" != "basic" && "$TYPE" != "perl" && "$TYPE" != "python" ]]; then
                 echo "Unknown type: $TYPE"
                 echo "Valid types are: $TYPESAVAIL"
                 exit 2
