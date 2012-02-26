@@ -1,0 +1,3 @@
+license license=J.Schilling.licence path=schilix.license
+license license=Caldera.licence path=caldera.license
+<transform file path=.*\.license$ -> drop>

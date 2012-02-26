@@ -1,0 +1,30 @@
+--- cpp/cpp.c.orig	Sun Feb 26 04:24:31 2012
++++ cpp/cpp.c	Sun Feb 26 04:24:47 2012
+@@ -1036,7 +1036,8 @@
+ #else
+ 	va_start(args);
+ #endif
+-	(void)js_fprintf(stderr, "%r\n", fmt, args);
++	(void)fprintf(stderr, fmt, args);
++        (void)fprintf(stderr, "\n");
+ 	va_end(args);
+ 	++exfail;
+ }
+@@ -1058,7 +1059,7 @@
+ #else
+ 	va_start(args);
+ #endif
+-	pperror("%r", fmt, args);
++	pperror(fmt, args);
+ 	va_end(args);
+ }
+ 
+@@ -1081,7 +1082,7 @@
+ #else
+ 	va_start(args);
+ #endif
+-	pperror("%r", fmt, args);
++	pperror(fmt, args);
+ 	va_end(args);
+ 
+ 	exfail = fail;
