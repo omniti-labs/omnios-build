@@ -1,4 +1,4 @@
-set name=pkg.fmri value=system/library/math/header-math@0.5.11,5.11-0.151002
+#set name=pkg.fmri value=system/library/math/header-math@0.5.11,5.11-0.151002
 set name=pkg.summary value="Math & Microtasking Library Headers & Lint Files"
 set name=pkg.description value="Math & Microtasking Library Headers & Lint Files"
 set name=description value="Math & Microtasking Library Headers & Lint Files"

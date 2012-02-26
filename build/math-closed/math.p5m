@@ -1,4 +1,7 @@
-set name=pkg.fmri value=system/library/math@0.5.11,5.11-0.151002
+# These are packages shipped with snv_151
+# We're going to bulid from source, so if you wan these, 
+# you'll need to uncomment
+#set name=pkg.fmri value=system/library/math@0.5.11,5.11-0.151002
 set name=pkg.summary value="Math & Microtasking Libraries"
 set name=pkg.description value="Math & Microtasking Libraries"
 set name=description value="Math & Microtasking Libraries"

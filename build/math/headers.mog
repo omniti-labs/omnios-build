@@ -1,0 +1,4 @@
+<transform file path=".*/lib.*" -> drop>
+<transform link path=".*lib/lib.*" -> drop>
+<transform link path=".*amd64/lib.*" -> drop>
+<transform link path="lib/cpp$" -> drop>

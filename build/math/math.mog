@@ -1,0 +1,4 @@
+<transform dir path=".*include" -> drop>
+<transform file path=".*llib" -> drop>
+<transform link path=".*llib" -> drop>
+<transform file path=".*\.h$" -> drop>
