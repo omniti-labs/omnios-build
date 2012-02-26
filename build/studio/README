@@ -1,0 +1,15 @@
+NOTE:
+
+This tree does not contain bits of the Studio compiler suites.  This is a simple
+a list of all the files and their permissions in order for packaging the suites
+that have been otherwise legally obtained.
+
+It would appear that SunStudio12.1 is redistributable for the sole purpose of
+building OpenSolaris-based distros (of which Illumos is).  So, it *should* be
+safe to publish this package as a part of an Illumos build environment.
+
+The SolStudio12.2 packages are not redistributable, you must get them from
+Sun Microsystems.  You *SHOULD NOT* publish the package anywhere accessible by
+others.  We provide the packaging manifest merely for convenience to take
+a studio12.2 install you obtained from Sun Microsystems and convert it
+into a pkg5 image for a unified install experience.
