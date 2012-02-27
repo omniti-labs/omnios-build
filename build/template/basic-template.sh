@@ -8,8 +8,8 @@ VER=1.0         # App version
 VERHUMAN=$VER   # Human-readable version
 PVER=1          # Package Version (numeric only)
 PKG=$PROG       # Package name (without prefix)
-SUMMARY="$PROG - Packager was lazy and didn't fill this in" # You should change this
-DESC="$SUMMARY (OmniTI roll)" # Longer description
+SUMMARY=""      # You should change this
+DESC=""         # Longer description
 
 init
 download_source $PROG $PROG $VER

@@ -10,8 +10,8 @@ VER=1.0                      # Module version
 VERHUMAN=$VER                # Human-readable version
 PVER=$DEPVER                 # Perl version from -d
 PKG=perl-$(echo $PROG | tr '[A-Z]' '[a-z]')  # Module name, lowercased
-SUMMARY="$PROG" # Don't just leave this as-is, fill in something meaningful
-DESC="$SUMMARY (OmniTI roll) (Perl $DEPVER)"
+SUMMARY=""                   # Change this
+DESC=""                      # Change this
 
 PREFIX=/opt/OMNIperl
 reset_configure_opts

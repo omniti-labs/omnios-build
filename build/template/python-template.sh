@@ -8,8 +8,8 @@ VER=1.0         # App version
 VERHUMAN=$VER   # Human readable version
 PVER=0.1        # Branch version
 PKG=cat/pkg     # Package name (without prefix)
-SUMMARY="$PROG - Packager was lazy and didn't fill this in"
-DESC="$SUMMARY"
+SUMMARY=""      # Change this
+DESC=""         # Change this
 
 DEPENDS_IPS="runtime/python-26"
 
