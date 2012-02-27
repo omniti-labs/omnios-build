@@ -1,0 +1,16 @@
+--- zip30/unix/Makefile.orig	Wed May  7 06:33:56 2008
++++ zip30/unix/Makefile	Mon Feb 27 21:34:26 2012
+@@ -38,10 +38,10 @@
+ MANFLAGS = 644
+ 
+ # target directories - where to install executables and man pages to
+-prefix = /usr/local
+-BINDIR = $(prefix)/bin
++prefix = $(DESTDIR)$(PREFIX)
++BINDIR = $(prefix)/bin/$(ISAPART)
+ MANEXT=1
+-MANDIR = $(prefix)/man/man$(MANEXT)
++MANDIR = $(prefix)/share/man/man$(MANEXT)
+ ZIPMANUAL = zip.txt
+ ZIPMANUALcloak = zipcloak.txt
+ ZIPMANUALnote = zipnote.txt
