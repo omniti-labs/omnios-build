@@ -306,6 +306,7 @@ prep_build() {
     PKGE=$(url_encode $PKG)
     DESTDIR=$DTMPDIR/${PKGE}_pkg
     if [[ -z $DONT_REMOVE_INSTALL_DIR ]]; then
+        logcmd chmod -R u+w $DESTDIR > /dev/null 2>&1
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove old temporary install dir"
         mkdir $DESTDIR || \
@@ -1110,6 +1111,7 @@ clean_up() {
     logmsg "Cleaning up"
     if [[ -z $DONT_REMOVE_INSTALL_DIR ]]; then
         logmsg "--- Removing temporary install directory $DESTDIR"
+        logcmd chmod -R u+w $DESTDIR > /dev/null 2>&1
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove temporary install directory"
         logmsg "Done."
