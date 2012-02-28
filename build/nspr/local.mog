@@ -1,0 +1,7 @@
+<transform file path=.*/lib.*\.a$ -> drop>
+<transform dir path=usr/local.* -> drop>
+<transform file path=usr/local.* -> drop>
+<transform link path=usr/local.* -> drop>
+<transform file path=license$ -> drop>
+
+license license="MPL 1.1/GPL 2.0/LGPL 2.1" path=license

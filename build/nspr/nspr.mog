@@ -1,0 +1,12 @@
+<transform dir path=usr/bin.* -> drop>
+<transform dir path=usr/include.* -> drop>
+<transform dir path=usr/share.* -> drop>
+<transform file path=usr/bin.* -> drop>
+<transform file path=usr/include.* -> drop>
+<transform file path=usr/share.* -> drop>
+<transform link path=usr/bin.* -> drop>
+<transform link path=usr/include.* -> drop>
+<transform link path=usr/share.* -> drop>
+
+<transform dir path=usr/lib/pkgconfig$ -> drop>
+<transform file path=usr/lib/pkgconfig/nspr\.pc$ -> drop>
