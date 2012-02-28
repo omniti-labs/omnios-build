@@ -1,0 +1,2 @@
+<transform file path=usr/share/man/man1/yacc.1$ -> drop>
+<transform file path=.*/bison-runtime.mo$ -> drop>
