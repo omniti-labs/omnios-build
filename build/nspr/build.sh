@@ -13,7 +13,7 @@ DESC="$SUMMARY"         # Longer description
 
 CONFIGURE_OPTS="--includedir=/usr/include/mps"
 CONFIGURE_OPTS_32="--libdir=/usr/lib/mps"
-CONFIGURE_OPTS_64="--libdir=/usr/lib/mps/$ISAPART64"
+CONFIGURE_OPTS_64="--libdir=/usr/lib/mps/$ISAPART64 --enable-64bit"
 
 secv1_links() {
     logcmd cp $TMPDIR/$BUILDDIR/pkg/solaris/common_files/copyright $DESTDIR/license
