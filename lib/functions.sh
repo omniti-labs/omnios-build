@@ -512,9 +512,6 @@ make_package() {
             ;;
     esac
     DESCSTR="$DESC"
-    if [[ -n "$BUILDSTR" ]]; then
-        DESCSTR="$DESCSTR (${BUILDSTR}only)"
-    fi
     if [[ -n "$FLAVORSTR" ]]; then
         DESCSTR="$DESCSTR ($FLAVOR)"
     fi
