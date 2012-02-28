@@ -13,7 +13,7 @@ DESC="GNU autoconf - GNU autoconf utility ($VER)"
 NO_PARALLEL_MAKE=1
 BUILDARCH=32
 
-DEPENDS_IPS="developer/macro/gnu-m4"
+DEPENDS_IPS="developer/macro/gnu-m4 runtime/perl-510"
 
 CONFIGURE_OPTS="--infodir=$PREFIX/share/info"
 
