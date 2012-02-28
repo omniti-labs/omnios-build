@@ -1,14 +1,3 @@
-
-# GNU locale files
-
-# GNU info shit
-
-# Other upper-level directories
-
-# These always exist due to SUNWcs, so we never need to worry about them
-
-# This should only ever be in libiconv, but other GNU packages install it
-
 set name=pkg.fmri value=developer/gcc-3@3.4.3,5.11-0.151002
 set name=pkg.summary value="gcc - The GNU C compiler"
 set name=pkg.description value="GNU C - The GNU C compiler 3.4.3"
