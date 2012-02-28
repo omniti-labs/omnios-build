@@ -1,0 +1,2 @@
+<transform dir path=usr/share/info$ -> drop>
+<transform file path=usr/share/info -> drop>
