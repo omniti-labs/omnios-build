@@ -15,13 +15,18 @@ PKG=runtime/python-26 # Package name (without prefix)
 SUMMARY="$PROG"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="libgcc_s@4.6.2 library/zlib@1.2.6"
+BUILD_DEPENDS_IPS="developer/build/autoconf"
+DEPENDS_IPS="system/library/gcc-4-runtime library/zlib library/libffi
+	library/readline database/sqlite-3 compress/bzip2 library/libxml2
+	library/ncurses library/security/openssl"
 
 export CCSHARED="-fPIC"
 CFLAGS="$CFLAGS -std=c99"
 LDFLAGS32="-L/usr/gnu/lib -R/usr/gnu/lib"
 LDFLAGS64="-L/usr/gnu/lib/amd64 -R/usr/gnu/lib/amd64"
 CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses -D_LARGEFILE64_SOURCE"
+CPPFLAGS32="-I/usr/lib/libffi-3.0.9/include"
+CPPFLAGS64="-I/usr/lib/amd64/libffi-3.0.9/include"
 CONFIGURE_OPTS="--enable-shared
 	--with-system-ffi
 	ac_cv_opt_olimit_ok=no
@@ -29,8 +34,8 @@ CONFIGURE_OPTS="--enable-shared
 
 preprep_build() {
     pushd $TMPDIR/$BUILDDIR > /dev/null || logerr "Cannot change to build directory"
-    /opt/omni/bin/autoheader || logerr "autoheaer failed"
-    /opt/omni/bin/autoconf || logerr "autoreconf failed"
+    /usr/bin/autoheader || logerr "autoheaer failed"
+    /usr/bin/autoconf || logerr "autoreconf failed"
     popd > /dev/null
 }
 
