@@ -1,0 +1,11 @@
+--- Makefile.in.orig	Wed Jan  7 15:18:56 2009
++++ Makefile.in	Wed Jan  7 15:19:26 2009
+@@ -15,7 +15,7 @@
+ exec_prefix = @exec_prefix@
+ 
+ # don't forget to change mandir and infodir in doc/Makefile.
+-bindir  = $(exec_prefix)/bin
++bindir  = @bindir@
+ 
+ VERSION = @VERSION@
+ SCREEN = screen-$(VERSION)

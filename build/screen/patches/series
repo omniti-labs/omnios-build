@@ -1,0 +1,2 @@
+Makefile.in.patch -p0
+misc.c.patch -p0
