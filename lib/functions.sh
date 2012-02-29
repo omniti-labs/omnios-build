@@ -129,6 +129,7 @@ url_encode() {
     [ $# -lt 1 ] && logerr "Not enough arguments to url_encode().  Expecting a string to encode."
     local encoded="$1";
     encoded=`echo $encoded | sed -e 's!/!%2F!g' -e 's!+!%2B!g'`
+    encoded=`echo $encoded | sed -e 's/%../_/g;'`
     echo $encoded
 }
 
