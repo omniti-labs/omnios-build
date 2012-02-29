@@ -10,7 +10,7 @@ PKG=library/libxml2 # Package name (without prefix)
 SUMMARY="$PROG - XML C parser and toolkit"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="libgcc_s@4.6.2 library/zlib@1.2.6"
+DEPENDS_IPS="system/library/gcc-4-runtime library/zlib@1.2.6"
 
 fix_python_install() {
     logcmd mkdir -p $DESTDIR/usr/lib/python2.6/vendor-packages/64 || logerr "failed mkdir"

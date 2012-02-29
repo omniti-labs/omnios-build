@@ -10,21 +10,22 @@ PKG=library/glib2 # Package name (without prefix)
 SUMMARY="$PROG - GNOME GLib utility library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="SUNWcs library/libffi library/zlib system/library libgcc_s runtime/perl-510"
+DEPENDS_IPS="SUNWcs library/libffi@3.0.10 library/zlib system/library
+	system/library/gcc-4-runtime runtime/perl-510"
 
 CONFIGURE_OPTS="--disable-fam --disable-dtrace"
 
 save_function configure32 configure32_orig
 save_function configure64 configure64_orig
 configure32() {
-    LIBFFI_CFLAGS=-I/usr/lib/libffi-3.0.9/include
+    LIBFFI_CFLAGS=-I/usr/lib/libffi-3.0.10/include
     export LIBFFI_CFLAGS
     LIBFFI_LIBS=-lffi
     export LIBFFI_LIBS
     configure32_orig
 }
 configure64() {
-    LIBFFI_CFLAGS=-I/usr/lib/amd64/libffi-3.0.9/include
+    LIBFFI_CFLAGS=-I/usr/lib/amd64/libffi-3.0.10/include
     export LIBFFI_CFLAGS
     LIBFFI_LIBS=-lffi
     export LIBFFI_LIBS

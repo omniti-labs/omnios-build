@@ -10,7 +10,8 @@ PKG=text/groff    # Package name (without prefix)
 SUMMARY="$PROG - GNU Troff typesetting package"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="SUNWcs libgcc_s libstdc++ runtime/perl-510 system/library/math system/library"
+DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library/g++-4-runtime
+	runtime/perl-510 system/library/math system/library"
 
 BUILDARCH=32
 CONFIGURE_OPTS_32="--prefix=$PREFIX

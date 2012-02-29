@@ -11,7 +11,7 @@ PKG=library/security/trousers  # Package name (without prefix)
 SUMMARY="trousers - TCG Software Stack - software for accessing a TPM device"
 DESC="$SUMMARY ($VER)"
 
-DEPENDS_IPS="libgcc_s@4.6.2 library/security/openssl@1.0.0"
+DEPENDS_IPS="system/library/gcc-4-runtime library/security/openssl@1.0.0"
 
 LIBS="-lbsm -lnsl -lsocket -lgen -lscf -lresolv"
 

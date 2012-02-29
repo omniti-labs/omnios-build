@@ -10,7 +10,7 @@ PKG=library/zlib  # Package name (without prefix)
 SUMMARY="$PROG - A massively spiffy yet delicately unobtrusive compression library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="libgcc_s@4.6.2"
+DEPENDS_IPS="system/library/gcc-4-runtime"
 
 CFLAGS="-DNO_VIZ"
 

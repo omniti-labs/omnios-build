@@ -59,7 +59,8 @@ make_isa_stub
 fix_permissions
 
 PKG=print/cups
-DEPENDS_IPS="SUNWcs libgcc_s library/print/cups-libs@1.4.2 library/security/openssl
+DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime
+	library/print/cups-libs@1.4.2 library/security/openssl
 	library/zlib libstdc++ service/security/kerberos-5 system/library/math
 	system/library/security/gss system/library/usb/libusb system/library"
 SUMMARY="Common Unix Print System"

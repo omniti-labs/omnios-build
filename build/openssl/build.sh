@@ -10,7 +10,7 @@ PKG=library/security/openssl # Package name (without prefix)
 SUMMARY="$PROG - A toolkit for Secure Sockets Layer (SSL v2/v3) and Transport Layer (TLS v1) protocols and general purpose cryptographic library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="libgcc_s@4.6.2 library/zlib@1.2.6"
+DEPENDS_IPS="system/library/gcc-4-runtime library/zlib@1.2.6"
 
 NO_PARALLEL_MAKE=1
 
