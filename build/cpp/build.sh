@@ -3,9 +3,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=schily        # App name
-VER=2012-01-23     # App version
-PVER=1             # Package Version
+PROG=cpp        # App name
+VER=0.5.11
+PVER=0.2012.2.29
 PKG=developer/macro/cpp
 SUMMARY="The C Pre-Processor (cpp)"
 DESC="$SUMMARY"
@@ -15,30 +15,30 @@ DEPENDS_IPS="SUNWcs"
 
 CONFIGURE_OPTS=""
 
+setup_src() {
+   BUILDDIR=cpp-src
+   logcmd mkdir -p $TMPDIR/$BUILDDIR
+   logcmd cp $SRCDIR/files/* $TMPDIR/$BUILDDIR
+}
 build() {
     # Set the version to something reasonable
-    VER=0.5.11
-    logmsg "--- cleaning residue from any previous build"
-    rm -rf $TMPDIR/$BUILDDIR/scratch
-    logmsg "--- Executing unified make process"
-    pushd $TMPDIR/$BUILDDIR/cpp > /dev/null || logerr "can't enter build harness"
-    logcmd /bin/yacc cpy.y || logerr "Yacc failed"
-    logcmd gcc -DUSE_STATIC_CONF -I../include -o cpp  cpp.c  y.tab.c || logerr "compilation failed"
+    pushd $TMPDIR/$BUILDDIR > /dev/null || logerr "can't enter build harness"
+    logcmd gmake CC=gcc
     popd > /dev/null
 }
 make_install() {
     logcmd mkdir -p $DESTDIR/usr/lib || logerr "mkdir failed"
     logcmd mkdir -p $DESTDIR/usr/ccs/lib || logerr "mkdir failed"
-    logcmd cp $TMPDIR/$BUILDDIR/cpp/cpp $DESTDIR/usr/lib/cpp || logerr "cp failed"
-    logcmd chmod 755 $DESTDIR/usr/lib/cpp || logerr "chmod failed"
+    pushd $TMPDIR/$BUILDDIR > /dev/null || logerr "can't enter build harness"
+    logcmd gmake install CC=gcc DESTDIR=$DESTDIR
+    popd > /dev/null
     logcmd ln -s ../../lib/cpp $DESTDIR/usr/ccs/lib/cpp || logerr "softlink failed"
     logcmd cp $SRCDIR/schilix.license $DESTDIR/ || logerr "could not place license"
     logcmd cp $SRCDIR/caldera.license $DESTDIR/ || logerr "could not place license"
 }
 
 init
-download_source $PROG $PROG $VER
-patch_source
+setup_src
 prep_build
 build
 make_install
