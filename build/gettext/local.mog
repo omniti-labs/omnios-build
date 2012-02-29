@@ -1,0 +1,3 @@
+<transform file path=usr/lib/lib.* -> drop>
+<transform dir  path=usr/include$ -> drop>
+<transform file path=usr/include/.* -> drop>
