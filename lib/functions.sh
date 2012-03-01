@@ -304,7 +304,9 @@ prep_build() {
     logmsg "--- Creating temporary install dir"
     # We might need to encode some special chars
     PKGE=$(url_encode $PKG)
-    DESTDIR=$DTMPDIR/${PKGE}_pkg
+    # For DESTDIR the '%' can cause problems for some install scripts
+    PKGD=${PKG//%/_}
+    DESTDIR=$DTMPDIR/${PKGD}_pkg
     if [[ -z $DONT_REMOVE_INSTALL_DIR ]]; then
         logcmd chmod -R u+w $DESTDIR > /dev/null 2>&1
         logcmd rm -rf $DESTDIR || \
