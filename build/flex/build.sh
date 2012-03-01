@@ -12,9 +12,9 @@ DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="developer/macro/gnu-m4"
 
-CONFIGURE_OPTS="--mandir=$PREFIX/share/man"
-
-BUILDARCH=32
+CONFIGURE_OPTS="--mandir=$PREFIX/share/man
+	--infodir=$PREFIX/share/info"
+CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --includedir=/usr/include"
 
 make_sfw_links() {
     logmsg "Creating SFW symlinks"
