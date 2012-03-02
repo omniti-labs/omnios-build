@@ -1,0 +1,2 @@
+<transform file path=.*libmp\..* -> drop>
+<transform link path=.*libmp\..* -> drop>

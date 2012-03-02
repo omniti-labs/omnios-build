@@ -57,10 +57,19 @@ configure64() {
         logerr "--- Configure failed"
 }
 
+# Installer only puts gmpxx.h in the right place but there are two more
+fix_header_files() {
+    logmsg "Putting all header files in the right spot"
+    for file in mp.h gmp.h; do
+        logcmd mv $DESTDIR$PREFIX/include/$file $DESTDIR$PREFIX/include/gmp/
+    done
+}
+
 init
 download_source $PROG $PROG $VER
 prep_build
 build
+fix_header_files
 make_isa_stub
 fix_permissions
 make_package
