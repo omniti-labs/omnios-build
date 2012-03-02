@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 PROG=gmp         # App name
-VER=5.0.2        # App version
+VER=5.0.4        # App version
 VERHUMAN=$VER    # Human-readable version
 PVER=1           # Package Version (numeric only)
 PKG=library/gmp  # Package name (without prefix)
@@ -16,18 +16,18 @@ MPN32="x86/pentium x86 generic"
 MPN64="x86_64/pentium4 x86_64 generic"
 export MPN32 MPN64
 
-#CFLAGS="-fexceptions"
+CFLAGS="-fexceptions"
 CONFIGURE_OPTS="--includedir=/usr/include/gmp 
                 --localstatedir=/var 
                 --enable-shared 
-		--disable-static
-		--disable-libtool-lock
-		--disable-alloca
-		--enable-cxx
-		--enable-fft
-		--enable-mpbsd
-		--disable-fat
-		--with-pic"
+                --disable-static
+                --disable-libtool-lock
+                --disable-alloca
+                --enable-cxx
+                --enable-fft
+                --enable-mpbsd
+                --disable-fat
+                --with-pic"
 
 configure32() {
     logmsg "--- configure (32-bit)"
@@ -57,15 +57,6 @@ configure64() {
         logerr "--- Configure failed"
 }
 
-# We need to run 'make check' too
-save_function make_prog make_prog_orig
-make_prog() {
-    make_prog_orig
-    logmsg "--- make check"
-    logcmd $MAKE check || \
-        logerr "--- Make check failed"
-}
-
 init
 download_source $PROG $PROG $VER
 prep_build
@@ -74,3 +65,6 @@ make_isa_stub
 fix_permissions
 make_package
 clean_up
+
+# Vim hints
+# vim:ts=4:sw=4:et:
