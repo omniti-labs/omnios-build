@@ -426,6 +426,7 @@ download_source() {
         URLPREFIX=http://$MIRROR/$DLDIR/$ARCHIVEPREFIX
         $WGET -a $LOGFILE $URLPREFIX.tar.gz || \
             $WGET -a $LOGFILE $URLPREFIX.tar.bz2 || \
+            $WGET -a $LOGFILE $URLPREFIX.tar.xz || \
             $WGET -a $LOGFILE $URLPREFIX.tgz || \
             $WGET -a $LOGFILE $URLPREFIX.tbz || \
             $WGET -a $LOGFILE $URLPREFIX.tar || \
@@ -455,7 +456,7 @@ download_source() {
 # Example: find_archive myprog-1.2.3 FILENAME
 #   Stores myprog-1.2.3.tar.gz in $FILENAME
 find_archive() {
-    FILES=`ls $1.{tar.bz2,tar.gz,tgz,tbz,tar} 2>/dev/null`
+    FILES=`ls $1.{tar.bz2,tar.gz,tar.xz,tgz,tbz,tar} 2>/dev/null`
     FILES=${FILES%% *} # Take only the first filename returned
     # This dereferences the second parameter passed
     eval "$2=\"$FILES\""
@@ -467,6 +468,8 @@ extract_archive() {
         $GZIP -dc $1 | $TAR xvf -
     elif [[ ${1: -8} == ".tar.bz2" || ${1: -4} == ".tbz" ]]; then
         $BUNZIP2 -dc $1 | $TAR xvf -
+    elif [[ ${1: -7} == ".tar.xz" ]]; then
+        $XZCAT $1 | $TAR xvf -
     elif [[ ${1: -4} == ".tar" ]]; then
         $TAR xvf $1
     else

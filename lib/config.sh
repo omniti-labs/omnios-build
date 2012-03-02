@@ -76,6 +76,7 @@ MAKE=gmake
 TAR=tar
 GZIP=gzip
 BUNZIP2=bunzip2
+XZCAT=xzcat
 AWK=/usr/xpg4/bin/awk
 
 # Figure out number of logical CPUs for use with parallel gmake jobs (-j)
