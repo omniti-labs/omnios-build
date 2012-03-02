@@ -306,7 +306,7 @@ prep_build() {
     # We might need to encode some special chars
     PKGE=$(url_encode $PKG)
     # For DESTDIR the '%' can cause problems for some install scripts
-    PKGD=${PKG//%/_}
+    PKGD=${PKGE//%/_}
     DESTDIR=$DTMPDIR/${PKGD}_pkg
     if [[ -z $DONT_REMOVE_INSTALL_DIR ]]; then
         logcmd chmod -R u+w $DESTDIR > /dev/null 2>&1
