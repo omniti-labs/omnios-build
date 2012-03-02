@@ -7,9 +7,13 @@
 # GNU info shit
 <transform file path=usr/share/info/dir$ -> drop>
 
+# Libtool archives
+<transform file path=.*/lib/.*\.la$ -> drop>
+
 # Other upper-level directories
-<transform dir path=usr/share$ -> set group sys>
+<transform dir path=usr/share$ -> drop>
 <transform dir path=usr/share/doc$ -> set group other>
+<transform dir path=usr/share/info$ -> drop>
 <transform dir path=usr/gnu/share$ -> set group sys>
 <transform dir path=usr/lib/pkgconfig$ -> set group other>
 <transform dir path=usr/lib/amd64/pkgconfig$ -> set group other>
@@ -42,6 +46,7 @@
 <transform file path=usr/lib/charset.alias$ -> drop>
 <transform file path=usr/lib/amd64/charset.alias$ -> drop>
 
+# SFW paths also always exist
 <transform dir path=usr/sfw$ -> drop>
 <transform dir path=usr/sfw/lib$ -> drop>
 <transform dir path=usr/sfw/lib/locale$ -> drop>
@@ -50,5 +55,3 @@
 <transform dir path=usr/sfw/share/info$ -> drop>
 <transform dir path=usr/sfw/share/man$ -> drop>
 <transform dir path=usr/sfw/share/src$ -> drop>
-<transform dir path=usr/share$ -> drop>
-<transform dir path=usr/share/info$ -> drop>

@@ -1,0 +1,2 @@
+<transform file path=usr/lib/amd64/libjpeg.la$ -> drop>
+<transform file path=usr/lib/libjpeg.la$ -> drop>
