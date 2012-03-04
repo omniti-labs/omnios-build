@@ -11,6 +11,7 @@ PKG=library/security/trousers  # Package name (without prefix)
 SUMMARY="trousers - TCG Software Stack - software for accessing a TPM device"
 DESC="$SUMMARY ($VER)"
 
+BUILD_DEPENDS_IPS="developer/build/libtool developer/build/automake-111 developer/build/autoconf"
 DEPENDS_IPS="system/library/gcc-4-runtime library/security/openssl@1.0.0"
 
 LIBS="-lbsm -lnsl -lsocket -lgen -lscf -lresolv"
@@ -26,11 +27,11 @@ preprep_build() {
   for f in `ls src/include/*.h` ; do
     /usr/bin/dos2unix $f $f
   done
-  /opt/omni/bin/libtoolize -f || logerr "libtoolize failed"
-  aclocal || logerr "aclocal failed"
-  automake src/tspi/Makefile || logerr "automake failed"
-  autoreconf -vi 2>&1 > /dev/null
-  autoreconf -vi || logerr "autoreconf failed"
+  logcmd libtoolize -f || logerr "libtoolize failed"
+  logcmd aclocal || logerr "aclocal failed"
+  logcmd automake src/tspi/Makefile || logerr "automake failed"
+  logcmd autoreconf -vi 2>&1 > /dev/null
+  logcmd autoreconf -vi || logerr "autoreconf failed"
   popd > /dev/null
 }
 
