@@ -1,0 +1,3 @@
+config-include.patch -p0
+ftconfig-install.patch -p0
+pkconfig-include.patch -p0

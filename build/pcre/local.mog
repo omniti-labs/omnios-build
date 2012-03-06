@@ -1,0 +1,2 @@
+license license=pcre.license path=LICENSE
+<transform file path=^LICENSE$ -> drop>

@@ -6,7 +6,7 @@
 PROG=zsh
 VER=4.3.17
 VERHUMAN=$VER
-PVER=0.2
+PVER=0.3
 PKG=shell/zsh
 SUMMARY="Z shell"
 DESC="Z shell"

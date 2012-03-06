@@ -1,0 +1,6 @@
+license license=dual path=LICENSE.TXT
+license license=FTL path=FTL.TXT
+license license=GPLv2 path=GPLv2.TXT
+<transform file path=^LICENSE.TXT$ -> drop>
+<transform file path=^FTL.TXT$ -> drop>
+<transform file path=^GPL2v.TXT$ -> drop>

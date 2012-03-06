@@ -1,0 +1,10 @@
+--- ./builds/unix/freetype2.in.orig	2012-03-06 21:59:51.835065370 +0000
++++ ./builds/unix/freetype2.in	2012-03-06 22:01:34.386489433 +0000
+@@ -8,5 +8,5 @@
+ Version: @ft_version@
+ Requires:
+ Libs: -L${libdir} -lfreetype
+-Libs.private: @LIBZ@ @LIBBZ2@ @FT2_EXTRA_LIBS@
+-Cflags: -I${includedir}/freetype2 -I${includedir}
++Libs.private: @FT2_EXTRA_LIBS@
++Cflags: -I${includedir}/freetype2 -I${includedir} -I${libdir}/freetype-2.4.8/include
