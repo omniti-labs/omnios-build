@@ -1,11 +1,14 @@
 #!/usr/bin/bash
 SHELL=/usr/bin/bash
 export SHELL
-SKIP_ROOT_CHECK=1
-if [[ -n "$SUDO_USER" ]]; then
-    echo "Don't run under sudo, just build as you"
-    exit
-fi
+
+
+
+
+RELEASE_DATE=2012.03.06
+
+
+
 
 # Load support functions
 . ../../lib/functions.sh
@@ -13,6 +16,7 @@ fi
 PROG=omni-os    # App name
 VER=151002    # App version
 PVER=1          # Package Version (numeric only)
+
 PKG=illumos-gate # Package name (without prefix)
 SUMMARY="$PROG -- Open Maryland Not Indiana" # A short summary of what the app is, starting with its name
 DESC="$SUMMARY -- Illumos and some special sauce." # Longer description
@@ -100,6 +104,7 @@ modify_build_script() {
     logcmd `echo $ILLUMOS_GNUC >> illumos.sh` 
     logcmd `echo $ILLUMOS_NO_SHADOW >> illumos.sh`
     logcmd `echo $ILLUMOS_BUILDNUM >> illumos.sh`
+    logcmd `echo RELEASE_DATE=$RELEASE_DATE >> illumos.sh`
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
 
