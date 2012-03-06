@@ -11,6 +11,7 @@
 <transform file path=.*/lib/.*\.la$ -> drop>
 
 # Other upper-level directories
+<transform dir path=etc/skel$ -> set group sys>
 <transform dir path=usr/share$ -> drop>
 <transform dir path=usr/share/doc$ -> set group other>
 <transform dir path=usr/share/info$ -> drop>
