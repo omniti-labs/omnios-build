@@ -1,0 +1,11 @@
+set name=pkg.fmri value=release/notices@0.5.11,5.11-0.151002
+set name=description value="OpenIndiana licensing"
+set name=pkg.description value="OpenIndiana licensing"
+set name=pkg.summary value="OpenIndiana licensing"
+set name=info.classification value=org.opensolaris.category.2008:System/Core
+set name=variant.arch value=i386
+set name=variant.opensolaris.zone value=global value=nonglobal
+dir group=sys mode=0755 owner=root path=etc
+dir group=sys mode=0755 owner=root path=etc/notices
+file etc/notices/LICENSE group=sys mode=0444 owner=root path=etc/notices/LICENSE
+file etc/notices/COPYRIGHT group=sys mode=0444 owner=root path=etc/notices/COPYRIGHT
