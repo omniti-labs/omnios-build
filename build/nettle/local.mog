@@ -1,0 +1,2 @@
+<transform file path=.*libhogweed.a$ -> drop>
+<transform file path=.*libnettle.a$ -> drop>
