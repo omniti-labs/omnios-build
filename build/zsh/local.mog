@@ -1,0 +1,3 @@
+link path=/etc/zprofile target=profile
+license license=zsh.license path=LICENSE
+<transform file path=^LICENSE$ -> drop>
