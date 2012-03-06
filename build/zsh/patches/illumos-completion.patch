@@ -1,0 +1,3286 @@
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_dladm zsh-4.3.17/Completion/Solaris/Command/_dladm
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_dladm	2010-06-06 17:37:17.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_dladm	2012-03-06 20:11:24.485628720 +0000
+@@ -1,4 +1,5 @@
+ #compdef dladm
++# Synced with the Nevada build 171 man page
+ 
+ _dladm_links() {
+ 	compadd "$@" - $(dladm show-link -p -o link)
+@@ -36,11 +37,6 @@
+ 	compadd "$@" - $(dladm show-ether -p -o link)
+ }
+ 
+-_dladm_linkprops() {
+-	# TODO: complete property values, when available
+-	compadd "$@" - $(dladm show-linkprop -c -o property)
+-}
+-
+ _dladm_vnics() {
+ 	compadd "$@" - $(dladm show-vnic -p -o link)
+ }
+@@ -49,21 +45,43 @@
+ 	compadd "$@" - $(dladm show-etherstub)
+ }
+ 
++_dladm_bridges() {
++	compadd "$@" - $(dladm show-bridge -p -o bridge)
++}
++
++_dladm_iptuns() {
++	compadd "$@" - $(dladm show-iptun -p -o link)
++}
++
++_dladm_parts() {
++	compadd "$@" - $(dladm show-part -p -o link)
++}
++
++_dladm_iblinks() {
++	compadd "$@" - $(dladm show-ib -p -o link)
++}
++
+ _dladm() {
+ 	local context state line expl
+ 	typeset -A opt_args
+-	local -a subcmds rw_properties rw_propnames ro_properties
+-	local -a link_properties link_stats_properties
++	local -a subcmds
++	local -a linkprops linkprops_general linkprops_nonvlanvnic linkprops_wifi
++	local -a linkprops_ether linkprops_ib linkprops_iptun
++	local -a link_properties link_stats_properties vnic_properties
+ 	local -a aggr_properties aggr_lacp_properties aggr_ext_properties
+ 	local -a vlan_properties wifi_properties wifi_connect_properties
+ 	local -a ether_properties linkprop_properties secobj_properties
++	local -a bridge_properties bridge_stats_properties bridge_link_properties
++	local -a bridge_link_stats_properties bridge_fwd_properties
++	local -a bridge_fwd_properties bridge_trill_properties
++	local -a iptun_properties tunnel_values part_properties ib_properties
+ 
+ 	# TODO: some subcommands can take multiple comma-separated targets
+ 	# TODO: some option sets may be different based on other commandline flags
+ 	# TODO: some subcommands may take different arguments based on options
+ 
+ 	subcmds=(
+-		"show-ether" "show-usage"
++		"show-ether" "show-ib" "show-usage"
+ 		{"rename","show"}"-link"
+ 		{"add","create","delete","modify","remove","show"}"-aggr"
+ 		{"connect","disconnect","scan","show"}"-wifi"
+@@ -73,11 +91,14 @@
+ 		{"delete","show"}"-phys"
+ 		{"create","delete","show"}"-vnic"
+ 		{"create","delete","show"}"-etherstub"
++		{"create","modify","delete","add","remove","show"}"-bridge"
++		{"create","modify","delete","show"}"-iptun"
++		{"create","delete","show"}"-part"
+ 	)
+ 
+ 	if [[ $service == "dladm" ]]; then
+ 		_arguments -C -A "-*" \
+-			'-\?[help]' \
++			'-\?[Help]' \
+ 			'*::command:->subcmd' && return 0
+ 
+ 		if (( CURRENT == 1 )); then
+@@ -88,7 +109,7 @@
+ 		curcontext="${curcontext%:*}=$service:"
+ 	fi
+ 
+-	link_properties=( "link" "class" "mtu" "state" "over" )
++	link_properties=( "link" "zone" "class" "mtu" "state" "over" )
+ 	link_stats_properties=( "link" "ipackets" "rbytes" "ierrors" "opackets" "obytes" "oerrors" )
+ 
+ 	aggr_properties=( "link" "policy" "addrpolicy" "lacpactivity" "lacptimer" "flags" )
+@@ -108,34 +129,136 @@
+ 
+ 	vnic_properties=( "link" "over" "speed" "macaddr" "macaddrtype" )
+ 
++	bridge_properties=( "bridge"  "address" "priority" "bmaxage" "bhellotime" "bfwddelay" 
++		"forceproto" "tctime" "tccount" "tchange" "desroot" "rootcost" "rootport"
++		"maxage" "hellotime" "fwddelay" "holdtime" )
++	bridge_stats_properties=( "bridge" "drops" "forwards" "mbcast" "recv" "sent" "unknown" )
++	bridge_link_properties=( "link" "index" "state" "uptime" "opercost" "operp2p" "operedge" 
++		"desroot" "descost" "desbridge" "desport" "tcack" )
++	bridge_link_stats_properties=( "link" "cfgbpdu" "tcnbpdu" "rstpbpdu" "txbpdu" "drops" "recv" "xmit" )
++	bridge_fwd_properties=( "dest" "age" "flags" "output" )
++	bridge_trill_properties=( "nick" "flags" "link" "nexthop" )
++
++	iptun_properties=( "link" "type" "flags" "local" "remote" )
++	tunnel_values=( "local:address/host: " "remote:address/host: " )
++
++	part_properties=( "link" "pkey" "over" "state" "flags" )
++
++	ib_properties=( "link" "hcaguid" "portguid" "port" "state" "pkeys" )
++
++	linkprops_general=(
++		"autopush:streams modules:"
++		"cpus:processors:"
++		"cpus-effective"
++		"mac-address:MAC address:"
++		"maxbw:bandwith:"
++		"pool:pools:"
++		"pool-effective"
++		"priority:priority:(high medium low)"
++		"rxringsavail"
++		"rxrings:value:"
++		"rxhwclntavail"
++		"txringsavail"
++		"txrings:value:"
++		"txhwclntavail"
++		"forward:value:(0 1)"
++		"stp_priority:value:"
++		"stp_cost:value:"
++		"stp_edge:value:(0 1)"
++		"stp_p2p:value:(true false auto)"
++		"stp_mcheck:value:(0 1)"
++		"protection:value:(mac-nospoof ip-nospoof dhcp-nospoof restricted)"
++		"zone:value:_zones"
++	)
++	linkprops_nonvlanvnic=(
++		"default_tag:value:"
++		"learn_decay:value:"
++		"learn_limit:value:"
++		"rxfanout:value:"
++		"rxfanout-effective:value:"
++		"stp:value:(0 1)"
++	)
++	linkprops_wifi=(
++		"channel:value:"
++		"powermode:value:(off max fast)"
++		"radio:value:(on off)"
++		"speed:value:"
++	)
++	linkprops_ether=(
++		"duplex"
++		"state"
++		"adv_autoneg_cap"
++		"adv_10gfdx_cap"
++		"adv_1000fdx_cap"
++		"adv_1000hdx_cap"
++		"adv_100fdx_cap"
++		"adv_100hdx_cap"
++		"adv_10fdx_cap"
++		"adv_10hdx_cap"
++		"en_10gfdx_cap:value:(0 1)"
++		"en_1000fdx_cap:value:(0 1)"
++		"en_1000hdx_cap:value:(0 1)"
++		"en_100fdx_cap:value:(0 1)"
++		"en_100hdx_cap:value:(0 1)"
++		"en_10fdx_cap:value:(0 1)"
++		"en_10hdx_cap:value:(0 1)"
++		"flowctrl:value:(auto no rx tx pfc bi)"
++		"flowctrl-effective"
++		"gvrp-timeout:value:"
++		"mtu:value:"
++		"ntcs"
++		"pfcmap:value:"
++		"speed"
++		"tagmode:value:(normal vlanonly)"
++		"vlan-announce:value:(off gvrp)"
++	)
++	linkprops_ib=(
++		"linkmode:value:(cm ud)"
++	)
++	linkprops_iptun=(
++		"hoplimit:value:"
++		"encaplimit:value:"
++	)
++	linkprops=(
++		$linkprops_general $linkprops_wifi $linkprops_ether
++		$linkprops_ib $linkprops_iptun
++	)
++
+ 	case $service in
+ 	("show-link")
+ 		_arguments -A "-*" \
+-			'(-P --persistent)'{-P,--persistent}'[display persistent link configuration]' \
+-			'(-p --parseable)'{-p,--parseable}'[parseable output]' \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent link configuration]' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
+ 			- set1 \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $link_properties' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $link_properties' \
+ 			- set2 \
+-			'(-s --statistics)'{-s,--statistics}'[display link statistics]' \
+-			'(-i --interval)'{-i,--interval}'[specify an interval]:interval:' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $link_stats_properties' \
+-			':link name:_dladm_links' \
++			'(-s --statistics)'{-s,--statistics}'[Display link statistics]' \
++			'(-i --interval)'{-i,--interval}'[Specify an interval]:interval:' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $link_stats_properties' \
++			':link name:_dladm_links'
+ 		;;
+ 
+ 	("rename-link")
+ 		_arguments -A "-*" \
+-			'-R[root directory]:directory:_path_files -/' \
++			'-R[Root directory]:directory:_path_files -/' \
+ 			':old link name:_dladm_links' \
+-			':new link name:' \
++			':new link name:'
+ 		;;
+ 
+ 	("show-phys")
+ 		_arguments -A "-*" \
+-			'(-P --persistent)'{-P,--persistent}'[display persistent link configuration]' \
+-			'(-p --parseable)'{-p,--parseable}'[parseable output]' \
+-			'(-s --statistics)'{-s,--statistics}'[display link statistics]' \
+-			'(-i --interval)'{-i,--interval}'[specify an interval]:interval:' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" link media state speed duplex device' \
++			'-H[Show hardware resource usage]' \
++			'-L[Display location information]' \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent link configuration]' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'-m[Display MAC address information]' \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
++			'(-s --statistics)'{-s,--statistics}'[Display link statistics]' \
++			'(-i --interval)'{-i,--interval}'[Specify an interval]:interval:' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" link media state speed duplex device' \
+ 			':physical link name:_dladm_devs'
+ 		;;
+ 
+@@ -146,97 +269,101 @@
+ 
+ 	("create-aggr")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[aggregation should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
+-			'(-l --link)'{-l,--link}'[component link]:link:_dladm_links' \
+-			'(-P --policy)'{-P,--policy}'[port selection policy]:policy:_values -s , "policy" L2 L3 L4' \
++			'(-t --temporary)'{-t,--temporary}'[Aggregation should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-l --link)'{-l,--link}'[Component link]:link:_dladm_links' \
++			'(-P --policy)'{-P,--policy}'[Port selection policy]:policy:_values -s , "policy" L2 L3 L4' \
+ 			'(-L --lacp-mode)'{-L,--lacp-mode}'[LACP mode]:lacp mode:(off active passive)' \
+ 			'(-T --lacp-timer)'{-T,--lacp-timer}'[LACP timer]:lacp timer:(short long)' \
+-			'(-u --unicast)'{-u,--unicast}'[unicast address]:unicast address:' \
++			'(-u --unicast)'{-u,--unicast}'[Unicast address]:unicast address:' \
+ 			':aggregate link name:'
+ 		;;
+ 
+ 	("modify-aggr")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[aggregation should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
+-			'(-l --link)'{-l,--link}'[component link]:link:_dladm_links' \
+-			'(-P --policy)'{-P,--policy}'[port selection policy]:policy:_values -s , "policy" L2 L3 L4' \
++			'(-t --temporary)'{-t,--temporary}'[Aggregation should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-l --link)'{-l,--link}'[Component link]:link:_dladm_links' \
++			'(-P --policy)'{-P,--policy}'[Port selection policy]:policy:_values -s , "policy" L2 L3 L4' \
+ 			'(-L --lacp-mode)'{-L,--lacp-mode}'[LACP mode]:lacp mode:(off active passive)' \
+ 			'(-T --lacp-timer)'{-T,--lacp-timer}'[LACP timer]:lacp timer:(short long)' \
+-			'(-u --unicast)'{-u,--unicast}'[unicast address]:unicast address:' \
++			'(-u --unicast)'{-u,--unicast}'[Unicast address]:unicast address:' \
+ 			':aggregate link name:_dladm_aggrs'
+ 		;;
+ 
+ 	("delete-aggr")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[deletion should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
++			'(-t --temporary)'{-t,--temporary}'[Deletion should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
+ 			':aggregate link name:_dladm_aggrs'
+ 		;;
+ 
+ 	("add-aggr")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[aggregation should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
+-			'(-l --link)'{-l,--link}'[component link]:link:_dladm_links' \
++			'(-t --temporary)'{-t,--temporary}'[Aggregation should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-l --link)'{-l,--link}'[Component link]:link:_dladm_links' \
+ 			':aggregate link name:_dladm_aggrs'
+ 		;;
+ 
+ 	("remove-aggr")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[aggregation should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
+-			'(-l --link)'{-l,--link}'[component link]:link:_dladm_aggr_ports' \
++			'(-t --temporary)'{-t,--temporary}'[Aggregation should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-l --link)'{-l,--link}'[Component link]:link:_dladm_aggr_ports' \
+ 			':aggregate link name:_dladm_aggrs'
+ 		;;
+ 
+ 	("show-aggr")
+ 		_arguments -A "-*" \
+-			'(-P --persistent)'{-P,--persistent}'[display persistent link configuration]' \
+-			'(-p --parseable)'{-p,--parseable}'[parseable output]' \
+-			'(-s --statistics)'{-s,--statistics}'[display link statistics]' \
+-			'(-i --interval)'{-i,--interval}'[specify an interval]:interval:' \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent link configuration]' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-s --statistics)'{-s,--statistics}'[Display link statistics]' \
++			'(-i --interval)'{-i,--interval}'[Specify an interval]:interval:' \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
+ 			':aggregate link name:_dladm_links' \
+ 			- set1 \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $aggr_properties' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $aggr_properties' \
+ 			- lacp \
+ 			'(-L --lacp)'{-L,--lacp}'[LACP information]' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $aggr_lacp_properties' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $aggr_lacp_properties' \
+ 			- extended \
+-			'(-x --extended)'{-x,--extended}'[extended information]' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $aggr_ext_properties' \
++			'(-x --extended)'{-x,--extended}'[Extended information]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $aggr_ext_properties'
+ 		;;
+ 
+ 	("create-vlan")
+ 		_arguments -A "-*" \
+ 			'(-t --temporary)'{-t,--temporary}'[VLAN should be temporary]' \
+-			'(-f --force)'{-f,--force}'[force VLAN creation]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
+-			'(-l --link)'{-l,--link}'[component link]:link:_dladm_links' \
++			'(-f --force)'{-f,--force}'[Force VLAN creation]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-l --link)'{-l,--link}'[Component link]:link:_dladm_links' \
+ 			'-v[VLAN ID]:id:' \
+ 			':VLAN link name:'
+ 		;;
+ 
+ 	("delete-vlan")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[deletion should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
++			'(-t --temporary)'{-t,--temporary}'[Deletion should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
+ 			':VLAN link name:_dladm_vlans'
+ 		;;
+ 
+ 	("show-vlan")
+ 		_arguments -A "-*" \
+-			'(-P --persistent)'{-P,--persistent}'[display persistent link configuration]' \
+-			'(-p --parseable)'{-p,--parseable}'[parseable output]' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $vlan_properties' \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent link configuration]' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $vlan_properties' \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
+ 			':VLAN link name:_dladm_vlans'
+ 		;;
+ 
+ 	("scan-wifi")
+ 		_arguments -A "-*" \
+-			'(-p --parseable)'{-p,--parseable}'[parseable output]' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $wifi_connect_properties' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $wifi_connect_properties' \
+ 			':wireless link name:_dladm_wifi_links'
+ 		;;
+ 
+@@ -244,146 +371,296 @@
+ 		_arguments -A "-*" \
+ 			'(-e --essid)'{-e,--essid}'[ESSID name]:network:_dladm_wifi_nets' \
+ 			'(-b --bsstype)'{-b,--bsstype}'[BSS type]:' \
+-			'(-m --mode)'{-m,--mode}'[802.11 mode]:mode:(a b g)' \
+-			'(-k --key)'{-k,--key}'[key name]:key:_dladm_secobjs' \
+-			'(-s --sec)'{-s,--sec}'[security mode]:(none wep wpa)' \
+-			'(-a --auth)'{-a,--auth}'[authentication mode]:mode:(open shared)' \
+-			'(-c --create-ibss)'{-c,--create-ibss}'[create an ad-hoc network]' \
+-			'(-T --timeout)'{-T,--timeout}'[association timeout]:(forever)' \
++			'(-m --mode)'{-m,--mode}'[802.11 mode]:802.11 mode:(a b g n)' \
++			'(-k --key)'{-k,--key}'[Key name]:key:_dladm_secobjs' \
++			'(-s --sec)'{-s,--sec}'[Security mode]:security mode:(none wep wpa)' \
++			'(-a --auth)'{-a,--auth}'[Authentication mode]:authentication mode:(open shared)' \
++			'(-c --create-ibss)'{-c,--create-ibss}'[Create an ad-hoc network]' \
++			'(-T --timeout)'{-T,--timeout}'[Association timeout]:association timeout:(forever)' \
+ 			':wireless link name:_dladm_wifi_links'
+ 		;;
+ 
+ 	("disconnect-wifi")
+ 		_arguments -A "-*" \
+ 			- set1 \
+-			'(-a --all-links)'{-a,--all-links}'[all links]' \
++			'(-a --all-links)'{-a,--all-links}'[All links]' \
+ 			- set2 \
+ 			':wireless link name:_dladm_wifi_links'
+ 		;;
+ 
+ 	("show-wifi")
+ 		_arguments -A "-*" \
+-			'(-p --parseable)'{-p,--parseable}'[parseable output]' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $wifi_properties' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $wifi_properties' \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
+ 			':wireless link name:_dladm_wifi_links'
+ 		;;
+ 
+ 	("show-ether")
+ 		_arguments -A "-*" \
+-			'(-p --parseable)'{-p,--parseable}'[parseable output]' \
+-			'(-x --extended)'{-x,--extended}'[extended output]' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $ether_properties' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-x --extended)'{-x,--extended}'[Extended output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $ether_properties' \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
+ 			':ethernet link name:_dladm_ethers'
+ 		;;
+ 
+ 	("set-linkprop")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[change should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
+-			'(-p --prop)'{-p,--prop}'[properties]:property:_dladm_linkprops' \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-p --prop)'{-p,--prop}'[Properties]:property:_values -s , "property" ${(M)linkprops\:#*\:*}' \
+ 			':link name:_dladm_links'
+ 		;;
+ 
+ 	("reset-linkprop")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[change should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
+-			'(-p --prop)'{-p,--prop}'[properties]:property:_dladm_linkprops' \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-p --prop)'{-p,--prop}'[Properties]:property:_values -s , "property" ${${(M)linkprops\:#*\:*}%%\:*}' \
+ 			':link name:_dladm_links'
+ 		;;
+ 
+ 	("show-linkprop")
+ 		_arguments -A "-*" \
+-			'(-P --persistent)'{-P,--persistent}'[display persistent link properties]' \
+-			'(-c --parseable)'{-c,--parseable}'[parseable output]' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $linkprop_properties' \
+-			'(-p --prop)'{-p,--prop}'[properties]:property:_dladm_linkprops' \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent link properties]' \
++			'(-c --parseable)'{-c,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $linkprop_properties' \
++			'(-p --prop)'{-p,--prop}'[Properties]:property:_values -s , "property" ${linkprops%%\:*}' \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
+ 			':link name:_dladm_links'
+ 		;;
+ 
+ 	("create-secobj")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[creation should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
+-			'(-c --class)'{-c,--class}'[class]:class:(wep wpa)' \
+-			'(-f --file)'{-f,--file}'[file containing object value]:file:_path_files' \
++			'(-t --temporary)'{-t,--temporary}'[Creation should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-c --class)'{-c,--class}'[Class]:class:(wep wpa)' \
++			'(-f --file)'{-f,--file}'[File containing object value]:file:_path_files' \
+ 			':object name:'
+ 		;;
+ 
+ 	("delete-secobj")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[deletion should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
++			'(-t --temporary)'{-t,--temporary}'[Deletion should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
+ 			':object name:_dladm_secobjs'
+ 		;;
+ 
+ 	("show-secobj")
+ 		_arguments -A "-*" \
+-			'(-P --persistent)'{-P,--persistent}'[display persistent object information]' \
+-			'(-p --parseable)'{-p,--parseable}'[parseable output]' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $secobj_properties' \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent object information]' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $secobj_properties' \
+ 			':object name:_dladm_secobjs'
+ 		;;
+ 
+ 	("create-vnic")
+ 		# TODO: MAC address completion could be richer
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[creation should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
+-			'(-l --link)'{-l,--link}'[component link]:link:_dladm_links' \
+-			'(-m --mac-address)'{-m,--mac-address}'[MAC address]:address:(factory random auto)' \
++			'(-t --temporary)'{-t,--temporary}'[Creation should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-l --link)'{-l,--link}'[Component link]:link:_dladm_links' \
++			'(-m --mac-address)'{-m,--mac-address}'[MAC address]:address:(factory random auto vrrp)' \
+ 			'-v[VLAN ID]:id:' \
+-			'(-p --prop)'{-p,--prop}'[property values]:value:' \
++			'(-p --prop)'{-p,--prop}'[Property values]:value:_values -s , "property" ${(M)linkprops_general\:#*\:*}' \
+ 			':VNIC name:'
+ 		;;
+ 
+ 	("delete-vnic")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[deletion should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
++			'(-t --temporary)'{-t,--temporary}'[Deletion should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
+ 			':VNIC name:_dladm_vnics'
+ 		;;
+ 
+ 	("show-vnic")
+ 		_arguments -A "-*" \
+-			'(-P --persistent)'{-P,--persistent}'[display persistent object information]' \
+-			'(-p --parseable)'{-p,--parseable}'[parseable output]' \
+-			'(-o --output)'{-o,--output}'[properties to display]:property:_values -s , "property" $vnic_properties' \
+-			'(-l --link)'{-l,--link}'[limit to VNICs on link]:link:_dladm_links' \
+-			'(-s --statistics)'{-s,--statistics}'[display VNIC statistics]' \
+-			'(-i --interval)'{-i,--interval}'[specify an interval]:interval:' \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent object information]' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $vnic_properties' \
++			'(-l --link)'{-l,--link}'[Limit to VNICs on link]:link:_dladm_links' \
++			'(-s --statistics)'{-s,--statistics}'[Display VNIC statistics]' \
++			'(-i --interval)'{-i,--interval}'[Specify an interval]:interval:' \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
+ 			':VNIC name:_dladm_vnics'
+ 		;;
+ 
+ 	("create-etherstub")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[creation should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
++			'(-t --temporary)'{-t,--temporary}'[Creation should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
+ 			':etherstub name:'
+ 		;;
+ 
+ 	("delete-etherstub")
+ 		_arguments -A "-*" \
+-			'(-t --temporary)'{-t,--temporary}'[deletion should be temporary]' \
+-			'(-R --root)'{-R,--root}'[root directory]:directory:_path_files -/' \
++			'(-t --temporary)'{-t,--temporary}'[Deletion should be temporary]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
+ 			':etherstub name:_dladm_etherstubs'
+ 		;;
+ 
+ 	("show-etherstub")
+ 		_arguments -A "-*" \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
+ 			':etherstub name:_dladm_etherstubs'
+ 		;;
+ 
+ 	("show-usage")
+ 		_arguments -A "-*" \
+-			'(-f --file)'{-f,--file}'[read records from file]:_path_files' \
+-			'(-F --format)'{-f,--format}'[plotfile format]:(gnuplot)' \
+-			'(-p --plot)'{-p,--plot}'[write plot to file]:' \
+-			'(-e --start)'{-e,--start}'[start time]:date/time (MM/DD/YYYY,hh\:mm\:ss)' \
+-			'(-s --stop)'{-s,--stop}'[stop time]:date/time (MM/DD/YYYY,hh\:mm\:ss)' \
++			'(-f --file)'{-f,--file}'[Read records from file]:file:_path_files' \
++			'(-F --format)'{-F,--format}'[Plotfile format]:plotfile format:(gnuplot)' \
++			'(-p --plot)'{-p,--plot}'[Write plot to file]:' \
++			'(-e --start)'{-e,--start}'[Start time]:date/time (MM/DD/YYYY,hh\:mm\:ss)' \
++			'(-s --stop)'{-s,--stop}'[Stop time]:date/time (MM/DD/YYYY,hh\:mm\:ss)' \
+ 			':link name:_dladm_links'
+ 		;;
+ 
++	("create-bridge")
++		_arguments -A "-*" \
++			'(-P --protect)'{-P,--protect}'[Specify a protection method]:protection method:(stp trill)' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-p --priority)'{-p,--priority}'[Specify the bridge priority]:value' \
++			'(-m --max-age)'{-m,--max-age}'[Specify the max age for config info]:value' \
++			'(-h --hello-time)'{-h,--hello-time}'[Specify the hello time]:value' \
++			'(-d --forward-delay)'{-d,--forward-delay}'[Specify the forward delay]:value' \
++			'(-f --force-protocol)'{-f,--force-protocol}'[Specify forced maximum supported protocol]:value' \
++			'*'{-l,--link}'[Specify link to add]:link:_dladm_links' \
++			':bridge name:'
++		;;
++
++
++	("modify-bridge")
++		_arguments -A "-*" \
++			'(-P --protect)'{-P,--protect}'[Specify a protection method]:protection method:(stp trill)' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-p --priority)'{-p,--priority}'[Specify the bridge priority]:value' \
++			'(-m --max-age)'{-m,--max-age}'[Specify the max age for config info]:value' \
++			'(-h --hello-time)'{-h,--hello-time}'[Specify the hello time]:value' \
++			'(-d --forward-delay)'{-d,--forward-delay}'[Specify the forward delay]:value' \
++			'(-f --force-protocol)'{-f,--force-protocol}'[Specify forced maximum supported protocol]:value' \
++			':bridge name:_dladm_bridges'
++		;;
++
++
++	("delete-bridge")
++		_arguments -A "-*" \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			':bridge name:_dladm_bridges'
++		;;
++
++
++	("add-bridge"|"remove-bridge")
++		_arguments -A "-*" \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'*'{-l,--link}'[Specify link to add]:link:_dladm_links' \
++			':bridge name:_dladm_bridges'
++		;;
++
++
++	("show-bridge")
++		# XXX $bridge_stats_properties get added into -o completions for set1
++		# XXX $bridge_link_stats_properties get added into -o completions for set3
++		_arguments -A "-*" \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			- set1 \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $bridge_properties' \
++			- set2 \
++			'(-s --statistics)'{-s,--statistics}'[Display statistics]' \
++			'(-i --interval)'{-i,--interval}'[Specify an interval]:seconds' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $bridge_stats_properties' \
++			- set3 \
++			'(-l --link)'{-l,--link}'[Display link status or statistics]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $bridge_link_properties' \
++			- set4 \
++			'(-s --statistics)'{-s,--statistics}'[Display statistics]' \
++			'(-l --link)'{-l,--link}'[Display link status or statistics]' \
++			'(-i --interval)'{-i,--interval}'[Specify an interval]:seconds' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $bridge_link_stats_properties' \
++			- set5 \
++			'(-f --forwarding)'{-f,--forwarding}'[Display forwarding entries]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $bridge_fwd_properties' \
++			- set6 \
++			'(-t --trill)'{-t,--trill}'[Display TRILL nickname entries]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $bridge_trill_properties' \
++			':bridge name:_dladm_bridges'
++		;;
++
++
++	("create-iptun")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Temporary tunnel]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-T --type)'{-T,--type}'[Tunnel type]:tunnel type:(ipv4 ipv6 6to4)' \
++			'(-a --address)'{-a,--address}'[Endpoint addresses]:address/host:_values -s , "address/host" $tunnel_values' \
++			':tunnel name:'
++		;;
++
++	("modify-iptun")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Temporary modification]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-a --address)'{-a,--address}'[Endpoint addresses]:address/host:_values -s , "address/host" $tunnel_values' \
++			':tunnel name:_dladm_iptuns'
++		;;
++
++	("delete-iptun")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Temporary deletion]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			':tunnel name:_dladm_iptuns'
++		;;
++
++	("show-iptun")
++		_arguments -A "-*" \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent tunnel configuration]' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $iptun_properties' \
++			'-Z[Display ZONE column in output]' \
++			'-z[zone]:zonename:_values -s , "zone" $(zoneadm list)' \
++			':tunnel name:_dladm_iptuns'
++		;;
++
++	("create-part")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Temporary partition]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			'(-f --force)'{-f,--force}'[Force partition creation]' \
++			'(-l --link)'{-l,--link}'[IP-over-IB physical link name]:IB link:_dladm_iblinks' \
++			'(-p --prop)'{-p,--prop}'[Set link properties]:link property:_values -s , "property" ${(M)linkprops_nonvlanvnic\:#*\:*} ${(M)linkprops_general\:#*\:*}' \
++			'(-P --pkey)'{-P,--pkey}'[Set parition key]:hex number:' \
++			':partition link name:'
++		;;
++
++	("delete-part")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Temporary deletion]' \
++			'(-R --root)'{-R,--root}'[Root directory]:directory:_path_files -/' \
++			':link name:_dladm_parts'
++		;;
++
++	("show-part")
++		_arguments -A "-*" \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent partition configuration]' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-l --link)'{-l,--link}'[Information for this link]:link name:_dladm_iblinks' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $part_properties' \
++			':partition link name:_dladm_parts'
++		;;
++
++	("show-ib")
++		_arguments -A "-*" \
++			'(-P --persistent)'{-P,--persistent}'[Display persistent partition configuration]' \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $ib_properties' \
++			':IB link name:_dladm_iblinks'
++		;;
++
+ 	(*)
+ 		_message "unknown dladm subcommand: $service"
+ 		;;
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_dtrace zsh-4.3.17/Completion/Solaris/Command/_dtrace
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_dtrace	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_dtrace	2012-03-06 20:11:25.053651137 +0000
+@@ -0,0 +1,41 @@
++#compdef dtrace
++# Synced with Nevada build 160 man pages
++
++_dtrace() {
++	_arguments -s \
++	'-32[generate 32-bit D programs and ELF files]' \
++	'-64[generate 64-bit D programs and ELF files]' \
++	'-a[claim anonymous tracing state]' \
++	'-A[generate driver.conf(4) directives for anonymous tracing]' \
++	'-b[set trace buffer size]' \
++	'-c[run specified command and exit upon its completion]' \
++	'-C[run cpp(1) preprocessor on script files]' \
++	'-D[define symbol when invoking preprocessor]' \
++	'-e[exit after compiling request but prior to enabling probes]' \
++	'-f[enable or list probes matching the specified function name]:function: ' \
++	'-F[coalesce trace output by function]' \
++	'-G[generate an ELF file containing embedded dtrace program]' \
++	'-H[print included files when invoking preprocessor]' \
++	'-h[Generate a header file]' \
++	'-i[enable or list probes matching the specified probe id]' \
++	'-I[add include directory to preprocessor search path]:include dir:_files -/' \
++	'-L[Add directory to search path for DTrace libraries]:lib dir:_files -/' \
++	'-l[list probes matching specified criteria]' \
++	'-m[enable or list probes matching the specified module name]:module: ' \
++	'-n[enable or list probes matching the specified probe name]:name: ' \
++	'-o[set output file]:output file:_files' \
++	'-p[grab specified process-ID and cache its symbol tables]:pid:_pids' \
++	'-P[enable or list probes matching the specified provider name]:provider: ' \
++	'-q[set quiet mode (only output explicitly traced data)]' \
++	'-s[enable or list probes according to the specified D script]' \
++	'-S[print D compiler intermediate code]' \
++	'-U[undefine symbol when invoking preprocessor]' \
++	'-v[set verbose mode (report program stability attributes)]' \
++	'-V[report DTrace API version]' \
++	'-w[permit destructive actions]' \
++	'-x[enable or modify compiler and tracing options]' \
++	'-X[specify ISO C conformance settings for preprocessor]:ISO C conformance:((a\:"ISO plus K&R extensions (default)" c\:"Strictly conformant ISO C" s\:"K&R C only" t\:"ISO plus K&R extensions"))' \
++	'-Z[permit probe descriptions that match zero probes]'
++}
++
++_dtrace "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_flowadm zsh-4.3.17/Completion/Solaris/Command/_flowadm
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_flowadm	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_flowadm	2012-03-06 20:11:25.605630804 +0000
+@@ -0,0 +1,110 @@
++#compdef flowadm
++# Synced with the Nevada build 171 man page
++
++_flowadm() {
++
++local -a subcmds tr props
++local expl
++
++_flowadm_flow(){
++	compadd "$@" - $(flowadm show-flow -p -o flow)
++}
++
++_flowadm_flow_int(){
++	compadd "$@" - $(flowadm show-flow -p -o flow)
++	compadd "$@" - $(dladm show-phys -p -o device)
++}
++
++subcmds=(
++	"show-flow"
++	"add-flow"
++	"remove-flow"
++	"set-flowprop"
++	"reset-flowprop"
++	"show-flowprop"
++)
++	
++tr=(
++	"tcp"
++	"udp"
++	"sctp"
++	"icmp"
++	"icmpv6"
++)
++
++props=(
++	"maxbw"
++)
++
++if [[ $service == "flowadm" ]]; then
++	_arguments -C -A "-*" \
++		'*::command:->subcmd' && return 0
++	
++	if (( CURRENT == 1 )); then
++		_wanted commands expl "flowadm subcommand" compadd -a subcmds
++		return
++	fi
++	service="$words[1]"
++	curcontext="${curcontext%:*}=$service:"
++fi
++case $service in
++
++	("show-flow")
++	_arguments -A "-*" \
++		'-o[specify field to display]:field:(flow link ipaddr proto port dsfield)' \
++		'-p[parsable output]' \
++		'-P[persistent flow property information]' \
++		- set1 \
++		'-l[display information for link]:link or flow:_net_interfaces' \
++		- set2 \
++		':flow:_flowadm_flow' \
++	;;
++
++	("add-flow")
++	_arguments -A "-*" \
++		'-t[temporary changes - do not persist across reboots]' \
++		'-R[alternate root dir]:alternate root:_files' \
++		'-l[specify link to which flow will be added]:link:_net_interfaces' \
++		'-a[specify attribute]:attribute:(local_ip= remote_ip= transport=$tr local_port= dsfield=)' \
++		'-p[set property value]:property:(maxbw=)' \
++	;;
++
++	("remove-flow")
++	_arguments -A "-*" \
++		'-t[temporary changes - do not persist across reboots]' \
++		'-R[alternate root dir]:alternate root:_files' \
++		- set1 \
++		'-l[specify link from which flow will be deleted]:link:_net_interfaces' \
++		- set2 \
++		':flow:_flowadm_flow' \
++	;;
++
++	("set-flowprop")
++	_arguments -A "-*" \
++		'-t[temporary changes - do not persist across reboots]' \
++		'-R[alternate root dir]:alternate root:_files' \
++		'-p[set property value]:property:(maxbw=)' \
++		':flow:_flowadm_flow' \
++	;;
++
++	("reset-flowprop")
++	_arguments -A "-*" \
++		'-t[temporary changes - do not persist across reboots]' \
++		'-R[alternate root dir]:alternate root:_files' \
++		'-p[set property value]:property:(maxbw=)' \
++		':flow:_flowadm_flow' \
++	;;
++
++	("show-flowprop")
++	_arguments -A "-*" \
++		'-c[parsable output (requires -o)]' \
++		'-l[specify link whose properties will be shown]:link:_net_interfaces' \
++		'-P[persistent flow property information]' \
++		'-p[property to show]:property:_values -s , "property" $props' \
++		':flow:_flowadm_flow' \
++	;;
++
++esac
++}
++
++_flowadm "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_fmadm zsh-4.3.17/Completion/Solaris/Command/_fmadm
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_fmadm	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_fmadm	2012-03-06 20:11:26.178484664 +0000
+@@ -0,0 +1,111 @@
++#compdef fmadm
++# Synced with the Nevada build 168 man page
++
++_fm_modules() {
++	compadd "$@" - $(fmadm config 2> /dev/null | awk 'NR == 1 {continue} {print $1}')
++}
++
++_fm_faulted_fmris() {
++	compadd "$@" - $(fmadm faulty -r 2> /dev/null | awk '{print $1}')
++}
++
++_fm_faulted_uuids() {
++	compadd "$@" - $(fmadm faulty -s 2> /dev/null | tail +4 | awk '{print $4}')
++}
++
++_fm_faulted_labels() {
++	local q='"'
++	compadd "$@" - $(fmadm faulty -f 2> /dev/null | while read line; do
++		if [[ $line == "----"* ]]; then
++			read line
++			if [[ $line == '"'* ]]; then
++				print ${${line[(r)$q,(rn:2:)$q]}[2,-2]}
++			fi
++		fi
++	done)
++}
++
++_fmadm() {
++	local context state line expl
++	local -A opt_args
++	local -a subcmds
++
++	# TODO: lookup-alias and remove-alias need completion based on the
++	# output of list-alias, but I have no examples of that output.
++
++	subcmds=(
++		"acquit" "config" "faulty" "flush" "load" "unload"
++		"repaired" "replaced" "reset" "rotate"
++		"add-alias" "remove-alias" "lookup-alias" "list-alias" "sync-alias"
++	)
++
++	if [[ $service == "fmadm" ]]; then
++		_arguments -C -A "-*" \
++			'-q[Quite mode]' \
++			'*::command:->subcmd' && return 0
++
++		if (( CURRENT == 1 )); then
++			_wanted commands expl "fmadm subcommand" compadd -a subcmds
++			return
++		fi
++		service="$words[1]"
++		curcontext="${curcontext%:*}=$service:"
++	fi
++
++	case $service in
++	("acquit")
++		_alternative \
++			"fmadm-acquit-label:label:_fm_faulted_labels" \
++			"fmadm-acquit-uuid:uuid:_fm_faulted_uuids" \
++			"fmadm-acquit-fmri:fmri:_fm_faulted_fmris"
++		;;
++
++	("config")
++		;;
++
++	("faulty")
++		_arguments -A "-*" \
++			'-a[Display all faults]' \
++			'-f[Display faulty FRUs]' \
++			'-g[Group faults]' \
++			'-i[Display persistent cache IDs]' \
++			'-n[Limit output to n entries]:number:' \
++			'-p[Page output]' \
++			'-r[Display resources]' \
++			'-s[Display one-line summaries]' \
++			'-u[Only display fault with given uuid]:uuid:_fm_faulted_uuids' \
++			'-v[Display full output]'
++		;;
++
++	("flush")
++		_fm_faulted_fmris
++		;;
++
++	("load")
++		_path_files -g "/*"
++		;;
++
++	("unload")
++		_fm_modules
++		;;
++
++	("repaired"|"replaced")
++		_alternative \
++			"fmadm-acquit-label:label:_fm_faulted_labels" \
++			"fmadm-acquit-fmri:fmri:_fm_faulted_fmris"
++		;;
++
++	("reset")
++		_arguments -A "-*" \
++			'-s[Reset named SERD]:serd:' \
++			':module:_fm_modules'
++		;;
++
++	("rotate")
++		_values "logfile" "errlog" "fltlog" "infolog" "infolog_hival"
++		;;
++
++	esac
++}
++
++_fmadm "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_ipadm zsh-4.3.17/Completion/Solaris/Command/_ipadm
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_ipadm	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_ipadm	2012-03-06 20:11:26.848683586 +0000
+@@ -0,0 +1,364 @@
++#compdef ipadm
++# Synced with the Nevada build 171 man page
++
++_ipadm_ifs() {
++	local -a extra
++
++	zparseopts -D -E -a extra /+:
++
++	compadd "$@" - $(ipadm show-if -p -o ifname) $extra[2,-1]
++}
++
++_ipadm_enabled_ifs() {
++	# Interfaces not marked "disabled"
++	compadd "$@" - "${(@)${(@)${(f)$(ipadm show-if -p -o state,ifname)}:#disabled:*}#*:}"
++}
++
++_ipadm_disabled_ifs() {
++	compadd "$@" - "${(@)${(@)${(f)$(ipadm show-if -p -o state,ifname)}#disabled:*}:#*:*}"
++}
++
++_ipadm_vnis() {
++	compadd "$@" - "${(@)${(@)${(f)$(ipadm show-if -p -o class,ifname)}#vni:*}:#*:*}"
++}
++
++_ipadm_ipmps() {
++	compadd "$@" - "${(@)${(@)${(f)$(ipadm show-if -p -o class,ifname)}#ipmp:*}:#*:*}"
++}
++
++_ipadm_get_possible_values() {
++	local -a proto poss
++	local cmd
++
++	cmd=${${(M)words:#set-*}/set/show}
++	if [[ $cmd == "show-prop" ]]; then
++		# You have to specify a protocol for show-prop if you specify a
++		# property, so we loop through them all.
++		poss=()
++		for proto in ipv4 ipv6 icmp tcp udp sctp; do
++			poss=( $poss ${(u)=$(ipadm $cmd -c -p ${IPREFIX%=} -o possible $proto 2> /dev/null)//,/ } )
++		done
++		poss=( ${(u)poss:#\?} )
++	else
++		proto=${=opt_args[-m]:+-m $opt_args[-m]}
++		poss=( ${(u)=$(ipadm $cmd -c -p ${IPREFIX%=} $proto -o possible)//,/ } )
++	fi
++	if [[ $poss[1] == [0-9]##-[0-9]## ]]; then
++		if (( $#poss > 1 )); then
++			_message -e "number in ranges ${(j:, :)poss}"
++		else
++			_message -e "number in range $poss"
++		fi
++	elif [[ -z $poss[1] ]]; then
++		_message -e "value"
++	else
++		compadd "$@" - $poss
++	fi
++}
++
++_ipadm_addrobjs() {
++	compadd "$@" - $(ipadm show-addr -p -o addrobj)
++}
++
++_ipadm_protos() {
++	compadd "$@" - $(ipadm show-prop -c -o proto)
++}
++
++_ipadm() {
++	local context state line expl
++	local -A opt_args
++	local -a subcmds
++	local -a if_properties if_propproperties if_properties2
++	local -a addr_properties addr_propproperties
++	local -a addrobj_properties
++	local -a proto_ipv4_properties proto_ipv6_properties proto_tcp_properties
++	local -a proto_udp_properties proto_sctp_properties proto_icmp_properties
++	local -a proto_all_properties proto_propproperties
++
++	subcmds=(
++		{"show","disable","enable"}"-if"
++		{"create","delete"}"-ip"
++		{"create","delete"}"-vni"
++		{"create","delete","add","remove"}"-ipmp"
++		{"set","reset","show"}"-ifprop"
++		{"create","delete","show","up","down","refresh","disable","enable"}"-addr"
++		{"set","reset","show"}"-addrprop"
++		{"set","reset","show"}"-prop"
++	)
++
++	if_properties=( "ifname" "class" "state" "active" "current" "persistent" "over" )
++
++	if_propproperties=( "ifname" "property" "proto" "perm" "current" "persistent" "default" "possible" )
++
++	if_properties2=(
++		"arp:value:_ipadm_get_possible_values"
++		"forwarding:value:_ipadm_get_possible_values"
++		"metric:value:_ipadm_get_possible_values"
++		"mtu:value:_ipadm_get_possible_values"
++		"nud:value:_ipadm_get_possible_values"
++		"usesrc:value:_ipadm_ifs -/ none"
++		"exchange_routes:value:_ipadm_get_possible_values"
++		"group:value:_ipadm_get_possible_values"
++		"standby:value:_ipadm_get_possible_values"
++	)
++
++	addr_properties=(
++		"broadcast:value:_ipadm_get_possible_values"
++		"deprecated:value:_ipadm_get_possible_values"
++		"prefixlen:value:_ipadm_get_possible_values"
++		"private:value:_ipadm_get_possible_values"
++		"reqhost:value:_ipadm_get_possible_values"
++		"transmit:value:_ipadm_get_possible_values"
++		"zone:value:_zones -t c"
++	)
++
++	addr_propproperties=( "addrobj" "property" "perm" "current" "persistent" "default" "possible" )
++
++	addrobj_properties=(
++		"addrobj" "type" "state" "current" "persistent" "addr"
++		"cid-type" "cid-value" "begin" "expire" "renew"
++	)
++
++	proto_ipv4_properties=( "hostmodel" "ttl" "forwarding" )
++	proto_ipv6_properties=( "hostmodel" "hoplimit" "forwarding" )
++	proto_tcp_properties=( "cong_default" "cong_enabled" "ecn" "extra_priv_ports" "max_buf" "recv_buf"
++		"send_buf" "sack" "smallest_anon_port" "largest_anon_port" "smallest_nonpriv_port" )
++	proto_udp_properties=( "extra_priv_ports" "max_buf" "recv_buf" "send_buf" "smallest_anon_port"
++		"largest_anon_port" "smallest_nonpriv_port" )
++	proto_sctp_properties=( "cong_default" "cong_enabled" "extra_priv_ports" "max_buf" "recv_buf"
++		"send_buf" "smallest_anon_port" "largest_anon_port" "smallest_nonpriv_port" )
++	proto_icmp_properties=( "max_buf" "recv_buf" "send_buf" )
++	proto_all_properties=( $proto_ipv4_properties $proto_ipv6_properties $proto_tcp_properties
++		$proto_udp_properties $proto_sctp_properties $proto_icmp_properties )
++	proto_all_properties=( $^proto_all_properties:value:_ipadm_get_possible_values )
++
++	proto_propproperties=( "proto" "property" "perm" "current" "persistent" "default" "possible" )
++
++	if [[ $service == "ipadm" ]]; then
++		_arguments -C -A "-*" \
++			'-\?[Help]' \
++			'*::command:->subcmd' && return 0
++
++		if (( CURRENT == 1 )); then
++			_wanted commands expl "ipadm subcommand" compadd -a subcmds
++			return
++		fi
++		service="$words[1]"
++		curcontext="${curcontext%:*}=$service:"
++	fi
++
++	case $service in
++	("create-ip")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Interface should be temporary]' \
++			':interface name:'
++		;;
++
++	("delete-ip")
++		_arguments -A "-*" \
++			':interface name:_ipadm_ifs'
++		;;
++
++	("create-vni")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Interface should be temporary]' \
++			':VNI name:'
++		;;
++
++	("delete-vni")
++		_arguments -A "-*" \
++			':VNI name:_ipadm_vnis'
++		;;
++
++	("create-ipmp")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Interface should be temporary]' \
++			'(-i --interface)'{-i,--interface}'[List of underlying interfaces]:interface name:_values -s , "interface" $(ipadm show-if -p -o ifname)' \
++			':IPMP interface name:'
++		;;
++
++	("delete-ipmp")
++		_arguments -A "-*" \
++			'(-f --force)'{-f,--force}'[First remove all underlying interfaces from group]' \
++			':IPMP interface name:_ipadm_ipmps'
++		;;
++
++	("add-ipmp")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Interface should be temporary]' \
++			'(-i --interface)'{-i,--interface}'[List of underlying interfaces]:interface name:_values -s , "interface" $(ipadm show-if -p -o ifname)' \
++			':IPMP interface name:_ipadm_ipmps'
++		;;
++
++	("remove-ipmp")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Interface should be temporary]' \
++			'(-i --interface)'{-i,--interface}'[List of underlying interfaces]:interface name:_values -s , "interface" $(ipadm show-if -p -o ifname)' \
++			':IPMP interface name:_ipadm_ipmps'
++		;;
++
++	("show-if")
++		_arguments -A "-*" \
++			'(-p --parseable)'{-p,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $if_properties' \
++			':interface name:_ipadm_ifs'
++		;;
++
++	("disable-if")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			':interface name:_ipadm_enabled_ifs'
++		;;
++
++	("enable-if")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			':interface name:_ipadm_disabled_ifs'
++		;;
++
++	("set-ifprop")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			'(-m --module)'{-m,--module}'[Protocol]:protocol:(ipv4 ipv6)' \
++			'(-p --prop)'{-p,--prop}'[Property to set]:property:_values -s , "property" $if_properties2' \
++			':interface name:_ipadm_ifs'
++		;;
++
++	("reset-ifprop")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			'(-m --module)'{-m,--module}'[Protocol]:protocol:(ipv4 ipv6)' \
++			'(-p --prop)'{-p,--prop}'[Property to reset]:property:($if_properties2)' \
++			':interface name:_ipadm_ifs'
++		;;
++
++	("show-ifprop")
++		_arguments -A "-*" \
++			'(-c --parseable)'{-c,--parseable}'[Parseable output]' \
++			'(-m --module)'{-m,--module}'[Protocol]:protocol:(ipv4 ipv6)' \
++			'(-o --output)'{-o,--output}'[Property properties to display]:property:_values -s , "property" $if_propproperties' \
++			'(-p --prop)'{-p,--prop}'[Interface properties to display]:property:_values -s , "property" ${if_properties2%%\:*}' \
++			':interface name:_ipadm_ifs'
++		;;
++
++	("create-addr")
++		# This causes all options and arguments following -T to be
++		# stuck into $opt_args[-T].  It feels hacky, but it seems
++		# to do the trick.
++		_arguments -C -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Address should be temporary]' \
++			'-T[Address type]:*::address type:->newaddr'
++
++		if [[ $state == "newaddr" ]]; then
++
++			case ${opt_args[-T]#-T:} in
++			("static:"*)
++				local -a addrthingsv4
++				addrthingsv4=( "local:address: " "remote:address: ")
++				_arguments -A "-*" \
++				'(-d --down)'{-d,--down}'[Address should be marked down]' \
++				'(-a --address)'{-a,--address}'[Address specification]:address:_values -s , "address" $addrthingsv4' \
++				':address object name:_ipadm_addrobjs'
++				;;
++
++			("dhcp:"*)
++				_arguments -A "-*" \
++				'(-w --wait)'{-w,--wait}'[Seconds to wait for completion]:number or "forever":{if [[ -prefix [0-9]## ]]; then _message -e "number of seconds"; else _wanted forever expl "number or \"forever\"" compadd forever; fi}' \
++				'-h[Request a specific hostname]:hostname:' \
++				':address object name:_ipadm_addrobjs'
++				;;
++
++			("addrconf:"*)
++				local -a addrthingsv6 statefulness
++				addrthingsv6=( "local:interface id: " "remote:interface id: ")
++				statefulness=( "stateful:statefulness:(yes no)" "stateless:statelessness:(yes no)" )
++				_arguments -A "-*" \
++				'(-i --interface-id)'{-i,--interface-id}'[Interface ID]:address:_values -s , "interface id" $addrthingsv6' \
++				'(-p --prop)'{-p,--prop}'[Statefulness configuration]:statefulness configuration:_values -s , "statefulness" $statefulness' \
++				':address object name:_ipadm_addrobjs'
++				;;
++			(*)
++				_wanted commands expl "address type" compadd static dhcp addrconf
++				;;
++			esac
++		fi
++
++		;;
++
++	("delete-addr")
++		_arguments -A "-*" \
++			'(-r --release)'{-r,--release}'[Release DHCP-acquired address]' \
++			':address object name:_ipadm_addrobjs'
++		;;
++
++	("show-addr")
++		_arguments -A "-*" \
++			'(-d --dhcp -p --parseable)'{-d,--dhcp}'[Display DHCP status fields]' \
++			'(-p --parseable -d --dhcp)'{-p,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Properties to display]:property:_values -s , "property" $addrobj_properties' \
++			':address object name:_ipadm_addrobjs'
++		;;
++
++	({"up","down","disable","enable"}"-addr")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			':address object name:_ipadm_addrobjs'
++		;;
++
++	("refresh-addr")
++		_arguments -A "-*" \
++			'(-i --inform)'{-i,--inform}'[Retrieve DHCP parameters]' \
++			':address object name:_ipadm_addrobjs'
++		;;
++
++	("set-addrprop")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			'(-p --prop)'{-p,--prop}'[Property to set]:property:_values -s , "property" $addr_properties' \
++			':address object name:_ipadm_addrobjs'
++		;;
++
++	("reset-addrprop")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			'(-p --prop)'{-p,--prop}'[Property to reset]:property:(${addr_properties%%\:*})' \
++			':address object name:_ipadm_addrobjs'
++		;;
++
++	("show-addrprop")
++		_arguments -A "-*" \
++			'(-c --parseable)'{-c,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Property properties to display]:property:_values -s , "property" $addr_propproperties' \
++			'(-p --prop)'{-p,--prop}'[Address object properties to display]:property:_values -s , "property" ${addr_properties%%\:*}' \
++			':address object name:_ipadm_addrobjs'
++		;;
++
++	("set-prop")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			'(-p --prop)'{-p,--prop}'[Property to set]:property:_values -s , "property" $proto_all_properties' \
++			':protocol name:_ipadm_protos'
++		;;
++
++	("reset-prop")
++		_arguments -A "-*" \
++			'(-t --temporary)'{-t,--temporary}'[Change should be temporary]' \
++			'(-p --prop)'{-p,--prop}'[Property to reset]:property:(${proto_all_properties%%\:*})' \
++			':protocol name:_ipadm_protos'
++		;;
++
++	("show-prop")
++		_arguments -A "-*" \
++			'(-c --parseable)'{-c,--parseable}'[Parseable output]' \
++			'(-o --output)'{-o,--output}'[Property properties to display]:property:_values -s , "property" $proto_propproperties' \
++			'(-p --prop)'{-p,--prop}'[Protocol properties to display]:property:_values -s , "property" ${proto_all_properties%%\:*}' \
++			':protocol name:_ipadm_protos'
++		;;
++
++	(*)
++		_message "unknown ipadm subcommand: $service"
++		;;
++	esac
++}
++
++_ipadm "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_netstat zsh-4.3.17/Completion/Solaris/Command/_netstat
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_netstat	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_netstat	2012-03-06 20:11:27.445583170 +0000
+@@ -0,0 +1,61 @@
++#compdef netstat
++
++_netstat() {
++	local -a f_rules
++
++	f_rules=(
++		'af\::specify address family: inet, inet6, unix, number'
++		'outif\::specify output interface: ifName, ifIndex, any, none'
++		'dst\::specify destination IP: ip-addr[/mask], any, none'
++		'flags\::select routes tagged with flags: [+ -]?[ABDGHLMSU]+' 
++	)
++
++	_arguments \
++		- set1 \
++		'-a[show state of all sockets, all routing tables or all interfaces]' \
++		'-R[show extended security attributes for sockets and routing tables]' \
++		'-n[do not resolve addresses to names]' \
++		'-v[verbose]' \
++		'-f[specify address family]:address family:(inet inet6 unix)' \
++		'-P[specify protocol]:protocol:(ip ipv6 icmp icmpv6 igmp udp tcp rawip)' \
++		- set2 \
++		'-r[show routing table]' \
++		'-f[filter routing table]:rule:(($f_rules))' \
++		'-a[show state of all sockets, all routing tables or all interfaces]' \
++		'-v[verbose]' \
++		'-n[do not resolve addresses to names]' \
++		'-R[show extended security attributes for sockets and routing tables]' \
++		- set3 \
++		'-g[show multicast group memberships]' \
++		'-n[do not resolve addresses to names]' \
++		'-v[verbose]' \
++		'-f[specify address family]:address family:(inet inet6 unix)' \
++		- set4 \
++		'-i[show state of interfaces]' \
++		'-a[show state of all sockets, all routing tables or all interfaces]' \
++		'-f[specify address family]:address family:(inet inet6 unix)' \
++		'-n[do not resolve addresses to names]' \
++		'-I[select interface]:interface:_net_interfaces' \
++		- set5 \
++		'-m[show STREAMS memory statistics]' \
++		'-v[verbose]' \
++		- set6 \
++		'-p[show net to media tables]' \
++		'-n[do not resolve addresses to names]' \
++		'-f[specify address family]:address family:(inet inet6 unix)' \
++		- set7 \
++		'-s[show per protocol statistics]' \
++		'-f[specify address family]:address family:(inet inet6 unix)' \
++		'-P[specify protocol]:protocol:(ip ipv6 icmp icmpv6 igmp udp tcp rawip)' \
++		- set8 \
++		'-M[show multicast routing tables]' \
++		'-f[specify address family]:address family:(inet inet6 unix)' \
++		'-n[do not resolve addresses to names]' \
++		'-s[show per protocol statistics]' \
++		- set9 \
++		'-D[show status of DHCP configured interfaces]' \
++		'-f[specify address family]:address family:(inet inet6 unix)' \
++		'-I[select interface]:interface:_net_interfaces' \
++}
++
++_netstat "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_pkg5 zsh-4.3.17/Completion/Solaris/Command/_pkg5
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_pkg5	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_pkg5	2012-03-06 20:11:28.108344961 +0000
+@@ -0,0 +1,429 @@
++#compdef pkg
++
++_pkg5_pkgs() {
++	local cache_policy cache_id=pkg5_installed_pkgs:$HOST:${pkg5_root//\//+}
++	typeset -a -g _pkg5_installed_pkgs
++
++	zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
++	if [[ -z "$cache_policy" ]]; then
++		zstyle ":completion:${curcontext}:" cache-policy _pkg5_installed_caching_policy
++	fi
++
++	if ( [[ $#_pkg5_installed_pkgs -eq 0 ]] || _cache_invalid $cache_id ) && ! _retrieve_cache $cache_id; then
++		_pkg5_installed_pkgs=( $(
++			pkg -R $pkg5_root list -H | while read pkg junk; do
++				pkga=( ${(s:/:)pkg} )
++				for i in {1..$#pkga}; do
++					print ${(j:/:)${pkga[$i,-1]}}
++				done
++			done) )
++		_store_cache $cache_id _pkg5_installed_pkgs
++	fi
++
++	compadd "$@" - ${_pkg5_installed_pkgs}
++}
++
++_pkg5_pkgs_a() {
++	local cache_policy cache_id=pkg5_known_pkgs:$HOST:${pkg5_root//\//+}
++	typeset -a -g _pkg5_known_pkgs
++
++	zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
++	if [[ -z "$cache_policy" ]]; then
++		zstyle ":completion:${curcontext}:" cache-policy _pkg5_known_caching_policy
++	fi
++
++	if ( [[ $#_pkg5_known_pkgs -eq 0 ]] || _cache_invalid $cache_id ) && ! _retrieve_cache $cache_id; then
++		_pkg5_known_pkgs=( $(
++			pkg -R $pkg5_root list -aH --no-refresh | while read pkg junk; do
++				pkga=( ${(s:/:)pkg} )
++				for i in {1..$#pkga}; do
++					print ${(j:/:)${pkga[$i,-1]}}
++				done
++			done) )
++		_store_cache $cache_id _pkg5_known_pkgs
++	fi
++
++	compadd "$@" - ${_pkg5_known_pkgs}
++}
++
++_pkg5_avoided_pkgs() {
++	compadd "$@" - $(pkg -R $pkg5_root unavoid)
++}
++
++_pkg5_pubs() {
++	compadd "$@" - $(pkg -R $pkg5_root publisher -H | awk '{print $1}')
++}
++
++_pkg5_variants() {
++	compadd "$@" - $(pkg -R $pkg5_root variant -H | awk '{print $1}')
++}
++
++_pkg5_facets() {
++	compadd "$@" - $(pkg -R $pkg5_root facet -H | awk '{print $1}')
++}
++
++_pkg5_known_caching_policy() {
++	[[ $pkg5_root/var/pkg/state/known/catalog.attrs -nt "$1" ]]
++}
++
++_pkg5_installed_caching_policy() {
++	[[ $pkg5_root/var/pkg/state/installed/catalog.attrs -nt "$1" ]]
++}
++
++_pkg5() {
++	local expl context state line pkg5_root prop
++	typeset -A opt_args
++	local -a subcmds pkg5_actions pkg5_cattr pkg5_sattr be_opts
++	local -a publisher_properties image_properties certs
++
++	subcmds=(
++		install uninstall list update refresh version help
++		info search verify fix revert contents image-create
++		{change-,}{variant,facet} avoid unavoid history
++		{{un,}set-,}property {add,remove}-property-value
++		{{un,}set-,}publisher purge-history rebuild-index
++		update-format freeze unfreeze {{un,}set-,}mediator
++	)
++
++	pkg5_actions=(
++		set depend dir driver file group hardlink legacy license link
++		signature unknown user
++	)
++
++	# Pseudo attributes for the contents subcommand
++	pkg5_cattr=(
++		action.hash action.key action.name action.raw
++		pkg.fmri pkg.name pkg.publisher pkg.shortfmri
++	)
++
++	# Pseudo attributes for the search subcommand
++	pkg5_sattr=(
++		$pkg5_cattr search.match search.match_type
++	)
++
++	publisher_properties=(
++		"signature-policy:value:(ignore verify require-signatures require-names)"
++		"signature-required-names:value:"
++	)
++
++	image_properties=(
++	    "be-policy:value:(default always-new create-backup when-required)"
++	    "ca-path:value:_path_files -/"
++	    "check-certificate-revocation:value:(true false)"
++	    "flush-content-cache-on-success:value:(true false)"
++	    "mirror-discovery:value:(true false)"
++	    "send-uuid:value:(true false)"
++	    "signature-policy:value:(ignore verify require-signatures require-names)"
++	    "signature-required-names:value:"
++	    "trust-anchor-directory:value:_path_files -/"
++	    "use-system-repo:value:(true false)"
++	)
++
++	if [[ $service == "pkg" ]]; then
++		_arguments -C -A "-*" \
++			'(-\? --help)'{-\?,--help}'[Help]' \
++			'-R[Root directory]:directory:_path_files -/' \
++			'*::command:->subcmd' && return 0
++
++		if (( CURRENT == 1 )); then
++			_wanted commands expl "pkg subcommand" compadd -a subcmds
++			return
++		fi
++		service="$words[1]"
++		curcontext="${curcontext%:*}=$service:"
++	fi
++
++	pkg5_root=${${${opt_args[-R]}:-$PKG_IMAGE}:-/}
++
++	certs=( $(pkg -R $pkg5_root property -H ca-path | awk '{print $2}')/* )
++
++	# Options common to subcommands which might have to deal with BEs.
++	be_opts=(
++		"(--require-new-be)--deny-new-be[Fail the operation if a new BE would be required]"
++		"(--deny-new-be)--require-new-be[Force a new BE to be created]"
++		"--be-name[Specify a BE name]:BE name: "
++		"--no-be-activate[Don't activate the new BE]"
++		"(--require-backup-be)--no-backup-be[Don't leave behind a backup BE]"
++		"(--no-backup-be)--require-backup-be[Force leaving behind a backup BE]"
++		"--backup-be-name[Specify the name for the backup BE]:BE name: "
++	)
++
++	case $service in
++	("install")
++		_arguments -A "-*" \
++			'-n[Dry run]' \
++			'-q[Quiet]' \
++			'-v[Verbose]' \
++			'-g[Specify additional source of packages]:source:_path_files -/' \
++			"--accept[Accept all licenses]" \
++			"--licenses[Display all licenses]" \
++			"--reject[Specify an FMRI to exclude from the result]:fmri:_pkg5_pkgs" \
++			"--no-refresh[Don't refresh catalogs]" \
++			"--no-index[Don't reindex search database]" \
++			$be_opts \
++			'*:package:_pkg5_pkgs_a'
++		;;
++
++	("uninstall")
++		_arguments -A "-*" \
++			'-n[Dry run]' \
++			'-q[Quiet]' \
++			'-v[Verbose]' \
++			$be_opts \
++			"--no-index[Don't reindex search database]" \
++			'*:package:_pkg5_pkgs'
++		;;
++
++	("update")
++		_arguments -A "-*" \
++			"-f[Don't check for pkg(5) updates]" \
++			'-n[Dry run]' \
++			'-q[Quiet]' \
++			'-v[Verbose]' \
++			'-g[Specify additional source of packages]:source:_path_files -/' \
++			"--accept[Accept all licenses]" \
++			"--licenses[Display all licenses]" \
++			$be_opts \
++			"--reject[Specify an FMRI to exclude from the result]:fmri:_pkg5_pkgs" \
++			"--no-refresh[Don't refresh catalogs]" \
++			"--no-index[Don't reindex search database]" \
++			'*:package:_pkg5_pkgs'
++		;;
++
++	("list")
++		_arguments -A "-*" \
++			'-H[Omit headers]' \
++			'-a[Show not-installed packages]' \
++			'-f[Show all versions]' \
++			'-g[Specify additional source of packages]:source:_path_files -/' \
++			'-n[Show newest versions]' \
++			'-s[Show summaries]' \
++			'-u[Show upgradable versions]' \
++			'-v[Show verbose pkg: FMRIs]' \
++			"--no-refresh[Don't refresh catalogs]" \
++			'*:package:_pkg5_pkgs_a'
++		;;
++
++	("refresh")
++		_arguments -A "-*" \
++			"--full[Full refresh]" \
++			'*:publisher:_pkg5_pubs'
++		;;
++
++	("info")
++		_arguments -A "-*" \
++			'--license[Display license text(s)]' \
++			'(-r)-l[Installed package]' \
++			'(-l)-r[Uninstalled package; fetch info from depot]:*:package:_pkg5_pkgs_a' \
++			'*:package:_pkg5_pkgs'
++		;;
++
++	("search")
++		_arguments -A "-*" \
++			"(-p)-a[Show matching actions]" \
++			'-l[Local search]' \
++			'(-a)-p[Show packages]' \
++			'-r[Remote search]' \
++			'-H[Omit headers]' \
++			'-I[Case sensitive search]' \
++			'-s[Depot URI]' \
++			'*-o[Attribute output]:attributes:_values -s , "attribute" $pkg5_sattr' \
++			':query:'
++		;;
++
++	("verify")
++		_arguments -A "-*" \
++			'-H[Omit headers]' \
++			'-q[Quiet]' \
++			'-v[Verbose]' \
++			'*:package:_pkg5_pkgs'
++		;;
++
++	("fix")
++		_arguments -A "-*" \
++			'--accept[Accept all licenses]' \
++			'--licenses[Display all licenses]' \
++			'*:package:_pkg5_pkgs'
++		;;
++
++	("revert")
++		_arguments -A "-*" \
++			'-n[Dry run]' \
++			'-v[Verbose]' \
++			'--tagged[Revert all tagged files]:tag:' \
++			$be_opts \
++			"--no-refresh[Don't refresh catalogs]" \
++			"--no-index[Don't reindex search database]" \
++			'*:file:_path_files'
++		;;
++
++	("contents")
++		_arguments -A "-*" \
++			'-H[Omit headers]' \
++			'-m[Print raw manifests]' \
++			'*-a[Attribute matching]:attribute=pattern:' \
++			'*-o[Attribute output]:attributes:_values -s , "attribute" $pkg5_cattr' \
++			'*-s[Sort key]:attribute:' \
++			'*-t[Action type]:action:_values -s , "action" $pkg5_actions' \
++			'-r[Fetch manifests from depot]:*:package:_pkg5_pkgs_a' \
++			'*:package:_pkg5_pkgs'
++		;;
++
++	("image-create")
++		_arguments -A "-*" \
++			'(-f --force)'{-f,--force}'[Force image creation]' \
++			'(-F --full -P --partial -U --user)'{-F,--full}'[Full image]' \
++			'(-F --full -P --partial -U --user)'{-P,--partial}'[Partial image]' \
++			'(-F --full -P --partial -U --user)'{-U,--user}'[User image]' \
++			'(-z --zone)'{-z,--zone}'[Zoned image]' \
++			'-k[Path to SSL key]:file:_path_files' \
++			'-c[Path to SSL cert]:file:_path_files' \
++			"--no-refresh[Don't refresh catalogs]" \
++			"*--variant[Specify image variants]:variant=instance:" \
++			"*--facet[Specify image facets]:facet=True/False:" \
++			'(-p --publisher)'{-p,--publisher}'[Specify publisher]:prefix=URI:' \
++			':directory:_path_files -/'
++		;;
++
++	("change-variant")
++		_arguments -A "-*" \
++			'-n[Dry run]' \
++			'-q[Quiet'] \
++			'-v[Verbose'] \
++			'-g[Specify additional source of packages]:source:_path_files -/' \
++			'--accept[Accept all licenses]' \
++			'--licenses[Display all licenses]' \
++			$be_opts \
++			"*:variant:_values -s , 'variant' $(pkg -R $pkg5_root variant -H | awk '{print $1}')" \
++		;;
++
++	("change-facet")
++		_arguments -A "-*" \
++			'-n[Dry run]' \
++			'-q[Quiet'] \
++			'-v[Verbose'] \
++			'-g[Specify additional source of packages]:source:_path_files -/' \
++			'--accept[Accept all licenses]' \
++			'--licenses[Display all licenses]' \
++			$be_opts \
++			"*:facet:_values -s , 'facet' $(pkg -R $pkg5_root facet -H | awk '{print $1}')" \
++		;;
++
++	("variant")
++		_arguments -A "-*" \
++			'-H[Omit headers]' \
++			'*:variant:_pkg5_variants'
++		;;
++
++	("facet")
++		_arguments -A "-*" \
++			'-H[Omit headers]' \
++			'*:facet:_pkg5_facets'
++		;;
++
++	("avoid")
++		_arguments -A "-*" \
++			'*:package:_pkg5_pkgs_a'
++		;;
++
++	("unavoid")
++		_arguments -A "-*" \
++			'*:package:_pkg5_avoided_pkgs'
++		;;
++
++	("set-property")
++		_arguments -A "-*" \
++			':property:_values "property" $image_properties' \
++			':value:'
++		;;
++
++	("add-property-value")
++		_arguments -A "-*" \
++			':property:_values "property" $image_properties' \
++			':value:'
++		;;
++
++	("remove-property-value")
++		_arguments -A "-*" \
++			':property:(${image_properties%%\:*})' \
++			':value:'
++		;;
++
++	("unset-property")
++		_arguments -A "-*" \
++			'*:property:(${image_properties%%\:*})'
++		;;
++
++	("property")
++		_arguments -A "-*" \
++			'-H[Omit headers]' \
++			'*:property:(${image_properties%%\:*})'
++		;;
++
++	("set-publisher")
++		_arguments -A "-*" \
++			'-P[Make preferred]' \
++			'(-e --enable)'{-e,--enable}'[Enable publisher]' \
++			'(-d --disable)'{-d,--disable}'[Disable publisher]' \
++			'(-g --add-origin)'{-g,--add-origin}'[Add origin URI]:uri:' \
++			'(-G --remove-origin)'{-G,--remove-origin}'[Remove origin URI]:uri:' \
++			'(-m --add-mirror)'{-m,--add-mirror}'[Add mirror URI]:uri:' \
++			'(-M --remove-mirror)'{-M,--remove-mirror}'[Remove mirror URI]:uri:' \
++			'-p[Repository URI]:url:' \
++			"--no-refresh[Don't refresh catalogs]" \
++			'--reset-uuid[Reset the image UUID for this publisher]' \
++			'--sticky[Make this publisher sticky]' \
++			'--non-sticky[Make this publisher non-sticky]' \
++			'--search-after[Set publisher search-order]:publisher:_pkg5_pubs' \
++			'--search-before[Set publisher search-order]:publisher:_pkg5_pubs' \
++			'--approve-ca-cert[Add trusted CA certificate]:CA cert path:_path_files' \
++			'--revoke-ca-cert[Revoke CA certificate]:CA cert hash:(${${certs#/etc/openssl/certs/}%.0})' \
++			'--unset-ca-cert[Remove trusted CA certificate]:CA cert hash:' \
++			'--set-property[Set publisher property]:property:_values "property" $publisher_properties' \
++			'--unset-property[Remove publisher property]:property:(${publisher_properties%%\:*})' \
++			'--add-property-value[Add publisher property value]:property:_values "property" $publisher_properties' \
++			'--remove-property-value[Remove publisher property value]:property:(${publisher_properties%%\:*})' \
++			':publisher:_pkg5_pubs'
++		;;
++
++	("unset-publisher")
++		_arguments -A "-*" \
++			'*:publisher:_pkg5_pubs'
++		;;
++
++	("publisher")
++		_arguments -A "-*" \
++			'-H[Omit headers]' \
++			'-P[Display only preferred publisher]' \
++			'-n[Display only enabled publishers]' \
++			'*:publisher:_pkg5_pubs'
++		;;
++
++	("history")
++		local -a hist_columns
++		hist_columns=(
++			"be" "be_uuid" "client" "client_ver" "command" "finish"
++			"id" "new_be" "new_be_uuid" "operation" "outcome"
++			"reason" "snapshot" "start" "time" "user"
++		)
++		_arguments -A "-*" \
++			'-H[Omit headers]' \
++			'-l[Long history]' \
++			'-n[Last n records]:number:' \
++			'-o[Column]:number:_values -s , "column" $hist_columns' \
++			'-t[Time range]'
++		;;
++
++	("freeze"|"unfreeze")
++		;;
++
++	("mediator"|"set-mediator"|"unset-mediator")
++		;;
++
++	(*)
++		_message "unknown pkg subcommand: $service" ;;
++
++	esac
++}
++
++_pkg5 "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_prstat zsh-4.3.17/Completion/Solaris/Command/_prstat
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_prstat	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_prstat	2012-03-06 20:11:28.671377219 +0000
+@@ -0,0 +1,45 @@
++#compdef prstat
++
++_prstat()
++{
++	d_opt=(
++		"u"\:"seconds past the epoch"
++		"d"\:"standard date format"
++	)
++
++	sort_key=(
++		"cpu"\:"process CPU usage (default)"
++		"pri"\:"process priority"
++		"rss"\:"resident set size"
++		"size"\:"size of process image"
++		"time"\:"process execution time"
++	)
++
++	_arguments -A "-*" \
++		'-a[information about processes and users]' \
++		'-c[new reports below previous reports instead of overprinting them]' \
++		'-C[processes or lwps that are bound to processor sets in the list]:processor set list:' \
++		'-d[specify the representation of time]:time representation:(($d_opt))' \
++		'-h[only processes or lwps whose home lgroup is in the list]:lgroup list:' \
++		'-H[information about home lgroup]' \
++		'-j[only processes or lwps whose project ID is in the given list]:project list:' \
++		'-J[information about processes and projects]' \
++		'-k[only processes or lwps whose task ID is in tasklist]:task list'\
++		'-L[statistics for each light-weight process (LWP)]' \
++		'-m[microstate process accounting information]' \
++		'-n[restrict number of output lines]:ntop,[nbottom]' \
++		'-p[only processes whose process ID is in the list]:PID list' \
++		'-P[only processes or lwps which have most recently executed on a CPU in the list]:CPU list' \
++		'-R[Put prstat in the real time scheduling class]' \
++		'-s[Sort key (descending)]:key:(($sort_key))' \
++		'-S[Sort key (ascending)]:key:(($sort_key))' \
++		'-t[total usage summary for each user]' \
++		'-T[information about processes and tasks]' \
++		'-u[only processes whose effective user ID is in the list]:UID:_users' \
++		'-U[only processes whose real user ID is in the list]:UID:_users' \
++		'-v[verbose process usage]' \
++		'-z[only processes or LWPs whose zone ID is in the list]:zone ID:' \
++		'-Z[information about processes and zones]'
++}
++
++_prstat "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_ps zsh-4.3.17/Completion/Solaris/Command/_ps
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_ps	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_ps	2012-03-06 20:11:29.226455159 +0000
+@@ -0,0 +1,77 @@
++#compdef ps
++
++_ps()
++{
++	local -a o_opt
++
++o_opt=(
++	"user[user ID]"
++	"ruser[real user ID]"
++	"group[group ID]"
++	"rgroup[real group ID]"
++	"pid[process ID]"
++	"ppid[parent process ID]"
++	"pgid[process group ID]"
++	"pcpu[ratio of CPU time used recently to CPU time available]"
++	"vsz[total size of the process in virtual memory, in kilobytes]"
++	"nice[decimal value of the system scheduling priority of the process]"
++	"etime[elapsed time since the process was started]"
++	"time[cumulative CPU time of the process]"
++	"tty[name of the controlling terminal of the process]"
++	"comm[name of the command being executed]"
++	"args[command with all its arguments as a string]"
++	"f[flags associated with the process]"
++	"s[state of the process]"
++	"c[processor utilization for scheduling]"
++	"uid[effective user ID number]"
++	"ruid[real user ID number]"
++	"gid[effective group ID number]"
++	"rgid[real group ID numberu]"
++	"projid[project ID number]"
++	"project[project name]"
++	"zoneid[zone ID number]"
++	"zone[zone name]"
++	"sid[process ID of the session leader]"
++	"taskid[task ID of the process]"
++	"class[scheduling class]"
++	"pri[priority, higher number - higher priority]"
++	"opri[obsolete priority, lower number - higher priority]"
++	"lwp[lwd ID number]"
++	"nlwp[number of lwps in the process]"
++	"psr[number of the processor to which the process or lwp is bound]"
++	"pset[ID of the processor set to which the process or lwp is bound]"
++	"addr[memory address of the process]"
++	"osz[total size of the process in virtual memory, in pages]"
++	"wchan[address of an event for which the process is sleeping]"
++	"stime[starting time or date of the process]"
++	"rss[resident set size of the process, in kilobytes]"
++	"pmem[ratio of resident set size to physical memory on the machine, in %]"
++	"fname[first 8 bytes of base name of process's executable file]"
++	"ctid[contract ID number]"
++	"lgrp[home lgroup]"
++)
++_arguments \
++	'-a[information about all processes most frequently requested]' \
++	'-c[information in a format that reflects scheduler properties]' \
++	'-d[information about all processes except session leaders]' \
++	'-e[information about every process]' \
++	'-f[full listing]' \
++	'-g[only process data whose group leaders ID number(s) appears in grplist]:group leader ID list' \
++	'-G[information for processes whose real group ID numbers are in gidlist]:real group ID list' \
++	'-H[prints the home lgroup of the process]' \
++	'-j[prints session ID and process group ID]' \
++	'-l[long listing]' \
++	'-L[information about each light weight process]' \
++	'-o[specify output format]:property:_values -s , "property" $o_opt' \
++	'-p[only process data whose process ID numbers are given in proclist]:process ID list' \
++	'-P[Prints the number of the processor to which the process or lwp is bound]' \
++	'-s[information on all session leaders whose IDs appear in sidlist]:session leader ID list' \
++	'-t[lists only process data associated with term]:term' \
++	'-u[only process data whose effective user ID number or login name is given in uidlist]:UID:_users' \
++	'-U[information for processes whose real user ID numbers or login names are in uidlist]:UID:_users' \
++	'-y[both RSS and SZ is reported in kilobytes, instead pages (used with -l)]' \
++	'-z[lists only processes in the specified zones]:zone list' \
++	'-Z[prints the name of the zone with which the process is associated]'
++}
++
++_ps "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_snoop zsh-4.3.17/Completion/Solaris/Command/_snoop
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_snoop	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_snoop	2012-03-06 20:11:29.841277034 +0000
+@@ -0,0 +1,87 @@
++#compdef snoop
++
++_snoop() {
++	local -a t_opt exp
++
++t_opt=(
++	"r"\:"time relative to first packet"
++	"a"\:"absolute time"
++	"d"\:"delta time - time since receiving previous packet"
++)
++
++exp=(
++	"ether"
++	"ethertype"
++	"host"
++	"from"
++	"to"
++	"ip"
++	"ip6"
++	"arp"
++	"rarp"
++	"pppoe"
++	"pppoed"
++	"pppoes"
++	"vlan"
++	"vlan-id"
++	"broadcast"
++	"multicast"
++	"bootp"
++	"dhcp"
++	"dhcp6"
++	"apple"
++	"decnet"
++	"greater"
++	"less"
++	"udp"
++	"tcp"
++	"icmp"
++	"icmp6"
++	"ah"
++	"esp"
++	"net"
++	"port"
++	"rpc"
++	"zone"
++	"ldap"
++	"gateway"
++	"nofrag"
++	">"
++	">="
++	"<"
++	"<="
++	"="
++	"!="
++	"and"
++	"or"
++	"not"
++	"slp"
++	"sctp"
++	"ospf"
++)
++
++	_arguments \
++		'-a[generate audio signal on receiving packets]' \
++		'-c[quit after capturing maxcount packets]:maxcount' \
++		'-d[capture packets from specified device]:device:_net_interfaces' \
++		'-i[display packets previously captured to file]:file:_files' \
++		'-n[use file as IP address-to-name mapping table]:file:_files' \
++		'-o[save captured packets to file]:file:_files' \
++		'-p[display one or more packets from captured file]:first packet number [ , last packet number]' \
++		'-q[do not display packet counter when capturing to file]' \
++		'-r[do not resolve IP addresses to names]' \
++		'-s[truncate each packet after snaplen bytes]:snaplen' \
++		'-t[time-stamp presentation]:time-stamp mode:(($t_opt))' \
++		'-C[list code generated from filter expression]' \
++		'-D[display number of packets dropped on the summary line]' \
++		'-N[create IP-address-to-name mapping table file (used with -i)]' \
++		'-I[capture packets from specified interface]:interface:_net_interfaces' \
++		'-P[capture packets in non-promiscuous mode]' \
++		'-S[display size of the entire link layer frame in bytes]' \
++		'-V[verbose summary mode]' \
++		'-v[verbose mode]' \
++		'-x[display offset and length of packet in HEX and ASCII]:offset [ , length]' \
++		'*:expression:(($exp))' \
++}
++
++_snoop "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_svcadm zsh-4.3.17/Completion/Solaris/Command/_svcadm
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_svcadm	2010-06-06 17:37:17.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_svcadm	2012-03-06 20:11:30.406146954 +0000
+@@ -8,7 +8,7 @@
+ 
+ 	if [[ $service == "svcadm" ]]; then
+ 		_arguments -C -A "-*" \
+-			'-v[print actions verbosely]' \
++			'-v[Print actions verbosely]' \
+ 			'*::command:->subcmd' && return 0
+ 
+ 		if (( CURRENT == 1 )); then
+@@ -21,24 +21,24 @@
+ 
+ 	case $service in
+ 	(enable)
+-		_arguments \
+-			'-r[recursively enable dependencies]' \
+-			'-s[wait for service to come online]' \
+-			'-t[state change is temporary]' \
++		_arguments -A "-*" \
++			'-r[Recursively enable dependencies]' \
++			'-s[Wait for service to come online]' \
++			'-t[State change is temporary]' \
+ 			'*:instance FMRI:_svcs_fmri -i'
+ 		;;
+ 
+ 	(disable)
+-		_arguments \
+-			'-s[wait for service to become disabled]' \
+-			'-t[state change is temporary]' \
++		_arguments -A "-*" \
++			'-s[Wait for service to become disabled]' \
++			'-t[State change is temporary]' \
+ 			'*:instance FMRI:_svcs_fmri -i'
+ 		;;
+ 
+ 	(mark)
+-		_arguments \
+-			'-I[change state immediately]' \
+-			'-t[state change is temporary]' \
++		_arguments -A "-*" \
++			'-I[Change state immediately]' \
++			'-t[State change is temporary]' \
+ 			':state:(degraded maintenance)' \
+ 			':instance FMRI:_svcs_fmri -i'
+ 		;;
+@@ -49,8 +49,8 @@
+ 		;;
+ 
+ 	(milestone)
+-		_arguments \
+-			'-d[make milestone the default]' \
++		_arguments -A "-*" \
++			'-d[Make milestone the default]' \
+ 			'*:milestone FMRI:_svcs_fmri -m'
+ 		;;
+ 
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_zlogin zsh-4.3.17/Completion/Solaris/Command/_zlogin
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_zlogin	2010-06-06 17:37:17.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_zlogin	2012-03-06 20:11:30.970690397 +0000
+@@ -1,16 +1,19 @@
+ #compdef zlogin
++# Synced with the Nevada build 162 man page
+ 
+ _zlogin() {
+ 	_arguments -s \
+-		'-E[disable escape character]' \
+-		'-e[specify escape character]:character:' \
+-		'-l[specify username]:username:_users' \
+-		':zonename:' \
++		'-E[Disable escape character]' \
++		'-e[Specify escape character]:character:' \
++		'-l[Specify username]:username:_users' \
++		':zonename:_zones' \
+ 		- set1 \
+-		'-C[connect to zone console]' \
++		'-C[Connect to zone console]' \
++		'-d[Disconnect on zone halt]' \
+ 		- set2 \
+-		'-S["safe" login mode]' \
+-		':utility'
++		'-S["Safe" login mode]' \
++		'(-):command name: _command_names -e' \
++		'*::utility: _normal'
+ }
+ 
+ _zlogin "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Command/_zoneadm zsh-4.3.17/Completion/Solaris/Command/_zoneadm
+--- zsh-4.3.17.orig/Completion/Solaris/Command/_zoneadm	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Command/_zoneadm	2012-03-06 20:11:32.198395257 +0000
+@@ -0,0 +1,147 @@
++#compdef zoneadm
++# Synced with the Solaris 11 build 168 man page
++
++_zoneadm_bootargs() {
++	# This is a subset of the arguments to kernel(1M)
++	_arguments -A "-*" \
++		'-i[Alternate init]:path:_path_files' \
++		'-m[SMF options]:option:_values "SMF option" debug milestone= quiet verbose' \
++		'-s[Boot single user]'
++}
++
++_zoneadm() {
++	local context state line expl
++	typeset -A opt_args
++	local -a subcmds fields
++	local -a solaris_attach solaris_install
++	local -a solaris10_attach solaris10_install
++	local brand brand_args
++
++	subcmds=(
++		attach boot clone detach halt help install list mark move
++		ready reboot uninstall verify
++	)
++
++	solaris_attach=(
++		'(-d)-a[Path to archive]:path:_path_files'
++		'(-a)-d[Path to zonepath]:directory:_path_files -/'
++	)
++	solaris_install=(
++		- set1
++		'-c[Path to certificate]:path:_path_files'
++		'*-e[Additional package]:package:'
++		'-k[Path to key]:path:_path_files'
++		'-P[Publisher/URI mapping]:publisher:'
++		- set2
++		'(-d)-a[Path to archive]:path:_path_files'
++		'(-a)-d[Path to installed zone root]:directory:path_files -/'
++		'-p[Preserve system configuration]'
++		'-s[Install silently]'
++		'-u[Unconfigure after installation]'
++		'-v[Verbose]'
++	)
++
++	solaris10_attach=(
++		'(-d)-a[Path to archive]:path:_path_files'
++		'(-a)-d[Path to zonepath]:directory:_path_files -/'
++	)
++	solaris10_install=(
++		'(-d)-a[Path to archive]:path:_path_files'
++		'(-a)-d[Path to installed zone root]:directory:path_files -/'
++		'-p[Preserve system configuration]'
++		'-s[Install silently]'
++		'-u[Unconfigure after installation]'
++		'-v[Verbose]'
++	)
++
++	if [[ $service == "zoneadm" ]]; then
++		_arguments -C -A "-*" \
++			'-R[Alternate root]:alternate root:_path_files -/' \
++			'-u[Zone UUID]:zone UUID: ' \
++			'-z[Zone name]:zone name:_zones' \
++			'*::command:->subcmd' && return 0
++
++		if (( CURRENT == 1 )); then
++			_wanted commands expl "zoneadm subcommand" compadd -a subcmds
++			return
++		fi
++		service="$words[1]"
++		curcontext="${curcontext%:*}=$service:"
++	fi
++
++	case $service in
++	("boot")
++		# Completion of boot arguments after -- is kinda hacky.
++		_arguments -S -A "-*" \
++			'-w[Force writable root]' \
++			'-W[Boot in transient r/w mode]' \
++			'*:boot options:_zoneadm_bootargs'
++		;;
++
++	("clone")
++		_arguments -A "-*" \
++			'-m[Clone mode]:mode:_values "mode" copy' \
++			'-s[Source snapshot]:snapshot:_zfs_dataset -t snap' \
++			':source zone:_zones'
++		;;
++
++	("attach")
++		if [[ -n $opt_args[-z] ]]; then
++			brand=${"${(@s,:,)$(zoneadm -z $opt_args[-z] list -p)}"[6]}
++			brand_args=${brand}_attach
++		fi
++		_arguments -A "-*" \
++			'-F[Force attach]' \
++			'-n[Path to zone manifest]:path to zone manifest:_path_files' \
++			'-u[Update on attach]' \
++			${(P)brand_args}
++		;;
++
++	("detach")
++		_arguments -A "-*" \
++			'-n[Dry run]'
++		;;
++
++	("halt"|"ready"|"reboot"|"verify")
++		;;
++
++
++	("help")
++		_wanted commands expl "zoneadm subcommand" compadd -a subcmds
++		;;
++
++	("install")
++		if [[ -n $opt_args[-z] ]]; then
++			brand=${"${(@s,:,)$(zoneadm -z $opt_args[-z] list -p)}"[6]}
++			brand_args=${brand}_install
++		fi
++		_arguments -A "-*" \
++			${(P)brand_args}
++		;;
++
++	("list")
++		_arguments -A "-*" \
++			'-c[Configured zones]' \
++			'-i[Installed zones]' \
++			'(-v)-p[Parsable output]' \
++			'(-p)-v[Verbose mode]'
++		;;
++
++	("mark")
++		_arguments -A "-*" \
++			':"incomplete":_values \"incomplete\" incomplete'
++		;;
++
++	("move")
++		_arguments -A "-*" \
++			':new zone path:_path_files -/'
++		;;
++
++	("uninstall")
++		_arguments -A "-*" \
++			'-F[Force]'
++		;;
++	esac
++}
++
++_zoneadm "$@"
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Type/_svcs_fmri zsh-4.3.17/Completion/Solaris/Type/_svcs_fmri
+--- zsh-4.3.17.orig/Completion/Solaris/Type/_svcs_fmri	2008-07-21 19:15:25.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Type/_svcs_fmri	2012-03-06 20:11:58.082295046 +0000
+@@ -22,39 +22,52 @@
+ 		# Grab all FMRIs that have a word beginning with $PREFIX,
+ 		# making sure not to return the portion of the FMRI before
+ 		# $PREFIX.  Use the cache if it exists and the user wants to.
+-		if ( [[ $#_smf_fmris -eq 0 ]] || _cache_invalid $cache_id ) && ! _retrieve_cache $cache_id; then
++		if ( [[ $#_smf_fmris -eq 0 ]] || _cache_invalid $cache_id ) \
++			&& ! _retrieve_cache $cache_id; then
+ 			_smf_fmris=( ${(f)"$(svcs -a -H -o fmri)"} )
+ 			_store_cache $cache_id _smf_fmris
+ 		fi
+-		# Each element of the array is removed which doesn't match (^|.*/)$PREFIX.*
++		# Each element of the array is removed which doesn't match
++		# (^|.*/)$PREFIX.*
+ 		fmri_abbrevs=( ${(M)_smf_fmris:#((#s)|*[/:])$PREFIX*} )
+ 
+ 		# Go through the remaining elements and remove the characters
+ 		# in front of $PREFIX.
+-		for i in {1..$#fmri_abbrevs}; do
++		for ((i = 1; i <= $#fmri_abbrevs; i++ )); do
+ 			# Either one of these will work, but they're too
+ 			# greedy, preventing multiple matches below.
+ 			fmri_abbrevs[i]=${${fmri_abbrevs[i]}/((#s)|*[\/:])(#b)($PREFIX*)/$match[1]}
+ 			#fmri_abbrevs[i]=${${(M)${fmri_abbrevs[i]}:#(#b)((#s)|*/)$PREFIX*}#$match[1]}
+ 		done
+ 
+-		# Remove the "default" instance identifier if we can (not for
+-		# svccfg)
+-		# TODO Can't remove default when there are other instances.
++		# Remove the "default" instance identifier if it's the only
++		# instance for a given service (not for svccfg).
+ 		if [[ $type == "-i" ]]; then
+-			fmri_abbrevs=( ${fmri_abbrevs//:default(#e)/} )
++			local -a svcs insts nabbrevs
++			local s
++			svcs=( ${(u)fmri_abbrevs%:*} )
++			for s in $svcs; do
++				insts=( ${(@M)fmri_abbrevs:#$s:*} )
++				if [[ $#insts -eq 1 && $insts[1] == *":default" ]]; then
++					nabbrevs=($nabbrevs ${insts//:default})
++				elif [[ $#insts -eq 0 ]]; then
++					# Turns out we're completing the
++					# instance name.
++					nabbrevs=($nabbrevs $s)
++				else
++					nabbrevs=($nabbrevs $insts)
++				fi
++			done
++			fmri_abbrevs=( $nabbrevs )
+ 		fi
+ 
+-		# Search for a second match within each result.
+-		# for m in $fmri_abbrevs; do
+-		# 	if [[ -n ${(M)m:#((#s)|*/)$PREFIX*/$PREFIX*} ]]; then
+-		# 		fmri_abbrevs=( $fmri_abbrevs ${${(SMI:1:)m%%/$PREFIX*}#/} )
+-		# 	fi
+-		# done
+-
+-		# After playing with _multi_parts, I'm not sure it's actually that useful.
+-		# _wanted fmri expl "full or unambiguously abbreviated FMRIs" _multi_parts / fmri_abbrevs
+-		_wanted fmri expl "full or unambiguously abbreviated FMRIs" compadd $fmri_abbrevs
++		# After playing with _multi_parts, I'm not sure it's actually
++		# that useful.
++		# _wanted fmri expl "full or unambiguously abbreviated FMRIs" \
++		# 	_multi_parts -i / fmri_abbrevs
++
++		_wanted fmri expl "full or unambiguously abbreviated FMRIs" \
++			compadd $fmri_abbrevs
+ 		;;
+ 
+ 	(-m)
+@@ -64,7 +77,8 @@
+ 
+ 	(-r)
+ 		# TODO: need some way to pick out only restarters
+-		_wanted fmri expl "restarter FMRIs" compadd master svc:/network/inetd:default
++		_wanted fmri expl "restarter FMRIs" \
++			compadd master svc:/network/inetd:default
+ 		;;
+ 
+ 	(*)
+diff -ruN zsh-4.3.17.orig/Completion/Solaris/Type/_zones zsh-4.3.17/Completion/Solaris/Type/_zones
+--- zsh-4.3.17.orig/Completion/Solaris/Type/_zones	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Solaris/Type/_zones	2012-03-06 20:11:58.688695752 +0000
+@@ -0,0 +1,13 @@
++#autoload
++
++local -a type typearg
++local zonelist
++
++zparseopts -D -E -a type t+:
++
++[[ -n $type[(r)c] ]] && typearg=-c
++[[ -n $type[(r)i] ]] && typearg=-i
++
++zonelist=( ${="$(zoneadm list $typearg)"} )
++
++compadd "$@" - $zonelist
+diff -ruN zsh-4.3.17.orig/Completion/Unix/Command/_zfs zsh-4.3.17/Completion/Unix/Command/_zfs
+--- zsh-4.3.17.orig/Completion/Unix/Command/_zfs	2010-06-06 17:37:17.000000000 +0000
++++ zsh-4.3.17/Completion/Unix/Command/_zfs	2012-03-06 20:12:31.316279862 +0000
+@@ -1,55 +1,99 @@
+ #compdef zfs
++# Synced with the Nevada build 170 man page
+ 
+ _zfs() {
+ 	local context state line expl
+ 	typeset -A opt_args
+-	local -a subcmds rw_properties rw_propnames ro_properties
++	local -a subcmds rw_properties rw_propnames ro_properties create_properties
++	local -a difffields delegatable_perms
+ 
+ 	subcmds=(
+ 		"create" "destroy" "clone" "promote" "rename" "snapshot"
+ 		"rollback" "list" "set" "get" "inherit" "mount" "unmount"
+ 		"share" "unshare" "send" "receive" "allow" "unallow"
+-		"upgrade"
++		"upgrade" "userspace" "groupspace" "hold" "holds" "release"
++		"diff" "key" "help"
+ 	)
+ 
++	# TODO: userused@ and groupused@ could have more extensive handling
+ 	ro_properties=(
+ 		"name" "type" "creation" "used" "available" "referenced"
+-		"compressratio" "mounted" "origin"
++		"compressratio" "mounted" "origin" "usedbychildren"
++		"usedbydataset" "usedbyrefreservation" "usedbysnapshots"
++		"defer_destroy" "userused@" "userrefs" "groupused@"
++		"keystatus" "rekeydate"
+ 	)
+ 
+ 	# TODO: Be cleverer about what values can be set.  Is there any way to
+ 	# set the sorting for *size properties to false by default?
+ 	rw_properties=(
+-		"aclinherit:value:(discard noallow secure passthrough)"
+-		"aclmode:value:(discard groupmask passthrough)"
++		"aclinherit:value:(discard noallow restricted passthrough passthrough-x)"
++		"aclmode:value:(discard mask passthrough)"
+ 		"atime:value:(on off)"
+-		"canmount:value:(on off)"
+-		"checksum:value:(on off fletcher2 fletcher4 sha256)"
+-		"compression:value:(on off lzjb gzip gzip-{1..9})"
++		"canmount:value:(on off noauto)"
++		"checksum:value:(on off fletcher2 fletcher4 sha256 sha256+mac)"
++		"compression:value:(on off lzjb gzip gzip-{1..9} zle)"
+ 		"copies:value:(1 2 3)"
++		"dedup:value:(on off verify sha256 sha256,verify)"
+ 		"devices:value:(on off)"
++		"encryption:value:(off on aes128-ccm aes-192-ccm aes-256-ccm aes-128-gcm aes-192-gcm aes-256-gcm)"
+ 		"exec:value:(on off)"
+-		"mountpoint:value:{if [[ -prefix /* ]]; then _path_files -/; else _wanted mountpoints expl 'mountpoint (type \"/\" to start completing paths)' compadd legacy none; fi}"
++		"groupquota@:value:" # TODO: complete group=size|none
++		"keysource:value:_zfs_keysource_props"
++		"logbias:value:(latency throughput)"
++		"mlslabel:value:(none)" # TODO: list sensitivity labels
++		"mountpoint:path, 'legacy', or 'none':{if [[ -prefix /* ]]; then _path_files -/; else _wanted mountpoints expl 'mountpoint (type \"/\" to start completing paths)' compadd legacy none; fi}"
++		"nbmand:value:(on off)"
++		"primarycache:value:(all none metadata)"
+ 		"quota:number or 'none':{if [[ -prefix [0-9]## ]]; then _message -e 'number'; elif [[ $PREFIX == quota= ]]; then _wanted none expl 'number or none' compadd none; else _wanted none expl 'quota' compadd none; fi}"
+ 		"readonly:value:(on off)"
+-		"recordsize:value:(512 1K 2K 4K 8K 16K 32K 64K 128K)"
+-		"reservation:value:" # <size>, "none"
++		"recordsize:value:(512 1K 2K 4K 8K 16K 32K 64K 128K 256K 512K 1M)"
++		"refquota:number or 'none':{if [[ -prefix [0-9]## ]]; then _message -e 'number'; elif [[ $PREFIX == refquota= ]]; then _wanted none expl 'number or none' compadd none; else _wanted none expl 'refquota' compadd none; fi}"
++		"refreservation:number or 'none':{if [[ -prefix [0-9]## ]]; then _message -e 'number'; elif [[ $PREFIX == refreservation= ]]; then _wanted none expl 'number or none' compadd none; else _wanted none expl 'refreservation' compadd none; fi}"
++		"reservation:value:{if [[ -prefix [0-9]## ]]; then _message -e 'number'; elif [[ $PREFIX == reservation= ]]; then _wanted none expl 'number or none' compadd none; else _wanted none expl 'reservation' compadd none; fi}"
++		"rstchown:value:(on off)"
++		"secondarycache:value:(all none metadata)"
+ 		"setuid:value:(on off)"
+-		"shareiscsi:value:(on off)" # or "type=<type>"
+-		"sharenfs:value:(on off)" # or share(1M) options
++		"shadow:value:" # TODO: complete URI|none
++		"share:share properties:"
++		"sharenfs:value:(on off)"
++		"sharesmb:value:(on off)"
+ 		"snapdir:value:(hidden visible)"
+-		"version:value:(1 2 current)"
+-		"volblocksize:value:(512 1K 2K 4K 8K 16K 32K 64K 128K)"
++		"sync:value:(standard always disabled)"
++		"userquota@:value:" # TODO: complete user=size|none
++		"version:value:(1 2 3 4 current)"
+ 		"volsize:value:" # <size>
++		"vscan:value:(on off)"
+ 		"xattr:value:(on off)"
+ 		"zoned:value:(on off)"
+ 	)
+ 
++	create_properties=(
++		$rw_properties
++		"casesensitivity:value:(sensitive insensitive mixed)"
++		"normalization:value:(none formC formD formKC formKD)"
++		"utf8only:value:(on off)"
++		"volblocksize:value:(512 1K 2K 4K 8K 16K 32K 64K 128K 256K 512K 1M)"
++	)
++
++	delegatable_perms=(
++		"allow" "clone" "create" "destroy" "diff" "hold" "key"
++		"keychange" "mount" "promote" "receive" "release" "rename"
++		"rollback" "send" "share" "snapshot"
++		"groupused" "userused" "userprop"
++		${create_properties%%:*}
++	)
++
+ 	rw_propnames=( ${rw_properties%%:*} )
+ 
++	difffields=(
++		object parent size links linkschange name oldname user group
++		ctime mtime atime crtime
++	)
++
+ 	if [[ $service == "zfs" ]]; then
+ 		_arguments -C -A "-*" \
+-			'-\?[help]' \
++			'-\?[Help]' \
+ 			'*::command:->subcmd' && return 0
+ 
+ 		if (( CURRENT == 1 )); then
+@@ -63,43 +107,50 @@
+ 	case $service in
+ 	("create")
+ 		_arguments -A "-*" \
+-			'-p[create parent datasets]' \
+-			'-o[set initial properties]:property:_values -s , "property" $rw_properties' \
++			'-p[Create parent datasets]' \
++			'-o[Set initial properties]:property:_values -s , "property" $create_properties' \
+ 			- set1 \
+ 			':filesystem:' \
+ 			- set2 \
+-			'-s[create sparse volume]' \
+-			'-b[set volblocksize]:blocksize:' \
+-			'-V[set size]:size:' \
++			'-s[Create sparse volume]' \
++			'-b[Set volblocksize]:blocksize:' \
++			'-V[Set size]:size:' \
+ 			':volume:'
+ 		;;
+ 
+ 	("destroy")
+ 		_arguments -A "-*" \
+-			'-r[recursively destroy all children]' \
+-			'-R[recursively destroy all dependents]' \
+-			'-f[force unmounts]' \
+-			':filesystem/volume/snapshot:_zfs_dataset'
++			'-r[Recursively destroy all children]' \
++			'-R[Recursively destroy all dependents]' \
++			- set1 \
++			'-d[delete or mark deferred]' \
++			':snapshot:_zfs_dataset -t snap' \
++			- set2 \
++			'-f[Force unmounts]' \
++			':filesystem/volume/snapshot:_zfs_dataset -t fs -t vol'
+ 		;;
+ 
+ 	("snapshot")
+ 		_arguments -A "-*" \
+-			'-r[recursively snapshot all descendant datasets]' \
++			'-r[Recursively snapshot all descendant datasets]' \
++			'-o[Set property]:property:_values -s , "property" $create_properties' \
+ 			':filesystem/volume:_zfs_dataset -t fs -t vol -S@'
+ 		;;
+ 
+ 	("rollback")
+ 		_arguments -A "-*" \
+-			'-r[recursively destroy more recent snapshots]' \
+-			'-R[recursively destroy more recent snapshots and clones]' \
+-			'-f[force unmounts]' \
++			'-r[Recursively destroy more recent snapshots]' \
++			'-R[Recursively destroy more recent snapshots and clones]' \
++			'-f[Force unmounts]' \
+ 			':snapshot:_zfs_dataset -t snap'
+ 		;;
+ 
+ 	("clone")
+ 		# XXX needs to bail if there are no snapshots
+ 		_arguments -A "-*" \
+-			'-p[create parent datasets]' \
++			'-p[Create parent datasets]' \
++			'-K[Create encryption key]' \
++			'-o[Set property]:property:_values -s , "property" $create_properties' \
+ 			':snapshot:_zfs_dataset -t snap' \
+ 			':filesystem/volume:'
+ 		;;
+@@ -113,74 +164,91 @@
+ 	("rename")
+ 		_arguments -A "-*" \
+ 			- set1 \
+-			'-p[create parent datasets]' \
++			'-p[Create parent datasets]' \
+ 			':filesystem/volume/snapshot:_zfs_dataset' \
+ 			':filesystem/volume/snapshot:' \
+ 			- set2 \
+-			'-r[recursively rename snapshots of all descendent datasets]' \
++			'-r[Recursively rename snapshots of all descendent datasets]' \
+ 			':snapshot:_zfs_dataset -t snap' \
+ 			':snapshot:'
+ 		;;
+ 
+ 	("list")
+ 		_arguments -A "-*" \
+-			'-r[recursively display children]' \
+-			'-H[scripting mode]' \
+-			'-o[properties to list]:property:_values -s , "property" $ro_properties $rw_propnames' \
+-			'*-s[sort key (ascending)]:property:_values "property" $ro_properties $rw_propnames' \
+-			'*-S[sort key (descending)]:property:_values "property" $ro_properties $rw_propnames' \
+-			'-t[dataset types to list]:dataset type:_values -s , "dataset type" filesystem snapshot volume' \
+-			'*:filesystem/volume/snapshot:_zfs_dataset'
++			'-r[Recursively display children]' \
++			'-H[Scripting mode]' \
++			'-d[Depth]:value:' \
++			'-o[Properties to list]:property:_values -s , "property" $ro_properties $rw_propnames' \
++			'*-s[Sort key (ascending)]:property:_values "property" $ro_properties $rw_propnames' \
++			'*-S[Sort key (descending)]:property:_values "property" $ro_properties $rw_propnames' \
++			'-t[Dataset types to list]:dataset type:_values -s , "dataset type" filesystem snapshot volume' \
++			'*:filesystem/volume/snapshot/path:_zfs_dataset -p'
+ 		;;
+ 
+ 	("set")
+ 		_arguments \
++			'-r[Recursively apply value]' \
+ 			':property:_values -s , "property" $rw_properties' \
+ 			'*:filesystem/volume:_zfs_dataset -t fs -t vol'
+ 		;;
+ 
+ 	("get")
+ 		_arguments -A "-*" \
+-			"-r[recursively display children's properties]" \
+-			'-H[scripting mode]' \
+-			'-p[display numbers exactly]' \
+-			'-s[specify sources]:source:_values -s , "source" local default inherited temporary none' \
+-			'-o[specify fields]:field:_values -s , "field" name property value source' \
++			"-r[Recursively display children's properties]" \
++			'-d[Depth]:value:' \
++			'-H[Scripting mode]' \
++			'-p[Display numbers exactly]' \
++			'-s[Specify sources]:source:_values -s , "source" local default inherited temporary none' \
++			'-o[Specify fields]:field:_values -s , "field" name property value source' \
+ 			':property:_values -s , "property" $ro_properties $rw_propnames all' \
+ 			'*:filesystem/volume/snapshot:_zfs_dataset'
+ 		;;
+ 
+ 	("inherit")
+ 		_arguments -A "-*" \
+-			'-r[recursively inherit property for all children]' \
++			'-r[Recursively inherit property for all children]' \
++			'-S[Revert to received property value]' \
+ 			':property:_values -s , "property" $ro_properties $rw_properties' \
+ 			'*:filesystem/volume:_zfs_dataset -t fs -t vol'
+ 		;;
+ 
++	("userspace"|"groupspace")
++		_arguments -A "-*" \
++			'-n[Print numeric ID]' \
++			'-i[Translate SID to POSIX ID]' \
++			'-H[Tab-delimited output with no headers]' \
++			'-p[Parseable mode]' \
++			'-o[Properties to list]:property:_values -s , "property" type name used quota' \
++			'*-s[Sort key (ascending)]:property:_values "property" type name used quota' \
++			'*-S[Sort key (descending)]:property:_values "property" type name used quota' \
++			'-t[Types to list]:type:_values -s , "type" all posixuser smbuser posixgroup smbgroup' \
++			'*:filesystem/volume/snapshot:_zfs_dataset'
++		;;
++
+ 	("mount")
+ 		_arguments -A "-*" \
+-			'-o[mount options]:mount options:_values -s , "option" {,no}{devices,exec,setuid} ro rw' \
+-			'-O[overlay mount]' \
+-			'-v[report mount progress]' \
++			'-o[Mount options]:mount options:_values -s , "option" {,no}{devices,exec,setuid} ro rw' \
++			'-O[Overlay mount]' \
++			'-v[Report mount progress]' \
+ 			- set1 \
+ 			':filesystem:_zfs_dataset -t fs' \
+ 			- set2 \
+-			'-a[mount all available ZFS filesystems]'
++			'-a[Mount all available ZFS filesystems]'
+ 		;;
+ 
+ 	("unmount")
+ 		_arguments -A "-*" \
+ 			- set1 \
+-			'-f[force unmount]' \
++			'-f[Force unmount]' \
+ 			':filesystem:_zfs_dataset -t fs -t mtpt' \
+ 			- set2 \
+-			'-a[unmount all ZFS filesystems]'
++			'-a[Unmount all ZFS filesystems]'
+ 		;;
+ 
+ 	("share")
+ 		_arguments -A "-*" \
+ 			- set1 \
+-			'-a[share all available ZFS filesystems]' \
++			'-a[Share all available ZFS filesystems]' \
+ 			- set2 \
+ 			':filesystem:_zfs_dataset -t fs'
+ 		;;
+@@ -188,45 +256,165 @@
+ 	("unshare")
+ 		_arguments -A "-*" \
+ 			- set1 \
+-			'-a[unshare all shared ZFS filesystems]' \
++			'-a[Unshare all shared ZFS filesystems]' \
+ 			- set2 \
+-			'-F[force unshare]' \
+ 			':filesystem:_zfs_dataset -t fs -t mtpt'
+ 		;;
+ 
+ 	("send")
+ 		_arguments -A "-*" \
+-			'-i[generate an incremental stream]:snapshot:_zfs_dataset -t snap' \
++			'-b' \
++			'-i[Generate an incremental stream]:snapshot:_zfs_dataset -t snap' \
++			'-D[Perform dedup processing]' \
++			'-p[Send properties]' \
++			'-v[Verbose]' \
++			- set1 \
++			'-I[Generate an incremental stream with intermediary snapshots]:snapshot:_zfs_dataset -t snap' \
++			'-R[Generate a replication stream package]' \
++			':snapshot:_zfs_dataset -t snap' \
++			- set2 \
++			'-c[Create a self-contained stream]' \
++			'-r[Generate a recursive stream package]' \
+ 			':snapshot:_zfs_dataset -t snap'
+ 		;;
+ 
+ 	("receive")
+ 		_arguments -A "-*" \
+-			'-v[verbose]' \
+-			'-n[do not receive the stream]' \
+-			'-F[force a rollback if necessary]' \
++			'-v[Verbose]' \
++			'-n[Do not receive the stream]' \
++			'-F[Force a rollback if necessary]' \
++			'-u[Filesystem is not mounted]' \
++			'-o[Include property change in the stream]::' \
++			'-x[Exclude property change from the stream]:property:' \
+ 			- set1 \
+ 			':filesystem/volume/snapshot:_zfs_dataset' \
+ 			- set2 \
+-			'-d[set path prefix]:filesystem:_zfs_dataset -t fs'
++			'(-e)-d[Set path prefix from stream, excluding only pool name]' \
++			'(-d)-e[Set path prefix from stream, using last path element]' \
++			'-:filesystem:_zfs_dataset -t fs'
+ 		;;
+ 
+-	("allow"|"unallow")
+-		_message "unimplemented zfs subcommand: $service"
++	("allow")
++		_arguments -A "-*" \
++			- set1 \
++			':filesystem/volume:_zfs_dataset -t fs -t vol' \
++			- set2 \
++			'(-g)-u[User]:user:_users' \
++			'(-u)-g[Group]:group:_groups' \
++			'-l[Allow for named dataset]' \
++			'-d[Allow for descendent datasets]' \
++			':permissions or sets:_values -s , "permission or set" $delegatable_perms' \
++			':filesystem/volume:_zfs_dataset -t fs -t vol' \
++			- set3 \
++			'-e[Everyone]' \
++			'-l[Allow for named dataset]' \
++			'-d[Allow for descendent datasets]' \
++			':permissions or sets:_values -s , "permission or set" $delegatable_perms' \
++			':filesystem/volume:_zfs_dataset -t fs -t vol' \
++			- set4 \
++			'-c[Create-time permissions]' \
++			':permissions or sets:_values -s , "permission or set" $delegatable_perms' \
++			':filesystem/volume:_zfs_dataset -t fs -t vol' \
++			- set5 \
++			'-s[Define or modify permission sets]' \
++			':setname:' \
++			':permissions or sets:_values -s , "permission or set" $delegatable_perms' \
++			':filesystem/volume:_zfs_dataset -t fs -t vol'
++		;;
++
++	("unallow")
++		_arguments -A "-*" \
++			'-r[Recursive removal]' \
++			- set1 \
++			'-s[Remove permissions from or delete a permission set]:permission set:' \
++			':permissions or sets:_values -s , "permission or set" $delegatable_perms' \
++			':filesystem/volume:_zfs_dataset -t fs -t vol' \
++			- set2 \
++			'(-g)-u[User]:user:_users' \
++			'(-u)-g[Group]:group:_groups' \
++			'-l[Allow for named dataset]' \
++			'-d[Allow for descendent datasets]' \
++			':permissions or sets:_values -s , "permission or set" $delegatable_perms' \
++			':filesystem/volume:_zfs_dataset -t fs -t vol' \
++			- set3 \
++			'-e[Everyone]' \
++			'-l[Allow for named dataset]' \
++			'-d[Allow for descendent datasets]' \
++			':permissions or sets:_values -s , "permission or set" $delegatable_perms' \
++			':filesystem/volume:_zfs_dataset -t fs -t vol' \
++			- set4 \
++			'-c[Create-time permissions]' \
++			':permissions or sets:_values -s , "permission or set" $delegatable_perms' \
++			':filesystem/volume:_zfs_dataset -t fs -t vol'
+ 		;;
+ 
+ 	("upgrade")
+ 		_arguments -A "-*" \
+ 			- set1 \
+-			'-v[verbose]' \
++			'-v[Verbose]' \
+ 			- set2 \
+-			'-a[upgrade all filesystems on all pools]' \
+-			'-r[upgrade descendent filesystems, too]' \
+-			'-V[upgrade to specified version]:version:(1 2)' \
++			'-a[Upgrade all filesystems on all pools]' \
++			'-r[Upgrade descendent filesystems, too]' \
++			'-V[Upgrade to specified version]:version:(1 2)' \
+ 			- set3 \
+-			'-r[upgrade descendent filesystems, too]' \
+-			'-V[upgrade to specified version]:version:(1 2)' \
+-			':filesystem:_zfs_dataset -t fs' \
++			'-r[Upgrade descendent filesystems, too]' \
++			'-V[Upgrade to specified version]:version:(1 2)' \
++			':filesystem:_zfs_dataset -t fs'
++		;;
++
++	("hold")
++		_arguments -A "-*" \
++			'-r[Apply hold recursively]' \
++			':tag:' \
++			':snapshot:_zfs_dataset -t snap'
++		;;
++
++	("holds")
++		_arguments -A "-*" \
++			'-r[List holds recursively]' \
++			':snapshot:_zfs_dataset -t snap'
++		;;
++
++	("release")
++		_arguments -A "-*" \
++			'-r[Release holds recursively]' \
++			':tag:' \
++			':snapshot:_zfs_dataset -t snap'
++		;;
++
++	("diff")
++		_arguments -A "-*" \
++			'-F[Add column for filetype character]' \
++			'-H[Parseable output]' \
++			'-e[Only show new and changed files]' \
++			'*-o[Show fields]:field:_values "field" $difffields' \
++			'-t[Add column for ctime]' \
++			- set1 \
++			':snapshot:_zfs_dataset -t snap' \
++			':snapshot or filesystem:_zfs_dataset -t snap -t fs' \
++			- set2 \
++			'-E[Show difference from empty]' \
++			':snapshot or filesystem:_zfs_dataset -t snap -t fs'
++		;;
++
++	("key")
++		_arguments -A "-*" \
++			- set1 \
++			'-a[Apply to all datasets in all pools]' \
++			'(-u -K -f)-l[Load the encryption key]' \
++			'(-l -K)-u[Unload the encryption key]' \
++			'(-l -u -f)-K[Create a new data encryption key]' \
++			'(-l -K)-f[Unmount the dataset before unloading the encryption key]' \
++			'-r[Apply recursively]' \
++			':filesystem or volume:_zfs_dataset -t fs -t vol' \
++			- set2 \
++			'-c[Change the encryption key]' \
++			'-o[Change a property]:property:_zfs_keysource_props' \
++			':filesystem or volume:_zfs_dataset -t fs -t vol'
++		;;
++
++	("help")
++		compadd property $subcmds $ro_properties ${rw_properties%%:*}
+ 		;;
+ 
+ 	(*)
+diff -ruN zsh-4.3.17.orig/Completion/Unix/Command/_zpool zsh-4.3.17/Completion/Unix/Command/_zpool
+--- zsh-4.3.17.orig/Completion/Unix/Command/_zpool	2010-06-06 17:37:17.000000000 +0000
++++ zsh-4.3.17/Completion/Unix/Command/_zpool	2012-03-06 20:12:32.023422264 +0000
+@@ -1,41 +1,91 @@
+ #compdef zpool
++# Synced with the Nevada build 168 man page
+ 
+ _zpool() {
+-	local -a subcmds fields
++	local context state line expl
++	local -a subcmds fields ro_props rw_props versions create_properties_dataset
+ 
+ 	subcmds=(
+-		  create destroy add remove list iostat status online
+-		  offline clear attach detach replace scrub import export 
+-		  upgrade history get set
++		create destroy add remove list iostat status online
++		offline clear attach detach replace scrub import export
++		upgrade history get set split
+ 	)
+ 
+-	fields=(
+-		name\:"Pool name" size\:"Total size" used\:"Space used"
+-		available\:"Space available" capacity\:"Space used (percentage)"
+-		health\:"Health status"
++	versions=(
++		${${${(M)"${(f)$(zpool upgrade -v)}":#[[:space:]]#<->*}##[[:space:]]}%%[[:space:]]*}
+ 	)
+ 
+-	properties=(
+-		"bootfs:value:"
+-		"autoreplace:value:(on off)"
+-		"delegation:value:(on off)"
++	ro_props=(
++		"all[All properties]"
++		"allocated[Space allocated]"
++		"capacity[Space used (percentage)]"
++		"dedupratio[Deduplication ratio]"
++		"free[Space unallocated]"
++		"guid[Unique identifier]"
++		"health[Health status]"
++		"size[Total size]"
+ 	)
+-	propnames=( ${properties%%:*} )
+ 
+-	import_properties=(
+-		xattr
+-		copies
+-		shareiscsi
+-		canmount
+-		share
+-		sharenfs
+-		userprop
+-		mount
++	rw_props=(
++		"altroot[Alternate root directory]:value:"
++		"autoexpand[Automatic pool expansion]:value:(on off)"
++		"autoreplace[Automatic device replacement]:value:(on off)"
++		"bootfs[Default bootable dataset]:value:"
++		"cachefile[Pool configuration cache file location]:value:"
++		"dedupditto[Threshold for number of copies]:value:"
++		"delegation[Delegated administration]:value:(on off)"
++		"failmode[Failure-mode behavior]:value:(wait continue panic)"
++		"listsnaps[Show snapshots in 'zfs list']:value:(on off)"
++		"version[Pool version]:version:($versions)"
++	)
++
++	fields=( ${ro_props%%:*} ${rw_props%%:*} )
++
++	create_properties_dataset=(
++		"aclinherit:value:(discard noallow restricted passthrough passthrough-x)"
++		"aclmode:value:(discard mask passthrough)"
++		"atime:value:(on off)"
++		"canmount:value:(on off noauto)"
++		"checksum:value:(on off fletcher2 fletcher4 sha256 sha256+mac)"
++		"compression:value:(on off lzjb gzip gzip-{1..9} zle)"
++		"copies:value:(1 2 3)"
++		"dedup:value:(on off verify sha256 sha256,verify)"
++		"devices:value:(on off)"
++		"encryption:value:(off on aes128-ccm aes-192-ccm aes-256-ccm aes-128-gcm aes-192-gcm aes-256-gcm)"
++		"exec:value:(on off)"
++		"groupquota@:value:" # TODO: complete group=size|none
++		"keysource:value:_zfs_keysource_props"
++		"logbias:value:(latency throughput)"
++		"mlslabel:value:(none)" # TODO: list sensitivity labels
++		"mountpoint:path, 'legacy', or 'none':{if [[ -prefix /* ]]; then _path_files -/; else _wanted mountpoints expl 'mountpoint (type \"/\" to start completing paths)' compadd legacy none; fi}"
++		"nbmand:value:(on off)"
++		"primarycache:value:(all none metadata)"
++		"quota:number or 'none':{if [[ -prefix [0-9]## ]]; then _message -e 'number'; elif [[ $PREFIX == quota= ]]; then _wanted none expl 'number or none' compadd none; else _wanted none expl 'quota' compadd none; fi}"
++		"readonly:value:(on off)"
++		"recordsize:value:(512 1K 2K 4K 8K 16K 32K 64K 128K 256K 512K 1M)"
++		"refquota:number or 'none':{if [[ -prefix [0-9]## ]]; then _message -e 'number'; elif [[ $PREFIX == refquota= ]]; then _wanted none expl 'number or none' compadd none; else _wanted none expl 'refquota' compadd none; fi}"
++		"refreservation:number or 'none':{if [[ -prefix [0-9]## ]]; then _message -e 'number'; elif [[ $PREFIX == refreservation= ]]; then _wanted none expl 'number or none' compadd none; else _wanted none expl 'refreservation' compadd none; fi}"
++		"reservation:value:{if [[ -prefix [0-9]## ]]; then _message -e 'number'; elif [[ $PREFIX == reservation= ]]; then _wanted none expl 'number or none' compadd none; else _wanted none expl 'reservation' compadd none; fi}"
++		"rstchown:value:(on off)"
++		"secondarycache:value:(all none metadata)"
++		"setuid:value:(on off)"
++		"shadow:value:" # TODO: complete URI|none
++		"share:share properties:"
++		"sharenfs:value:(on off)"
++		"sharesmb:value:(on off)"
++		"snapdir:value:(hidden visible)"
++		"sync:value:(standard always disabled)"
++		"userquota@:value:" # TODO: complete user=size|none
++		"version:value:(1 2 3 4 current)"
++		"volsize:value:" # <size>
++		"vscan:value:(on off)"
++		"xattr:value:(on off)"
++		"zoned:value:(on off)"
+ 	)
+ 
+ 	if [[ $service == "zpool" ]]; then
+ 		_arguments -C -A "-*" \
+-			'-\?[help]' \
++			'-\?[Help]' \
+ 			'*::command:->subcmd' && return 0
+ 
+ 		if (( CURRENT == 1 )); then
+@@ -48,7 +98,9 @@
+ 
+ 	case $service in
+ 	(clear)
+-		_arguments \
++		_arguments -A "-*" \
++			'-F[Discard transactions to allow pool opening]' \
++			'-n[With -F, check if discarding transactions would work' \
+ 			':pool name:_zfs_pool' \
+ 			'*:virtual device:_files'
+ 		;;
+@@ -56,38 +108,45 @@
+ 	(create)
+ 		# TODO: investigate better vdev handling
+ 		_arguments -A "-*" \
+-			'-f[force use of in-use devices]' \
+-			'-n[display configuration without creating pool]' \
+-			'-R[use alternate root]:alternate root:_files -/' \
+-			'-m[set mountpoint for root dataset]:mountpoint:' \
++			'-o[Set pool property at creation time]:property:_values -s , "property" $rw_props' \
++			'-O[Set dataset property at creation time]:property:_values -s , "property" $create_properties_dataset' \
++			'-f[Force use of in-use devices]' \
++			'-l[Display configuration in /dev/chassis location form]' \
++			'-n[Display configuration without creating pool]' \
++			'-R[Use alternate root]:alternate root:_files -/' \
++			'-m[Set mountpoint for root dataset]:mountpoint:' \
+ 			':pool name:' \
+ 			'*:virtual device:_files'
+ 		;;
+ 
+ 	(destroy)
+ 		_arguments -A "-*" \
+-			'-f[force active datasets to be unmounted]' \
++			'-f[Force active datasets to be unmounted]' \
+ 			':pool name:_zfs_pool'
+ 		;;
+ 
+ 	(add)
+ 		_arguments -A "-*" \
+-			'-f[force use of in-use devices]' \
+-			'-n[display configuration without modifying pool]' \
++			'-f[Force use of in-use devices]' \
++			'-l[Display configuration in /dev/chassis location form]' \
++			'-n[Display configuration without modifying pool]' \
+ 			':pool name:_zfs_pool' \
+ 			'*:virtual device:_files'
+ 		;;
+ 
+ 	(list)
+ 		_arguments \
+-			'-H[scripted mode]' \
+-			'-o[fields to list]:field:_values -s , "field" ${^fields/\:/[}\]' \
++			'-H[Scripted mode]' \
++			'-T[timestamp]:value:(u d)' \
++			'-o[Fields to list]:field:_values -s , "field" $fields' \
+ 			'::pool name:_zfs_pool'
+ 		;;
+ 
+ 	(iostat)
+ 		_arguments -A "-*" \
+-			'-v[verbose statistics]' \
++			'-l[Display configuration in /dev/chassis location form]' \
++			'-T[timestamp]:value:(u d)' \
++			'-v[Verbose statistics]' \
+ 			'*::pool name:_zfs_pool' \
+ 			'::interval:' \
+ 			'::count:'
+@@ -95,20 +154,23 @@
+ 
+ 	(status)
+ 		_arguments -A "-*" \
+-			'-v[verbose information]' \
+-			'-x[show only unhealthy pools]' \
++			'-l[Display configuration in /dev/chassis location form]' \
++			'-v[Verbose information]' \
++			'-x[Show only unhealthy pools]' \
++			'-T[timestamp]:value:(u d)' \
+ 			'*::pool name:_zfs_pool'
+ 		;;
+ 
+ 	(offline)
+ 		_arguments -A "-*" \
+-			'-t[offline until next reboot]' \
++			'-t[Offline until next reboot]' \
+ 			':pool name:_zfs_pool' \
+ 			'*:virtual device:_files'
+ 		;;
+ 
+ 	(online)
+ 		_arguments \
++			'-e[Expand device to use all available space]' \
+ 			':pool name:_zfs_pool' \
+ 			'*:virtual device:_files'
+ 		;;
+@@ -116,7 +178,7 @@
+ 	(attach)
+ 		# TODO: first device should choose first from existing.
+ 		_arguments \
+-			'-f[force attach, even if in use]' \
++			'-f[Force attach, even if in use]' \
+ 			':pool name:_zfs_pool' \
+ 			':virtual device:_files' \
+ 			':virtual device:_files'
+@@ -130,7 +192,7 @@
+ 
+ 	(replace)
+ 		_arguments -A "-*" \
+-			'-f[force attach, even if in use]' \
++			'-f[Force attach, even if in use]' \
+ 			':pool name:_zfs_pool' \
+ 			':virtual device:_files' \
+ 			'::virtual device:_files'
+@@ -138,57 +200,70 @@
+ 
+ 	(scrub)
+ 		_arguments -A "-*" \
+-			'-s[stop scrubbing]' \
++			'-s[Stop scrubbing]' \
+ 			'*:pool name:_zfs_pool'
+ 		;;
+ 
+ 	(export)
+ 		_arguments -A "-*" \
+-			'-f[forcefully unmount all datasets]' \
++			'-f[Forcefully unmount all datasets]' \
+ 			'*:pool name:_zfs_pool'
+ 		;;
+ 
+ 	(import)
+-		# TODO: -o should complete options
++		# TODO: -o should complete mount options, too
+ 		_arguments -A "-*" \
+-			'*-d[search for devices or files in directory]:_files -/' \
+-			'-D[destroyed pools]' \
+-			'-f[force import]' \
++			'-D[Destroyed pools]' \
++			'(-d)*-c[Use cache file]:cache file:_files' \
++			'(-c)*-d[Search for devices or files in directory]:directory:_files -/' \
++			'-f[Force import]' \
++			'-l[Display configuration in /dev/chassis location form]' \
++			'-m[Ignore missing log devices]' \
++			'-R[Alternate root]:alternate root:_files -/' \
++			'-o[Set pool or dataset property]:property:_values -s , "property" $create_properties_dataset $rw_props' \
+ 			- set1 \
+-			'-o[mount options]' \
+-			'-p[set property]:property:_values -s , "property" $import_properties' \
+-			'-R[alternate root]:_files -/' \
+ 			'*:pool name or id:_zfs_pool' \
+ 			'::new pool name:' \
+ 			- set2 \
+-			'-a[all pools]'
++			'-N[Do not mount any filesystems]' \
++			'-a[All pools]'
+ 		;;
+ 
+ 	(get)
+ 		_arguments -A "-*" \
+-			':property:_values -s , "property" $propnames all' \
++			':property:_values -s , "property" $fields' \
+ 			'*:pool name:_zfs_pool'
+ 		;;
+ 
+ 	(set)
+ 		_arguments -A "-*" \
+-			':property:_values -s , "property" $properties' \
++			':property:_values -s , "property" $rw_props' \
+ 			'*:pool name:_zfs_pool'
+ 		;;
+ 
++	(split)
++		_arguments -A "-*" \
++			'-R[Alternate root]:alternate root:_files -/' \
++			'-n[Display config without splitting]::' \
++			'-o[Set pool or dataset property]:property:_values -s , "property" $create_properties_dataset $rw_props' \
++			'*:pool name or id:_zfs_pool' \
++			'::new pool name:' \
++			'*:device:_files -/'
++
+ 	(upgrade)
+ 		_arguments -A "-*" \
+ 			- set1 \
+-			'-v[display ZFS versions and descriptions]' \
++			'-v[Display ZFS versions and descriptions]' \
+ 			- set2 \
+-			'-a[upgrade all pools]' \
++			"-V[Upgrade to given version]:version:($versions)" \
++			'-a[Upgrade all pools]' \
+ 			'*:pool name:_zfs_pool'
+ 		;;
+ 
+ 	(history)
+ 		_arguments -A "-*" \
+-			'-i[display internal events]' \
+-			'-l[long format]' \
++			'-i[Display internal events]' \
++			'-l[Long format]' \
+ 			'*:pool name:_zfs_pool'
+ 		;;
+ 
+diff -ruN zsh-4.3.17.orig/Completion/Unix/Type/_zfs_dataset zsh-4.3.17/Completion/Unix/Type/_zfs_dataset
+--- zsh-4.3.17.orig/Completion/Unix/Type/_zfs_dataset	2008-07-21 19:15:25.000000000 +0000
++++ zsh-4.3.17/Completion/Unix/Type/_zfs_dataset	2012-03-06 20:12:56.152305803 +0000
+@@ -1,13 +1,24 @@
+ #autoload
+ 
+-local -a type typearg list
++local -a type paths_allowed typearg datasetlist expl
++local expl_type
+ 
+-zparseopts -D -E -a type t+:
++zparseopts -D -E t+:=type p=paths_allowed
+ 
+ [[ -n $type[(r)fs] ]]   && typearg=( filesystem )
+ [[ -n $type[(r)vol] ]]  && typearg=( $typearg volume )
+ [[ -n $type[(r)snap] ]] && typearg=( $typearg snapshot )
+-[[ -n $typearg ]] && typearg=( -t ${(j:,:)typearg} )
++if [[ -n $typearg ]]; then
++	typearg=( -t ${(j:,:)typearg} )
++# We know we're in zfs list if paths_allowed is non-empty.
++elif [[ -n $opt_args[-t] && ${#paths_allowed} -gt 0 ]]; then
++	typearg=( -t $opt_args[-t] )
++fi
++
++if [[ ${#paths_allowed} -gt 0 && $PREFIX == /* ]]; then
++	_path_files
++	return
++fi
+ 
+ datasetlist=( ${="$(zfs list -H -o name $typearg)":#no datasets available} )
+ 
+@@ -18,5 +29,4 @@
+ 	expl_type="$expl_type/mountpoint"
+ fi
+ 
+-# compadd "$@" - $list
+-_wanted dataset expl "$expl_type" _multi_parts "$@" / datasetlist
++_wanted dataset expl "$expl_type" _multi_parts "$@" -q / datasetlist
+diff -ruN zsh-4.3.17.orig/Completion/Unix/Type/_zfs_keysource_props zsh-4.3.17/Completion/Unix/Type/_zfs_keysource_props
+--- zsh-4.3.17.orig/Completion/Unix/Type/_zfs_keysource_props	1970-01-01 00:00:00.000000000 +0000
++++ zsh-4.3.17/Completion/Unix/Type/_zfs_keysource_props	2012-03-06 20:12:56.756908309 +0000
+@@ -0,0 +1,15 @@
++#autoload
++
++local -a suf
++local expl
++
++compset -S ",*" || suf=(-S ,)
++if compset -P 1 "*,"; then
++	_alternative "zfs-keylocator-prompt:\"prompt\" locator:(prompt)" \
++		"zfs-keylocator-file:file locator:_path_files" \
++		"zfs-keylocator-pkcs11:PKCS#11 locator: " \
++		"zfs-keylocator-https:HTTPS URL locator: "
++else
++	_description format expl "keysource format"
++	compadd $suf -q "$expl[@]" "$@" raw hex passphrase
++fi
