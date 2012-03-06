@@ -1,0 +1,4 @@
+<transform dir path=".*/lib/" -> drop>
+<transform file path=".*/lib/" -> drop>
+<transform link path=".*/lib/" -> drop>
+<transform dir -> default mode 0755>
