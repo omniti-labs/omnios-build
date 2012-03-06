@@ -1,0 +1,9 @@
+set name=pkg.fmri value=release/name@0.5.11,5.11-0.151002
+set name=pkg.summary value="OmniOS Name"
+set name=pkg.description value="OmniOS Name"
+set name=description value="OmniOS /etc/release file"
+set name=info.classification value=org.opensolaris.category.2008:System/Core
+set name=variant.arch value=i386
+set name=variant.opensolaris.zone value=global value=nonglobal
+dir group=sys mode=0755 owner=root path=etc
+file etc/release group=sys mode=0444 owner=root path=etc/release
