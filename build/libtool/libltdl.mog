@@ -1,0 +1,10 @@
+<transform dir path=".*bin" -> drop>
+<transform file path=".*bin" -> drop>
+<transform link path=".*bin" -> drop>
+<transform dir path=".*share" -> drop>
+<transform file path=".*share" -> drop>
+<transform link path=".*share" -> drop>
+<transform dir path=".*include" -> drop>
+<transform file path=".*include" -> drop>
+<transform link path=".*include" -> drop>
+<transform dir -> default mode 0755>
