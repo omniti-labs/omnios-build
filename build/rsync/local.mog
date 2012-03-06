@@ -1,0 +1,2 @@
+license license=GPL3 path=LICENSE
+<transform file path=^LICENSE$ -> drop>
