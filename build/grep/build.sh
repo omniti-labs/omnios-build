@@ -10,7 +10,7 @@ PKG=text/gnu-grep    # Package name (without prefix)
 SUMMARY="$PROG - Test File Searching"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="SUNWcs"
+DEPENDS_IPS="SUNWcs library/pcre"
 
 BUILDARCH=32
 CONFIGURE_OPTS_32="--prefix=$PREFIX
