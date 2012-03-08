@@ -1,0 +1,88 @@
+--- coreutils-8.15/man/mkfifo.1.orig	Fri Jan  6 17:17:30 2012
++++ coreutils-8.15/man/mkfifo.1	Wed Mar  7 22:59:27 2012
+@@ -40,7 +40,7 @@
+ This is free software: you are free to change and redistribute it.
+ There is NO WARRANTY, to the extent permitted by law.
+ .SH "SEE ALSO"
+-mkfifo(3)
++mkfifo(3C)
+ .PP
+ The full documentation for
+ .B mkfifo
+--- coreutils-8.15/man/mktemp.1.orig	Fri Jan  6 17:17:30 2012
++++ coreutils-8.15/man/mktemp.1	Wed Mar  7 23:01:02 2012
+@@ -63,7 +63,7 @@
+ This is free software: you are free to change and redistribute it.
+ There is NO WARRANTY, to the extent permitted by law.
+ .SH "SEE ALSO"
+-mkstemp(3), mkdtemp(3), mktemp(3)
++mkstemp(3C), mkdtemp(3C), mktemp(3C)
+ .PP
+ The full documentation for
+ .B mktemp
+--- coreutils-8.15/man/printf.1.orig	Fri Jan  6 17:17:30 2012
++++ coreutils-8.15/man/printf.1	Wed Mar  7 23:02:59 2012
+@@ -96,7 +96,7 @@
+ This is free software: you are free to change and redistribute it.
+ There is NO WARRANTY, to the extent permitted by law.
+ .SH "SEE ALSO"
+-printf(3)
++printf(3C)
+ .PP
+ The full documentation for
+ .B printf
+--- coreutils-8.15/man/pwd.1.orig	Fri Jan  6 17:17:30 2012
++++ coreutils-8.15/man/pwd.1	Wed Mar  7 23:03:20 2012
+@@ -42,7 +42,7 @@
+ This is free software: you are free to change and redistribute it.
+ There is NO WARRANTY, to the extent permitted by law.
+ .SH "SEE ALSO"
+-getcwd(3)
++getcwd(3C)
+ .PP
+ The full documentation for
+ .B pwd
+--- coreutils-8.15/man/rm.1.orig	Fri Jan  6 17:17:30 2012
++++ coreutils-8.15/man/rm.1	Wed Mar  7 23:03:42 2012
+@@ -99,7 +99,7 @@
+ This is free software: you are free to change and redistribute it.
+ There is NO WARRANTY, to the extent permitted by law.
+ .SH "SEE ALSO"
+-unlink(1), unlink(2), chattr(1), shred(1)
++unlink(1), unlink(2), shred(1)
+ .PP
+ The full documentation for
+ .B rm
+--- coreutils-8.15/man/sleep.1.orig	Fri Jan  6 17:17:30 2012
++++ coreutils-8.15/man/sleep.1	Wed Mar  7 23:04:05 2012
+@@ -39,7 +39,7 @@
+ This is free software: you are free to change and redistribute it.
+ There is NO WARRANTY, to the extent permitted by law.
+ .SH "SEE ALSO"
+-sleep(3)
++sleep(3C)
+ .PP
+ The full documentation for
+ .B sleep
+--- coreutils-8.15/man/tac.1.orig	Fri Jan  6 17:17:30 2012
++++ coreutils-8.15/man/tac.1	Wed Mar  7 23:04:15 2012
+@@ -44,8 +44,6 @@
+ This is free software: you are free to change and redistribute it.
+ There is NO WARRANTY, to the extent permitted by law.
+ .SH "SEE ALSO"
+-\fBrev\fP(1)
+-.PP
+ The full documentation for
+ .B tac
+ is maintained as a Texinfo manual.  If the
+--- coreutils-8.15/man/truncate.1.orig	Fri Jan  6 17:17:30 2012
++++ coreutils-8.15/man/truncate.1	Wed Mar  7 23:04:33 2012
+@@ -59,7 +59,7 @@
+ This is free software: you are free to change and redistribute it.
+ There is NO WARRANTY, to the extent permitted by law.
+ .SH "SEE ALSO"
+-dd(1), truncate(2), ftruncate(2)
++dd(1), truncate(3C), ftruncate(3C)
+ .PP
+ The full documentation for
+ .B truncate
