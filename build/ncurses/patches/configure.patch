@@ -1,0 +1,29 @@
+--- ncurses-5.9/configure.orig	Thu Mar 31 23:35:51 2011
++++ ncurses-5.9/configure	Fri Mar  9 17:54:28 2012
+@@ -5790,7 +5790,7 @@
+ 		# tested with SunOS 5.5.1 (solaris 2.5.1) and gcc 2.7.2
+ 		# tested with SunOS 5.10 (solaris 10) and gcc 3.4.3
+ 		if test "$DFT_LWR_MODEL" = "shared" ; then
+-			LOCAL_LDFLAGS="-R \$(LOCAL_LIBDIR):\${libdir}"
++			LOCAL_LDFLAGS="-R \${libdir}"
+ 			LOCAL_LDFLAGS2="$LOCAL_LDFLAGS"
+ 		fi
+ 		if test "$cf_cv_enable_rpath" = yes ; then
+@@ -7096,7 +7096,7 @@
+ 	# setting _XOPEN_SOURCE breaks Lynx on SCO Unix / OpenServer
+ 	;;
+ solaris2.1[0-9]) #(vi
+-	cf_xopen_source="-D__EXTENSIONS__ -D_XOPEN_SOURCE=$cf_XOPEN_SOURCE"
++	cf_xopen_source="-D__EXTENSIONS__"
+ 	;;
+ solaris2.[1-9]) #(vi
+ 	cf_xopen_source="-D__EXTENSIONS__"
+@@ -7813,7 +7813,7 @@
+ echo "$as_me:7813: result: $with_widec" >&5
+ echo "${ECHO_T}$with_widec" >&6
+ if test "$with_widec" = yes ; then
+-	LIB_SUFFIX="w${LIB_SUFFIX}"
++	#LIB_SUFFIX="w${LIB_SUFFIX}"
+ 	cat >>confdefs.h <<\EOF
+ #define USE_WIDEC_SUPPORT 1
+ EOF

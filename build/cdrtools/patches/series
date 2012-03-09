@@ -1,0 +1,6 @@
+eltorito.c.patch
+iso9660.h.patch
+mkisofs.8.patch
+mkisofs.c.patch
+mkisofs.h.patch
+write.c.patch
