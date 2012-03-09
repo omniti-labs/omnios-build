@@ -1,5 +1,5 @@
---- ncurses-5.9/configure.orig	Thu Mar 31 23:35:51 2011
-+++ ncurses-5.9/configure	Fri Mar  9 17:54:28 2012
+--- configure.orig	Fri Mar  9 22:39:47 2012
++++ configure	Fri Mar  9 22:40:57 2012
 @@ -5790,7 +5790,7 @@
  		# tested with SunOS 5.5.1 (solaris 2.5.1) and gcc 2.7.2
  		# tested with SunOS 5.10 (solaris 10) and gcc 3.4.3
@@ -9,12 +9,23 @@
  			LOCAL_LDFLAGS2="$LOCAL_LDFLAGS"
  		fi
  		if test "$cf_cv_enable_rpath" = yes ; then
+@@ -6957,8 +6957,8 @@
+ 
+ # Check to define _XOPEN_SOURCE "automatically"
+ 
+-cf_XOPEN_SOURCE=500
+-cf_POSIX_C_SOURCE=199506L
++cf_XOPEN_SOURCE=600
++cf_POSIX_C_SOURCE=200112L
+ cf_xopen_source=
+ 
+ case $host_os in #(vi
 @@ -7096,7 +7096,7 @@
  	# setting _XOPEN_SOURCE breaks Lynx on SCO Unix / OpenServer
  	;;
  solaris2.1[0-9]) #(vi
 -	cf_xopen_source="-D__EXTENSIONS__ -D_XOPEN_SOURCE=$cf_XOPEN_SOURCE"
-+	cf_xopen_source="-D__EXTENSIONS__"
++	cf_xopen_source="-D__EXTENSIONS__ -D_XOPEN_SOURCE=600"
  	;;
  solaris2.[1-9]) #(vi
  	cf_xopen_source="-D__EXTENSIONS__"
@@ -27,3 +38,21 @@
  	cat >>confdefs.h <<\EOF
  #define USE_WIDEC_SUPPORT 1
  EOF
+@@ -7864,7 +7864,7 @@
+ echo "${ECHO_T}$cf_result" >&6
+ 
+ if test "$cf_result" = yes ; then
+-	CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE_EXTENDED"
++	CPPFLAGS="$CPPFLAGS"
+ elif test "x" != "x" ; then
+ 	echo "$as_me:7869: checking checking for compatible value versus " >&5
+ echo $ECHO_N "checking checking for compatible value versus ... $ECHO_C" >&6
+@@ -7907,7 +7907,7 @@
+ echo "${ECHO_T}$cf_result" >&6
+ 	if test "$cf_result" = no ; then
+ 		# perhaps we can override it - try...
+-		CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE_EXTENDED="
++		CPPFLAGS="$CPPFLAGS"
+ 	fi
+ fi
+ 

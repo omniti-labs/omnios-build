@@ -1,0 +1,33 @@
+--- ncurses/curses.priv.h.orig	Fri Mar  9 22:46:22 2012
++++ ncurses/curses.priv.h	Fri Mar  9 22:55:09 2012
+@@ -48,6 +48,8 @@
+ /* *INDENT-OFF* */
+ 
+ #include <ncurses_dll.h>
++#include <sys/ioctl.h>
++#include <sys/termios.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+@@ -1161,6 +1163,10 @@
+ #endif
+ };
+ 
++#ifndef MB_LEN_MAX
++#define MB_LEN_MAX 8 /* should be >= MB_CUR_MAX, but that may be a function */
++#endif
++
+ extern NCURSES_EXPORT_VAR(SCREEN *) _nc_screen_chain;
+ extern NCURSES_EXPORT_VAR(SIG_ATOMIC_T) _nc_have_sigwinch;
+ 
+@@ -1270,10 +1276,6 @@
+ #define ChCharOf(c)	((c) & (chtype)A_CHARTEXT)
+ #define ChAttrOf(c)	((c) & (chtype)A_ATTRIBUTES)
+ 
+-#ifndef MB_LEN_MAX
+-#define MB_LEN_MAX 8 /* should be >= MB_CUR_MAX, but that may be a function */
+-#endif
+-
+ #if USE_WIDEC_SUPPORT /* { */
+ #define isEILSEQ(status) (((size_t)status == (size_t)-1) && (errno == EILSEQ))
+ 

@@ -1,1 +1,3 @@
-configure.patch
+configure.patch -p0
+termios.patch -p0
+remove-cfmakeflags.patch -p0
