@@ -6,6 +6,7 @@
 
 # GNU info shit
 <transform file path=usr/share/info/dir$ -> drop>
+<transform file path=usr/gnu/share/info/dir$ -> drop>
 
 # Libtool archives
 <transform file path=.*/lib/.*\.la$ -> drop>
