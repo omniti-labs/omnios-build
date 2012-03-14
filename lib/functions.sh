@@ -398,6 +398,11 @@ download_source() {
         # Default to $TMPDIR if no output dir specified
         TARGETDIR=$TMPDIR
     fi
+    # Create TARGETDIR if it doesn't exist
+    if [[ ! -d $TARGETDIR ]]; then
+        logmsg "Specified target directory $TARGETDIR does not exist.  Creating it now."
+        logcmd mkdir -p $TARGETDIR
+    fi
     pushd $TARGETDIR > /dev/null
     logmsg "Checking for source directory"
     if [ -d $BUILDDIR ]; then
