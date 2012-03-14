@@ -12,9 +12,13 @@ PREFIX=/usr
 # Not currently used
 PKGPREFIX=
 
-# Temporary directory
-TMPDIR=/tmp
-DTMPDIR=/tmp
+# Temporary directories
+# TMPDIR is used for source archives and build directories
+#    to avoid collision on shared build systems,
+#    TMPDIR includes a username
+# DTMPDIR is used for constructing the DESTDIR path
+TMPDIR=/tmp/build_$USER
+DTMPDIR=$TMPDIR
 
 # Log file for all output
 LOGFILE=$PWD/build.log
