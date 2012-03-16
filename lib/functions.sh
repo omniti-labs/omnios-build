@@ -913,6 +913,12 @@ build64() {
 #############################################################################
 # Build function for python programs
 #############################################################################
+pre_python_32() {
+    logmsg "prepping 32bit python build"
+}
+pre_python_64() {
+    logmsg "prepping 32bit python build"
+}
 python_build() {
     if [[ -z "$PYTHON" ]]; then logerr "PYTHON not set"; fi
     if [[ -z "$PYTHONPATH" ]]; then logerr "PYTHONPATH not set"; fi
@@ -922,6 +928,7 @@ python_build() {
 
     ISALIST=i386
     export ISALIST
+    pre_python_32
     logmsg "--- setup.py (32) build"
     logcmd $PYTHON ./setup.py build ||
         logerr "--- build failed"
@@ -932,6 +939,7 @@ python_build() {
 
     ISALIST="amd64 i386"
     export ISALIST
+    pre_python_64
     logmsg "--- setup.py (64) build"
     logcmd $PYTHON ./setup.py build ||
         logerr "--- build failed"
