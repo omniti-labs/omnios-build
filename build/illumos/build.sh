@@ -23,7 +23,7 @@ DESC="$SUMMARY -- Illumos and some special sauce." # Longer description
 
 #all of the ips depends should be available from OmniTI repos
 
-BUILD_DEPENDS_IPS="developer/astdev developer/build/make developer/build/onbld developer/gcc-3 developer/java/jdk developer/lexer/flex developer/object-file developer/parser/bison library/glib2 library/libxml2 library/libxslt library/nspr/header-nspr library/perl-5/xml-parser library/security/trousers print/cups print/filter/ghostscript runtime/perl-510 runtime/perl-510/extra system/library/math/header-math system/library/install system/library/dbus system/library/libdbus system/library/libdbus-glib system/library/mozilla-nss/header-nss system/management/product-registry system/management/snmp/net-snmp text/gnu-gettext sunstudio12.1"
+BUILD_DEPENDS_IPS="developer/astdev developer/build/make developer/build/onbld developer/gcc-3 developer/java/jdk developer/lexer/flex developer/object-file developer/parser/bison library/glib2 library/libxml2 library/libxslt library/nspr/header-nspr library/perl-5/xml-parser library/security/trousers print/cups print/filter/ghostscript runtime/perl-510 runtime/perl-510/extra system/library/math/header-math system/library/install system/library/dbus system/library/libdbus system/library/libdbus-glib system/library/mozilla-nss/header-nss system/management/snmp/net-snmp text/gnu-gettext sunstudio12.1"
 
 GIT=git
 
