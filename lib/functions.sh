@@ -312,7 +312,7 @@ prep_build() {
         logcmd chmod -R u+w $DESTDIR > /dev/null 2>&1
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove old temporary install dir"
-        mkdir $DESTDIR || \
+        mkdir -p $DESTDIR || \
             logerr "Failed to create temporary install dir"
     fi
 }
