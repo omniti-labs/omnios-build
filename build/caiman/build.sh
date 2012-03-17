@@ -19,12 +19,11 @@ DESC="$SUMMARY"
 
 #all of the ips depends should be available from OmniTI repos
 
-BUILD_DEPENDS_IPS="developer/sunstudio12.1 system/boot/wanboot system/boot/wanboot/internal developer/build/onbld system/library developer/versioning/mercurial"
+BUILD_DEPENDS_IPS="developer/sunstudio12.1 system/boot/wanboot system/boot/wanboot/internal developer/build/onbld system/library developer/versioning/git"
 
 GIT=git
-HG=hg
 
-PKGSERVER="http://pkg.omniti.com:10006" # jeos repo
+PKGSERVER=$PKGSRVR
 PKGPREFIX=""
 PREFIX=""
 TMPDIR=/code
@@ -64,8 +63,8 @@ clone_source(){
         logcmd rm -rf caiman
     fi
     logmsg "Cloning OMNI caiman Source..."
-    logcmd  $HG clone ssh://src@src.omniti.com/~omni-os/core/caiman || \
-        logerr "Failed to $HG clone repo"
+    logcmd  $GIT clone src@src.omniti.com:~omni-os/core/caiman || \
+        logerr "Failed to $GIT clone repo"
     logmsg "Leaving $TMPDIR/$BUILDDIR"
     popd > /dev/null 
 }
