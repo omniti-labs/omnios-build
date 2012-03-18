@@ -1,0 +1,6 @@
+<transform dir path=usr/share/man.* -> drop>
+<transform file path=usr/share/man.* -> drop>
+<transform dir path=usr/include.* -> drop>
+<transform file path=usr/include.* -> drop>
+<transform dir path=usr/bin.* -> drop>
+<transform file path=usr/bin.* -> drop>

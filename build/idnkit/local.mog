@@ -1,0 +1,8 @@
+<transform dir  path=usr/include/amd64.* -> drop>
+<transform file path=usr/include/amd64.* -> drop>
+<transform file path=etc/.* -> drop>
+<transform dir  path=usr/share$ -> drop>
+<transform dir  path=usr/share/idnkit.* -> drop>
+<transform file path=usr/share/idnkit.* -> drop>
+<transform file path=LICENSE.txt -> drop>
+license license=idnkit path=LICENSE.txt
