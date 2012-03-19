@@ -88,7 +88,11 @@ AWK=/usr/xpg4/bin/awk
 # compiling.  
 # A build script may serialize make by setting NO_PARALLEL_MAKE
 LCPUS=`psrinfo | wc -l`
-MAKE_JOBS="-j $[ $LCPUS + ($LCPUS / 2) ]"
+MJOBS="$[ $LCPUS + ($LCPUS / 2) ]"
+if [ "$MJOBS" == "0" ]; then
+    MJOBS=2
+fi
+MAKE_JOBS="-j $MJOBS"
 NO_PARALLEL_MAKE=
 
 # Remove install dir by default. You can set this in a build script when
