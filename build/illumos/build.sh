@@ -37,7 +37,7 @@ BUILDDIR=$PROG-$VER
 CODEMGR_WS=$TMPDIR/$BUILDDIR/illumos-omni-os
 
 #Since these variables are used in a sed statment make sure to escape properly
-ILLUMOS_NO="NIGHTLY\_OPTIONS=\'\-niCmpr\'"
+ILLUMOS_NO="NIGHTLY\_OPTIONS=\'\-nCmpr\'"
 ILLUMOS_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/illumos\-omni\-os"
 #ILLUMOS_CLONE_WS="CLONE\_WS=\'ssh:\/\/anonhg@hg.illumos.org\/illumos\-gate\'"
 ILLUMOS_CLONE_WS="CLONE\_WS=\'src@src.omniti.com:~omni-os\/core\/illumos\-omni\-os\'"
