@@ -1,0 +1,31 @@
+--- perl-5.14.2/hints/solaris_2.sh.orig	Mon Mar 19 15:32:49 2012
++++ perl-5.14.2/hints/solaris_2.sh	Mon Mar 19 15:33:46 2012
+@@ -299,8 +299,8 @@
+ doesn't work, you should use -B/usr/ccs/bin/ instead.
+ 
+ END
+-		ccdlflags="$ccdlflags -Wl,-E"
+-		lddlflags="$lddlflags -Wl,-E -G"
++		ccdlflags="$ccdlflags"
++		lddlflags="$lddlflags -shared"
+ 	    fi
+ 	fi
+ 
+@@ -568,7 +568,7 @@
+ #		    ccflags="$ccflags -Wa,`getconf XBS5_LP64_OFF64_CFLAGS 2>/dev/null`"
+ #		fi
+ 		ldflags="$ldflags -m64"
+-		lddlflags="$lddlflags -G -m64"
++		lddlflags="$lddlflags -shared -m64"
+ 		;;
+ 	    *)
+ 		getconfccflags="`getconf XBS5_LP64_OFF64_CFLAGS 2>/dev/null`"
+@@ -584,7 +584,7 @@
+ 		esac
+ 		ccflags="$ccflags $getconfccflags"
+ 		ldflags="$ldflags $getconfldflags"
+-		lddlflags="$lddlflags -G $getconflddlflags"
++		lddlflags="$lddlflags -shared $getconflddlflags"
+ 
+ 		echo "int main() { return(0); } " > try.c
+ 		tryworkshopcc="${cc:-cc} try.c -o try $ccflags"
