@@ -1,0 +1,11 @@
+<transform dir path=usr/share/doc.* -> drop>
+<transform file path=usr/share/doc.* -> drop>
+<transform dir path=usr/share/ipmitool -> drop>
+<transform file path=usr/share/ipmitool/.* -> drop>
+<transform file path=usr/share/man.* -> set mode 0444>
+<transform file path=usr/lib/ipmievd -> set mode 0555>
+<transform file path=usr/sbin/ipmitool -> set mode 0555>
+<transform file path=lib/svc/manifest/network/ipmievd.xml -> set mode 0444>
+<transform file path=lib/svc/manifest/network/ipmievd.xml -> set group sys>
+<transform file path=lib/svc/method/svc-ipmievd -> set mode 0555>
+license license=Sun path=usr/share/doc/ipmitool/COPYING
