@@ -50,6 +50,8 @@ links() {
     do
         ln -s ../perl5/${VER}/bin/$firstclass $DESTDIR/usr/bin/$firstclass
     done
+    mkdir -p $DESTDIR/usr/perl5/bin
+    ln -s ../${VER}/bin/perl $DESTDIR/usr/perl5/bin/perl
 }
 license() {
     cp $TMPDIR/$BUILDDIR/Artistic $DESTDIR/license
@@ -134,7 +136,8 @@ build64() {
         logerr "--- Make install failed"
 
     pushd $DESTDIR/$PREFIX/bin > /dev/null
-    gsed -i 's:usr/perl5/5.14.2/bin/amd64:usr/perl5/5.14.2/bin:g' `find . -type f`
+    gsed -i 's:usr/perl5/5.14.2/bin/amd64:usr/perl5/5.14.2/bin:g' 
+        `find . -type f | xargs file | grep script | cut -f1 -d:`
     popd > /dev/null
     popd > /dev/null
 }

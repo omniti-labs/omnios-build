@@ -959,6 +959,12 @@ python_build() {
 # Detects whether to use Build.PL or Makefile.PL
 # Note: Build.PL probably needs Module::Build installed
 #############################################################################
+vendorizeperl() {
+    logcmd mv $DESTDIR/usr/perl5/lib/site_perl $DESTDIR/usr/perl5/vendor_perl || logerr "can't move to vendor_perl"
+    logcmd mkdir -p $DESTDIR/usr/perl5/${DEPVER}
+    logcmd mv $DESTDIR/usr/perl5/man $DESTDIR/usr/perl5/${DEPVER}/man || logerr "can't move perl man"
+}
+
 buildperl() {
     if [[ -f $SRCDIR/${PROG}-${VER}.env ]]; then
         logmsg "Sourcing environment file: $SRCDIR/${PROG}-${VER}.env"
