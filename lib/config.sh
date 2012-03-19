@@ -54,8 +54,8 @@ PKGSRVR=http://pkg.omniti.com:10006/
 PERLVERLIST="5.8.8 5.14.2"
 
 # Full paths to bins
-PERL32=/opt/OMNIperl/bin/$ISAPART/perl
-PERL64=/opt/OMNIperl/bin/$ISAPART64/perl
+PERL32=/usr/perl5/5.14.2/bin/$ISAPART/perl
+PERL64=/usr/perl5/5.14.2/bin/$ISAPART64/perl
 
 # Default Makefile.PL options
 PERL_MAKEFILE_OPTS="INSTALLSITEBIN=/opt/omni/bin/_ARCHBIN_ \
