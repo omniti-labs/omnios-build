@@ -13,9 +13,9 @@ DESC="GNU autoconf - GNU autoconf utility ($VER)"
 NO_PARALLEL_MAKE=1
 BUILDARCH=32
 
-DEPENDS_IPS="developer/macro/gnu-m4 runtime/perl-510"
+DEPENDS_IPS="developer/macro/gnu-m4 runtime/perl-5142"
 
-CONFIGURE_OPTS="--infodir=$PREFIX/share/info"
+CONFIGURE_OPTS="--infodir=$PREFIX/share/info --bindir=$PREFIX/bin"
 
 make_sfw_links() {
     logmsg "Creating SFW symlinks"

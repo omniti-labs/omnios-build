@@ -11,7 +11,7 @@ SUMMARY="$PROG - GNU Troff typesetting package"
 DESC="$SUMMARY"
 
 DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library/g++-4-runtime
-	runtime/perl-510 system/library/math system/library"
+	runtime/perl-5142 system/library/math system/library"
 
 BUILDARCH=32
 CONFIGURE_OPTS_32="--prefix=$PREFIX
@@ -30,6 +30,9 @@ cleanup_gnuism() {
         ln -s ../../bin/g$clash $DESTDIR/usr/gnu/bin/$clash
     done
 }
+license() {
+    cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
+}
 
 init
 download_source $PROG $PROG $VER
@@ -40,5 +43,6 @@ make_isa_stub
 strip_install
 cleanup_gnuism
 fix_permissions
+license
 make_package
 clean_up
