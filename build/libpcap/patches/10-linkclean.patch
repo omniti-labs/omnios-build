@@ -1,0 +1,15 @@
+--- libpcap-1.2.1/aclocal.m4.orig	Mon Mar 19 05:00:57 2012
++++ libpcap-1.2.1/aclocal.m4	Mon Mar 19 05:01:25 2012
+@@ -289,8 +289,10 @@
+ 		    # XXX - this assumes GCC is using the Sun linker,
+ 		    # rather than the GNU linker.
+ 		    #
+-		    V_SONAME_OPT="-Wl,-h,"
+-		    V_RPATH_OPT="-Wl,-R,"
++                    V_SHLIB_CMD="\$(LD)"
++                    V_SHLIB_OPT="-G -zignore"
++                    V_SONAME_OPT="-h "
++                    V_RPATH_OPT="-R"
+ 		    ;;
+ 	    esac
+     else
