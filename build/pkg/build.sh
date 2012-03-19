@@ -14,7 +14,7 @@ SUMMARY="This isn't used, it's in the makefiles for pkg"
 DESC="This isn't used, it's in the makefiles for pkg"
 
 PROG=pkg
-VER=4c75a21e8b6c
+VER=3715fe83920a
 BUILDNUM=151002
 if [[ -z "$PKGPUBLISHER" ]]; then
     logerr "No PKGPUBLISHER specified in config.sh"
@@ -22,7 +22,7 @@ if [[ -z "$PKGPUBLISHER" ]]; then
 fi
 
 GIT=/usr/bin/git
-HG=/opt/omni/bin/hg
+HG=/usr/bin/hg
 HEADERS="libbrand.h libuutil.h libzonecfg.h"
 BRAND_CFLAGS="-I./gate-include"
 
@@ -36,7 +36,7 @@ clone_gate(){
     if [[ ! -d illumos-omni-os ]]; then
         logcmd  $GIT clone -b omni src@src.omniti.com:~omni-os/core/illumos-omni-os 
     fi
-    logcmd  cd illumos-omni-os 
+    logcmd  cd illumos-omni-os || logerr "gate inaccessible"
     popd > /dev/null 
 }
 
@@ -59,7 +59,9 @@ clone_source(){
     if [[ ! -d pkg-omni ]]; then
         logcmd $HG clone -b omni ssh://src@src.omniti.com/~omni-os/core/pkg-omni
     fi
-    logcmd hg update $VER
+    pushd pkg-omni > /dev/null || logerr "no source"
+    logcmd $HG update $VER || logerr "failed update"
+    popd > /dev/null
     popd > /dev/null 
 }
 
