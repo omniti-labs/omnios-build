@@ -108,8 +108,8 @@ build64() {
     logcmd $SHELL Configure -Dusethreads -Duseshrplib -Dusemultiplicity -Duselargefiles \
 	-Dusedtrace -Duse64bitint -Dmyhostname="localhost" \
         -Dcc=gcc -Dld=/usr/ccs/bin/ld -Dccflags="-D_LARGEFILE64_SOURCE -m64 -D_TS_ERRNO" \
-        -Dlddlflags="-m64" \
-        -Dldflags="-m64" \
+        -Dlddlflags="-G -64" \
+        -Dldflags="" \
         -Doptimize="-O3" \
         -Dvendorprefix=${PREFIX} -Dprefix=${PREFIX} \
         -Dbin=${PREFIX}/bin/$ISAPART64 \
@@ -136,7 +136,7 @@ build64() {
         logerr "--- Make install failed"
 
     pushd $DESTDIR/$PREFIX/bin > /dev/null
-    gsed -i 's:usr/perl5/5.14.2/bin/amd64:usr/perl5/5.14.2/bin:g' 
+    gsed -i 's:usr/perl5/5.14.2/bin/amd64:usr/perl5/5.14.2/bin:g' \
         `find . -type f | xargs file | grep script | cut -f1 -d:`
     popd > /dev/null
     popd > /dev/null
