@@ -531,10 +531,10 @@ make_package() {
         PKGSEND=/usr/bin/pkgsend
         PKGMOGRIFY=/usr/bin/pkgmogrify
         PKGFMT=/usr/bin/pkgfmt
-        P5M_INT=/tmp/${PKGE}.p5m.1
-        P5M_FINAL=/tmp/${PKGE}.p5m.2
+        P5M_INT=$TMPDIR/${PKGE}.p5m.1
+        P5M_FINAL=$TMPDIR/${PKGE}.p5m.2
         GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
-        MY_MOG_FILE=/tmp/${PKGE}.mog
+        MY_MOG_FILE=$TMPDIR/${PKGE}.mog
 
         ## Strip leading zeros in version components.
         VER=`echo $VER | sed -e 's/\.0*\([1-9]\)/.\1/g;'`
@@ -1118,9 +1118,9 @@ strip_install() {
         if [[ -n "$ACTION" ]]; then
           logmsg "------ stripping $file"
           MODE=$(stat -c %a "$file")
-          chmod 644 "$file" || logerr "chmod failed: $file"
-          strip $* "$file" || logerr "strip failed: $file"
-          chmod $MODE "$file" || logerr "chmod failed: $file"
+          logcmd chmod 644 "$file" || logerr "chmod failed: $file"
+          logcmd strip $* "$file" || logerr "strip failed: $file"
+          logcmd chmod $MODE "$file" || logerr "chmod failed: $file"
         fi
     done < <(find . -depth -type f)
     popd > /dev/null

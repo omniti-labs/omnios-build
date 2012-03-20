@@ -1,16 +1,17 @@
+# Make all directories usable
 <transform dir -> default mode 0755>
 
-# GNU locale files
+# GNU locale file ownership
 <transform dir path=usr/share/locale/.* -> set group other>
 <transform dir path=usr/share/locale$ -> set group other>
 
-# GNU info shit
+# drop GNU info dir files
 <transform file path=share/info/dir$ -> drop>
 
-# Libtool archives
+# Libtool archives can suck it
 <transform file path=.*/lib/.*\.la$ -> drop>
 
-# Other upper-level directories
+# Other upper-level directories to fix
 <transform dir  path=etc/security.* -> drop>
 <transform dir path=etc/skel$ -> set group sys>
 <transform dir path=usr/share$ -> drop>
@@ -57,3 +58,7 @@
 <transform dir path=usr/sfw/share/info$ -> drop>
 <transform dir path=usr/sfw/share/man$ -> drop>
 <transform dir path=usr/sfw/share/src$ -> drop>
+
+# If you ship an SMF manifest, it should be imported upon pkg install
+<transform file path=(var|lib)/svc/manifest/.*\.xml -> \
+    add restart_fmri svc:/system/manifest-import:default>
