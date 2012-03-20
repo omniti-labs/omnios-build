@@ -12,10 +12,9 @@ DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="image/library/libjpeg image/library/libpng image/library/libtiff
 	library/security/openssl@1.0.0 library/zlib service/security/kerberos-5
-	system/library/math system/library/security/gss system/library
-	system/library/usb/libusb"
+	system/library/math system/library/security/gss system/library"
 
-CONFIGURE_OPTS="--localstatedir=/var"
+CONFIGURE_OPTS="--localstatedir=/var --disable-libusb"
 
 make_prog() {
     logmsg "--- dropping libssp dep"
@@ -35,9 +34,9 @@ make_install() {
     logmsg "--- make install"
     logcmd $MAKE DSTROOT=${DESTDIR} install || \
         logerr "--- Make install failed"
-    mkdir -p $DESTDIR/lib/svc/manifest/application
-    cp scheduler/cups.xml $DESTDIR/lib/svc/manifest/application/cups.xml
-    chmod 444 $DESTDIR/lib/svc/manifest/application/cups.xml
+    logcmd mkdir -p $DESTDIR/lib/svc/manifest/application
+    logcmd cp scheduler/cups.xml $DESTDIR/lib/svc/manifest/application/cups.xml
+    logcmd chmod 444 $DESTDIR/lib/svc/manifest/application/cups.xml
 }
 
 # We build backwards here on purpose so that 32bit binaries win (for install collisions).
@@ -63,7 +62,7 @@ DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime
 	library/print/cups-libs@1.4.2 library/security/openssl
 	library/zlib system/library/g++-4-runtime service/security/kerberos-5
 	system/library/math
-	system/library/security/gss system/library/usb/libusb system/library"
+	system/library/security/gss system/library"
 SUMMARY="Common Unix Print System"
 DESC="Common Unix Print System"
 make_package cups.mog
