@@ -130,7 +130,7 @@ build_pkgs() {
     logmsg "Building illumos pkgs..."
     logcmd cp usr/src/tools/scripts/nightly.sh .
     logcmd chmod +x nightly.sh
-    logcmd ./nightly.sh illumos.sh
+    logcmd ./nightly.sh illumos.sh || logerr "Nightly failed"
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
 }
