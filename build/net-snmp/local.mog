@@ -1,0 +1,2 @@
+<transform dir path=usr/(bin|sbin)/amd64 -> drop>
+<transform file path=usr/(bin|sbin)/amd64.* -> drop>

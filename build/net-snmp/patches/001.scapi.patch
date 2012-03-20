@@ -1,18 +1,5 @@
 --- net-snmp-5.4.1/snmplib/scapi.c	Fri Sep 15 05:47:01 2006
 +++ net-snmp-5.4.1.mod/snmplib/scapi.c	Sat Jul  4 02:58:34 2009
-@@ -406,11 +406,11 @@
-     int            rval = SNMPERR_SUCCESS;
- #endif
-     int            ret;
-+    unsigned int   tmp_len;
- 
- #ifdef NETSNMP_USE_OPENSSL
-     const EVP_MD   *hashfn;
-     EVP_MD_CTX     ctx, *cptr;
--    unsigned int   tmp_len;
- #endif
- 
-     DEBUGTRACE;
 @@ -479,13 +479,11 @@
  
  #ifndef NETSNMP_DISABLE_MD5
