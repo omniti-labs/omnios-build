@@ -184,14 +184,15 @@ fi
 #############################################################################
 init() {
     # Print out current settings
-    # Package format
-    if [[ "$PKGFMT" == "SVR4" ]]; then
-        logmsg "Package format: SVR4"
-    elif [[ "$PKGFMT" == "IPS" ]]; then
-        logmsg "Package format: IPS"
+    logmsg "Package name: $PKG"
+    # Package style
+    if [[ "$PKGSTYLE" == "SVR4" ]]; then
+        logmsg "Package style: SVR4"
+    elif [[ "$PKGSTYLE" == "IPS" ]]; then
+        logmsg "Package style: IPS"
         USEIPS=true
     else
-        logerr "Package format must be SVR4 or IPS.  Current setting is '$PKGFMT'"
+        logerr "Package style must be SVR4 or IPS.  Current setting is '$PKGSTYLE'"
     fi
     # Selected flavor
     if [[ -z "$FLAVOR" ]]; then

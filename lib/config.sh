@@ -32,13 +32,13 @@ PATCHDIR=patches
 # Do we create isaexec stubs for scripts and other non-binaries (default yes)
 NOSCRIPTSTUB=
 
-# Determine package format (may be overridden by user)
-if test -z "$PKGFMT"; then
+# Determine package style (may be overridden by user)
+if test -z "$PKGSTYLE"; then
     # If the pkg command exists, it is an IPS system
     if test -x /usr/bin/pkg; then
-        PKGFMT=IPS
+        PKGSTYLE=IPS
     else
-        PKGFMT=SVR4
+        PKGSTYLE=SVR4
     fi
 fi
 
