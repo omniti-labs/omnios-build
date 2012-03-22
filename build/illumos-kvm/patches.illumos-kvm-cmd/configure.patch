@@ -1,0 +1,11 @@
+--- illumos-kvm-cmd-1.0.2/configure.orig	Thu Mar 22 18:35:07 2012
++++ illumos-kvm-cmd-1.0.2/configure	Thu Mar 22 18:35:27 2012
+@@ -1789,7 +1789,7 @@
+       if has awk && has grep; then
+         kvmerr=`LANG=C $cc $QEMU_CFLAGS -o $TMPE $kvm_cflags $TMPC 2>&1 \
+ 	| grep "error: " \
+-	| awk -F "error: " '{if (NR>1) printf(", "); printf("%s",$2);}'`
++	| gawk -F "error: " '{if (NR>1) printf(", "); printf("%s",$2);}'`
+         if test "$kvmerr" != "" ; then
+           echo -e "${kvmerr}\n\
+ NOTE: To enable KVM support, update your kernel to 2.6.29+ or install \
