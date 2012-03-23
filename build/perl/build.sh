@@ -124,6 +124,7 @@ build64() {
         -des || \
     logerr "--- Configure failed"
     gsed -i 's/-fstack-protector//g;' config.sh
+    gsed -i -e '/^lddlflags/{s/-G -m64//;}' config.sh
     logmsg "--- make"
     logcmd gmake -j 8 || \
     logcmd gmake || \
