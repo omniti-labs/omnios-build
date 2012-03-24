@@ -1,5 +1,3 @@
 <transform dir path=usr/(bin|sbin)/amd64 -> drop>
 <transform file path=usr/(bin|sbin)/amd64.* -> drop>
-<transform file path=usr/lib/svc/manifest/.*\.xml -> \
-           add restart_fmri svc:/system/manifest-import:default>
 set name=opensolaris.smf.fmri value=svc:/application/management/net-snmp value=svc:/application/management/net-snmp:default

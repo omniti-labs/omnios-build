@@ -73,12 +73,12 @@ configure64() {
 place_smf_files() {
     logmsg "Installing SMF files"
     for dir in lib/svc/manifest/application/management lib/svc/method; do
-        logcmd mkdir -p $DESTDIR$PREFIX/$dir || \
-            logerr "--- Failed to create directory $DESTDIR$PREFIX/$dir"
+        logcmd mkdir -p $DESTDIR/$dir || \
+            logerr "--- Failed to create directory $DESTDIR/$dir"
     done
-    logcmd cp $SRCDIR/files/net-snmp.xml $DESTDIR$PREFIX/lib/svc/manifest/application/management/
-    logcmd cp $SRCDIR/files/svc-net-snmp $DESTDIR$PREFIX/lib/svc/method/
-    logcmd chmod +x $DESTDIR$PREFIX/lib/svc/method/svc-net-snmp
+    logcmd cp $SRCDIR/files/net-snmp.xml $DESTDIR/lib/svc/manifest/application/management/
+    logcmd cp $SRCDIR/files/svc-net-snmp $DESTDIR/lib/svc/method/
+    logcmd chmod +x $DESTDIR/lib/svc/method/svc-net-snmp
 }
 
 init
