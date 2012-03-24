@@ -14,7 +14,7 @@ SUMMARY="This isn't used, it's in the makefiles for pkg"
 DESC="This isn't used, it's in the makefiles for pkg"
 
 PROG=pkg
-VER=3715fe83920a
+VER=omni
 BUILDNUM=151002
 if [[ -z "$PKGPUBLISHER" ]]; then
     logerr "No PKGPUBLISHER specified in config.sh"
@@ -22,7 +22,7 @@ if [[ -z "$PKGPUBLISHER" ]]; then
 fi
 
 GIT=/usr/bin/git
-HG=/usr/bin/hg
+GITHASH=
 HEADERS="libbrand.h libuutil.h libzonecfg.h"
 BRAND_CFLAGS="-I./gate-include"
 
@@ -41,49 +41,57 @@ clone_gate(){
 }
 
 crib_headers(){
-    mkdir -p $TMPDIR/$BUILDDIR/pkg-omni/src/brand/gate-include ||
+    clone_gate
+    mkdir -p $TMPDIR/$BUILDDIR/pkg/src/brand/gate-include ||
         logerr "Cannot create include stub directory"
     for hdr in $HEADERS; do
         for file in $(find $TMPDIR/$BUILDDIR/illumos-omni-os -name $hdr); do
-            echo "--- $file"
-            cp $file $TMPDIR/$BUILDDIR/pkg-omni/src/brand/gate-include/ ||
+            cp $file $TMPDIR/$BUILDDIR/pkg/src/brand/gate-include/ ||
                 logerr "Copy failed"
         done
     done
 }
 
 clone_source(){
-    logmsg "pkg -> $TMPDIR/$BUILDDIR/pkg-omni"
+    logmsg "pkg -> $TMPDIR/$BUILDDIR/pkg"
     logcmd mkdir -p $TMPDIR/$BUILDDIR
     pushd $TMPDIR/$BUILDDIR > /dev/null 
-    if [[ ! -d pkg-omni ]]; then
-        logcmd $HG clone -b omni ssh://src@src.omniti.com/~omni-os/core/pkg-omni
+    if [[ ! -d pkg ]]; then
+        logcmd $GIT clone -b omni src@src.omniti.com:~omni-os/core/pkg
     fi
-    pushd pkg-omni > /dev/null || logerr "no source"
-    logcmd $HG update $VER || logerr "failed update"
+    pushd pkg > /dev/null || logerr "no source"
+    if [ -n "${GITHASH}" ]; then
+        logcmd $GIT checkout $GITHASH || logerr "failed update"
+    fi
     popd > /dev/null
     popd > /dev/null 
 }
 
 build(){
-    pushd $TMPDIR/$BUILDDIR/pkg-omni/src > /dev/null || logerr "Cannot change to src dir"
+    pushd $TMPDIR/$BUILDDIR/pkg/src > /dev/null || logerr "Cannot change to src dir"
     find . -depth -name \*.mo -exec touch {} \;
     touch `find gui/help -depth -name \*.in | sed -e 's/\.in$//'`
-    pushd $TMPDIR/$BUILDDIR/pkg-omni/src/brand > /dev/null
+    pushd $TMPDIR/$BUILDDIR/pkg/src/brand > /dev/null
     logmsg "--- brand subbuild"
-    ISALIST=i386 CC=gcc CFLAGS="$BRAND_CFLAGS" logcmd make || logerr "brand make failed"
+    ISALIST=i386 CC=gcc CFLAGS="$BRAND_CFLAGS" logcmd make \
+        CODE_WS=$TMPDIR/$BUILDDIR/pkg || logerr "brand make failed"
     popd
     logmsg "--- toplevel build"
-    ISALIST=i386 CC=gcc logcmd make || logerr "toplevel make failed"
+    ISALIST=i386 CC=gcc logcmd make \
+        CODE_WS=$TMPDIR/$BUILDDIR/pkg || logerr "toplevel make failed"
     logmsg "--- proto install"
-    ISALIST=i386 CC=gcc logcmd make install || logerr "proto install failed"
+    ISALIST=i386 CC=gcc logcmd make install \
+        CODE_WS=$TMPDIR/$BUILDDIR/pkg || logerr "proto install failed"
     popd > /dev/null
 }
 package(){
-    pushd $TMPDIR/$BUILDDIR/pkg-omni/src/pkg > /dev/null
+    pushd $TMPDIR/$BUILDDIR/pkg/src/pkg > /dev/null
     logmsg "--- packaging"
-    ISALIST=i386 CC=gcc logcmd make BUILDNUM=$BUILDNUM || logerr "pkg make failed"
+    ISALIST=i386 CC=gcc logcmd make \
+        CODE_WS=$TMPDIR/$BUILDDIR/pkg \
+        BUILDNUM=$BUILDNUM || logerr "pkg make failed"
     ISALIST=i386 CC=gcc logcmd make publish-pkgs \
+        CODE_WS=$TMPDIR/$BUILDDIR/pkg \
         BUILDNUM=$BUILDNUM \
         PKGSEND_OPTS="" \
         PKGPUBLISHER=$PKGPUBLISHER \
@@ -94,8 +102,9 @@ package(){
 }
 
 init
-clone_gate
 clone_source
-crib_headers
+# This is hugely expensive
+# We've committed these files to pkg, but they need to be kept up to date
+#crib_headers
 build
 package
