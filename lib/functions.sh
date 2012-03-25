@@ -255,6 +255,8 @@ init() {
         BUILDDIR=$PROG-$VER
     fi
 
+    pkgrepo get -s $PKGSRVR > /dev/null 2>&1 || \
+        logerr "The PKGSRVR ($PKGSRVR) isn't available. All is doomed."
     verify_depends
 }
 
