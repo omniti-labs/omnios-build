@@ -33,15 +33,6 @@ umask 022
 # Helper functions for building packages that should be common to all build
 # scripts
 #############################################################################
-#
-# Directory layout
-#   lib/
-#       functions.sh - library helper functions
-#   build/
-#       packagename/
-#           build.sh - the build script
-#           patches/ - directory containing patches
-#   packages/        - contains built packages - not stored in svn
 
 #############################################################################
 # Process command line options
@@ -165,7 +156,7 @@ url_encode() {
 LANG=C
 export LANG
 # Set the path - This can be overriden/extended in the build script
-PATH="/opt/gcc-4.6.2/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/opt/omni/bin:/usr/sfw/bin:/opt/csw/bin"
+PATH="/opt/gcc-4.6.2/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
 export PATH
 # The dir where this file is located - used for sourcing further files
 MYDIR=$PWD/`dirname $BASH_SOURCE[0]`
@@ -179,9 +170,7 @@ SRCDIR=$PWD/`dirname $0`
 . $MYDIR/config.sh
 
 # Platform information
-PLATFORM=`uname -p` # i386/sparc
-SUNOSVER=`uname -r` # 5.10/5.11 (only used for IPS)
-RELEASE=${SUNOSVER/5./sol} # sol9/sol10/sol11
+SUNOSVER=`uname -r` # e.g. 5.11
 
 if [[ -f $LOGFILE ]]; then
     mv $LOGFILE $LOGFILE.1
@@ -189,17 +178,12 @@ fi
 process_opts $@
 
 #############################################################################
-# Make sure we are running as root
+# Running as root is not safe
 #############################################################################
-if [[ "x$RELEASE" = "xsol11" ]]; then
-    if [[ "$UID" = "0" ]]; then
-        logerr "--- You cannot run this as root"
-    fi
-else
-    if [[ -z "$SKIP_ROOT_CHECK" && "$UID" != "0" ]]; then
-        logerr "--- This build script should be run as root or via sudo"
-    fi
+if [[ "$UID" = "0" ]]; then
+    logerr "--- You cannot run this as root"
 fi
+
 #############################################################################
 # Print startup message
 #############################################################################
@@ -210,15 +194,6 @@ fi
 init() {
     # Print out current settings
     logmsg "Package name: $PKG"
-    # Package style
-    if [[ "$PKGSTYLE" == "SVR4" ]]; then
-        logmsg "Package style: SVR4"
-    elif [[ "$PKGSTYLE" == "IPS" ]]; then
-        logmsg "Package style: IPS"
-        USEIPS=true
-    else
-        logerr "Package style must be SVR4 or IPS.  Current setting is '$PKGSTYLE'"
-    fi
     # Selected flavor
     if [[ -z "$FLAVOR" ]]; then
         logmsg "Selected flavor: None (use -f to specify a flavor)"
@@ -265,46 +240,28 @@ init() {
 #############################################################################
 verify_depends() {
     logmsg "Verifying dependencies"
-    if [[ -n "$DEPENDS" || -n "$BUILD_DEPENDS" ]]; then
-        logmsg "--- ***WARNING*** DEPENDS/BUILD_DEPENDS are deprecated. Please update your build script to use SVR4- and IPS-specific variables."
-    fi
-    if [[ -n "$USEIPS" ]]; then
-        [[ -z "$DEPENDS_IPS" ]] && DEPENDS_IPS=$DEPENDS
-        for i in $DEPENDS_IPS; do
-            # Trim indicators to get the true name (see make_package for details)
-            case ${i:0:1} in
-                \=|\?)
-                    i=${i:1}
-                    ;;
-                \-)
-                    # If it's an exclude, we should error if it's installed rather than missing
-                    i=${i:1}
-                    pkg info $i > /dev/null 2<&1 &&
-                        logerr "--- Excluded dependency $i cannot be installed with this package."
-                    continue
-                    ;;
-            esac
-            pkg info $i > /dev/null 2<&1 ||
-                logerr "--- Package dependency $i not found"
-        done
-        for i in $BUILD_DEPENDS_IPS; do
-            pkg info $i > /dev/null 2<&1 ||
-                logerr "--- Build-time dependency $i not found"
-        done
-    else
-        [[ -z "$DEPENDS_SVR4" ]] && DEPENDS_SVR4=$DEPENDS
-        if `pkginfo OMNIzlib > /dev/null 2>&1`; then
-            logerr "--- OMNIzlib is installed.  We are avoiding mixing system and OMNI versions of libz.  Please uninstall OMNIzlib."
-        fi
-        for i in $DEPENDS_SVR4; do
-            pkginfo -q $i ||
-                logerr "--- Package dependency $i not found"
-        done
-        for i in $BUILD_DEPENDS_SVR4; do
-            pkginfo -q $i ||
-                logerr "--- Build-time dependency $i not found"
-        done
-    fi
+    [[ -z "$DEPENDS_IPS" ]] && DEPENDS_IPS=$DEPENDS
+    for i in $DEPENDS_IPS; do
+        # Trim indicators to get the true name (see make_package for details)
+        case ${i:0:1} in
+            \=|\?)
+                i=${i:1}
+                ;;
+            \-)
+                # If it's an exclude, we should error if it's installed rather than missing
+                i=${i:1}
+                pkg info $i > /dev/null 2<&1 &&
+                    logerr "--- Excluded dependency $i cannot be installed with this package."
+                continue
+                ;;
+        esac
+        pkg info $i > /dev/null 2<&1 ||
+            logerr "--- Package dependency $i not found"
+    done
+    for i in $BUILD_DEPENDS_IPS; do
+        pkg info $i > /dev/null 2<&1 ||
+            logerr "--- Build-time dependency $i not found"
+    done
 }
 
 #############################################################################
@@ -324,11 +281,7 @@ prep_build() {
     logmsg "Preparing for build"
 
     # Get the current date/time for the package timestamp
-    if [[ -n "$USEIPS" ]]; then
-        DATETIME=`TZ=UTC /usr/bin/date +"%Y%m%dT%H%M%SZ"`
-    else
-        DATETIME=`/usr/bin/date +"%Y%m%d%H%M"`
-    fi
+    DATETIME=`TZ=UTC /usr/bin/date +"%Y%m%dT%H%M%SZ"`
 
     logmsg "--- Creating temporary install dir"
     # We might need to encode some special chars
@@ -364,6 +317,7 @@ check_for_patches() {
     fi
     return 0
 }
+
 patch_source() {
     if ! check_for_patches "in order to apply them"; then
         logmsg "--- Not applying any patches"
@@ -510,21 +464,6 @@ extract_archive() {
     fi
 }
 
-fix_permissions() {
-    # Make everything owned by root
-    # This is just in case files are installed as non-root even when run via
-    # sudo. We haven't come across a situation where we need files installed
-    # as a non-root user. If those come up, this function will have to be
-    # overridden.
-    if [[ -z "$USEIPS" ]]; then
-        logmsg "Fixing ownership on installed files"
-    
-        # -P says don't follow symlinks
-        logcmd chown -R -P root:root ${DESTDIR} ||
-            logerr "Failed to fix ownership on ${DESTDIR}"
-    fi
-}
-
 #############################################################################
 # Make the package
 #############################################################################
@@ -554,211 +493,83 @@ make_package() {
     if [[ -n "$FLAVORSTR" ]]; then
         DESCSTR="$DESCSTR ($FLAVOR)"
     fi
-    # IPS package
-    if [[ -n "$USEIPS" ]]; then
-        PKGSEND=/usr/bin/pkgsend
-        PKGMOGRIFY=/usr/bin/pkgmogrify
-        PKGFMT=/usr/bin/pkgfmt
-        P5M_INT=$TMPDIR/${PKGE}.p5m.1
-        P5M_FINAL=$TMPDIR/${PKGE}.p5m.2
-        GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
-        MY_MOG_FILE=$TMPDIR/${PKGE}.mog
+    PKGSEND=/usr/bin/pkgsend
+    PKGMOGRIFY=/usr/bin/pkgmogrify
+    PKGFMT=/usr/bin/pkgfmt
+    P5M_INT=$TMPDIR/${PKGE}.p5m.1
+    P5M_FINAL=$TMPDIR/${PKGE}.p5m.2
+    GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
+    MY_MOG_FILE=$TMPDIR/${PKGE}.mog
 
-        ## Strip leading zeros in version components.
-        VER=`echo $VER | sed -e 's/\.0*\([1-9]\)/.\1/g;'`
-	    if [[ -n "$FLAVOR" ]]; then
-	        # We use FLAVOR instead of FLAVORSTR as we don't want the trailing dash
-	        FMRI="${PKGPREFIX}${PKG}-${FLAVOR}@${VER},${SUNOSVER}-${PVER}"
-	    else
-	        FMRI="${PKGPREFIX}${PKG}@${VER},${SUNOSVER}-${PVER}"
-	    fi
-        if [[ -n "$DESTDIR" ]]; then
-            logmsg "--- Generating package manifest from $DESTDIR"
-            logmsg "------ Running: $PKGSEND generate $DESTDIR > $P5M_INT"
-            $PKGSEND generate $DESTDIR > $P5M_INT || \
-                logerr "------ Failed to generate manifest"
-        else
-            logmsg "--- Looks like a meta-package. Creating empty manifest"
-            logcmd touch $P5M_INT || \
-                logerr "------ Failed to create empty manifest"
-        fi
-        logmsg "--- Generating package metadata"
-        echo "set name=pkg.fmri value=$FMRI" > $MY_MOG_FILE
-        # Set human-readable version, if it exists
-        if [[ -n "$VERHUMAN" ]]; then
-            logmsg "------ Setting human-readable version"
-            echo "set name=pkg.human-version value=\"$VERHUMAN\"" >> $MY_MOG_FILE
-        fi
-        echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
-        echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
-        echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
-        if [[ -n "$DEPENDS_IPS" ]]; then
-            logmsg "------ Adding dependencies"
-            for i in $DEPENDS_IPS; do
-                # IPS dependencies have multiple types, of which we care about four:
-                #    require, optional, incorporate, exclude
-                # For backward compatibility, assume no indicator means type=require
-                # FMRI attributes are implicitly rooted so we don't have to prefix
-                # 'pkg:/' or worry about ambiguities in names
-                local DEPTYPE="require"
-                case ${i:0:1} in
-                    \=)
-                        DEPTYPE="incorporate"
-                        i=${i:1}
-                        ;;
-                    \?)
-                        DEPTYPE="optional"
-                        i=${i:1}
-                        ;;
-                    \-)
-                        DEPTYPE="exclude"
-                        i=${i:1}
-                        ;;
-                esac
-                echo "depend type=$DEPTYPE fmri=${i}" >> $MY_MOG_FILE
-            done
-        fi
-        if [[ -f $SRCDIR/local.mog ]]; then
-            LOCAL_MOG_FILE=$SRCDIR/local.mog
-        fi
-        logmsg "--- Applying transforms"
-        $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
-        logmsg "--- Publishing package"
-logerr "Check it."
-        logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR $P5M_FINAL || \
-            logerr "------ Failed to publish package"
-        logmsg "--- Cleaning up temporary manifest and transform files"
-        logcmd rm -f $P5M_INT $P5M_FINAL $MY_MOG_FILE
+    ## Strip leading zeros in version components.
+    VER=`echo $VER | sed -e 's/\.0*\([1-9]\)/.\1/g;'`
+    if [[ -n "$FLAVOR" ]]; then
+        # We use FLAVOR instead of FLAVORSTR as we don't want the trailing dash
+        FMRI="${PKG}-${FLAVOR}@${VER},${SUNOSVER}-${PVER}"
     else
-	# SVR4 package
-        PKGFILE=${PKGPREFIX}$PKG-$FLAVORSTR$VER-$PVER-$PLATFORM-$BUILDSTR$RELEASE
-        local PKGINFODIR=/var/tmp/$PROG.pkginfo.$$
-        logcmd rm -rf $PKGINFODIR || \
-            logerr "Failed to remove dir $PKGINFODIR"
-        logcmd mkdir $PKGINFODIR || \
-            logerr "Failed to mkdir $PKGINFODIR"
-        pushd $PKGINFODIR > /dev/null
-
-        make_prototype
-
-        logcmd pkgmk -o -r $DESTDIR -d . || \
-            logerr "--- Failed to make the package"
-        if [[ -z "$DISABLE_PKGZIP" ]]; then
-            logmsg "--- Compressing package using bzip2"
-            logcmd $MYDIR/../tools/pkgzip -b ${PKGPREFIX}$PKG || \
-                logerr "--- Failed to compress package"
-        else
-            logmsg "--- Package compression disabled - skipping compression"
-        fi
-        logmsg "--- Translating package to datastream format"
-        logcmd pkgtrans . $OUTDIR/$PKGFILE \
-            ${PKGPREFIX}$PKG || \
-            logerr "--- Failed to translate package"
-
-        popd > /dev/null
-
-        logcmd rm -rf $PKGINFODIR || \
-            logerr "Failed to remove dir $PKGINFODIR"
+        FMRI="${PKG}@${VER},${SUNOSVER}-${PVER}"
     fi
-}
-
-#############################################################################
-# Generate dependencies file (SVR4 only)
-#############################################################################
-generate_depends_svr4() {
-    if [[ -z $DEPENDS_SVR4 ]]; then
-        logmsg "------ No dependecies specified. Skipping dependency file"
-        return 1
+    if [[ -n "$DESTDIR" ]]; then
+        logmsg "--- Generating package manifest from $DESTDIR"
+        logmsg "------ Running: $PKGSEND generate $DESTDIR > $P5M_INT"
+        $PKGSEND generate $DESTDIR > $P5M_INT || \
+            logerr "------ Failed to generate manifest"
+    else
+        logmsg "--- Looks like a meta-package. Creating empty manifest"
+        logcmd touch $P5M_INT || \
+            logerr "------ Failed to create empty manifest"
     fi
-    logmsg "------ Generating dependencies file"
-    local DEPENDSFILE=depend
-    # Clear any existing depends file
-    >$DEPENDSFILE
-    for i in $DEPENDS_SVR4; do
-        pkginfo $i >> $DEPENDSFILE ||
-            logerr "--- Package $i not found"
-    done
-    sed 's/^[a-zA-Z]* */P /' $DEPENDSFILE > $DEPENDSFILE.tmp
-    mv $DEPENDSFILE.tmp $DEPENDSFILE
-}
-
-#############################################################################
-# Make package prototype
-#############################################################################
-make_prototype() {
-    # Set the variables named below to override the default values
-    [[ -z "$SUMMARY" ]] && SUMMARY="$PROG for Solaris"
-    [[ -z "$DESC" && -z "$DESCSTR" ]] && DESCSTR="OmniTI roll of $PROG"
-    [[ -z "$CATEGORY" ]] && CATEGORY="application"
-    [[ -z "$VENDOR" ]] && VENDOR="http://www.omniti.com"
-    [[ -z "$EMAIL" ]] && EMAIL="sa@omniti.com"
-    logmsg "--- Building package meta info"
-    cat <<EOF > pkginfo
-PKG=${PKGPREFIX}$PKG
-NAME="$SUMMARY"
-CATEGORY=$CATEGORY
-ARCH=$PLATFORM
-VERSION=${VER}-${PVER}
-DESC="$DESCSTR"
-VENDOR="$VENDOR"
-EMAIL="$EMAIL"
-BASEDIR=/
-PSTAMP="$HOSTNAME-$DATETIME"
-EOF
-    echo "i pkginfo" > prototype
-    # Add install scripts if any - the INSTALL_SCRIPTS variable is set in the
-    # add_install_scripts function
-    add_install_scripts && for i in $INSTALL_SCRIPTS; do
-        echo "i $i" >> prototype
-    done
-    generate_depends_svr4 && \
-        echo "i depend" >> prototype
-    #echo "d none opt ? ? ?" >> prototype
-    find $DESTDIR/* | pkgproto | \
-        $AWK "
-        BEGIN {
-            prefix = substr(\"$PREFIX\", 2)
-            path = \"${DESTDIR}/?\"
-        }
-
-        # Remove the /var/tmp prefix
-        { sub( path, \"\", \$3) }
-        # Remove any prefix for symlinks too
-        { sub( path, \"/\", \$3) }
-
-        # Fix permissions on $PREFIX paths
-        \$3 && prefix ~ \$3 {
-            printf \"%s %s %s ? ? ?\n\", \$1, \$2, \$3
-            next
-        }
-
-        { print }
-        " >> prototype
-}
-
-#############################################################################
-# Looks for any pre/post install scripts and adds them to the package
-#############################################################################
-add_install_scripts() {
-    local i
-    INSTALL_SCRIPTS=""
-    logmsg "------ Checking for install scripts to add"
-    for i in $SRCDIR/scripts/*; do
-        if [[ -f $i ]]; then
-            logmsg "--------- $i"
-            # Append $i to the install_scripts array
-            INSTALL_SCRIPTS="$INSTALL_SCRIPTS `basename $i`"
-            cp $i .
-        fi
-    done
-    if [[ $INSTALL_SCRIPTS == "" ]]; then
-        logmsg "--------- No install scripts found"
-        return 1
+    logmsg "--- Generating package metadata"
+    echo "set name=pkg.fmri value=$FMRI" > $MY_MOG_FILE
+    # Set human-readable version, if it exists
+    if [[ -n "$VERHUMAN" ]]; then
+        logmsg "------ Setting human-readable version"
+        echo "set name=pkg.human-version value=\"$VERHUMAN\"" >> $MY_MOG_FILE
     fi
+    echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
+    echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
+    echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
+    if [[ -n "$DEPENDS_IPS" ]]; then
+        logmsg "------ Adding dependencies"
+        for i in $DEPENDS_IPS; do
+            # IPS dependencies have multiple types, of which we care about four:
+            #    require, optional, incorporate, exclude
+            # For backward compatibility, assume no indicator means type=require
+            # FMRI attributes are implicitly rooted so we don't have to prefix
+            # 'pkg:/' or worry about ambiguities in names
+            local DEPTYPE="require"
+            case ${i:0:1} in
+                \=)
+                    DEPTYPE="incorporate"
+                    i=${i:1}
+                    ;;
+                \?)
+                    DEPTYPE="optional"
+                    i=${i:1}
+                    ;;
+                \-)
+                    DEPTYPE="exclude"
+                    i=${i:1}
+                    ;;
+            esac
+            echo "depend type=$DEPTYPE fmri=${i}" >> $MY_MOG_FILE
+        done
+    fi
+    if [[ -f $SRCDIR/local.mog ]]; then
+        LOCAL_MOG_FILE=$SRCDIR/local.mog
+    fi
+    logmsg "--- Applying transforms"
+    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
+    logmsg "--- Publishing package"
+    logerr "Intentional pause: Last chance to sanity-check before publication!"
+    logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR $P5M_FINAL || \
+        logerr "------ Failed to publish package"
+    logmsg "--- Cleaning up temporary manifest and transform files"
+    logcmd rm -f $P5M_INT $P5M_FINAL $MY_MOG_FILE
 }
 
 #############################################################################
-# Make isa stub binaries
+# Make isaexec stub binaries
 #############################################################################
 make_isa_stub() {
     logmsg "Making isaexec stub binaries"
@@ -804,16 +615,16 @@ make_isaexec_stub_arch() {
 #   - These methods are designed to work in the general case.
 #   - You can set CFLAGS/LDFLAGS (and CFLAGS32/CFLAGS64 for arch specific flags)
 #   - Configure flags are set in CONFIGURE_OPTS_32 and CONFIGURE_OPTS_64 with
-#   defaults set in config.sh. You can append to these variables, replace them
-#   if the defaults don't work for you.
-#   - In the 'normal' case, where you just want to add --enable-feature, set
-#   CONFIGURE_OPTS. This will be appended to the end of CONFIGURE_CMD
-#   for both 32 and 64 bit builds.
+#     defaults set in config.sh. You can append to these variables or replace
+#     them if the defaults don't work for you.
+#   - In the normal case, where you just want to add --enable-feature, set
+#     CONFIGURE_OPTS. This will be appended to the end of CONFIGURE_CMD
+#     for both 32 and 64 bit builds.
 #   - Any of these functions can be overriden in your build script, so if
-#   anything here doesn't apply to the build process for your application,
-#   just override that function with whatever code you need. The build
-#   function itself can be overriden if the build process doesn't fit into a
-#   configure, make, make install pattern.
+#     anything here doesn't apply to the build process for your application,
+#     just override that function with whatever code you need. The build
+#     function itself can be overriden if the build process doesn't fit into a
+#     configure, make, make install pattern.
 #############################################################################
 make_clean() {
     logmsg "--- make (dist)clean"
@@ -1111,13 +922,10 @@ build_install() {
 }
 
 test_if_core() {
-    if [[ -z "$USEIPS" ]]; then
-        logerr "Individual Perl module packages are IPS-only"
-    fi
     logmsg "Testing whether $MODNAME is in core"
-    logmsg "--- Ensuring ${PKGPREFIX}${PKG} is not installed"
-    if logcmd pkg info ${PKGPREFIX}${PKG}; then
-        logerr "------ Package ${PKGPREFIX}${PKG} appears to be installed.  Please uninstall it."
+    logmsg "--- Ensuring ${PKG} is not installed"
+    if logcmd pkg info ${PKG}; then
+        logerr "------ Package ${PKG} appears to be installed.  Please uninstall it."
     else
         logmsg "------ Not installed, good." 
     fi
@@ -1165,12 +973,6 @@ clean_up() {
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove temporary install directory"
         logmsg "Done."
-    fi
-    if [[ -z "$USEIPS" ]]; then
-        # Hack to dereference relative paths (/home/someone/../someoneelse/)
-        REALOUTDIR=`cd $OUTDIR;echo $PWD`
-        logmsg "If all went well, the package is now in $REALOUTDIR:"
-        logmsg `ls -l $OUTDIR | grep $PKGFILE`
     fi
 }
 

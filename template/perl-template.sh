@@ -32,12 +32,12 @@ PROG=Module-Name             # Name of source download
 MODNAME=Module::Name         # Module name for testing
 VER=1.0                      # Module version
 VERHUMAN=$VER                # Human-readable version
-PVER=$DEPVER                 # Perl version from -d
+#PVER=                       # Branch (set in config.sh, override here if needed)
 PKG=perl-$(echo $PROG | tr '[A-Z]' '[a-z]')  # Module name, lowercased
 SUMMARY=""                   # Change this
 DESC=""                      # Change this
 
-PREFIX=/opt/OMNIperl
+PREFIX=/usr/perl5
 reset_configure_opts
 
 NO_PARALLEL_MAKE=1
@@ -51,18 +51,18 @@ PERLVERLIST="5.14.2"
 # We require a Perl version to use for this build and there is no default
 case $DEPVER in
     5.14.2)
-        DEPENDS_IPS="$DEPENDS_IPS OMNIperl =OMNIperl@5.14.2"
+        DEPENDS_IPS="$DEPENDS_IPS runtime/perl-5142"
         ;;
     "")
         logerr "You must specify a version with -d DEPVER. Valid versions: $PERLVERLIST"
         ;;
 esac
 
-# In case any modules install site binaries into /opt/omni
-save_function make_isa_stub make_isa_stub_orig
-make_isa_stub() {
-    PREFIX=/opt/omni make_isa_stub_orig
-}
+# Uncomment and set PREFIX if any modules install site binaries
+#save_function make_isa_stub make_isa_stub_orig
+#make_isa_stub() {
+#    PREFIX=/usr make_isa_stub_orig
+#}
 
 init
 test_if_core
