@@ -30,7 +30,7 @@
 PROG=myapp      # App name
 VER=1.0         # App version
 VERHUMAN=$VER   # Human readable version
-PVER=0.1        # Branch version
+#PVER=0.1       # Branch (set in config.sh, override here if needed)
 PKG=cat/pkg     # Package name (without prefix)
 SUMMARY=""      # Change this
 DESC=""         # Change this

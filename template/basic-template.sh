@@ -28,12 +28,12 @@
 . ../../lib/functions.sh
 
 PROG=myapp      # App name
-VER=1.0         # App version
+VER=            # App version
 VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=$PROG       # Package name (without prefix)
-SUMMARY=""      # You should change this
-DESC=""         # Longer description
+#PVER=          # Branch (set in config.sh, override here if needed)
+PKG=            # Package name (e.g. library/foo)
+SUMMARY=""      # One-liner, must be filled in
+DESC=""         # Longer description, must be filled in
 
 init
 download_source $PROG $PROG $VER
