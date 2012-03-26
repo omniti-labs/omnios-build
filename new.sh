@@ -39,7 +39,8 @@ if [[ -z $1 ]]; then
     exit 254
 fi
 
-BUILDDIR=`dirname $0`/build
+SCRIPTDIR=`dirname $0`
+BUILDDIR=$SCRIPTDIR/build
 TYPESAVAIL="basic perl python"
 # Default type if not specified
 TYPE="basic"
@@ -77,6 +78,6 @@ fi
 
 echo "Creating new $TYPE build script under $BUILDDIR/$NAME"
 mkdir $BUILDDIR/$NAME
-cp $BUILDDIR/template/${TYPE}-template.sh $BUILDDIR/$NAME/build.sh
+cp $SCRIPTDIR/template/${TYPE}-template.sh $BUILDDIR/$NAME/build.sh
 chmod +x $BUILDDIR/$NAME/build.sh
 mkdir $BUILDDIR/$NAME/patches
