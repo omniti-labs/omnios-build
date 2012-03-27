@@ -564,8 +564,7 @@ make_package() {
     logerr "Intentional pause: Last chance to sanity-check before publication!"
     logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR $P5M_FINAL || \
         logerr "------ Failed to publish package"
-    logmsg "--- Cleaning up temporary manifest and transform files"
-    logcmd rm -f $P5M_INT $P5M_FINAL $MY_MOG_FILE
+    logmsg "--- Published $FMRI" 
 }
 
 #############################################################################
@@ -972,6 +971,11 @@ clean_up() {
         logcmd chmod -R u+w $DESTDIR > /dev/null 2>&1
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove temporary install directory"
+        logmsg "--- Cleaning up temporary manifest and transform files"
+        pushd $TMPDIR/$BUILDDIR > /dev/null
+        logcmd rm -f $P5M_INT $P5M_FINAL $MY_MOG_FILE || \
+            logerr "Failed to remove temporary manifest and transform files"
+        popd > /dev/null
         logmsg "Done."
     fi
 }
