@@ -73,7 +73,6 @@ prep_build
 build
 make_isa_stub
 gnu_links
-fix_permissions
 make_package
 clean_up
 

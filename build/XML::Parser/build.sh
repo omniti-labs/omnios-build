@@ -48,7 +48,6 @@ prep_build
 buildperl
 vendorizeperl
 cp $SRCDIR/Artistic $DESTDIR/license
-fix_permissions
 make_package
 clean_up
 

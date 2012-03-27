@@ -49,6 +49,5 @@ prep_build
 build
 gnu_cleanup
 make_isa_stub
-fix_permissions
 make_package
 clean_up

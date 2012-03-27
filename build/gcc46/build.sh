@@ -81,6 +81,5 @@ download_source $PROG/releases/$PROG-$VER $PROG $VER
 patch_source
 prep_build
 build
-fix_permissions
 make_package
 clean_up

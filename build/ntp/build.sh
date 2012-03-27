@@ -72,7 +72,6 @@ prep_build
 build
 overlay_root
 make_isa_stub
-fix_permissions
 VER=4.2.7.259
 make_package
 clean_up

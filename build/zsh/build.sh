@@ -68,7 +68,6 @@ build
 install_zshrc
 install_license
 make_isa_stub
-fix_permissions
 make_package
 clean_up
 

@@ -50,7 +50,6 @@ patch_source
 prep_build
 build
 make_isa_stub
-fix_permissions
 install_license
 
 VER=1.0

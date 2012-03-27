@@ -53,7 +53,6 @@ prep_build
 make_stub_dirs
 build
 make_isa_stub
-fix_permissions
 VER=3.7.10
 make_package
 clean_up

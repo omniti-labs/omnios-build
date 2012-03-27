@@ -63,6 +63,5 @@ prep_build
 build
 # This is a 32-bit only build (no libs)
 # make_isa_stub
-fix_permissions
 make_package
 clean_up

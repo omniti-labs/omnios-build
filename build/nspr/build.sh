@@ -61,7 +61,6 @@ prep_build
 build
 secv1_links
 make_isa_stub
-fix_permissions
 
 PKG=library/nspr/header-nspr
 SUMMARY="Netscape Portable Runtime Headers"

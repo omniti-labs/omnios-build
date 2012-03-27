@@ -51,7 +51,6 @@ patch_source
 prep_build
 build
 make_isa_stub
-fix_permissions
 make_package
 clean_up
 

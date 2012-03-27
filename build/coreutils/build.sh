@@ -62,7 +62,6 @@ prep_build
 build
 make_isa_stub
 link_in_usr_bin
-fix_permissions
 license
 make_package
 clean_up

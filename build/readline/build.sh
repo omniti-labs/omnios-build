@@ -39,9 +39,7 @@ DEPENDS_IPS="system/library system/library/gcc-4-runtime"
 
 CONFIGURE_OPTS="--disable-static"
 
-save_function fix_permissions fix_permissions_orig
 fix_permissions() {
-    fix_permissions_orig
     logmsg "--- Making shared libs executable"
     for file in libhistory libreadline; do
         logcmd chmod 0555 $DESTDIR$PREFIX/lib/${file}.so.*

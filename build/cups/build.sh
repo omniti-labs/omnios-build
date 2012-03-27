@@ -79,7 +79,6 @@ patch_source
 prep_build
 build
 make_isa_stub
-fix_permissions
 
 PKG=print/cups
 DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime

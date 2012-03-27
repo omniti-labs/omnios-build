@@ -66,7 +66,6 @@ build
 make_isa_stub
 strip_install
 cleanup_gnuism
-fix_permissions
 license
 make_package
 clean_up

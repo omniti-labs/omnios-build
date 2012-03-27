@@ -44,7 +44,6 @@ prep_build
 build
 cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/LICENSE
 make_isa_stub
-fix_permissions
 make_package
 clean_up
 

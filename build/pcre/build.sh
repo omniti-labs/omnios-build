@@ -73,7 +73,6 @@ force_links
 prep_build
 build
 make_isa_stub
-fix_permissions
 install_license
 make_package
 clean_up

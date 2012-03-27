@@ -79,7 +79,6 @@ download_source
 patch_source
 prep_build
 build
-fix_permissions
 make_package
 clean_up
 
@@ -118,7 +117,6 @@ download_source
 patch_source
 prep_build
 build
-fix_permissions
 make_package
 clean_up
 

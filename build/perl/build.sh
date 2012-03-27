@@ -173,7 +173,6 @@ patch_source
 prep_build
 links
 build
-fix_permissions
 catalog perl.all.bit || logerr "Failed to catalog full install"
 license
 build_mogs
