@@ -25,3 +25,7 @@
 #
 
 <transform file path=usr/share/info/standards.info -> drop>
+<transform file path=^GPL.*-> drop>
+license license=GPL path=GPL
+license license=GPL.EXCEPTION path=GPL.EXCEPTION
+license license=GPLv3 path=GPLv3

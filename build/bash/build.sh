@@ -30,7 +30,6 @@
 PROG=bash       # App name
 VER=4.2         # App version
 VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
 PKG=shell/bash  # Package name (without prefix)
 SUMMARY="GNU Bourne-Again shell (bash)"
 DESC="$SUMMARY version $VER"
@@ -110,6 +109,10 @@ make_symlink() {
     logcmd ln -s ../../bin/bash $DESTDIR$PREFIX/gnu/bin/sh
 }
 
+license() {
+    cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -118,6 +121,7 @@ build
 make_isa_stub
 install_files
 make_symlink
+license
 make_package
 clean_up
 

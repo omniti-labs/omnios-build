@@ -25,3 +25,5 @@
 #
 <transform dir  path=etc/bash -> set group sys>
 <transform dir  path=usr/share/bash -> set group other>
+<transform file path=^license -> drop>
+license license=GPL3 path=license

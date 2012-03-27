@@ -13,7 +13,6 @@ PROG=XML-Parser
 MODNAME=XML::Parser
 VER=2.41
 VERHUMAN=$VER
-PVER=$DEPVER
 PKG=library/perl-5/$(echo $PROG | tr '[A-Z]' '[a-z]')
 SUMMARY="XML::Parser perl module ($VER)"
 DESC="$SUMMARY"

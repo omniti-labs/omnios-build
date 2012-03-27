@@ -29,7 +29,6 @@
 
 PROG=coreutils          # App name
 VER=8.15                # App version
-PVER=1                  # Package Version
 PKG=file/gnu-coreutils  # Package name (without prefix)
 SUMMARY="coreutils - GNU core utilities"
 DESC="GNU core utilities ($VER)"
@@ -52,9 +51,11 @@ link_in_usr_bin() {
         ln $DESTDIR/usr/gnu/bin/$cmd $DESTDIR/usr/bin/$cmd
     done
 }
-license(){
-    cp $TMPDIR/BUILDDIR/COPYING $DESTDIR/license
+
+license() {
+    cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
 }
+
 init
 download_source $PROG $PROG $VER
 patch_source
