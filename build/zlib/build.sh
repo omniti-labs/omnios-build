@@ -3,10 +3,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=zlib         # App name
-VER=1.2.6         # App version
-PVER=1            # Package Version
-PKG=library/zlib  # Package name (without prefix)
+PROG=zlib
+VER=1.2.6
+PKG=library/zlib
 SUMMARY="$PROG - A massively spiffy yet delicately unobtrusive compression library"
 DESC="$SUMMARY"
 
@@ -22,12 +21,18 @@ CONFIGURE_OPTS_64="--prefix=$PREFIX
     --includedir=$PREFIX/include/$ISAPART64
     --libdir=$PREFIX/lib/$ISAPART64"
 
+install_license(){
+    # This is fun, strip fromt he zlib.h header
+    /bin/awk '/Copyright/,/\*\//{if($1 != "*/"){print}}' \
+        $TMPDIR/$BUILDDIR/zlib.h > $DESTDIR/license
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
-fix_permissions
+install_license
 make_package
 clean_up
