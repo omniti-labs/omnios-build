@@ -1,12 +1,12 @@
-diff -ruN openssl-1.0.0g/Configure openssl-1.0.0g-pkcs11/Configure
---- openssl-1.0.0g/Configure	2011-12-19 17:04:38.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/Configure	2012-02-14 04:35:00.621940315 +0000
+diff -ruN openssl-1.0.1-orig/Configure openssl-1.0.1/Configure
+--- openssl-1.0.1-orig/Configure	2012-03-03 13:18:06.000000000 +0000
++++ openssl-1.0.1/Configure	2012-03-26 22:16:20.349784740 +0000
 @@ -10,7 +10,7 @@
  
  # see INSTALL for instructions.
  
--my $usage="Usage: Configure [no-<cipher> ...] [enable-<cipher> ...] [experimental-<cipher> ...] [-Dxxx] [-lxxx] [-Lxxx] [-fxxx] [-Kxxx] [no-hw-xxx|no-hw] [[no-]threads] [[no-]shared] [[no-]zlib|zlib-dynamic] [no-asm] [no-dso] [no-krb5] [386] [--prefix=DIR] [--openssldir=OPENSSLDIR] [--with-xxx[=vvv]] [--test-sanity] os/compiler[:flags]\n";
-+my $usage="Usage: Configure --pk11-libname=PK11_LIB_LOCATION [no-<cipher> ...] [enable-<cipher> ...] [experimental-<cipher> ...] [-Dxxx] [-lxxx] [-Lxxx] [-fxxx] [-Kxxx] [no-hw-xxx|no-hw] [[no-]threads] [[no-]shared] [[no-]zlib|zlib-dynamic] [no-asm] [no-dso] [no-krb5] [386] [--prefix=DIR] [--openssldir=OPENSSLDIR] [--with-xxx[=vvv]] [--test-sanity] os/compiler[:flags]\n";
+-my $usage="Usage: Configure [no-<cipher> ...] [enable-<cipher> ...] [experimental-<cipher> ...] [-Dxxx] [-lxxx] [-Lxxx] [-fxxx] [-Kxxx] [no-hw-xxx|no-hw] [[no-]threads] [[no-]shared] [[no-]zlib|zlib-dynamic] [no-asm] [no-dso] [no-krb5] [sctp] [386] [--prefix=DIR] [--openssldir=OPENSSLDIR] [--with-xxx[=vvv]] [--test-sanity] os/compiler[:flags]\n";
++my $usage="Usage: Configure --pk11-libname=PK11_LIB_LOCATION [no-<cipher> ...] [enable-<cipher> ...] [experimental-<cipher> ...] [-Dxxx] [-lxxx] [-Lxxx] [-fxxx] [-Kxxx] [no-hw-xxx|no-hw] [[no-]threads] [[no-]shared] [[no-]zlib|zlib-dynamic] [no-asm] [no-dso] [no-krb5] [sctp] [386] [--prefix=DIR] [--openssldir=OPENSSLDIR] [--with-xxx[=vvv]] [--test-sanity] os/compiler[:flags]\n";
  
  # Options:
  #
@@ -20,7 +20,7 @@ diff -ruN openssl-1.0.0g/Configure openssl-1.0.0g-pkcs11/Configure
  # --install_prefix  Additional prefix for package builders (empty by
  #               default).  This needn't be set in advance, you can
  #               just as well use "make INSTALL_PREFIX=/whatever install".
-@@ -622,6 +625,9 @@
+@@ -655,6 +658,9 @@
  my $idx_arflags = $idx++;
  my $idx_multilib = $idx++;
  
@@ -30,8 +30,8 @@ diff -ruN openssl-1.0.0g/Configure openssl-1.0.0g-pkcs11/Configure
  my $prefix="";
  my $libdir="";
  my $openssldir="";
-@@ -824,6 +830,10 @@
- 				{
+@@ -874,6 +880,10 @@
+ 				$_ =~ s/%([0-9a-f]{1,2})/chr(hex($1))/gei;
  				$flags.=$_." ";
  				}
 +                        elsif (/^--pk11-libname=(.*)$/)
@@ -41,7 +41,7 @@ diff -ruN openssl-1.0.0g/Configure openssl-1.0.0g-pkcs11/Configure
  			elsif (/^--prefix=(.*)$/)
  				{
  				$prefix=$1;
-@@ -961,6 +971,13 @@
+@@ -1041,6 +1051,13 @@
  	exit 0;
  }
  
@@ -55,7 +55,7 @@ diff -ruN openssl-1.0.0g/Configure openssl-1.0.0g-pkcs11/Configure
  if ($target =~ m/^CygWin32(-.*)$/) {
  	$target = "Cygwin".$1;
  }
-@@ -1123,6 +1140,8 @@
+@@ -1207,6 +1224,8 @@
  if ($flags ne "")	{ $cflags="$flags$cflags"; }
  else			{ $no_user_cflags=1;       }
  
@@ -64,7 +64,7 @@ diff -ruN openssl-1.0.0g/Configure openssl-1.0.0g-pkcs11/Configure
  # Kerberos settings.  The flavor must be provided from outside, either through
  # the script "config" or manually.
  if (!$no_krb5)
-@@ -1492,6 +1511,7 @@
+@@ -1596,6 +1615,7 @@
  	s/^VERSION=.*/VERSION=$version/;
  	s/^MAJOR=.*/MAJOR=$major/;
  	s/^MINOR=.*/MINOR=$minor/;
@@ -72,9 +72,9 @@ diff -ruN openssl-1.0.0g/Configure openssl-1.0.0g-pkcs11/Configure
  	s/^SHLIB_VERSION_NUMBER=.*/SHLIB_VERSION_NUMBER=$shlib_version_number/;
  	s/^SHLIB_VERSION_HISTORY=.*/SHLIB_VERSION_HISTORY=$shlib_version_history/;
  	s/^SHLIB_MAJOR=.*/SHLIB_MAJOR=$shlib_major/;
-diff -ruN openssl-1.0.0g/crypto/engine/cryptoki.h openssl-1.0.0g-pkcs11/crypto/engine/cryptoki.h
---- openssl-1.0.0g/crypto/engine/cryptoki.h	1970-01-01 00:00:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/cryptoki.h	2012-02-14 04:35:00.622530965 +0000
+diff -ruN openssl-1.0.1-orig/crypto/engine/cryptoki.h openssl-1.0.1/crypto/engine/cryptoki.h
+--- openssl-1.0.1-orig/crypto/engine/cryptoki.h	1970-01-01 00:00:00.000000000 +0000
++++ openssl-1.0.1/crypto/engine/cryptoki.h	2012-03-26 22:16:20.350217655 +0000
 @@ -0,0 +1,103 @@
 +/*
 + * CDDL HEADER START
@@ -179,33 +179,33 @@ diff -ruN openssl-1.0.0g/crypto/engine/cryptoki.h openssl-1.0.0g-pkcs11/crypto/e
 +#endif
 +
 +#endif	/* _CRYPTOKI_H */
-diff -ruN openssl-1.0.0g/crypto/engine/eng_all.c openssl-1.0.0g-pkcs11/crypto/engine/eng_all.c
---- openssl-1.0.0g/crypto/engine/eng_all.c	2009-07-01 14:55:58.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/eng_all.c	2012-02-14 04:35:00.622968916 +0000
-@@ -111,6 +111,9 @@
- #if defined(OPENSSL_SYS_WIN32) && !defined(OPENSSL_NO_CAPIENG)
- 	ENGINE_load_capi();
+diff -ruN openssl-1.0.1-orig/crypto/engine/eng_all.c openssl-1.0.1/crypto/engine/eng_all.c
+--- openssl-1.0.1-orig/crypto/engine/eng_all.c	2011-08-10 18:53:13.000000000 +0000
++++ openssl-1.0.1/crypto/engine/eng_all.c	2012-03-26 22:16:20.350634035 +0000
+@@ -109,6 +109,9 @@
+ #ifndef OPENSSL_NO_HW_PADLOCK
+ 	ENGINE_load_padlock();
  #endif
 +#ifndef OPENSSL_NO_HW_PKCS11
 +	ENGINE_load_pk11();
 +#endif
  #endif
- 	}
- 
-diff -ruN openssl-1.0.0g/crypto/engine/engine.h openssl-1.0.0g-pkcs11/crypto/engine/engine.h
---- openssl-1.0.0g/crypto/engine/engine.h	2011-01-30 01:05:37.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/engine.h	2012-02-14 04:35:00.623913613 +0000
-@@ -344,6 +344,7 @@
+ #ifndef OPENSSL_NO_GOST
+ 	ENGINE_load_gost();
+diff -ruN openssl-1.0.1-orig/crypto/engine/engine.h openssl-1.0.1/crypto/engine/engine.h
+--- openssl-1.0.1-orig/crypto/engine/engine.h	2011-08-10 18:53:13.000000000 +0000
++++ openssl-1.0.1/crypto/engine/engine.h	2012-03-26 22:16:20.351297096 +0000
+@@ -351,6 +351,7 @@
  #endif
  #endif
  void ENGINE_load_cryptodev(void);
 +void ENGINE_load_pk11(void);
+ void ENGINE_load_rsax(void);
+ void ENGINE_load_rdrand(void);
  void ENGINE_load_builtin_engines(void);
- 
- /* Get and set global flags (ENGINE_TABLE_FLAG_***) for the implementation
-diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11_err.c openssl-1.0.0g-pkcs11/crypto/engine/hw_pk11_err.c
---- openssl-1.0.0g/crypto/engine/hw_pk11_err.c	1970-01-01 00:00:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/hw_pk11_err.c	2012-02-14 04:35:00.624588200 +0000
+diff -ruN openssl-1.0.1-orig/crypto/engine/hw_pk11_err.c openssl-1.0.1/crypto/engine/hw_pk11_err.c
+--- openssl-1.0.1-orig/crypto/engine/hw_pk11_err.c	1970-01-01 00:00:00.000000000 +0000
++++ openssl-1.0.1/crypto/engine/hw_pk11_err.c	2012-03-26 22:16:20.351818709 +0000
 @@ -0,0 +1,256 @@
 +/*
 + * Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
@@ -463,9 +463,9 @@ diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11_err.c openssl-1.0.0g-pkcs11/crypt
 +	(void) snprintf(tmp_buf, sizeof (tmp_buf), "%lx", rv);
 +	ERR_add_error_data(2, "PK11 CK_RV=0X", tmp_buf);
 +}
-diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11_err.h openssl-1.0.0g-pkcs11/crypto/engine/hw_pk11_err.h
---- openssl-1.0.0g/crypto/engine/hw_pk11_err.h	1970-01-01 00:00:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/hw_pk11_err.h	2012-02-14 04:35:00.625332675 +0000
+diff -ruN openssl-1.0.1-orig/crypto/engine/hw_pk11_err.h openssl-1.0.1/crypto/engine/hw_pk11_err.h
+--- openssl-1.0.1-orig/crypto/engine/hw_pk11_err.h	1970-01-01 00:00:00.000000000 +0000
++++ openssl-1.0.1/crypto/engine/hw_pk11_err.h	2012-03-26 22:16:20.352378204 +0000
 @@ -0,0 +1,375 @@
 +/*
 + * Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
@@ -842,9 +842,9 @@ diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11_err.h openssl-1.0.0g-pkcs11/crypt
 +extern CK_FUNCTION_LIST_PTR pFuncList;
 +
 +#endif /* HW_PK11_ERR_H */
-diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11_pub.c openssl-1.0.0g-pkcs11/crypto/engine/hw_pk11_pub.c
---- openssl-1.0.0g/crypto/engine/hw_pk11_pub.c	1970-01-01 00:00:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/hw_pk11_pub.c	2012-02-14 04:35:00.627822519 +0000
+diff -ruN openssl-1.0.1-orig/crypto/engine/hw_pk11_pub.c openssl-1.0.1/crypto/engine/hw_pk11_pub.c
+--- openssl-1.0.1-orig/crypto/engine/hw_pk11_pub.c	1970-01-01 00:00:00.000000000 +0000
++++ openssl-1.0.1/crypto/engine/hw_pk11_pub.c	2012-03-26 22:16:20.354511107 +0000
 @@ -0,0 +1,2805 @@
 +/*
 + * Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
@@ -3651,10 +3651,10 @@ diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11_pub.c openssl-1.0.0g-pkcs11/crypt
 +
 +#endif	/* OPENSSL_NO_HW_PK11 */
 +#endif	/* OPENSSL_NO_HW */
-diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11.c openssl-1.0.0g-pkcs11/crypto/engine/hw_pk11.c
---- openssl-1.0.0g/crypto/engine/hw_pk11.c	1970-01-01 00:00:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/hw_pk11.c	2012-02-14 04:35:00.630905593 +0000
-@@ -0,0 +1,3702 @@
+diff -ruN openssl-1.0.1-orig/crypto/engine/hw_pk11.c openssl-1.0.1/crypto/engine/hw_pk11.c
+--- openssl-1.0.1-orig/crypto/engine/hw_pk11.c	1970-01-01 00:00:00.000000000 +0000
++++ openssl-1.0.1/crypto/engine/hw_pk11.c	2012-03-26 22:16:45.990899651 +0000
+@@ -0,0 +1,3683 @@
 +/*
 + * Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
 + * Use is subject to license terms.
@@ -3781,16 +3781,6 @@ diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11.c openssl-1.0.0g-pkcs11/crypto/en
 +#include "cryptoki.h"
 +#include "pkcs11.h"
 +#include "hw_pk11_err.c"
-+
-+#ifdef	SOLARIS_AES_CTR
-+/*
-+ * NIDs for AES counter mode that will be defined during the engine
-+ * initialization.
-+ */
-+int NID_aes_128_ctr = NID_undef;
-+int NID_aes_192_ctr = NID_undef;
-+int NID_aes_256_ctr = NID_undef;
-+#endif	/* SOLARIS_AES_CTR */
 +
 +#ifdef	SOLARIS_HW_SLOT_SELECTION
 +/*
@@ -7052,17 +7042,8 @@ diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11.c openssl-1.0.0g-pkcs11/crypto/en
 +	 * There are no official names for AES counter modes yet so we just
 +	 * follow the format of those that exist.
 +	 */
-+	if ((NID_aes_128_ctr = pk11_add_NID("AES-128-CTR", "aes-128-ctr")) ==
-+	    NID_undef)
-+		goto err;
 +	ciphers[PK11_AES_128_CTR].nid = pk11_aes_128_ctr.nid = NID_aes_128_ctr;
-+	if ((NID_aes_192_ctr = pk11_add_NID("AES-192-CTR", "aes-192-ctr")) ==
-+	    NID_undef)
-+		goto err;
 +	ciphers[PK11_AES_192_CTR].nid = pk11_aes_192_ctr.nid = NID_aes_192_ctr;
-+	if ((NID_aes_256_ctr = pk11_add_NID("AES-256-CTR", "aes-256-ctr")) ==
-+	    NID_undef)
-+		goto err;
 +	ciphers[PK11_AES_256_CTR].nid = pk11_aes_256_ctr.nid = NID_aes_256_ctr;
 +	return (1);
 +
@@ -7357,27 +7338,26 @@ diff -ruN openssl-1.0.0g/crypto/engine/hw_pk11.c openssl-1.0.0g-pkcs11/crypto/en
 +
 +#endif	/* OPENSSL_NO_HW_PK11 */
 +#endif	/* OPENSSL_NO_HW */
-diff -ruN openssl-1.0.0g/crypto/engine/Makefile openssl-1.0.0g-pkcs11/crypto/engine/Makefile
---- openssl-1.0.0g/crypto/engine/Makefile	2010-12-02 18:26:11.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/Makefile	2012-02-14 04:35:00.631578643 +0000
-@@ -21,12 +21,14 @@
- 	eng_table.c eng_pkey.c eng_fat.c eng_all.c \
+diff -ruN openssl-1.0.1-orig/crypto/engine/Makefile openssl-1.0.1/crypto/engine/Makefile
+--- openssl-1.0.1-orig/crypto/engine/Makefile	2011-08-14 13:47:27.000000000 +0000
++++ openssl-1.0.1/crypto/engine/Makefile	2012-03-26 22:16:20.358054754 +0000
+@@ -22,13 +22,13 @@
  	tb_rsa.c tb_dsa.c tb_ecdsa.c tb_dh.c tb_ecdh.c tb_rand.c tb_store.c \
  	tb_cipher.c tb_digest.c tb_pkmeth.c tb_asnmth.c \
--	eng_openssl.c eng_cnf.c eng_dyn.c eng_cryptodev.c
-+	eng_openssl.c eng_cnf.c eng_dyn.c eng_cryptodev.c \
-+	hw_pk11.c hw_pk11_pub.c
+ 	eng_openssl.c eng_cnf.c eng_dyn.c eng_cryptodev.c \
+-	eng_rsax.c eng_rdrand.c
++	eng_rsax.c eng_rdrand.c hw_pk11.o hw_pk11_pub.o
  LIBOBJ= eng_err.o eng_lib.o eng_list.o eng_init.o eng_ctrl.o \
  	eng_table.o eng_pkey.o eng_fat.o eng_all.o \
  	tb_rsa.o tb_dsa.o tb_ecdsa.o tb_dh.o tb_ecdh.o tb_rand.o tb_store.o \
  	tb_cipher.o tb_digest.o tb_pkmeth.o tb_asnmth.o \
--	eng_openssl.o eng_cnf.o eng_dyn.o eng_cryptodev.o
-+	eng_openssl.o eng_cnf.o eng_dyn.o eng_cryptodev.o \
-+	hw_pk11.o hw_pk11_pub.o
+ 	eng_openssl.o eng_cnf.o eng_dyn.o eng_cryptodev.o \
+-	eng_rsax.o eng_rdrand.o
++	eng_rsax.o eng_rdrand.o hw_pk11.o hw_pk11_pub.o
  
  SRC= $(LIBSRC)
  
-@@ -264,6 +266,54 @@
+@@ -294,6 +294,54 @@
  eng_table.o: ../../include/openssl/symhacks.h ../../include/openssl/x509.h
  eng_table.o: ../../include/openssl/x509_vfy.h ../cryptlib.h eng_int.h
  eng_table.o: eng_table.c
@@ -7432,9 +7412,9 @@ diff -ruN openssl-1.0.0g/crypto/engine/Makefile openssl-1.0.0g-pkcs11/crypto/eng
  tb_asnmth.o: ../../e_os.h ../../include/openssl/asn1.h
  tb_asnmth.o: ../../include/openssl/bio.h ../../include/openssl/buffer.h
  tb_asnmth.o: ../../include/openssl/crypto.h ../../include/openssl/e_os2.h
-diff -ruN openssl-1.0.0g/crypto/engine/pkcs11.h openssl-1.0.0g-pkcs11/crypto/engine/pkcs11.h
---- openssl-1.0.0g/crypto/engine/pkcs11.h	1970-01-01 00:00:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/pkcs11.h	2012-02-14 04:35:00.632041064 +0000
+diff -ruN openssl-1.0.1-orig/crypto/engine/pkcs11.h openssl-1.0.1/crypto/engine/pkcs11.h
+--- openssl-1.0.1-orig/crypto/engine/pkcs11.h	1970-01-01 00:00:00.000000000 +0000
++++ openssl-1.0.1/crypto/engine/pkcs11.h	2012-03-26 22:16:20.358559897 +0000
 @@ -0,0 +1,299 @@
 +/* pkcs11.h include file for PKCS #11. */
 +/* $Revision: 1.4 $ */
@@ -7735,9 +7715,9 @@ diff -ruN openssl-1.0.0g/crypto/engine/pkcs11.h openssl-1.0.0g-pkcs11/crypto/eng
 +#endif
 +
 +#endif
-diff -ruN openssl-1.0.0g/crypto/engine/pkcs11f.h openssl-1.0.0g-pkcs11/crypto/engine/pkcs11f.h
---- openssl-1.0.0g/crypto/engine/pkcs11f.h	1970-01-01 00:00:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/pkcs11f.h	2012-02-14 04:35:00.632724991 +0000
+diff -ruN openssl-1.0.1-orig/crypto/engine/pkcs11f.h openssl-1.0.1/crypto/engine/pkcs11f.h
+--- openssl-1.0.1-orig/crypto/engine/pkcs11f.h	1970-01-01 00:00:00.000000000 +0000
++++ openssl-1.0.1/crypto/engine/pkcs11f.h	2012-03-26 22:16:20.359640097 +0000
 @@ -0,0 +1,912 @@
 +/* pkcs11f.h include file for PKCS #11. */
 +/* $Revision: 1.4 $ */
@@ -8651,9 +8631,9 @@ diff -ruN openssl-1.0.0g/crypto/engine/pkcs11f.h openssl-1.0.0g-pkcs11/crypto/en
 +  CK_VOID_PTR pRserved   /* reserved.  Should be NULL_PTR */
 +);
 +#endif
-diff -ruN openssl-1.0.0g/crypto/engine/pkcs11t.h openssl-1.0.0g-pkcs11/crypto/engine/pkcs11t.h
---- openssl-1.0.0g/crypto/engine/pkcs11t.h	1970-01-01 00:00:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/engine/pkcs11t.h	2012-02-14 04:35:00.633884022 +0000
+diff -ruN openssl-1.0.1-orig/crypto/engine/pkcs11t.h openssl-1.0.1/crypto/engine/pkcs11t.h
+--- openssl-1.0.1-orig/crypto/engine/pkcs11t.h	1970-01-01 00:00:00.000000000 +0000
++++ openssl-1.0.1/crypto/engine/pkcs11t.h	2012-03-26 22:16:20.361113182 +0000
 @@ -0,0 +1,1885 @@
 +/* pkcs11t.h include file for PKCS #11. */
 +/* $Revision: 1.10 $ */
@@ -10540,10 +10520,10 @@ diff -ruN openssl-1.0.0g/crypto/engine/pkcs11t.h openssl-1.0.0g-pkcs11/crypto/en
 +typedef CK_ARIA_CBC_ENCRYPT_DATA_PARAMS CK_PTR CK_ARIA_CBC_ENCRYPT_DATA_PARAMS_PTR;
 +
 +#endif
-diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opensslconf.h
---- openssl-1.0.0g/crypto/opensslconf.h	2012-01-18 13:42:28.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/crypto/opensslconf.h	2012-02-14 04:35:00.634571296 +0000
-@@ -14,9 +14,6 @@
+diff -ruN openssl-1.0.1-orig/crypto/opensslconf.h openssl-1.0.1/crypto/opensslconf.h
+--- openssl-1.0.1-orig/crypto/opensslconf.h	2012-03-14 13:33:33.000000000 +0000
++++ openssl-1.0.1/crypto/opensslconf.h	2012-03-26 22:16:20.361525131 +0000
+@@ -17,9 +17,6 @@
  #ifndef OPENSSL_NO_KRB5
  # define OPENSSL_NO_KRB5
  #endif
@@ -10553,7 +10533,7 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  #ifndef OPENSSL_NO_RC5
  # define OPENSSL_NO_RC5
  #endif
-@@ -29,8 +26,11 @@
+@@ -35,8 +32,11 @@
  
  #endif /* OPENSSL_DOING_MAKEDEPEND */
  
@@ -10567,7 +10547,7 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  #endif
  
  /* The OPENSSL_NO_* macros are also defined as NO_* if the application
-@@ -47,9 +47,6 @@
+@@ -56,9 +56,6 @@
  # if defined(OPENSSL_NO_KRB5) && !defined(NO_KRB5)
  #  define NO_KRB5
  # endif
@@ -10577,7 +10557,7 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  # if defined(OPENSSL_NO_RC5) && !defined(NO_RC5)
  #  define NO_RC5
  # endif
-@@ -61,6 +58,8 @@
+@@ -73,6 +70,8 @@
  # endif
  #endif
  
@@ -10586,7 +10566,7 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  /* crypto/opensslconf.h.in */
  
  /* Generate 80386 code? */
-@@ -68,8 +67,8 @@
+@@ -80,8 +79,8 @@
  
  #if !(defined(VMS) || defined(__VMS)) /* VMS uses logical names instead */
  #if defined(HEADER_CRYPTLIB_H) && !defined(OPENSSLDIR)
@@ -10597,7 +10577,7 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  #endif
  #endif
  
-@@ -100,14 +99,14 @@
+@@ -112,14 +111,14 @@
   * - Intel P6 because partial register stalls are very expensive;
   * - elder Alpha because it lacks byte load/store instructions;
   */
@@ -10614,7 +10594,7 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  #endif
  #endif
  
-@@ -115,13 +114,13 @@
+@@ -127,13 +126,13 @@
  /* If this is set to 'unsigned int' on a DEC Alpha, this gives about a
   * %20 speed up (longs are 8 bytes, int's are 4). */
  #ifndef DES_LONG
@@ -10630,7 +10610,7 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  
  /* Should we define BN_DIV2W here? */
  
-@@ -140,7 +139,7 @@
+@@ -152,7 +151,7 @@
  
  #if defined(HEADER_BF_LOCL_H) && !defined(CONFIG_HEADER_BF_LOCL_H)
  #define CONFIG_HEADER_BF_LOCL_H
@@ -10639,7 +10619,7 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  #endif /* HEADER_BF_LOCL_H */
  
  #if defined(HEADER_DES_LOCL_H) && !defined(CONFIG_HEADER_DES_LOCL_H)
-@@ -149,7 +148,7 @@
+@@ -161,7 +160,7 @@
  /* the following is tweaked from a config script, that is why it is a
   * protected undef/define */
  #ifndef DES_PTR
@@ -10648,7 +10628,7 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  #endif
  
  /* This helps C compiler generate the correct code for multiple functional
-@@ -170,7 +169,7 @@
+@@ -182,7 +181,7 @@
  /* Unroll the inner loop, this sometimes helps, sometimes hinders.
   * Very mucy CPU dependant */
  #ifndef DES_UNROLL
@@ -10657,9 +10637,9 @@ diff -ruN openssl-1.0.0g/crypto/opensslconf.h openssl-1.0.0g-pkcs11/crypto/opens
  #endif
  
  /* These default values were supplied by
-diff -ruN openssl-1.0.0g/include/openssl/md2.h openssl-1.0.0g-pkcs11/include/openssl/md2.h
---- openssl-1.0.0g/include/openssl/md2.h	1970-01-01 00:00:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/include/openssl/md2.h	2012-02-14 04:35:09.151984232 +0000
+diff -ruN openssl-1.0.1-orig/include/openssl/md2.h openssl-1.0.1/include/openssl/md2.h
+--- openssl-1.0.1-orig/include/openssl/md2.h	1970-01-01 00:00:00.000000000 +0000
++++ openssl-1.0.1/include/openssl/md2.h	2012-03-26 22:16:20.361721128 +0000
 @@ -0,0 +1,92 @@
 +/* crypto/md/md2.h */
 +/* Copyright (C) 1995-1997 Eric Young (eay@cryptsoft.com)
@@ -10753,21 +10733,21 @@ diff -ruN openssl-1.0.0g/include/openssl/md2.h openssl-1.0.0g-pkcs11/include/ope
 +#endif
 +
 +#endif
-diff -ruN openssl-1.0.0g/Makefile openssl-1.0.0g-pkcs11/Makefile
---- openssl-1.0.0g/Makefile	2012-01-18 13:42:28.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/Makefile	2012-02-14 04:35:12.223399019 +0000
+diff -ruN openssl-1.0.1-orig/Makefile openssl-1.0.1/Makefile
+--- openssl-1.0.1-orig/Makefile	2012-03-14 13:33:33.000000000 +0000
++++ openssl-1.0.1/Makefile	2012-03-26 22:16:20.362126226 +0000
 @@ -11,11 +11,11 @@
  SHLIB_VERSION_HISTORY=
  SHLIB_MAJOR=1
  SHLIB_MINOR=0.0
 -SHLIB_EXT=
 -PLATFORM=dist
--OPTIONS= no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-shared no-store no-zlib no-zlib-dynamic static-engine
+-OPTIONS= no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-sctp no-shared no-store no-zlib no-zlib-dynamic static-engine
 -CONFIGURE_ARGS=dist
 -SHLIB_TARGET=
 +SHLIB_EXT=.so.$(SHLIB_MAJOR).$(SHLIB_MINOR)
 +PLATFORM=solaris-x86-cc
-+OPTIONS=--pk11-libname=/usr/lib/64/libpkcs11.so.1 enable-shared enable-threads enable-zlib enable-md2 --prefix=/opt/omni no-gmp no-jpake no-krb5 no-rc5 no-rfc3779 no-store no-zlib-dynamic no-static-engine
++OPTIONS=--pk11-libname=/usr/lib/64/libpkcs11.so.1 enable-shared enable-threads enable-zlib enable-md2 --prefix=/opt/omni no-gmp no-jpake no-krb5 no-rc5 no-rfc3779 no-store no-sctp no-zlib-dynamic no-static-engine static-engine
 +CONFIGURE_ARGS=solaris-x86-cc shared threads zlib enable-md2 --prefix=/opt/omni
 +SHLIB_TARGET=solaris-shared
  
@@ -10794,7 +10774,7 @@ diff -ruN openssl-1.0.0g/Makefile openssl-1.0.0g-pkcs11/Makefile
  
  CC= cc
 -CFLAG= -O
--DEPFLAG= -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_STORE
+-DEPFLAG= -DOPENSSL_NO_EC_NISTP_64_GCC_128 -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_SCTP -DOPENSSL_NO_STORE
 +CFLAG= -KPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -fast -xtarget=generic -O -Xa
 +DEPFLAG= -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_STORE
  PEX_LIBS= 
@@ -10808,16 +10788,16 @@ diff -ruN openssl-1.0.0g/Makefile openssl-1.0.0g-pkcs11/Makefile
  NM= nm
  PERL= /usr/bin/perl
  TAR= tar
-@@ -101,7 +104,7 @@
- RMD160_ASM_OBJ= 
- WP_ASM_OBJ= wp_block.o
+@@ -103,7 +106,7 @@
  CMLL_ENC= camellia.o cmll_misc.o cmll_cbc.o
+ MODES_ASM_OBJ= 
+ ENGINES_ASM_OBJ= 
 -PERLASM_SCHEME= 
 +PERLASM_SCHEME= void
  
  # KRB5 stuff
  KRB5_INCLUDES=
-@@ -118,7 +121,7 @@
+@@ -144,7 +147,7 @@
  # dirs in crypto to build
  SDIRS=  \
  	objects \
@@ -10826,7 +10806,7 @@ diff -ruN openssl-1.0.0g/Makefile openssl-1.0.0g-pkcs11/Makefile
  	des aes rc2 rc4 idea bf cast camellia seed modes \
  	bn ec rsa dsa ecdsa dh ecdh dso engine \
  	buffer bio stack lhash rand err \
-@@ -148,9 +151,9 @@
+@@ -174,9 +177,9 @@
  LIBS=   libcrypto.a libssl.a
  SHARED_CRYPTO=libcrypto$(SHLIB_EXT)
  SHARED_SSL=libssl$(SHLIB_EXT)
@@ -10839,9 +10819,9 @@ diff -ruN openssl-1.0.0g/Makefile openssl-1.0.0g-pkcs11/Makefile
  
  GENERAL=        Makefile
  BASENAME=       openssl
-diff -ruN openssl-1.0.0g/Makefile.org openssl-1.0.0g-pkcs11/Makefile.org
---- openssl-1.0.0g/Makefile.org	2010-01-27 16:06:58.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/Makefile.org	2012-02-14 04:35:12.223988765 +0000
+diff -ruN openssl-1.0.1-orig/Makefile.org openssl-1.0.1/Makefile.org
+--- openssl-1.0.1-orig/Makefile.org	2012-02-12 18:47:36.000000000 +0000
++++ openssl-1.0.1/Makefile.org	2012-03-26 22:16:20.362433116 +0000
 @@ -26,6 +26,9 @@
  INSTALL_PREFIX=
  INSTALLTOP=/usr/local/ssl
@@ -10852,9 +10832,9 @@ diff -ruN openssl-1.0.0g/Makefile.org openssl-1.0.0g-pkcs11/Makefile.org
  # Do not edit this manually. Use Configure --openssldir=DIR do change this!
  OPENSSLDIR=/usr/local/ssl
  
-diff -ruN openssl-1.0.0g/test/md2test.c openssl-1.0.0g-pkcs11/test/md2test.c
---- openssl-1.0.0g/test/md2test.c	2002-08-15 22:06:00.000000000 +0000
-+++ openssl-1.0.0g-pkcs11/test/md2test.c	2012-02-14 04:35:12.224508763 +0000
+diff -ruN openssl-1.0.1-orig/test/md2test.c openssl-1.0.1/test/md2test.c
+--- openssl-1.0.1-orig/test/md2test.c	2002-08-15 22:06:00.000000000 +0000
++++ openssl-1.0.1/test/md2test.c	2012-03-26 22:16:20.362686982 +0000
 @@ -1,48 +1,143 @@
 +/* crypto/md2/md2test.c */
 +/* Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)

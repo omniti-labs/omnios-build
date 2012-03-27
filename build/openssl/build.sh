@@ -28,13 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=openssl                 # App name
-VER=1.0.0g                   # App version
-PVER=2                       # Package Version (numeric only)
+VER=1.0.1                   # App version
+PVER=0.151002
 PKG=library/security/openssl # Package name (without prefix)
 SUMMARY="$PROG - A toolkit for Secure Sockets Layer (SSL v2/v3) and Transport Layer (TLS v1) protocols and general purpose cryptographic library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="system/library/gcc-4-runtime library/zlib@1.2.6"
+DEPENDS_IPS="SUNWcs system/library system/library/gcc-4-runtime library/zlib@1.2.6"
 
 NO_PARALLEL_MAKE=1
 
@@ -108,18 +108,19 @@ ord26() {
     [[ $ASCII -gt 32 ]] && ASCII=$((ASCII - 32))
     echo $ASCII
 }
+install_license() {
+    cp $TMPDIR/$BUILDDIR/LICENSE $DESTDIR/LICENSE
+}
 
 save_function make_package make_package_orig
 make_package() {
-    if [[ -n "$USEIPS" ]]; then
+    if [[ -n "`echo $VER | grep [a-z]`" ]]; then
         NUMVER=${VER::$((${#VER} -1))}
         ALPHAVER=${VER:$((${#VER} -1))}
-
-        VER=${NUMVER}.$(ord26 ${ALPHAVER}) \
-        make_package_orig
-    else
-        make_package_orig
+        VER=${NUMVER}.$(ord26 ${ALPHAVER})
     fi
+
+    make_package_orig
 }
 
 init
@@ -130,5 +131,6 @@ build
 move_libs
 make_isa_stub
 fix_permissions
+install_license
 make_package
 clean_up
