@@ -32,10 +32,9 @@ export PATH
 CC=gcc
 CXX=g++
 
-PROG=Python         # App name
-VER=2.6.7           # App version
-PVER=1              # Package Version
-PKG=runtime/python-26 # Package name (without prefix)
+PROG=Python
+VER=2.6.7
+PKG=runtime/python-26
 SUMMARY="$PROG"
 DESC="$SUMMARY"
 
@@ -115,6 +114,10 @@ make_install64() {
     mv $DESTDIR/usr/lib/python2.6/config/Makefile.32 $DESTDIR/usr/lib/python2.6/config/Makefile || logerr "--- Makefile restore (32)"
 }
 
+install_license(){
+    logcmd cp $TMPDIR/$BUILDDIR/LICENSE $DESTDIR/license
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -123,6 +126,6 @@ prep_build
 build
 make_isa_stub
 strip_install -x
-fix_permissions
+install_license
 make_package
 clean_up
