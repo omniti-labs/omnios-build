@@ -30,13 +30,12 @@
 PROG=trousers   # App name
 VER=0.3.8       # App version
 VERHUMAN=$VER   # Human-readable version
-PVER=2          # Package Version (numeric only)
 PKG=library/security/trousers  # Package name (without prefix)
 SUMMARY="trousers - TCG Software Stack - software for accessing a TPM device"
 DESC="$SUMMARY ($VER)"
 
 BUILD_DEPENDS_IPS="developer/build/libtool developer/build/automake-111 developer/build/autoconf"
-DEPENDS_IPS="system/library/gcc-4-runtime library/security/openssl@1.0.0"
+DEPENDS_IPS="system/library/gcc-4-runtime library/security/openssl@1.0.1"
 
 LIBS="-lbsm -lnsl -lsocket -lgen -lscf -lresolv"
 
@@ -94,6 +93,10 @@ configure64() {
     cleanup_configure
 }
 
+install_license() {
+    cp $TMPDIR/$BUILDDIR/LICENSE $DESTDIR/license
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -101,6 +104,6 @@ preprep_build
 prep_build
 build
 make_isa_stub
-fix_permissions
+install_license
 make_package
 clean_up
