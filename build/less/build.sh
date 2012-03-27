@@ -29,7 +29,6 @@
 
 PROG=less       # App name
 VER=443         # App version
-PVER=0.1           # Package Version
 PKG=text/less    # Package name (without prefix)
 SUMMARY="$PROG - GNU paginator"
 DESC="$SUMMARY"
