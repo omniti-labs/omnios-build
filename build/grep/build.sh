@@ -29,7 +29,6 @@
 
 PROG=grep       # App name
 VER=2.10         # App version
-PVER=0.1           # Package Version
 PKG=text/gnu-grep    # Package name (without prefix)
 SUMMARY="ggrep - GNU grep utilities"
 DESC="$SUMMARY $VER"
