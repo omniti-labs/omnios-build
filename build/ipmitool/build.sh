@@ -56,7 +56,6 @@ run_autoconf
 build
 install_smf
 make_isa_stub
-fix_permissions
 make_package
 clean_up
 

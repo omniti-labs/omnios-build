@@ -66,6 +66,5 @@ build
 make_isa_stub
 strip_install
 link_up_gnu_sfw
-fix_permissions
 make_package
 clean_up

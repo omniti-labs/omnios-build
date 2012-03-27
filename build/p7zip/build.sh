@@ -108,7 +108,6 @@ prep_build
 build
 install_sh_wrapper
 make_isa_stub
-fix_permissions
 make_package
 chmod -R u+w $DESTDIR
 clean_up

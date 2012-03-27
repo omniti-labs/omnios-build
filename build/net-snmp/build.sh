@@ -111,7 +111,6 @@ patch_source
 prep_build
 build
 place_smf_files
-fix_permissions
 strip_install
 make_package
 clean_up

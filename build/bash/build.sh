@@ -118,7 +118,6 @@ build
 make_isa_stub
 install_files
 make_symlink
-fix_permissions
 make_package
 clean_up
 

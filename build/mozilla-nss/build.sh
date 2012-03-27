@@ -138,7 +138,6 @@ prep_build
 build
 secv1_links
 make_isa_stub
-fix_permissions
 
 PKG=system/library/mozilla-nss/header-nss
 SUMMARY="Netscape Portable Runtime Headers"

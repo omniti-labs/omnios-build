@@ -123,6 +123,5 @@ prep_build
 build
 make_isa_stub
 strip_install -x
-fix_permissions
 make_package
 clean_up

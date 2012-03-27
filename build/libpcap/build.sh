@@ -58,7 +58,6 @@ prep_build
 run_autoconf
 build
 make_isa_stub
-fix_permissions
 fixup_man3
 make_package
 clean_up

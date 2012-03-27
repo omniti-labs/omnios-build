@@ -49,7 +49,6 @@ build
 logcmd rm -f $DESTDIR$PREFIX/bin/automake
 logcmd rm -f $DESTDIR$PREFIX/bin/aclocal
 make_isa_stub
-fix_permissions
 make_package
 clean_up
 

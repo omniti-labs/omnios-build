@@ -70,7 +70,6 @@ prep_build
 build
 make_isa_stub
 post_install
-fix_permissions
 
 PKG=system/library/dbus
 SUMMARY="Simple IPC library based on messages"
