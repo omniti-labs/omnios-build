@@ -29,7 +29,6 @@
 
 PROG=libxml2        # App name
 VER=2.7.8           # App version
-PVER=4.1            # Package Version
 PKG=library/libxml2 # Package name (without prefix)
 SUMMARY="$PROG - XML C parser and toolkit"
 DESC="$SUMMARY"
@@ -43,6 +42,9 @@ fix_python_install() {
     logcmd rm -rf $DESTDIR/usr/lib/python2.6/site-packages || logerr "failed removing bad python install"
     logcmd rm -rf $DESTDIR/usr/lib/amd64/python2.6/site-packages || logerr "failed removing bad amd64 python install"
 }
+install_license(){
+    logcmd cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
+}
 
 init
 download_source $PROG $PROG $VER
@@ -51,6 +53,6 @@ prep_build
 build
 fix_python_install
 make_isa_stub
-fix_permissions
+install_license
 make_package
 clean_up
