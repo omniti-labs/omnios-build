@@ -114,8 +114,8 @@ fi
 MAKE_JOBS="-j $MJOBS"
 NO_PARALLEL_MAKE=
 
-# Remove install dir by default. You can set this in a build script when
-# testing to speed up building a package
+# Remove install or packaging files by default. You can set this in a build
+# script when testing to speed up building a package
 DONT_REMOVE_INSTALL_DIR=
 
 #############################################################################
