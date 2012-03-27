@@ -109,10 +109,6 @@ make_symlink() {
     logcmd ln -s ../../bin/bash $DESTDIR$PREFIX/gnu/bin/sh
 }
 
-license() {
-    cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
-}
-
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -121,7 +117,6 @@ build
 make_isa_stub
 install_files
 make_symlink
-license
 make_package
 clean_up
 
