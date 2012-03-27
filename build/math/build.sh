@@ -29,7 +29,6 @@
 
 PROG=devpro-libm   # App name
 VER=20060131       # App version
-PVER=1             # Package Version
 PKG=system/library/math ##IGNORE##
 SUMMARY="tmp summary (replaced below)"
 DESC="$SUMMARY"
@@ -78,23 +77,25 @@ links() {
     logcmd ln -s ../../../lib/amd64/llib-lm.ln $DESTDIR/usr/lib/amd64/llib-lm.ln
     logcmd ln -s ../usr/lib/cpp $DESTDIR/lib/cpp
 }
+install_license(){
+    cp $TMPDIR/$BUILDDIR/usr/src/OPENSOLARIS.LICENSE $DESTDIR/license
+}
 
 init
 download_source devpro $PROG src-$VER
 patch_source
 build
+install_license
 links
 
 PKG=system/library/math
 VER=0.5.11
-PVER=1.2006.1.31
 SUMMARY="Math & Microtasking Libraries"
 DESC="Math & Microtasking Libraries"
 make_package math.mog
 
 PKG=system/library/math/header-math
 VER=0.5.11
-PVER=1.2006.1.31
 SUMMARY="Math & Microtasking Library Headers & Lint Files"
 DESC="Math & Microtasking Library Headers & Lint Files"
 make_package headers.mog
