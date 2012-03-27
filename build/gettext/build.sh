@@ -29,7 +29,6 @@
 
 PROG=gettext                  # App name
 VER=0.18.1.1                  # App version
-PVER=1                        # Package Version
 PKG=text/gnu-gettext          # Package name (without prefix)
 SUMMARY="gettext - GNU gettext utility"
 DESC="GNU gettext - GNU gettext utility ($VER)"
