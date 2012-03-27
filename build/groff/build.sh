@@ -29,7 +29,6 @@
 
 PROG=groff       # App name
 VER=1.21         # App version
-PVER=1           # Package Version
 PKG=text/groff    # Package name (without prefix)
 SUMMARY="$PROG - GNU Troff typesetting package"
 DESC="$SUMMARY"
@@ -54,9 +53,6 @@ cleanup_gnuism() {
         ln -s ../../bin/g$clash $DESTDIR/usr/gnu/bin/$clash
     done
 }
-license() {
-    cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
-}
 
 init
 download_source $PROG $PROG $VER
@@ -66,6 +62,5 @@ build
 make_isa_stub
 strip_install
 cleanup_gnuism
-license
 make_package
 clean_up
