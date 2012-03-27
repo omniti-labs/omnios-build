@@ -30,7 +30,6 @@
 PROG=cabundle   # App name
 VER=1.0         # App version
 VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
 PKG=web/ca-bundle  # Package name (without prefix)
 SUMMARY="$PROG - Bundle of SSL CA certificates"
 DESC="$SUMMARY"
@@ -40,10 +39,13 @@ MIRROR=curl.haxx.se
 BUILDARCH=32
 
 fetch_pem() {
+  mkdir -p $TMPDIR/$BUILDDIR
   logmsg "Fetching PEM file from $MIRROR"
-  pushd $TMPDIR > /dev/null
+  pushd $TMPDIR/$BUILDDIR > /dev/null
   $WGET -a $LOGFILE http://$MIRROR/ca/cacert.pem ||
     logerr "--- Failed to download PEM file"
+  awk '/BEGIN LICENSE/,/END LICENSE/{print}' cacert.pem | \
+    grep -v 'LICENSE BLOCK' > license
   popd > /dev/null
 }
 
@@ -52,7 +54,7 @@ install_pem() {
   logcmd mkdir -p $DESTDIR/etc ||
     logerr "--- Unable to create destination directory"
   logmsg "Placing PEM in package root"
-  logcmd cp $TMPDIR/cacert.pem $DESTDIR/etc/ ||
+  logcmd cp $TMPDIR/$BUILDDIR/cacert.pem $DESTDIR/etc/ ||
     logerr "--- Failed to copy file"
 }
 
