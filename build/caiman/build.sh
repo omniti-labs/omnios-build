@@ -36,9 +36,8 @@ fi
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=caiman    # App name
-VER=151.3    # App version
-PVER=1          # Package Version (numeric only)
+PROG=caiman
+VER=151002
 PKG=caiman
 SUMMARY="$PROG"
 DESC="$SUMMARY"
@@ -58,6 +57,7 @@ CODEMGR_WS=$TMPDIR/$BUILDDIR/caiman
 
 CAIMAN_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/caiman"
 CAIMAN_PKG_REDIST="PKGPUBLISHER_REDIST=jeos.omniti.com; export PKGPUBLISHER_REDIST;"
+CAIMAN_PKG_BRANCH="PKGVERS_BRANCH=$PVER; export PKGVERS_BRANCH;"
 
 sunstudio_location() {
     logmsg "Ensuring that Sun Studio is where Caiman thinks it is..."
@@ -104,6 +104,7 @@ modify_build_script() {
     logcmd /usr/bin/gsed -i -e 's/^.*export CODEMGR_WS=.*/export '$CAIMAN_CODEMGR_WS'/g;' omnios.sh || \
         logerr "/usr/bin/gsed failed"
     logcmd `echo $CAIMAN_PKG_REDIST >> omnios.sh`
+    logcmd `echo $CAIMAN_PKG_BRANCH >> omnios.sh`
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
 
