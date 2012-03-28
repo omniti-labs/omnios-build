@@ -49,14 +49,12 @@ make_isa_stub
 
 PKG=developer/build/libtool
 VER=2.4
-PVER=1
 SUMMARY="libtool - GNU libtool utility"
 DESC="GNU libtool - library support utility ($VER)"
 make_package libtool.mog
 
 PKG=library/libtool/libltdl
 VER=2.4
-PVER=1
 SUMMARY="libltdl - GNU libtool dlopen wrapper"
 DESC="GNU libtool dlopen wrapper - libltdl ($VER)"
 make_package libltdl.mog
