@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=patch       # App name
-VER=2.6.1        # App version
-PVER=0.151002           # Package Version
-PKG=text/gnu-patch    # Package name (without prefix)
+PROG=patch
+VER=2.6.1
+PKG=text/gnu-patch
 SUMMARY="The GNU Patch utility"
 DESC="$SUMMARY"
 
