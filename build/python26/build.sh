@@ -27,8 +27,6 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PATH=/opt/gcc-4.6.2/bin:$PATH
-export PATH
 CC=gcc
 CXX=g++
 

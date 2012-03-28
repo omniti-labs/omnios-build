@@ -105,7 +105,7 @@ BUILD_DEPENDS_IPS="developer/gcc-3 developer/versioning/git file/gnu-coreutils"
 BUILDARCH=64
 
 make_prog() {
-    CC=/opt/gcc-4.6.2/bin/gcc
+    CC=/opt/gcc-4.6.3/bin/gcc
     export KERNEL_SOURCE KVM_DIR PREFIX CC
     logmsg "--- build.sh"
     logcmd ./build.sh || \

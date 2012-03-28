@@ -1,0 +1,3 @@
+license COPYING.LIB license=LGPLv2.1
+license COPYING.RUNTIME license="GCC runtime license"
+license COPYING3.LIB license=LGPLv3

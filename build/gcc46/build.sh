@@ -27,17 +27,16 @@
 # Load support functions
 . ../../lib/functions.sh
 
-export LD_LIBRARY_PATH=/opt/gcc-4.6.2/lib
-PATH=/usr/perl5/5.10.0/bin:$PATH
-export PATH
+PROG=gcc
+VER=4.6.3
+VERHUMAN=$VER
+PKG=developer/gcc46
+SUMMARY="gcc ${VER}"
+DESC="$SUMMARY"
 
-PROG=gcc         # App name
-VER=4.6.2        # App version
-VERHUMAN=$VER    # Human-readable version
-PVER=3           # Package Version (numeric only)
-PKG=developer/gcc46        # Package name (without prefix)
-SUMMARY="gcc 4.6.2" # You should change this
-DESC="$SUMMARY" # Longer description
+export LD_LIBRARY_PATH=/opt/gcc-${VER}/lib
+PATH=/usr/perl5/5.14.2/bin:$PATH
+export PATH
 
 DEPENDS_IPS="developer/gcc46/libgmp-gcc46 developer/gcc46/libmpfr-gcc46 developer/gcc46/libmpc-gcc46
 	developer/gnu-binutils system/library/gcc-4-runtime"
@@ -47,7 +46,7 @@ NO_PARALLEL_MAKE=1
 PKGPREFIX=""
 
 [[ "$BUILDARCH" == "both" ]] && BUILDARCH=32
-PREFIX=/opt/gcc-4.6.2
+PREFIX=/opt/gcc-${VER}
 reset_configure_opts
 CC=gcc
 
@@ -58,13 +57,13 @@ export LD_FOR_HOST
 LD=/bin/ld
 export LD
 
-CONFIGURE_OPTS_32="--prefix=/opt/gcc-4.6.2"
+CONFIGURE_OPTS_32="--prefix=/opt/gcc-${VER}"
 CONFIGURE_OPTS="--host i386-pc-solaris2.11 --build i386-pc-solaris2.11 --target i386-pc-solaris2.11 \
-	--with-boot-ldflags=-R/opt/gcc-4.6.2/lib \
-	--with-gmp=/opt/gcc-4.6.2 --with-mpfr=/opt/gcc-4.6.2 --with-mpc=/opt/gcc-4.6.2 \
+	--with-boot-ldflags=-R/opt/gcc-${VER}/lib \
+	--with-gmp=/opt/gcc-${VER} --with-mpfr=/opt/gcc-${VER} --with-mpc=/opt/gcc-${VER} \
 	--enable-languages=c,c++,fortran,lto --enable-ld=no \
 	--with-as=/usr/bin/gas --with-gnu-as --with-build-time-tools=/usr/gnu/i386-pc-solaris2.11/bin"
-LDFLAGS32="-R/opt/gcc-4.6.2/lib"
+LDFLAGS32="-R/opt/gcc-${VER}/lib"
 export LD_OPTIONS="-zignore -zcombreloc -Bdirect -i"
 
 save_function configure32 configure32_orig
@@ -81,5 +80,5 @@ download_source $PROG/releases/$PROG-$VER $PROG $VER
 patch_source
 prep_build
 build
-make_package
+make_package gcc.mog
 clean_up
