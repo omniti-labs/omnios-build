@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=git      # App name
-VER=1.7.9.1   # App version
-PVER=1        # Package Version
-PKG=developer/versioning/git # Package name (without prefix)
+PROG=git
+VER=1.7.9.1
+PKG=developer/versioning/git
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
 
@@ -39,7 +38,7 @@ BUILD_DEPENDS_IPS="compatibility/ucb"
 DEPENDS_SVR4="OMNIpython26 OMNIcurl OMNIlibiconv OMNIopenssl OMNIzlib OMNIperl"
 DEPENDS_IPS="runtime/python-26 \
              web/curl \
-             library/security/openssl@1.0.0
+             library/security/openssl@1.0.1
              library/zlib"
 
 # For inet_ntop which isn't detected properly in the configure script
