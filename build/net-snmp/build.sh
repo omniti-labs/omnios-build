@@ -30,7 +30,6 @@
 PROG=net-snmp
 VER=5.4.4
 VERHUMAN=$VER
-PVER=1
 PKG=system/management/snmp/net-snmp
 SUMMARY="Net-SNMP Agent files and libraries"
 DESC="$SUMMARY ($VER)"

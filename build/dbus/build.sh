@@ -27,9 +27,8 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=dbus       # App name
-VER=1.4.16      # App version
-PVER=1          # Package Version
+PROG=dbus
+VER=1.4.16
 PKG=dbus ##IGNORE##
 SUMMARY="$PROG - IPC-based message notifications"
 DESC="$SUMMARY"

@@ -27,14 +27,13 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=dbus-glib  # App name
-VER=0.98        # App version
-PVER=1          # Package Version
-PKG=system/library/libdbus-glib # Package name (without prefix)
+PROG=dbus-glib
+VER=0.98
+PKG=system/library/libdbus-glib
 SUMMARY="$PROG - GNOME GLib DBUS integration library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="system/library/libdbus library/glib2 library/zlib system/library libgcc_s"
+DEPENDS_IPS="system/library/libdbus library/glib2 library/zlib system/library system/library/gcc-4-runtime"
 
 CONFIGURE_OPTS="--disable-fam --disable-dtrace --disable-tests"
 GLIB_GENMARSHAL=/usr/bin/glib-genmarshal

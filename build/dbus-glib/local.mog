@@ -30,3 +30,5 @@
 <transform dir path=usr/share/gtk.* -> drop>
 <transform file path=usr/share/gtk.* -> drop>
 <transform link path=usr/share/gtk.* -> drop>
+
+license COPYING license="AFL2.1/GPLv2"
