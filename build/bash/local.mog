@@ -25,4 +25,4 @@
 #
 <transform dir  path=etc/bash -> set group sys>
 <transform dir  path=usr/share/bash -> set group other>
-license license=GPL3 path=COPYING
+license COPYING license=GPL3
