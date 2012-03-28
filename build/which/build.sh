@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=which      # App name
-VER=2.20        # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=shell/which # Package name (without prefix)
+PROG=which
+VER=2.20
+VERHUMAN=$VER
+PKG=shell/which
 SUMMARY="GNU which"
 DESC="GNU which utility ($VER)"
 
