@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=m4         # App name
-VER=1.4.16      # App version
-PVER=2          # Package Version
-PKG=developer/macro/gnu-m4  # Package name (without prefix)
+PROG=m4
+VER=1.4.16
+PKG=developer/macro/gnu-m4
 SUMMARY="GNU m4"
 DESC="GNU m4 - A macro processor (gm4)"
 
