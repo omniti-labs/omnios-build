@@ -33,3 +33,4 @@
 <transform file path=".*include" -> drop>
 <transform link path=".*include" -> drop>
 <transform dir -> default mode 0755>
+license libltdl/COPYING.LIB license=LGPLv2.1

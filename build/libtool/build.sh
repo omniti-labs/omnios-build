@@ -27,9 +27,8 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libtool      # App name
-VER=2.4           # App version
-PVER=1            # Package Version
+PROG=libtool
+VER=2.4
 PKG=developer/build/libtool  ##IGNORE##
 SUMMARY="libtool - GNU libtool utility"
 DESC="GNU libtool - library support utility ($VER)"
