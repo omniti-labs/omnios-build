@@ -27,17 +27,18 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=tar              # App name
-VER=1.26              # App version
-PVER=1                # Package Version (numeric only)
-PKG=archiver/gnu-tar  # Package name (without prefix)
+PROG=tar
+VER=1.26
+PKG=archiver/gnu-tar
 SUMMARY="gtar - GNU tar"
 DESC="GNU tar - A utility used to store, backup, and transport files (gtar) $VER"
 
+BUILDARCH=32
 # GNU tar doesn't like to be configured by root.  This var ignores those errors
 export FORCE_UNSAFE_CONFIGURE=1
 
 CONFIGURE_OPTS="--program-prefix=g --with-rmt=/usr/sbin/rmt"
+CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin"
 
 make_sym_links() {
     logmsg "Creating necessary symlinks"
