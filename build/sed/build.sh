@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=sed       # App name
-VER=4.2.1        # App version
-PVER=0.151002           # Package Version
-PKG=text/gnu-sed    # Package name (without prefix)
+PROG=sed
+VER=4.2.1
+PKG=text/gnu-sed
 SUMMARY="gsed - GNU implementation of sed, the Unix stream editor"
 DESC="$SUMMARY"
 
