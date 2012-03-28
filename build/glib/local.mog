@@ -47,3 +47,5 @@
 <transform dir path=usr/lib/amd64/glib-2.0$ -> drop>
 <transform dir path=usr/lib/gdbus-2.0$ -> drop>
 <transform dir path=usr/lib/glib-2.0$ -> drop>
+
+license COPYING license=LGPLv2

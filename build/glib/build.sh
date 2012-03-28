@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=glib       # App name
-VER=2.30.2      # App version
-PVER=1          # Package Version
-PKG=library/glib2 # Package name (without prefix)
+PROG=glib
+VER=2.30.2
+PKG=library/glib2
 SUMMARY="$PROG - GNOME GLib utility library"
 DESC="$SUMMARY"
 
