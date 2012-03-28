@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=swig       # App name
-VER=1.3.40      # App version
-PVER=1          # Package Version
-PKG=developer/swig  # Package name (without prefix)
+PROG=swig
+VER=1.3.40
+PKG=developer/swig
 SUMMARY="The Simplified and Interface Generator (swig)"
 DESC="$SUMMARY"
 
