@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=flex       # App name
-VER=2.5.35      # App version
-PVER=2          # Package Version
-PKG=developer/lexer/flex  # Package name (without prefix)
+PROG=flex
+VER=2.5.35
+PKG=developer/lexer/flex
 SUMMARY="$PROG - A fast lexical analyser generator"
 DESC="$SUMMARY"
 
