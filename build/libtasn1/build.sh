@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libtasn1   # App name
-VER=2.11        # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/libtasn1  # Package name (without prefix)
+PROG=libtasn1
+VER=2.11
+VERHUMAN=$VER
+PKG=library/libtasn1
 SUMMARY="Tiny ASN.1 library"
 DESC="$SUMMARY"
 
