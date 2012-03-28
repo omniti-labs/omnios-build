@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=make       # App name
-VER=3.82        # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=developer/build/gnu-make  # Package name (without prefix)
+PROG=make
+VER=3.82
+VERHUMAN=$VER
+PKG=developer/build/gnu-make
 SUMMARY="gmake - GNU make"
 DESC="GNU make - A utility used to build software (gmake) $VER"
 
