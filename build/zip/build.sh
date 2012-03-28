@@ -27,16 +27,18 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=zip         # App name
-VER=3.0          # App version
-VERHUMAN=$VER    # Human-readable version
-PVER=1           # Package Version (numeric only)
-PKG=compress/zip # Package name (without prefix)
+PROG=zip
+VER=3.0
+VERHUMAN=$VER
+PKG=compress/zip
 SUMMARY="The Info-Zip (zip) compression utility"
 DESC="$SUMMARY"
 
 BUILDDIR=$PROG${VER//./}
 BUILDARCH=32
+
+CPP="gcc -E"
+export CPP
 
 configure32() {
     export ISAPART DESTDIR PREFIX
