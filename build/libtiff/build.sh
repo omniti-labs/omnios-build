@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=tiff       # App name
-VER=4.0.1       # App version
-PVER=1          # Package Version
-PKG=image/library/libtiff  # Package name (without prefix)
+PROG=tiff
+VER=4.0.1
+PKG=image/library/libtiff
 SUMMARY="libtiff - library for reading and writing TIFF"
 DESC="$SUMMARY"
 
