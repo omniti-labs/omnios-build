@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=diffutils       # App name
-VER=3.2        # App version
-PVER=0.1           # Package Version
-PKG=text/gnu-diffutils    # Package name (without prefix)
+PROG=diffutils
+VER=3.2
+PKG=text/gnu-diffutils
 SUMMARY="GNU diffutils - Finds differences between and among files"
 DESC="$SUMMARY"
 
