@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libgcrypt  # App name
-VER=1.5.0       # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=system/library/security/libgcrypt  # Package name (without prefix)
+PROG=libgcrypt
+VER=1.5.0
+VERHUMAN=$VER
+PKG=system/library/security/libgcrypt
 SUMMARY="libgcrypt - cryptographic library"
 DESC="$SUMMARY"
 
