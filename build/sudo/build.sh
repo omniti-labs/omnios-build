@@ -27,13 +27,12 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=sudo      # App name
-VER=1.8.4p1        # App version
-VERHUMAN=1.8.4p1   # Human-readable version
-PVER=0.1          # Package Version (numeric only)
-PKG=security/sudo # Package name (without prefix)
+PROG=sudo
+VER=1.8.4p1
+VERHUMAN=1.8.4p1
+PKG=security/sudo
 SUMMARY="$PROG - authority delegation tool"
-DESC="$SUMMARY" # Longer description
+DESC="$SUMMARY"
 
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --sbindir=/usr/sbin --libexecdir=/usr/lib/sudo"
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --libexecdir=/usr/lib/sudo/amd64"

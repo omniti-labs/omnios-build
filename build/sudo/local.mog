@@ -24,8 +24,10 @@
 # Use is subject to license terms.
 #
 <transform file path=etc/sudoers$ -> set group root>
+<transform file path=etc/sudoers$ -> set preserve true>
 <transform dir  path=etc/sudoers.d$ -> set group root>
 <transform file path=usr/bin/sudo$ -> set mode 4511>
 <transform file path=usr/bin/sudoreplay$ -> set mode 0511>
 <transform file path=usr/sbin/visudo$ -> set mode 0511>
 <transform dir  path=var/run/sudo$ -> set mode 0700>
+license doc/LICENSE license=ISC
