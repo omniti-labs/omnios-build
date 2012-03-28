@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libidn     # App name
-VER=1.24        # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/libidn  # Package name (without prefix)
+PROG=libidn
+VER=1.24
+VERHUMAN=$VER
+PKG=library/libidn
 SUMMARY="The Internationalized Domains Library"
 DESC="IDN - The Internationalized Domains Library"
 

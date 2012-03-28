@@ -25,3 +25,8 @@
 #
 <transform dir  path=usr/include/amd64.* -> drop>
 <transform file path=usr/include/amd64.* -> drop>
+
+license COPYING.LESSERv2 license=LGPLv2
+license COPYING.LESSERv3 license=LGPLv3
+license COPYINGv2 license=GPLv2
+license COPYINGv3 license=GPLv3
