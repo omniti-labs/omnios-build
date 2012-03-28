@@ -27,17 +27,15 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=mercurial      # App name
-VER=2.1   # App version
-PVER=1        # Package Version
-PKG=developer/versioning/mercurial # Package name (without prefix)
+PROG=mercurial
+VER=2.1
+PKG=developer/versioning/mercurial
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
 
-DEPENDS_SVR4="OMNIpython26 OMNIcurl OMNIlibiconv OMNIopenssl OMNIzlib OMNIperl"
 DEPENDS_IPS="runtime/python-26 \
              web/curl \
-             library/security/openssl@1.0.0
+             library/security/openssl@1.0.1
              library/zlib"
 
 # For inet_ntop which isn't detected properly in the configure script
