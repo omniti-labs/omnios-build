@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=bzip2          # App name
-VER=1.0.6           # App version
-PVER=1              # Package Version
-PKG=compress/bzip2  # Package name (without prefix)
+PROG=bzip2
+VER=1.0.6
+PKG=compress/bzip2
 SUMMARY="The bzip compression utility"
 DESC="$SUMMARY"
 

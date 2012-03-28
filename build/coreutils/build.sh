@@ -52,10 +52,6 @@ link_in_usr_bin() {
     done
 }
 
-license() {
-    cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
-}
-
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -63,7 +59,6 @@ prep_build
 build
 make_isa_stub
 link_in_usr_bin
-license
 make_package
 clean_up
 

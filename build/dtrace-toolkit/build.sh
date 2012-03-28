@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=DTraceToolkit   # App name
-VER=0.99             # App version
-PVER=1               # Package Version
-PKG=developer/dtrace/toolkit  # Package name (without prefix)
+PROG=DTraceToolkit
+VER=0.99
+PKG=developer/dtrace/toolkit
 SUMMARY="$PROG ($VER)"
 DESC="$PROG - a collection of over 200 useful and documented DTrace scripts"
 

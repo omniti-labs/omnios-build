@@ -27,13 +27,12 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=bison      # App name
-VER=2.5         # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=0.1        # Package Version (numeric only)
-PKG=developer/parser/bison  # Package name (without prefix)
+PROG=bison
+VER=2.5
+VERHUMAN=$VER
+PKG=developer/parser/bison
 SUMMARY="Bison is a general-purpose parser generator"
-DESC="$SUMMARY" # Longer description
+DESC="$SUMMARY"
 
 BUILDARCH=32
 CONFIGURE_OPTS_32="--prefix=$PREFIX

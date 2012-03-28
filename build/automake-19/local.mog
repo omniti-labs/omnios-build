@@ -25,5 +25,4 @@
 #
 <transform dir path=usr/share/info$ -> drop>
 <transform file path=usr/share/info -> drop>
-<transform file path=^license -> drop>
-license license=GPL path=license
+license COPYING license=GPL

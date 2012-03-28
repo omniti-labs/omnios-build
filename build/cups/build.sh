@@ -28,14 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=cups
-VER=1.5.2      # App version
-PVER=1          # Package Version
+VER=1.5.2
 PKG=cups ##IGNORE##
 SUMMARY="$PROG - common UNIX printing system libraries"
 DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="image/library/libjpeg image/library/libpng image/library/libtiff
-	library/security/openssl@1.0.0 library/zlib service/security/kerberos-5
+	library/security/openssl@1.0.1 library/zlib service/security/kerberos-5
 	system/library/math system/library/security/gss system/library"
 
 CONFIGURE_OPTS="--localstatedir=/var --disable-libusb"

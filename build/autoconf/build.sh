@@ -51,13 +51,6 @@ make_sfw_links() {
     popd > /dev/null
 }
 
-license() {
-    cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/GPL
-    cp $TMPDIR/$BUILDDIR/COPYING.EXCEPTION $DESTDIR/GPL.EXCEPTION
-    cp $TMPDIR/$BUILDDIR/COPYINGv3 $DESTDIR/GPLv3
-} 
-
-
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -65,7 +58,6 @@ prep_build
 build
 make_isa_stub
 make_sfw_links
-license
 make_package
 clean_up
 

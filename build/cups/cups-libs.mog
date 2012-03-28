@@ -63,3 +63,5 @@
 <transform link path=usr/lib/cups -> drop>
 
 <transform file path=lib/.*/cups\.xml$ -> drop>
+
+license LICENSE.txt license=GPL/LGPL

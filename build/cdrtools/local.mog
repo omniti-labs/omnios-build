@@ -25,3 +25,6 @@
 #
 <transform file path="^usr/bin/.*" -> set mode 0555>
 <transform file path="^etc/security/.*" -> set group sys>
+license CDDL.Schily.txt license=CDDL
+license GPL-2.0.txt license=GPL
+license LGPL-2.1.txt license=LGPL
