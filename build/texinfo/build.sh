@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=texinfo    # App name
-VER=4.13        # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=text/texinfo  # Package name (without prefix)
+PROG=texinfo
+VER=4.13
+VERHUMAN=$VER
+PKG=text/texinfo
 SUMMARY="GNU texinfo - Texinfo utilities"
 DESC="GNU texinfo $VER"
 
