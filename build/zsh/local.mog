@@ -24,5 +24,4 @@
 # Use is subject to license terms.
 #
 link path=/etc/zprofile target=profile
-license license=zsh.license path=LICENSE
-<transform file path=^LICENSE$ -> drop>
+license LICENSE.utf8 license=zsh.license

@@ -30,7 +30,6 @@
 PROG=zsh
 VER=4.3.17
 VERHUMAN=$VER
-PVER=0.3
 PKG=shell/zsh
 SUMMARY="Z shell"
 DESC="Z shell"
@@ -57,7 +56,7 @@ install_zshrc() {
   chmod 644 $DESTDIR/etc/zshrc
 }
 install_license() {
-  iconv -f 8859-1 -t utf-8 $SRCDIR/LICENSE > $DESTDIR/LICENSE
+  iconv -f 8859-1 -t utf-8 $TMPDIR/$BUILDDIR/LICENCE > $TMPDIR/$BUILDDIR/LICENSE
 }
 
 init
