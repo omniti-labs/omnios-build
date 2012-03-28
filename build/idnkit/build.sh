@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=idnkit     # App name
-VER=1.0-src     # App version
-VERHUMAN=1.0    # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/idnkit  # Package name (without prefix)
+PROG=idnkit
+VER=1.0-src
+VERHUMAN=1.0
+PKG=library/idnkit
 SUMMARY="Internationalized Domain Name kit (idnkit/JPNIC)"
 DESC="Internationalized Domain Name kit (idnkit/JPNIC)"
 
@@ -39,18 +38,12 @@ DEPENDS_IPS="system/library"
 
 CONFIGURE_OPTS="--disable-static --mandir=/usr/share/man"
 
-install_license() {
-  logcmd cp $TMPDIR/$BUILDDIR/LICENSE.txt $DESTDIR/LICENSE.txt || \
-    logerr "license installation failed"
-}
-
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
-install_license
 
 VER=1.0
 PKG=library/idnkit
