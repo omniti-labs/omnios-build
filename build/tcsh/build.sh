@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=tcsh       # App name
-VER=6.18.01     # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=shell/tcsh  # Package name (without prefix)
+PROG=tcsh
+VER=6.18.01
+VERHUMAN=$VER
+PKG=shell/tcsh
 SUMMARY="Tenex C-shell (tcsh)"
 DESC="$SUMMARY $VER"
 
