@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libpng     # App name
-VER=1.5.9       # App version
-PVER=1          # Package Version
-PKG=image/library/libpng  # Package name (without prefix)
+PROG=libpng
+VER=1.5.9
+PKG=image/library/libpng
 SUMMARY="Portable Network Graphics library"
 DESC="$SUMMARY"
 
