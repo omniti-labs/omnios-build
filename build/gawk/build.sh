@@ -30,7 +30,6 @@
 PROG=gawk
 VER=4.0.0
 VERHUMAN=$VER
-PVER=0.1
 PKG=text/gawk
 SUMMARY="gawk - GNU implementation of awk"
 DESC="$SUMMARY"
