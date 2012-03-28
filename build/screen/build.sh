@@ -27,17 +27,17 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=screen     # App name
-VER=4.0.3       # App version
-PVER=0.151002          # Package Version
-PKG=terminal/screen      # Package name (without prefix)
+PROG=screen
+VER=4.0.3
+PKG=terminal/screen
 SUMMARY="GNU Screen terminal multiplexer"
 DESC="$SUMMARY"
 
+BUILDARCH=32
+CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin"
 gnu_cleanup() {
-    logcmd rm -f $DESTDIR/usr/bin/{i386,amd64}/screen
-    logcmd mv $DESTDIR/usr/bin/i386/screen-4.0.3 $DESTDIR/usr/bin/i386/screen
-    logcmd mv $DESTDIR/usr/bin/amd64/screen-4.0.3 $DESTDIR/usr/bin/amd64/screen
+    logcmd rm $DESTDIR/usr/bin/screen
+    logcmd mv $DESTDIR/usr/bin/screen-${VER} $DESTDIR/usr/bin/screen
     logcmd mv $DESTDIR/usr/man $DESTDIR/usr/share/
     logcmd mv $DESTDIR/usr/info $DESTDIR/usr/share/
 }
@@ -48,6 +48,7 @@ patch_source
 prep_build
 build
 gnu_cleanup
+strip_install
 make_isa_stub
 make_package
 clean_up
