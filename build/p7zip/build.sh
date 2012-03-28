@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=p7zip          # App name
-VER=9.20.1          # App version
-VERHUMAN=$VER       # Human-readable version
-PVER=1              # Package Version (numeric only)
-PKG=compress/p7zip  # Package name (without prefix)
+PROG=p7zip
+VER=9.20.1
+VERHUMAN=$VER
+PKG=compress/p7zip
 SUMMARY="The p7zip compression and archiving utility"
 DESC="$SUMMARY"
 
