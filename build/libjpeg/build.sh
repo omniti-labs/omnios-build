@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=jpeg       # App name
-VER=8d          # App version
-PVER=1          # Package Version
-PKG=image/library/libjpeg  # Package name (without prefix)
+PROG=jpeg
+VER=8d
+PKG=image/library/libjpeg
 SUMMARY="jpeg - The Independent JPEG Groups JPEG software (v$VER)"
 DESC="$SUMMARY"
 
@@ -48,15 +47,16 @@ ord26() {
 
 save_function make_package make_package_orig
 make_package() {
-    if [[ -n "$USEIPS" ]]; then
-        NUMVER=${VER::$((${#VER} -1))}
-        ALPHAVER=${VER:$((${#VER} -1))}
+    NUMVER=${VER::$((${#VER} -1))}
+    ALPHAVER=${VER:$((${#VER} -1))}
 
-        VER=${NUMVER}.$(ord26 ${ALPHAVER}) \
-        make_package_orig
-    else
-        make_package_orig
-    fi
+    VER=${NUMVER}.$(ord26 ${ALPHAVER}) \
+    make_package_orig
+}
+make_license() {
+    awk '/^LEGAL ISSUES/,/REFERENCE/{if(NR>40){print}}' \
+        $TMPDIR/$BUILDDIR/README | grep -v '^REFERENCES' > \
+        $TMPDIR/$BUILDDIR/LICENSE
 }
 
 init
@@ -65,6 +65,7 @@ patch_source
 prep_build
 build
 make_isa_stub
+make_license
 make_package
 clean_up
 
