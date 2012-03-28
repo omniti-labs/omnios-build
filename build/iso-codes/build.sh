@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=iso-codes  # App name
-VER=3.33        # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=data/iso-codes  # Package name (without prefix)
+PROG=iso-codes
+VER=3.33
+VERHUMAN=$VER
+PKG=data/iso-codes
 SUMMARY="ISO code lists and translations"
 DESC="$SUMMARY"
 
