@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=nettle     # App name
-VER=2.4         # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/security/nettle  # Package name (without prefix)
+PROG=nettle
+VER=2.4
+VERHUMAN=$VER
+PKG=library/security/nettle
 SUMMARY="Nettle - a low-level cryptographic library"
 DESC="$SUMMARY"
 

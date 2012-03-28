@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=gnutls     # App name
-VER=3.0.15      # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/gnutls  # Package name (without prefix)
+PROG=gnutls
+VER=3.0.15
+VERHUMAN=$VER
+PKG=library/gnutls
 SUMMARY="GNU transport layer security library"
 DESC="$SUMMARY"
 
