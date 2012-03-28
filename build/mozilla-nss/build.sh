@@ -27,13 +27,12 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=nss      # App name
-VER=3.12.9         # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=0.1          # Package Version (numeric only)
+PROG=nss
+VER=3.12.9
+VERHUMAN=$VER
 PKG=$PROG ##IGNORE##
-SUMMARY="Netscape Portable Runtime"      # You should change this
-DESC="$SUMMARY"         # Longer description
+SUMMARY="Netscape Portable Runtime"
+DESC="$SUMMARY"
 
 CONFIGURE_OPTS="--includedir=/usr/include/mps"
 CONFIGURE_OPTS_32="--libdir=/usr/lib/mps"
@@ -116,7 +115,6 @@ make_install64() {
     realize_links /usr/lib/mps/amd64
 }
 secv1_links() {
-    logcmd cp $TMPDIR/$BUILDDIR//mozilla/security/nss/pkg/solaris/common_files/copyright $DESTDIR/license
     logcmd ln -s amd64 $DESTDIR/usr/lib/mps/64
     logcmd mkdir -p $DESTDIR/usr/lib/mps/secv1/amd64
     logcmd ln -s amd64 $DESTDIR/usr/lib/mps/secv1/64
