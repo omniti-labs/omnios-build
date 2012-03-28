@@ -40,10 +40,6 @@ DEPENDS_IPS="developer/macro/gnu-m4 runtime/perl-5142"
 # Since it's 32-bit only we don't worry about isaexec for bins
 CONFIGURE_OPTS="--bindir=$PREFIX/bin"
 
-license() {
-    cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
-}
-
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -53,7 +49,6 @@ build
 logcmd rm -f $DESTDIR$PREFIX/bin/automake
 logcmd rm -f $DESTDIR$PREFIX/bin/aclocal
 make_isa_stub
-license
 make_package
 clean_up
 

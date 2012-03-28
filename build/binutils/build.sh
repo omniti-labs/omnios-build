@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=binutils               # App name
-VER=2.22                    # App version
-VERHUMAN=$VER               # Human-readable version
-PVER=2                      # Package Version (numeric only)
-PKG=developer/gnu-binutils  # Package name (without prefix)
+PROG=binutils
+VER=2.22
+VERHUMAN=$VER
+PKG=developer/gnu-binutils
 SUMMARY="$PROG -  a collection of binary tools"
 DESC="$SUMMARY"
 

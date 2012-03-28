@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=gzip         # App name
-VER=1.4           # App version
-VERHUMAN=$VER     # Human-readable version
-PVER=1            # Package Version (numeric only)
-PKG=compress/gzip # Package name (without prefix)
+PROG=gzip
+VER=1.4
+VERHUMAN=$VER
+PKG=compress/gzip
 SUMMARY="The GNU Zip (gzip) compression utility"
 DESC="$SUMMARY $VER"
 

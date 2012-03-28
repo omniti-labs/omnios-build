@@ -46,7 +46,7 @@ patch_source
 prep_build
 buildperl
 vendorizeperl
-cp $SRCDIR/Artistic $DESTDIR/license
+cp $SRCDIR/Artistic $DESTDIR/
 make_package
 clean_up
 

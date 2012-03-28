@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=expat      # App name
-VER=2.0.1       # App version
-PVER=0.151002  # Package Version
-PKG=library/expat      # Package name (without prefix)
+PROG=expat
+VER=2.0.1
+PKG=library/expat
 SUMMARY="libexpat - XML parser library"
 DESC="$SUMMARY"
 BUILDDIR=$PROG-2007-06-05

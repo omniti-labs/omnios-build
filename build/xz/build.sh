@@ -3,11 +3,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=xz         # App name
-VER=5.0.3       # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=compress/xz # Package name (without prefix)
+PROG=xz
+VER=5.0.3
+VERHUMAN=$VER
+PKG=compress/xz
 SUMMARY="XZ Utils - general-purpose data compression software"
 DESC="$SUMMARY"
 

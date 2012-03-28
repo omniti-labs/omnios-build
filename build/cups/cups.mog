@@ -66,3 +66,5 @@
 
 <transform dir path=var/.*/cups$ -> set group lp>
 <transform dir path=var/.*/cups/ -> set group lp>
+
+license LICENSE.txt license=GPL/LGPL

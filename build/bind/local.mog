@@ -59,3 +59,4 @@
 <transform file path=usr/share/man/man8/ddns-confgen.8 -> drop>
 <transform file path=usr/share/man/man8/pkcs11-.* -> drop>
 <transform dir  path=var -> drop>
+license COPYRIGHT license=ISC

@@ -27,3 +27,4 @@
 <transform file path=usr/bin.* -> drop>
 <transform dir path=usr/man.* -> drop>
 <transform file path=usr/man.* -> drop>
+license COPYING license=MIT

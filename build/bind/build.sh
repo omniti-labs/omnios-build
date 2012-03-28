@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=bind       # App name
-VER=9.9.0       # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=network/dns/bind  # Package name (without prefix)
+PROG=bind
+VER=9.9.0
+VERHUMAN=$VER
+PKG=network/dns/bind
 SUMMARY="BIND DNS tools"
 DESC="$SUMMARY ($VER)"
 

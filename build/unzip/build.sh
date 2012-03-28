@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=unzip         # App name
-VER=6.0            # App version
-VERHUMAN=$VER      # Human-readable version
-PVER=1             # Package Version (numeric only)
-PKG=compress/unzip # Package name (without prefix)
+PROG=unzip
+VER=6.0
+VERHUMAN=$VER
+PKG=compress/unzip
 SUMMARY="The Info-Zip (unzip) compression utility"
 DESC="$SUMMARY"
 

@@ -26,4 +26,4 @@
 <transform dir path=^usr/gnu/bin/amd64 -> drop>
 <transform file path=^usr/gnu/bin/amd64.* -> drop>
 <transform file path=^license -> drop>
-license license=GPL3 path=license
+license COPYING license=GPLv3

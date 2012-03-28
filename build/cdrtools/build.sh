@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=cdrtools   # App name
-VER=3.00        # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=media/cdrtools  # Package name (without prefix)
+PROG=cdrtools
+VER=3.00
+VERHUMAN=$VER
+PKG=media/cdrtools
 SUMMARY="CD creation utilities"
 DESC="$SUMMARY ($VER)"
 
