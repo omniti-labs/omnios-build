@@ -33,4 +33,4 @@
 <transform file path=lib/svc/manifest/network/ipmievd.xml -> set mode 0444>
 <transform file path=lib/svc/manifest/network/ipmievd.xml -> set group sys>
 <transform file path=lib/svc/method/svc-ipmievd -> set mode 0555>
-license license=Sun path=usr/share/doc/ipmitool/COPYING
+license usr/share/doc/ipmitool/COPYING license=Sun

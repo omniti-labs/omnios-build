@@ -30,7 +30,6 @@
 PROG=ipmitool
 VER=1.8.11
 VERHUMAN=$VER
-PVER=0.1
 PKG=system/management/ipmitool
 SUMMARY="IPMI management tool"
 DESC="$SUMMARY"
