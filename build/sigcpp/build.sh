@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libsigc++      # App name
-VER=2.2.10          # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=0.1        # Package Version (numeric only)
+PROG=libsigc++
+VER=2.2.10
+VERHUMAN=$VER
 PKG=library/c++/sigcpp
 SUMMARY="Libsigc++ - a library that implements typesafe callback system"
 DESC="$SUMMARY"
