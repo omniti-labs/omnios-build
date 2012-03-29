@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=ncurses    # App name
-VER=5.9         # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/ncurses  # Package name (without prefix)
+PROG=ncurses
+VER=5.9
+VERHUMAN=$VER
+PKG=library/ncurses
 SUMMARY="A CRT screen handling and optimization package."
 DESC="$SUMMARY"
 
