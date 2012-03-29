@@ -23,5 +23,4 @@
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
-license license=pcre.license path=LICENSE
-<transform file path=^LICENSE$ -> drop>
+license LICENCE license=pcre.license

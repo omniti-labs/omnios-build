@@ -30,7 +30,6 @@
 PROG=pcre
 VER=8.30
 VERHUMAN=$VER
-PVER=0.1
 PKG=library/pcre
 SUMMARY="Perl-Compatible Regular Expressions"
 DESC="PCRE - Perl-Compatible Regular Expressions (8.30)"
@@ -62,9 +61,6 @@ make_install64() {
     rm -rf $DESTDIR/usr/share/man
     make_install
 }
-install_license() {
-    cp $TMPDIR/$BUILDDIR/LICENCE $DESTDIR/LICENSE
-}
 
 init
 download_source $PROG $PROG $VER
@@ -73,7 +69,6 @@ force_links
 prep_build
 build
 make_isa_stub
-install_license
 make_package
 clean_up
 
