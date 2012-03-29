@@ -3,7 +3,6 @@
 # Load support functions
 . ../../lib/functions.sh
 
-http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/XML-Parser-2.41.tar.gz
 if [ -z "$DEPVER" ]; then
     DEPVER=5.14.2
 fi
@@ -13,7 +12,7 @@ PROG=XML-Parser
 MODNAME=XML::Parser
 VER=2.41
 VERHUMAN=$VER
-PKG=library/perl-5/$(echo $PROG | tr '[A-Z]' '[a-z]')
+PKG=library/perl-5/xml-parser
 SUMMARY="XML::Parser perl module ($VER)"
 DESC="$SUMMARY"
 
@@ -46,7 +45,6 @@ patch_source
 prep_build
 buildperl
 vendorizeperl
-cp $SRCDIR/Artistic $DESTDIR/
 make_package
 clean_up
 
