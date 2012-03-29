@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=ntp             # App name
-VER=dev-4.2.7p259    # App version
-VERHUMAN=4.2.7.259   # Human-readable version
-PVER=0.1             # Package Version (numeric only)
-PKG=service/network/ntp      # Package name (without prefix)
+PROG=ntp
+VER=dev-4.2.7p259
+VERHUMAN=4.2.7.259
+PKG=service/network/ntp
 SUMMARY="Network Time Services"
 DESC="$SUMMARY"
 
