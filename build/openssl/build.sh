@@ -108,10 +108,6 @@ ord26() {
     [[ $ASCII -gt 32 ]] && ASCII=$((ASCII - 32))
     echo $ASCII
 }
-install_license() {
-    cp $TMPDIR/$BUILDDIR/LICENSE $DESTDIR/LICENSE
-}
-
 save_function make_package make_package_orig
 make_package() {
     if [[ -n "`echo $VER | grep [a-z]`" ]]; then
@@ -130,6 +126,5 @@ prep_build
 build
 move_libs
 make_isa_stub
-install_license
 make_package
 clean_up
