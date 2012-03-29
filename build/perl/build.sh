@@ -43,7 +43,6 @@ esac
 PROG=perl
 VER=$DEPVER
 NODOTVER=$(echo $DEPVER| sed -e's/\.//g;')
-PVER=0.1
 PKG=runtime/perl-$NODOTVER
 SUMMARY="Perl $VER Programming Language"
 DESC="$SUMMARY"
@@ -76,9 +75,6 @@ links() {
     done
     mkdir -p $DESTDIR/usr/perl5/bin
     ln -s ../${VER}/bin/perl $DESTDIR/usr/perl5/bin/perl
-}
-license() {
-    cp $TMPDIR/$BUILDDIR/Artistic $DESTDIR/license
 }
 
 build32() {
@@ -174,7 +170,6 @@ prep_build
 links
 build
 catalog perl.all.bit || logerr "Failed to catalog full install"
-license
 build_mogs
 
 PKG=runtime/perl-$NODOTVER
@@ -186,13 +181,13 @@ make_package $TMPDIR/perl.mog
 PKG=runtime/perl-$NODOTVER/manual
 SUMMARY="Perl $VER Programming Language Docs"
 DESC="$SUMMARY"
-DEPENDS_IPS="=runtime/perl-5142@${VER},5.11-${PVER} runtime/perl-5142"
+DEPENDS_IPS="=runtime/perl-5142@${VER},5.11-${PVER} runtime/perl-5142@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-docs.mog
 
 PKG=runtime/perl-$NODOTVER-64
 SUMMARY="Perl $VER Programming Language (64-bit)"
 DESC="$SUMMARY"
-DEPENDS_IPS="=runtime/perl-5142@${VER},5.11-${PVER} runtime/perl-5142"
+DEPENDS_IPS="=runtime/perl-5142@${VER},5.11-${PVER} runtime/perl-5142@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-64.mog
 
 clean_up

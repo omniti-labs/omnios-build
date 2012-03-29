@@ -23,5 +23,4 @@
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
-<transform file path=license -> drop>
-license license=Artistic path=license
+license Artistic license=Artistic
