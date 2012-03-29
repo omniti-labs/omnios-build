@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=Mako  # App name
-VER=0.6.2        # App version
-PVER=0.1
-PKG=library/python-2/mako # Package name (without prefix)
+PROG=Mako
+VER=0.6.2
+PKG=library/python-2/mako
 SUMMARY="Mako - a python templating language"
 DESC="$SUMMARY"
 
