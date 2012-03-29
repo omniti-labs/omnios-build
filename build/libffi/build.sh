@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libffi     # App name
-VER=3.0.10      # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=0.1        # Package Version (numeric only)
+PROG=libffi
+VER=3.0.10
+VERHUMAN=$VER
 PKG=library/libffi
 SUMMARY="A Portable Foreign Function Interface Library"
 DESC="$SUMMARY"
