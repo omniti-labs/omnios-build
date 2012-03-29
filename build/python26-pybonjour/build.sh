@@ -27,19 +27,24 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=pybonjour  # App name
-VER=1.1.1        # App version
-PVER=0.151002
-PKG=library/python-2/pybonjour # Package name (without prefix)
+PROG=pybonjour
+VER=1.1.1
+PKG=library/python-2/pybonjour
 SUMMARY="pure-Python interface bonjour/DNS-SD implementation"
 DESC="$SUMMARY"
 
 DEPENDS_IPS="runtime/python-26"
+
+make_license() {
+    head -25 $TMPDIR/$BUILDDIR/build/lib/pybonjour.py > \
+        $TMPDIR/$BUILDDIR/LICENSE
+}
 
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 python_build
+make_license
 make_package
 clean_up

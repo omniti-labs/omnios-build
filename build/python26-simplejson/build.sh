@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=simplejson  # App name
-VER=2.3.2        # App version
-PVER=1           # Package Version
-PKG=library/python-2/simplejson-26 # Package name (without prefix)
+PROG=simplejson
+VER=2.3.2
+PKG=library/python-2/simplejson-26
 SUMMARY="simplejson - Python interface to JSON for Python 2.6"
 DESC="$SUMMARY"
 

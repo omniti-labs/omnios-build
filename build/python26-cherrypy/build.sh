@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=CherryPy  # App name
-VER=3.2.2        # App version
-PVER=1           # Package Version
-PKG=library/python-2/cherrypy # Package name (without prefix)
+PROG=CherryPy
+VER=3.2.2
+PKG=library/python-2/cherrypy
 SUMMARY="cherrypy - A Minimalist Python Web Framework"
 DESC="$SUMMARY"
 

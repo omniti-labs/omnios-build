@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=lxml  # App name
-VER=2.3.3        # App version
-PVER=0.1
-PKG=library/python-2/lxml-26 # Package name (without prefix)
+PROG=lxml
+VER=2.3.3
+PKG=library/python-2/lxml-26
 SUMMARY="lxml - Powerful and Pythonic XML processing library"
 DESC="$SUMMARY"
 

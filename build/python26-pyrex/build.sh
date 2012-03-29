@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=Pyrex  # App name
-VER=0.9.9        # App version
-PVER=0.1
-PKG=library/python-2/pyrex-26 # Package name (without prefix)
+PROG=Pyrex
+VER=0.9.9
+PKG=library/python-2/pyrex-26
 SUMMARY="Pyrex - a Language for Writing Python Extension Modules"
 DESC="$SUMMARY"
 

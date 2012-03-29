@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=numpy  # App name
-VER=1.6.1        # App version
-PVER=0.1
-PKG=library/python-2/numpy-26 # Package name (without prefix)
+PROG=numpy
+VER=1.6.1
+PKG=library/python-2/numpy-26
 SUMMARY="numpy - package for scientific computing with Python"
 DESC="$SUMMARY"
 

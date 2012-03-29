@@ -1,0 +1,4 @@
+license doc/licenses/GPL.txt license=GPLv2
+license doc/licenses/BSD.txt license=BSD
+license doc/licenses/ZopePublicLicense.txt license=ZPL
+license doc/licenses/elementtree.txt license=elementtree
