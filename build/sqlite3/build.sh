@@ -27,12 +27,11 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=sqlite-autoconf      # App name
-VER=3071000         # App version
-VERHUMAN=3.7.10  # Human-readable version
-PVER=0.1          # Package Version (numeric only)
-PKG=database/sqlite-3       # Package name (without prefix)
-SUMMARY="SQL database engine library"      # You should change this
+PROG=sqlite-autoconf
+VER=3071000
+VERHUMAN=3.7.10
+PKG=database/sqlite-3
+SUMMARY="SQL database engine library"
 DESC="$SUMMARY"
 
 DEPENDS_IPS="SUNWcs library/readline system/library/gcc-4-runtime"
