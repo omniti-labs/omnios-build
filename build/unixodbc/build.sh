@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=unixODBC   # App name
-VER=2.2.14      # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/unixodbc  # Package name (without prefix)
+PROG=unixODBC
+VER=2.2.14
+VERHUMAN=$VER
+PKG=library/unixodbc
 SUMMARY="The UnixODBC Subsystem and SDK"
 DESC="UnixODBC - The UnixODBC Subsystem and SDK ($VER)"
 
