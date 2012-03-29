@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=vim        # App name
-VER=7.3         # App version
-PVER=1          # Package Version
-PKG=editor/vim  # Package name (without prefix)
+PROG=vim
+VER=7.3
+PKG=editor/vim
 SUMMARY="Vi IMproved"
 DESC="$SUMMARY version $VER"
 
