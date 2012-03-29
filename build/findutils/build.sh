@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=findutils       # App name
-VER=4.4.2        # App version
-PVER=0.1           # Package Version
-PKG=file/gnu-findutils    # Package name (without prefix)
+PROG=findutils
+VER=4.4.2
+PKG=file/gnu-findutils
 SUMMARY="GNU utilities find and xargs"
 DESC="$SUMMARY"
 
