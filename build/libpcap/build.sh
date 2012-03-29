@@ -30,7 +30,6 @@
 PROG=libpcap
 VER=1.2.1
 VERHUMAN=$VER
-PVER=0.1
 PKG=system/library/pcap
 SUMMARY="libpcap - a packet capture library"
 DESC="$SUMMARY"
