@@ -23,6 +23,5 @@
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
-license license=J.Schilling.licence path=schilix.license
-license license=Caldera.licence path=caldera.license
-<transform file path=.*\.license$ -> drop>
+license files/schilix.license license=J.Schilling.licence
+license files/caldera.license license=Caldera.licence

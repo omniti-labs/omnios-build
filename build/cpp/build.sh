@@ -27,9 +27,8 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=cpp        # App name
+PROG=cpp
 VER=0.5.11
-PVER=0.2012.2.29
 PKG=developer/macro/cpp
 SUMMARY="The C Pre-Processor (cpp)"
 DESC="$SUMMARY"
@@ -57,8 +56,6 @@ make_install() {
     logcmd gmake install CC=gcc DESTDIR=$DESTDIR
     popd > /dev/null
     logcmd ln -s ../../lib/cpp $DESTDIR/usr/ccs/lib/cpp || logerr "softlink failed"
-    logcmd cp $SRCDIR/schilix.license $DESTDIR/ || logerr "could not place license"
-    logcmd cp $SRCDIR/caldera.license $DESTDIR/ || logerr "could not place license"
 }
 
 init
