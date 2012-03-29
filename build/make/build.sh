@@ -37,9 +37,8 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=make   # App name
-VER=0.5.11       # App version
-PVER=0.2006.12.19  # Package Version
+PROG=make
+VER=0.5.11
 PKG=developer/build/make ##IGNORE##
 SUMMARY="Omni-OS Bundled Development Tools"
 DESC="$SUMMARY"

@@ -26,3 +26,5 @@
 <transform dir path=usr/xpg4.* -> drop>
 <transform file path=usr/xpg4/bin/.* -> drop>
 <transform link path=usr/xpg4/bin/.* -> drop>
+license usr/src/OPENSOLARIS.LICENSE license=CDDL
+license files/BINARYLICENSE.txt license="Sun Binary License"
