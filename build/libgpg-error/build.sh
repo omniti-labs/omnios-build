@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libgpg-error  # App name
-VER=1.10        # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/security/libgpg-error  # Package name (without prefix)
+PROG=libgpg-error
+VER=1.10
+VERHUMAN=$VER
+PKG=library/security/libgpg-error
 SUMMARY="Common error codes for GnuPG, libgcrypt"
 DESC="$SUMMARY"
 
