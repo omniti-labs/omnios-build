@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=libxslt    # App name
-VER=1.1.26      # App version
-PVER=1          # Package Version
-PKG=library/libxslt  # Package name (without prefix)
+PROG=libxslt
+VER=1.1.26
+PKG=library/libxslt
 SUMMARY="The XSLT library"
 DESC="$SUMMARY"
 
