@@ -25,3 +25,5 @@
 #
 <transform file path=.*libmp\..* -> drop>
 <transform link path=.*libmp\..* -> drop>
+license COPYING license=GPLv3
+license COPYING.LIB license=LGPLv3

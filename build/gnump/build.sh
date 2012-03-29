@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=gmp         # App name
-VER=5.0.4        # App version
-VERHUMAN=$VER    # Human-readable version
-PVER=1           # Package Version (numeric only)
-PKG=library/gmp  # Package name (without prefix)
+PROG=gmp
+VER=5.0.4
+VERHUMAN=$VER
+PKG=library/gmp
 SUMMARY="GNU MP $VER"
 DESC="The GNU Multiple Precision (Bignum) Library ($VER)"
 
@@ -39,6 +38,8 @@ DESC="The GNU Multiple Precision (Bignum) Library ($VER)"
 MPN32="x86/pentium x86 generic"
 MPN64="x86_64/pentium4 x86_64 generic"
 export MPN32 MPN64
+
+BUILD_DEPENDS_IPS=developer/build/libtool
 
 CFLAGS="-fexceptions"
 CONFIGURE_OPTS="--includedir=/usr/include/gmp 
@@ -55,6 +56,7 @@ CONFIGURE_OPTS="--includedir=/usr/include/gmp
 
 configure32() {
     logmsg "--- configure (32-bit)"
+    logcmd cp /usr/share/libtool/config/config.guess $TMPDIR/$BUILDDIR
     CFLAGS="$CFLAGS $CFLAGS32" \
     CXXFLAGS="$CXXFLAGS $CXXFLAGS32" \
     CPPFLAGS="$CPPFLAGS $CPPFLAGS32" \
@@ -69,11 +71,12 @@ configure32() {
 
 configure64() {
     logmsg "--- configure (64-bit)"
+    logcmd cp /usr/share/libtool/config/config.guess $TMPDIR/$BUILDDIR
     CFLAGS="$CFLAGS $CFLAGS64" \
     CXXFLAGS="$CXXFLAGS $CXXFLAGS64" \
     CPPFLAGS="$CPPFLAGS $CPPFLAGS64" \
     LDFLAGS="$LDFLAGS $LDFLAGS64" \
-    CC=$CC CXX=$CXX \
+    CC="$CC -m64" CXX="$CXX -m64" \
     ABI=64 \
     MPN_PATH="$MPN64" \
     logcmd $CONFIGURE_CMD $CONFIGURE_OPTS_64 \
