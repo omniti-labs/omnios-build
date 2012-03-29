@@ -30,7 +30,6 @@
 PROG=pv
 VER=1.2.0
 VERHUMAN=$VER
-PVER=0.151002
 PKG=shell/pipe-viewer
 SUMMARY="Pipe Viewer"
 DESC="pipeline monitoring tool (1.2.0)"
