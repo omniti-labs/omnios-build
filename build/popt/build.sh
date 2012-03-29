@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=popt       # App name
-VER=1.16        # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/popt  # Package name (without prefix)
+PROG=popt
+VER=1.16
+VERHUMAN=$VER
+PKG=library/popt
 SUMMARY="Command line parsing library"
 DESC="$SUMMARY"
 
