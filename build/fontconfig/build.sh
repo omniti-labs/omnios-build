@@ -30,7 +30,6 @@
 PROG=fontconfig
 VER=2.8.0
 VERHUMAN=$VER
-PVER=1
 PKG=system/library/fontconfig
 SUMMARY="Fontconfig - Font configuration and customization library"
 DESC="$SUMMARY"
