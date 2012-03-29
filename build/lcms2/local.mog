@@ -30,3 +30,4 @@
 <transform dir path=usr/share$ -> drop>
 <transform dir path=usr/share/.* -> drop>
 <transform file path=usr/share/.* -> drop>
+license COPYING license=MIT

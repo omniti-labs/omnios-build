@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=lcms2       # App name
-VER=2.3      # App version
-PVER=1          # Package Version
-PKG=library/print/lcms2    # Package name (without prefix)
+PROG=lcms2
+VER=2.3
+PKG=library/print/lcms2
 SUMMARY="$PROG - little color management system"
 DESC="$SUMMARY"
 
