@@ -23,9 +23,6 @@
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
-license license=dual path=LICENSE.TXT
-license license=FTL path=FTL.TXT
-license license=GPLv2 path=GPLv2.TXT
-<transform file path=^LICENSE.TXT$ -> drop>
-<transform file path=^FTL.TXT$ -> drop>
-<transform file path=^GPL2v.TXT$ -> drop>
+license docs/LICENSE.TXT license=dual
+license docs/FTL.TXT license=FTL
+license docs/GPLv2.TXT license=GPLv2
