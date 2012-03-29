@@ -27,10 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=nspr      # App name
-VER=4.9         # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=0.1          # Package Version (numeric only)
+PROG=nspr
+VER=4.9
+VERHUMAN=$VER
 PKG=$PROG ##IGNORE##
 SUMMARY="Netscape Portable Runtime"      # You should change this
 DESC="$SUMMARY"         # Longer description
@@ -40,7 +39,6 @@ CONFIGURE_OPTS_32="--libdir=/usr/lib/mps"
 CONFIGURE_OPTS_64="--libdir=/usr/lib/mps/$ISAPART64 --enable-64bit"
 
 secv1_links() {
-    logcmd cp $TMPDIR/$BUILDDIR/pkg/solaris/common_files/copyright $DESTDIR/license
     logcmd ln -s amd64 $DESTDIR/usr/lib/mps/64
     logcmd mkdir -p $DESTDIR/usr/lib/mps/secv1/amd64
     logcmd ln -s amd64 $DESTDIR/usr/lib/mps/secv1/64
