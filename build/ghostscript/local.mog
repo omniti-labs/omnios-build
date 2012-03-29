@@ -27,3 +27,4 @@
 <transform dir path=usr/share/man/de/.* -> drop>
 <transform file path=usr/share/man/de/.* -> drop>
 <transform link path=usr/share/man/de/.* -> drop>
+license COPYING license=GPLv3

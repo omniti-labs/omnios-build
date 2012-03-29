@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=gnu-ghostscript       # App name
-VER=9.04.1      # App version
+PROG=gnu-ghostscript
+VER=9.04.1
 MAJ_MIN_VER=9.04
-PVER=1          # Package Version
-PKG=print/filter/ghostscript    # Package name (without prefix)
+PKG=print/filter/ghostscript
 SUMMARY="$PROG - tool suite for dealing with printable formats"
 DESC="$SUMMARY"
 
