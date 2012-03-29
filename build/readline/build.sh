@@ -27,11 +27,10 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=readline   # App name
-VER=6.2         # App version
-VERHUMAN=$VER   # Human-readable version
-PVER=1          # Package Version (numeric only)
-PKG=library/readline  # Package name (without prefix)
+PROG=readline
+VER=6.2
+VERHUMAN=$VER
+PKG=library/readline
 SUMMARY="GNU readline"
 DESC="GNU readline library ($VER)"
 
