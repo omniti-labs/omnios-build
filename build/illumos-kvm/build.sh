@@ -30,7 +30,6 @@
 # First we build the kernel module
 PROG=illumos-kvm
 VER=1.0.2         # Keep this the same for the utilities build below
-PVER=0.151002     # Make this match the desired omni-os branch
 COMMIT=9621d5228ac4dbdd99cdfe8f2946e7315261a893
 SRC_REPO=https://github.com/joyent/illumos-kvm.git
 KERNEL_SOURCE=/code/omni-os-151002/illumos-omni-os
@@ -79,13 +78,12 @@ download_source
 patch_source
 prep_build
 build
-make_package
+make_package kvm.mog
 clean_up
 
 # Next, the utilities
 PROG=illumos-kvm-cmd
 VER=1.0.2         # Keep this the same as the kernel driver above
-PVER=0.151002     # Make this match the desired omni-os branch
 COMMIT=099e212e968550ab97f7ba3431e55d9c16a0c78d
 SRC_REPO=https://github.com/joyent/illumos-kvm-cmd.git
 KERNEL_SOURCE=/code/omni-os-151002/illumos-omni-os
@@ -117,7 +115,7 @@ download_source
 patch_source
 prep_build
 build
-make_package
+make_package kvm-cmd.mog
 clean_up
 
 # Vim hints
