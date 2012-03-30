@@ -496,8 +496,8 @@ make_package() {
     PKGSEND=/usr/bin/pkgsend
     PKGMOGRIFY=/usr/bin/pkgmogrify
     PKGFMT=/usr/bin/pkgfmt
-    P5M_INT=$TMPDIR/${PKGE}.p5m.1
-    P5M_FINAL=$TMPDIR/${PKGE}.p5m.2
+    P5M_INT=$TMPDIR/${PKGE}.p5m.int
+    P5M_FINAL=$TMPDIR/${PKGE}.p5m
     GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
     MY_MOG_FILE=$TMPDIR/${PKGE}.mog
 
