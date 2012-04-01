@@ -53,10 +53,6 @@ PATCHDIR=patches
 # Do we create isaexec stubs for scripts and other non-binaries (default yes)
 NOSCRIPTSTUB=
 
-# Package server URL and publisher
-PKGPUBLISHER=jeos.omniti.com
-PKGSRVR=http://pkg.omniti.com:10006/
-
 #############################################################################
 # Perl stuff
 #############################################################################
