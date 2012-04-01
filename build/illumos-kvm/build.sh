@@ -87,7 +87,7 @@ patch_source
 prep_build
 build
 fix_drivers
-make_package
+make_package kvm.mog
 clean_up
 #
 
@@ -125,7 +125,7 @@ download_source
 patch_source
 prep_build
 build
-make_package
+make_package kvm-cmd.mog
 clean_up
 
 # Vim hints

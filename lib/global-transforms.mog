@@ -63,6 +63,9 @@
 <transform dir path=opt$ -> drop>
 <transform dir path=usr$ -> drop>
 <transform dir path=usr/bin$ -> drop>
+<transform dir path=usr/kernel/drv.* -> drop>
+<transform dir path=usr/kernel$ -> drop>
+<transform dir path=usr/lib/devfsadm$ -> drop>
 <transform dir path=usr/lib$ -> drop>
 <transform dir path=var$ -> drop>
 <transform dir path=var/run$ -> drop>
