@@ -26,6 +26,16 @@
 # Make all directories usable
 <transform dir -> default mode 0755>
 
+# kernel/mdb/devfsadm is all group sys
+<transform dir path=kernel.* -> set group sys>
+<transform file path=kernel.* -> set group sys>
+<transform dir path=usr/lib/mdb$ -> set group sys>
+<transform dir path=usr/lib/mdb/.* -> set group sys>
+<transform file path=usr/lib/mdb/.* -> set group sys>
+<transform dir path=usr/lib/devfsadm$ -> set group sys>
+<transform dir path=usr/lib/devfsadm/.* -> set group sys>
+<transform file path=usr/lib/devfsadm/.* -> set group sys>
+
 # GNU locale file ownership
 <transform dir path=usr/share/locale/.* -> set group other>
 <transform dir path=usr/share/locale$ -> set group other>
