@@ -1,0 +1,29 @@
+#!/bin/sh
+
+. /lib/svc/share/smf_include.sh
+
+APACHE_HOME=/opt/apache13
+CONF_FILE=/opt/apache13/conf/httpd.conf
+PIDFILE=/var/run/httpd.pid
+
+[ ! -f ${CONF_FILE} ] &&  exit $SMF_EXIT_ERR_CONFIG
+
+case "$1" in
+start)
+	/bin/rm -f ${PIDFILE}
+	/bin/mkdir -p /var/log/httpd
+	cmd="start"
+	;;
+refresh)
+	cmd="graceful"
+	;;
+stop)
+	cmd="stop"
+	;;
+*)
+	echo "Usage: $0 {start|stop|refresh}"
+	exit 1
+	;;
+esac
+
+exec ${APACHE_HOME}/bin/apachectl $cmd 2>&1

@@ -1,0 +1,68 @@
+#   According to the /opt filesystem conventions
+<Layout omni32>
+    prefix:        /opt/omni
+    exec_prefix:   ${prefix}
+    bindir:        ${exec_prefix}/bin/i386
+    sbindir:       ${exec_prefix}/sbin/i386
+    libdir:        ${exec_prefix}/lib
+    libexecdir:    ${exec_prefix}/libexec/i386
+    mandir:        ${prefix}/man
+    sysconfdir:    /etc${prefix}
+    datadir:       ${prefix}/share
+    installbuilddir: ${datadir}/build/i386
+    includedir:    ${prefix}/include
+    localstatedir: /var${prefix}
+    runtimedir:    ${localstatedir}/run
+</Layout>
+
+<Layout omni64>
+    prefix:        /opt/omni
+    exec_prefix:   ${prefix}
+    bindir:        ${exec_prefix}/bin/amd64
+    sbindir:       ${exec_prefix}/sbin/amd64
+    libdir:        ${exec_prefix}/lib/amd64
+    libexecdir:    ${exec_prefix}/libexec/amd64
+    mandir:        ${prefix}/man
+    sysconfdir:    /etc${prefix}
+    datadir:       ${prefix}/share
+    installbuilddir: ${datadir}/build/amd64
+    includedir:    ${prefix}/include/amd64
+    localstatedir: /var${prefix}
+    runtimedir:    ${localstatedir}/run
+</Layout>
+
+
+#   According to the /opt filesystem conventions
+<Layout omnisparc32>
+    prefix:        /opt/omni
+    exec_prefix:   ${prefix}
+    bindir:        ${exec_prefix}/bin/sparcv8plus
+    sbindir:       ${exec_prefix}/sbin/sparcv8plus
+    libdir:        ${exec_prefix}/lib
+    libexecdir:    ${exec_prefix}/libexec/sparcv8plus
+    mandir:        ${prefix}/man
+    sysconfdir:    /etc${prefix}
+    datadir:       ${prefix}/share
+    installbuilddir: ${datadir}/build/sparcv8plus
+    includedir:    ${prefix}/include
+    localstatedir: /var${prefix}
+    runtimedir:    ${localstatedir}/run
+</Layout>
+
+<Layout omnisparc64>
+    prefix:        /opt/omni
+    exec_prefix:   ${prefix}
+    bindir:        ${exec_prefix}/bin/sparcv9
+    sbindir:       ${exec_prefix}/sbin/sparcv9
+    libdir:        ${exec_prefix}/lib/sparcv9
+    libexecdir:    ${exec_prefix}/libexec/sparcv9
+    mandir:        ${prefix}/man
+    sysconfdir:    /etc${prefix}
+    datadir:       ${prefix}/share
+    installbuilddir: ${datadir}/build/sparcv9
+    includedir:    ${prefix}/include/sparcv9
+    localstatedir: /var${prefix}
+    runtimedir:    ${localstatedir}/run
+</Layout>
+
+

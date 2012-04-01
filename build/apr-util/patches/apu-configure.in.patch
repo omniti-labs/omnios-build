@@ -1,0 +1,11 @@
+--- c.in	Tue Apr 21 13:41:38 2009
++++ configure.in	Tue Apr 21 13:42:16 2009
+@@ -122,6 +122,8 @@
+ fi
+ AC_SUBST(APR_ICONV_DIR)
+ 
++APR_ADDTO(APRUTIL_INCLUDES, "$CPPFLAGS")
++APR_ADDTO(APRUTIL_LDFLAGS, "$LDFLAGS")
+ dnl Find LDAP library
+ dnl Determine what DBM backend type to use.
+ dnl Find Expat

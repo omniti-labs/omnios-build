@@ -1,0 +1,25 @@
+diff -ru e2fsprogs-1.41.14.orig/lib/uuid/gen_uuid.c e2fsprogs-1.41.14/lib/uuid/gen_uuid.c
+--- e2fsprogs-1.41.14.orig/lib/uuid/gen_uuid.c	2009-08-13 01:39:57.000000000 +0000
++++ e2fsprogs-1.41.14/lib/uuid/gen_uuid.c	2011-10-01 20:04:41.096448731 +0000
+@@ -261,16 +261,16 @@
+ 	for (i = 0; i < n; i+= ifreq_size(*ifrp) ) {
+ 		ifrp = (struct ifreq *)((char *) ifc.ifc_buf+i);
+ 		strncpy(ifr.ifr_name, ifrp->ifr_name, IFNAMSIZ);
+-#ifdef SIOCGIFHWADDR
+-		if (ioctl(sd, SIOCGIFHWADDR, &ifr) < 0)
+-			continue;
+-		a = (unsigned char *) &ifr.ifr_hwaddr.sa_data;
+-#else
+ #ifdef SIOCGENADDR
+ 		if (ioctl(sd, SIOCGENADDR, &ifr) < 0)
+ 			continue;
+ 		a = (unsigned char *) ifr.ifr_enaddr;
+ #else
++#ifdef SIOCGIFHWADDR
++		if (ioctl(sd, SIOCGIFHWADDR, &ifr) < 0)
++			continue;
++		a = (unsigned char *) &ifr.ifr_hwaddr.sa_data;
++#else
+ #ifdef HAVE_NET_IF_DL_H
+ 		sdlp = (struct sockaddr_dl *) &ifrp->ifr_addr;
+ 		if ((sdlp->sdl_family != AF_LINK) || (sdlp->sdl_alen != 6))

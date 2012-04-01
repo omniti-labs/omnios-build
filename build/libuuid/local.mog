@@ -1,0 +1,3 @@
+<transform dir path=opt/omni/include/amd64.* -> drop>
+<transform file path=opt/omni/include/amd64/.* -> drop>
+license lib/uuid/COPYING license=BSD
