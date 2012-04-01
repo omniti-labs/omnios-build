@@ -1,0 +1,102 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License, Version 1.0 only
+# (the "License").  You may not use this file except in compliance
+# with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# Make all directories usable
+<transform dir -> default mode 0755>
+
+# kernel/mdb/devfsadm is all group sys
+<transform dir path=kernel.* -> set group sys>
+<transform file path=kernel.* -> set group sys>
+<transform dir path=usr/lib/mdb$ -> set group sys>
+<transform dir path=usr/lib/mdb/.* -> set group sys>
+<transform file path=usr/lib/mdb/.* -> set group sys>
+<transform dir path=usr/lib/devfsadm$ -> set group sys>
+<transform dir path=usr/lib/devfsadm/.* -> set group sys>
+<transform file path=usr/lib/devfsadm/.* -> set group sys>
+
+# GNU locale file ownership
+<transform dir path=usr/share/locale/.* -> set group other>
+<transform dir path=usr/share/locale$ -> set group other>
+
+# drop GNU info dir files
+<transform file path=share/info/dir$ -> drop>
+
+# Libtool archives can suck it
+<transform file path=.*/lib/.*\.la$ -> drop>
+
+# Other upper-level directories to fix
+<transform dir  path=etc/security.* -> drop>
+<transform dir path=etc/skel$ -> set group sys>
+<transform dir path=usr/share$ -> drop>
+<transform dir path=usr/share/doc$ -> set group other>
+<transform dir path=usr/share/info$ -> drop>
+<transform dir path=usr/gnu/share$ -> set group sys>
+<transform dir path=usr/lib/pkgconfig$ -> set group other>
+<transform dir path=usr/lib/amd64/pkgconfig$ -> set group other>
+<transform dir path=usr/share/aclocal$ -> set group other>
+<transform dir path=usr/share/lib$ -> set group sys>
+<transform dir path=var/lib$ -> set group other>
+
+# These always exist due to SUNWcs, so we never need to worry about them
+<transform dir path=opt$ -> drop>
+<transform dir path=usr$ -> drop>
+<transform dir path=usr/bin$ -> drop>
+<transform dir path=usr/kernel/drv.* -> drop>
+<transform dir path=usr/kernel$ -> drop>
+<transform dir path=usr/lib/devfsadm$ -> drop>
+<transform dir path=usr/lib$ -> drop>
+<transform dir path=var$ -> drop>
+<transform dir path=var/run$ -> drop>
+<transform dir path=var/log$ -> drop>
+<transform dir path=var/spool$ -> drop>
+<transform dir path=var/cache$ -> drop>
+<transform dir path=var/svc$ -> drop>
+<transform dir path=var/svc/manifest$ -> drop>
+<transform dir path=var/svc/manifest/.*$ -> set group sys>
+<transform dir path=lib$ -> drop>
+<transform dir path=lib/svc$ -> drop>
+<transform dir path=lib/svc/manifest$ -> drop>
+<transform dir path=lib/svc/manifest/.*$ -> set group sys>
+<transform dir path=etc$ -> drop>
+<transform dir path=etc/inet$ -> set group sys>
+
+# This should only ever be in libiconv, but other GNU packages install it
+<transform file path=usr/gnu/lib/charset.alias$ -> drop>
+<transform file path=usr/lib/charset.alias$ -> drop>
+<transform file path=usr/lib/amd64/charset.alias$ -> drop>
+
+# SFW paths also always exist
+<transform dir path=usr/sfw$ -> drop>
+<transform dir path=usr/sfw/lib$ -> drop>
+<transform dir path=usr/sfw/lib/locale$ -> drop>
+<transform dir path=usr/sfw/share$ -> drop>
+<transform dir path=usr/sfw/share/doc$ -> drop>
+<transform dir path=usr/sfw/share/info$ -> drop>
+<transform dir path=usr/sfw/share/man$ -> drop>
+<transform dir path=usr/sfw/share/src$ -> drop>
+
+# If you ship an SMF manifest, it should be imported upon pkg install
+<transform file path=(var|lib)/svc/manifest/.*\.xml -> \
+    add restart_fmri svc:/system/manifest-import:default>

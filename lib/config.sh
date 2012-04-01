@@ -1,25 +1,51 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License, Version 1.0 only
+# (the "License").  You may not use this file except in compliance
+# with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
 #############################################################################
 # Configuration for the build system
 #############################################################################
+
+# Default branch
+PVER=0.151002
 
 # Which server to fetch files from
 MIRROR=mirrors.omniti.com
 
 # Default prefix for packages (may be overridden)
-PREFIX=/opt/omni
+PREFIX=/usr
 
-# Prefix for package names - e.g. OMNIfoo, CSWfoo, SUNWfoo
-PKGPREFIX=OMNI
-
-# Temporary directory
-TMPDIR=/tmp
-DTMPDIR=/tmp
+# Temporary directories
+# TMPDIR is used for source archives and build directories
+#    to avoid collision on shared build systems,
+#    TMPDIR includes a username
+# DTMPDIR is used for constructing the DESTDIR path
+TMPDIR=/tmp/build_$USER
+DTMPDIR=$TMPDIR
 
 # Log file for all output
 LOGFILE=$PWD/build.log
-
-# Where to put built SVR4 packages
-OUTDIR=$MYDIR/../packages
 
 # Default patches dir
 PATCHDIR=patches
@@ -27,35 +53,22 @@ PATCHDIR=patches
 # Do we create isaexec stubs for scripts and other non-binaries (default yes)
 NOSCRIPTSTUB=
 
-# Determine package format (may be overridden by user)
-if test -z "$PKGFMT"; then
-    # If the pkg command exists, it is an IPS system
-    if test -x /usr/bin/pkg; then
-        PKGFMT=IPS
-    else
-        PKGFMT=SVR4
-    fi
-fi
-
-# IPS package server URL (publisher: custom.omniti.com)
-PKGSRVR=http://pkg.omniti.com:10003/
-
 #############################################################################
 # Perl stuff
 #############################################################################
 
 # Perl versions we currently build against
-PERLVERLIST="5.8.8 5.14.2"
+PERLVERLIST="5.14.2"
 
 # Full paths to bins
-PERL32=/opt/OMNIperl/bin/$ISAPART/perl
-PERL64=/opt/OMNIperl/bin/$ISAPART64/perl
+PERL32=/usr/perl5/5.14.2/bin/$ISAPART/perl
+PERL64=/usr/perl5/5.14.2/bin/$ISAPART64/perl
 
 # Default Makefile.PL options
-PERL_MAKEFILE_OPTS="INSTALLSITEBIN=/opt/omni/bin/_ARCHBIN_ \
-                    INSTALLSITESCRIPT=/opt/omni/bin/_ARCHBIN_ \
-                    INSTALLSITEMAN1DIR=$PREFIX/man/site/man1 \
-                    INSTALLSITEMAN3DIR=$PREFIX/man/site/man3 \
+PERL_MAKEFILE_OPTS="INSTALLSITEBIN=$PREFIX/bin/_ARCHBIN_ \
+                    INSTALLSITESCRIPT=$PREFIX/bin/_ARCHBIN_ \
+                    INSTALLSITEMAN1DIR=$PREFIX/share/man/man1 \
+                    INSTALLSITEMAN3DIR=$PREFIX/share/man/man3 \
                     INSTALLDIRS=site"
 
 # Accept MakeMaker defaults so as not to stall build scripts
@@ -66,6 +79,14 @@ export PERL_MM_USE_DEFAULT=true
 PERL_MAKE_TEST=1
 
 #############################################################################
+# Python
+#############################################################################
+PYTHONPATH=/usr
+PYTHON=$PYTHONPATH/bin/python2.6
+PYTHONLIB=$PYTHONPATH/lib
+
+
+#############################################################################
 # Paths to common tools
 #############################################################################
 WGET=wget
@@ -74,42 +95,38 @@ MAKE=gmake
 TAR=tar
 GZIP=gzip
 BUNZIP2=bunzip2
-AWK=/usr/xpg4/bin/awk
+XZCAT=xzcat
+AWK=gawk
 
 # Figure out number of logical CPUs for use with parallel gmake jobs (-j)
 # Default to 1.5*nCPUs as we assume the build machine is 100% devoted to
 # compiling.  
 # A build script may serialize make by setting NO_PARALLEL_MAKE
 LCPUS=`psrinfo | wc -l`
-MAKE_JOBS="-j $[ $LCPUS + ($LCPUS / 2) ]"
+MJOBS="$[ $LCPUS + ($LCPUS / 2) ]"
+if [ "$MJOBS" == "0" ]; then
+    MJOBS=2
+fi
+MAKE_JOBS="-j $MJOBS"
 NO_PARALLEL_MAKE=
 
-# Remove install dir by default. You can set this in a build script when
-# testing to speed up building a package
+# Remove install or packaging files by default. You can set this in a build
+# script when testing to speed up building a package
 DONT_REMOVE_INSTALL_DIR=
 
 #############################################################################
 # C compiler options - these can be overriden by a build script
 #############################################################################
-# Figure out our instruction set capabilities.  We assume that if we find
-# i386 that we also have amd64 (we don't deploy production systems on
-# 32-bit-only hardware.)  If SPARC, assume a minimum of v8plus which is
-# needed by some packages like Perl.
-#
+# isaexec(3C) variants
 # These variables will be passed to the build to construct multi-arch 
 # binary and lib directories in DESTDIR
 
-if test -n "`isalist | grep i386`"; then
-    ISAPART=i386
-    ISAPART64=amd64
-else
-    ISAPART=sparcv8plus
-    ISAPART64=sparcv9
-fi
+ISAPART=i386
+ISAPART64=amd64
 
-# Change these in the build script if you _have_ to use gcc
-CC=cc
-CXX=CC
+# For OmniOS we (almost) always want GCC
+CC=/opt/gcc-4.6.3/bin/gcc
+CXX=/opt/gcc-4.6.3/bin/g++
 
 # CFLAGS applies to both builds, 32/64 only gets applied to the respective
 # build
@@ -117,21 +134,24 @@ CFLAGS=""
 CFLAGS32=""
 CFLAGS64="-m64"
 
-# Generic/32/64 bit versions just like CFLAGS
+# Linker flags
 LDFLAGS=""
 LDFLAGS32=""
 LDFLAGS64="-m64"
 
-# And CPPFLAGS also
+# C pre-processor flags
 CPPFLAGS=""
 CPPFLAGS32=""
 CPPFLAGS64=""
 
-# And CXXFLAGS also
+# C++ flags
 CXXFLAGS=""
 CXXFLAGS32=""
 CXXFLAGS64="-m64"
 
+#############################################################################
+# Configuration of the packaged software
+#############################################################################
 # Default configure command - almost always sufficient
 CONFIGURE_CMD="./configure"
 
@@ -139,8 +159,15 @@ CONFIGURE_CMD="./configure"
 # This is a function so it can be called again if you change $PREFIX
 # This is far from ideal, but works
 reset_configure_opts() {
+    # If it's the global default (/usr), we want sysconfdir to be /etc
+    # otherwise put it under PREFIX
+    if [[ $PREFIX == "/usr" ]]; then
+        SYSCONFDIR=/etc
+    else
+        SYSCONFDIR=$PREFIX/etc
+    fi
     CONFIGURE_OPTS_32="--prefix=$PREFIX
-        --sysconfdir=$PREFIX/etc
+        --sysconfdir=$SYSCONFDIR
         --includedir=$PREFIX/include
         --bindir=$PREFIX/bin/$ISAPART
         --sbindir=$PREFIX/sbin/$ISAPART
@@ -148,7 +175,7 @@ reset_configure_opts() {
         --libexecdir=$PREFIX/libexec"
 
     CONFIGURE_OPTS_64="--prefix=$PREFIX
-        --sysconfdir=$PREFIX/etc
+        --sysconfdir=$SYSCONFDIR
         --includedir=$PREFIX/include/$ISAPART64
         --bindir=$PREFIX/bin/$ISAPART64
         --sbindir=$PREFIX/sbin/$ISAPART64
@@ -160,3 +187,6 @@ reset_configure_opts
 # Configure options to apply to both builds - this is the one you usually want
 # to change for things like --enable-feature
 CONFIGURE_OPTS=""
+
+# Vim hints
+# vim:ts=4:sw=4:et:

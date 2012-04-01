@@ -1,19 +1,38 @@
 #!/bin/bash
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License, Version 1.0 only
+# (the "License").  You may not use this file except in compliance
+# with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+
+umask 022
+
 #############################################################################
 # functions.sh
 #############################################################################
 # Helper functions for building packages that should be common to all build
 # scripts
 #############################################################################
-#
-# Directory layout
-#   lib/
-#       functions.sh - library helper functions
-#   build/
-#       packagename/
-#           build.sh - the build script
-#           patches/ - directory containing patches
-#   packages/        - contains built packages - not stored in svn
 
 #############################################################################
 # Process command line options
@@ -118,6 +137,17 @@ ask_to_continue() {
     logmsg "===== Error occured, user chose to continue anyway. ====="
 }
 
+#############################################################################
+# URL encoding for package names, at least
+#############################################################################
+# This isn't real URL encoding, just a couple of common substitutions
+url_encode() {
+    [ $# -lt 1 ] && logerr "Not enough arguments to url_encode().  Expecting a string to encode."
+    local encoded="$1";
+    encoded=`echo $encoded | sed -e 's!/!%2F!g' -e 's!+!%2B!g'`
+    encoded=`echo $encoded | sed -e 's/%../_/g;'`
+    echo $encoded
+}
 
 #############################################################################
 # Some initialization
@@ -126,7 +156,7 @@ ask_to_continue() {
 LANG=C
 export LANG
 # Set the path - This can be overriden/extended in the build script
-PATH="/opt/omni/bin:/usr/ccs/bin:/opt/solstudio12.2/bin:/opt/sunstudio12.1/bin:/opt/SUNWspro/bin:/usr/bin:/usr/sbin:/usr/sfw/bin:/opt/csw/bin"
+PATH="/opt/gcc-4.6.3/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
 export PATH
 # The dir where this file is located - used for sourcing further files
 MYDIR=$PWD/`dirname $BASH_SOURCE[0]`
@@ -138,38 +168,33 @@ SRCDIR=$PWD/`dirname $0`
 # Load configuration options
 #############################################################################
 . $MYDIR/config.sh
+. $MYDIR/site.sh
+
+# Platform information
+SUNOSVER=`uname -r` # e.g. 5.11
+
+if [[ -f $LOGFILE ]]; then
+    mv $LOGFILE $LOGFILE.1
+fi
 process_opts $@
 
 #############################################################################
-# Make sure we are running as root
+# Running as root is not safe
 #############################################################################
-if [[ "$UID" != "0" ]]; then
-    logerr "--- This build script should be run as root or via sudo"
+if [[ "$UID" = "0" ]]; then
+    logerr "--- You cannot run this as root"
 fi
 
 #############################################################################
 # Print startup message
 #############################################################################
-logmsg "===== Build started at `date` ====="
+[[ -z "$NOBANNER" ]] && logmsg "===== Build started at `date` ====="
 #############################################################################
 # Initialization function
 #############################################################################
 init() {
-    # Platform information
-    PLATFORM=`uname -p` # i386/sparc
-    SUNOSVER=`uname -r` # 5.10/5.11 (only used for IPS)
-    RELEASE=${SUNOSVER/5./sol} # sol9/sol10/sol11
-
     # Print out current settings
-    # Package format
-    if [[ "$PKGFMT" == "SVR4" ]]; then
-        logmsg "Package format: SVR4"
-    elif [[ "$PKGFMT" == "IPS" ]]; then
-        logmsg "Package format: IPS"
-        USEIPS=true
-    else
-        logerr "Package format must be SVR4 or IPS.  Current setting is '$PKGFMT'"
-    fi
+    logmsg "Package name: $PKG"
     # Selected flavor
     if [[ -z "$FLAVOR" ]]; then
         logmsg "Selected flavor: None (use -f to specify a flavor)"
@@ -192,6 +217,12 @@ init() {
     else
         logmsg "Extra dependency: $DEPVER"
     fi
+    # Ensure SUMMARY and DESC are non-empty
+    if [[ -z "$SUMMARY" ]]; then
+        logerr "SUMMARY may not be empty. Please update your build script"
+    elif [[ -z "$DESC" ]]; then
+        logerr "DESC may not be empty. Please update your build script"
+    fi
 
     # BUILDDIR can be used to manually specify what directory the program is
     # built in (i.e. what the tarball extracts to). This defaults to the name
@@ -200,6 +231,8 @@ init() {
         BUILDDIR=$PROG-$VER
     fi
 
+    pkgrepo get -s $PKGSRVR > /dev/null 2>&1 || \
+        logerr "The PKGSRVR ($PKGSRVR) isn't available. All is doomed."
     verify_depends
 }
 
@@ -208,46 +241,28 @@ init() {
 #############################################################################
 verify_depends() {
     logmsg "Verifying dependencies"
-    if [[ -n "$DEPENDS" || -n "$BUILD_DEPENDS" ]]; then
-        logmsg "--- ***WARNING*** DEPENDS/BUILD_DEPENDS are deprecated. Please update your build script to use SVR4- and IPS-specific variables."
-    fi
-    if [[ -n "$USEIPS" ]]; then
-        [[ -z "$DEPENDS_IPS" ]] && DEPENDS_IPS=$DEPENDS
-        for i in $DEPENDS_IPS; do
-            # Trim indicators to get the true name (see make_package for details)
-            case ${i:0:1} in
-                \=|\?)
-                    i=${i:1}
-                    ;;
-                \-)
-                    # If it's an exclude, we should error if it's installed rather than missing
-                    i=${i:1}
-                    pkg info $i > /dev/null 2<&1 &&
-                        logerr "--- Excluded dependency $i cannot be installed with this package."
-                    continue
-                    ;;
-            esac
-            pkg info $i > /dev/null 2<&1 ||
-                logerr "--- Package dependency $i not found"
-        done
-        for i in $BUILD_DEPENDS_IPS; do
-            pkg info $i > /dev/null 2<&1 ||
-                logerr "--- Build-time dependency $i not found"
-        done
-    else
-        [[ -z "$DEPENDS_SVR4" ]] && DEPENDS_SVR4=$DEPENDS
-        if `pkginfo OMNIzlib > /dev/null 2>&1`; then
-            logerr "--- OMNIzlib is installed.  We are avoiding mixing system and OMNI versions of libz.  Please uninstall OMNIzlib."
-        fi
-        for i in $DEPENDS_SVR4; do
-            pkginfo -q $i ||
-                logerr "--- Package dependency $i not found"
-        done
-        for i in $BUILD_DEPENDS_SVR4; do
-            pkginfo -q $i ||
-                logerr "--- Build-time dependency $i not found"
-        done
-    fi
+    [[ -z "$DEPENDS_IPS" ]] && DEPENDS_IPS=$DEPENDS
+    for i in $DEPENDS_IPS; do
+        # Trim indicators to get the true name (see make_package for details)
+        case ${i:0:1} in
+            \=|\?)
+                i=${i:1}
+                ;;
+            \-)
+                # If it's an exclude, we should error if it's installed rather than missing
+                i=${i:1}
+                pkg info $i > /dev/null 2<&1 &&
+                    logerr "--- Excluded dependency $i cannot be installed with this package."
+                continue
+                ;;
+        esac
+        pkg info $i > /dev/null 2<&1 ||
+            logerr "--- Package dependency $i not found"
+    done
+    for i in $BUILD_DEPENDS_IPS; do
+        pkg info $i > /dev/null 2<&1 ||
+            logerr "--- Build-time dependency $i not found"
+    done
 }
 
 #############################################################################
@@ -267,23 +282,19 @@ prep_build() {
     logmsg "Preparing for build"
 
     # Get the current date/time for the package timestamp
-    if [[ -n "$USEIPS" ]]; then
-        DATETIME=`TZ=UTC /usr/bin/date +"%Y%m%dT%H%M%SZ"`
-        if [[ -d /usr/include/openssl && -z $USE_SYSTEM_SSL_HEADERS ]]; then
-            mv /usr/include/openssl /usr/include/openssl.omnibuild.safety
-        fi
-    else
-        pkginfo SUNWopenssl-include > /dev/null 2>&1 && \
-            logerr "You have other openssl headers installed. Wicked bad."
-        DATETIME=`/usr/bin/date +"%Y%m%d%H%M"`
-    fi
+    DATETIME=`TZ=UTC /usr/bin/date +"%Y%m%dT%H%M%SZ"`
 
     logmsg "--- Creating temporary install dir"
-    DESTDIR=$DTMPDIR/${PKG}_pkg
+    # We might need to encode some special chars
+    PKGE=$(url_encode $PKG)
+    # For DESTDIR the '%' can cause problems for some install scripts
+    PKGD=${PKGE//%/_}
+    DESTDIR=$DTMPDIR/${PKGD}_pkg
     if [[ -z $DONT_REMOVE_INSTALL_DIR ]]; then
+        logcmd chmod -R u+w $DESTDIR > /dev/null 2>&1
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove old temporary install dir"
-        mkdir $DESTDIR || \
+        mkdir -p $DESTDIR || \
             logerr "Failed to create temporary install dir"
     fi
 }
@@ -307,6 +318,7 @@ check_for_patches() {
     fi
     return 0
 }
+
 patch_source() {
     if ! check_for_patches "in order to apply them"; then
         logmsg "--- Not applying any patches"
@@ -369,6 +381,11 @@ download_source() {
         # Default to $TMPDIR if no output dir specified
         TARGETDIR=$TMPDIR
     fi
+    # Create TARGETDIR if it doesn't exist
+    if [[ ! -d $TARGETDIR ]]; then
+        logmsg "Specified target directory $TARGETDIR does not exist.  Creating it now."
+        logcmd mkdir -p $TARGETDIR
+    fi
     pushd $TARGETDIR > /dev/null
     logmsg "Checking for source directory"
     if [ -d $BUILDDIR ]; then
@@ -397,6 +414,7 @@ download_source() {
         URLPREFIX=http://$MIRROR/$DLDIR/$ARCHIVEPREFIX
         $WGET -a $LOGFILE $URLPREFIX.tar.gz || \
             $WGET -a $LOGFILE $URLPREFIX.tar.bz2 || \
+            $WGET -a $LOGFILE $URLPREFIX.tar.xz || \
             $WGET -a $LOGFILE $URLPREFIX.tgz || \
             $WGET -a $LOGFILE $URLPREFIX.tbz || \
             $WGET -a $LOGFILE $URLPREFIX.tar || \
@@ -426,7 +444,7 @@ download_source() {
 # Example: find_archive myprog-1.2.3 FILENAME
 #   Stores myprog-1.2.3.tar.gz in $FILENAME
 find_archive() {
-    FILES=`ls $1.{tar.bz2,tar.gz,tgz,tbz,tar} 2>/dev/null`
+    FILES=`ls $1.{tar.bz2,tar.gz,tar.xz,tgz,tbz,tar} 2>/dev/null`
     FILES=${FILES%% *} # Take only the first filename returned
     # This dereferences the second parameter passed
     eval "$2=\"$FILES\""
@@ -438,24 +456,13 @@ extract_archive() {
         $GZIP -dc $1 | $TAR xvf -
     elif [[ ${1: -8} == ".tar.bz2" || ${1: -4} == ".tbz" ]]; then
         $BUNZIP2 -dc $1 | $TAR xvf -
+    elif [[ ${1: -7} == ".tar.xz" ]]; then
+        $XZCAT $1 | $TAR xvf -
     elif [[ ${1: -4} == ".tar" ]]; then
         $TAR xvf $1
     else
         return 1
     fi
-}
-
-fix_permissions() {
-    # Make everything owned by root
-    # This is just in case files are installed as non-root even when run via
-    # sudo. We haven't come across a situation where we need files installed
-    # as a non-root user. If those come up, this function will have to be
-    # overridden.
-    logmsg "Fixing ownership on installed files"
-
-    # -P says don't follow symlinks
-    logcmd chown -R -P root:root ${DESTDIR} ||
-        logerr "Failed to fix ownership on ${DESTDIR}"
 }
 
 #############################################################################
@@ -484,203 +491,85 @@ make_package() {
             ;;
     esac
     DESCSTR="$DESC"
-    if [[ -n "$BUILDSTR" ]]; then
-        DESCSTR="$DESCSTR (${BUILDSTR}only)"
-    fi
     if [[ -n "$FLAVORSTR" ]]; then
         DESCSTR="$DESCSTR ($FLAVOR)"
     fi
-    if [[ -n "$USEIPS" ]]; then
-        ## Strip leading zeros in version components.
-        VER=`echo $VER | sed -e 's/\.0*\([1-9]\)/.\1/g;'`
-	if [[ -n "$FLAVOR" ]]; then
-	    # We use FLAVOR here because we don't need the trailing dash as in SVR4
-            PUBLISHCMD="pkgsend -s $PKGSRVR open -n ${PKGPREFIX}${PKG}-${FLAVOR}@${VER},${SUNOSVER}-${PVER}"
-	else
-            PUBLISHCMD="pkgsend -s $PKGSRVR open -n ${PKGPREFIX}${PKG}@${VER},${SUNOSVER}-${PVER}"
-	fi
-        logmsg "Opening new package transaction with '$PUBLISHCMD'"
-        logcmd export PKG_TRANS_ID=$($PUBLISHCMD || echo "ERROR")
-        if [[ "$PKG_TRANS_ID" == "ERROR" ]]; then
-            logerr "Failed to open new package transaction"
-        fi
-        # Set human-readable version, if it exists
-        if [[ -n "$VERHUMAN" ]]; then
-            logmsg "Setting human-readable version"
-            logcmd pkgsend -s $PKGSRVR add set name=pkg.human-version value="$VERHUMAN"
-        fi
-        # If DESTDIR is unset, then we're probably making a metapackage
-        #   so there won't be anything to import
-        if [[ -n "$DESTDIR" ]]; then
-            logmsg "Sending files from $DESTDIR"
-            if logcmd pkgsend -s $PKGSRVR import $DESTDIR; then
-		logmsg "--- Finished sending files"
-            else
-		logcmd pkgsend -s $PKGSRVR close -A
-                logmsg "Aborting: Failed to send pkg correctly"
-		exit
-            fi
-        fi
-        logcmd pkgsend -s $PKGSRVR add set name=pkg.summary value="$SUMMARY"
-        logcmd pkgsend -s $PKGSRVR add set name=pkg.descr value="$DESCSTR"
-        logcmd pkgsend -s $PKGSRVR add set name=publisher value="sa@omniti.com"
-        if [[ -n "$DEPENDS_IPS" ]]; then
-            logmsg "Adding dependencies"
-            for i in $DEPENDS_IPS; do
-                # IPS dependencies have multiple types, of which we care about four:
-                #    require, optional, incorporate, exclude
-                # For backward compatibility, assume no indicator means type=require
-                # FMRI attributes are implicitly rooted so we don't have to prefix
-                # 'pkg:/' or worry about ambiguities in names
-                local DEPTYPE="require"
-                case ${i:0:1} in
-                    \=)
-                        DEPTYPE="incorporate"
-                        i=${i:1}
-                        ;;
-                    \?)
-                        DEPTYPE="optional"
-                        i=${i:1}
-                        ;;
-                    \-)
-                        DEPTYPE="exclude"
-                        i=${i:1}
-                        ;;
-                esac
-                logcmd pkgsend -s $PKGSRVR add depend type=$DEPTYPE fmri=${i}
-            done
-        fi
-        logmsg "Closing package transaction"
-        logcmd pkgsend -s $PKGSRVR close
+    PKGSEND=/usr/bin/pkgsend
+    PKGMOGRIFY=/usr/bin/pkgmogrify
+    PKGFMT=/usr/bin/pkgfmt
+    P5M_INT=$TMPDIR/${PKGE}.p5m.int
+    P5M_FINAL=$TMPDIR/${PKGE}.p5m
+    GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
+    MY_MOG_FILE=$TMPDIR/${PKGE}.mog
+
+    ## Strip leading zeros in version components.
+    VER=`echo $VER | sed -e 's/\.0*\([1-9]\)/.\1/g;'`
+    if [[ -n "$FLAVOR" ]]; then
+        # We use FLAVOR instead of FLAVORSTR as we don't want the trailing dash
+        FMRI="${PKG}-${FLAVOR}@${VER},${SUNOSVER}-${PVER}"
     else
-        PKGFILE=${PKGPREFIX}$PKG-$FLAVORSTR$VER-$PVER-$PLATFORM-$BUILDSTR$RELEASE
-        local PKGINFODIR=/var/tmp/$PROG.pkginfo.$$
-        logcmd rm -rf $PKGINFODIR || \
-            logerr "Failed to remove dir $PKGINFODIR"
-        logcmd mkdir $PKGINFODIR || \
-            logerr "Failed to mkdir $PKGINFODIR"
-        pushd $PKGINFODIR > /dev/null
-
-        make_prototype
-
-        logcmd pkgmk -o -r $DESTDIR -d . || \
-            logerr "--- Failed to make the package"
-        if [[ -z "$DISABLE_PKGZIP" ]]; then
-            logmsg "--- Compressing package using bzip2"
-            logcmd $MYDIR/../tools/pkgzip -b ${PKGPREFIX}$PKG || \
-                logerr "--- Failed to compress package"
-        else
-            logmsg "--- Package compression disabled - skipping compression"
-        fi
-        logmsg "--- Translating package to datastream format"
-        logcmd pkgtrans . $OUTDIR/$PKGFILE \
-            ${PKGPREFIX}$PKG || \
-            logerr "--- Failed to translate package"
-
-        popd > /dev/null
-
-        logcmd rm -rf $PKGINFODIR || \
-            logerr "Failed to remove dir $PKGINFODIR"
+        FMRI="${PKG}@${VER},${SUNOSVER}-${PVER}"
     fi
-}
-
-#############################################################################
-# Generate dependencies file (SVR4 only)
-#############################################################################
-generate_depends_svr4() {
-    if [[ -z $DEPENDS_SVR4 ]]; then
-        logmsg "------ No dependecies specified. Skipping dependency file"
-        return 1
+    if [[ -n "$DESTDIR" ]]; then
+        logmsg "--- Generating package manifest from $DESTDIR"
+        logmsg "------ Running: $PKGSEND generate $DESTDIR > $P5M_INT"
+        $PKGSEND generate $DESTDIR > $P5M_INT || \
+            logerr "------ Failed to generate manifest"
+    else
+        logmsg "--- Looks like a meta-package. Creating empty manifest"
+        logcmd touch $P5M_INT || \
+            logerr "------ Failed to create empty manifest"
     fi
-    logmsg "------ Generating dependencies file"
-    local DEPENDSFILE=depend
-    # Clear any existing depends file
-    >$DEPENDSFILE
-    for i in $DEPENDS_SVR4; do
-        pkginfo $i >> $DEPENDSFILE ||
-            logerr "--- Package $i not found"
-    done
-    sed 's/^[a-zA-Z]* */P /' $DEPENDSFILE > $DEPENDSFILE.tmp
-    mv $DEPENDSFILE.tmp $DEPENDSFILE
-}
-
-#############################################################################
-# Make package prototype
-#############################################################################
-make_prototype() {
-    # Set the variables named below to override the default values
-    [[ -z "$SUMMARY" ]] && SUMMARY="$PROG for Solaris"
-    [[ -z "$DESC" && -z "$DESCSTR" ]] && DESCSTR="OmniTI roll of $PROG"
-    [[ -z "$CATEGORY" ]] && CATEGORY="application"
-    [[ -z "$VENDOR" ]] && VENDOR="http://www.omniti.com"
-    [[ -z "$EMAIL" ]] && EMAIL="sa@omniti.com"
-    logmsg "--- Building package meta info"
-    cat <<EOF > pkginfo
-PKG=${PKGPREFIX}$PKG
-NAME="$SUMMARY"
-CATEGORY=$CATEGORY
-ARCH=$PLATFORM
-VERSION=${VER}-${PVER}
-DESC="$DESCSTR"
-VENDOR="$VENDOR"
-EMAIL="$EMAIL"
-BASEDIR=/
-PSTAMP="$HOSTNAME-$DATETIME"
-EOF
-    echo "i pkginfo" > prototype
-    # Add install scripts if any - the INSTALL_SCRIPTS variable is set in the
-    # add_install_scripts function
-    add_install_scripts && for i in $INSTALL_SCRIPTS; do
-        echo "i $i" >> prototype
-    done
-    generate_depends_svr4 && \
-        echo "i depend" >> prototype
-    #echo "d none opt ? ? ?" >> prototype
-    find $DESTDIR/* | pkgproto | \
-        $AWK "
-        BEGIN {
-            prefix = substr(\"$PREFIX\", 2)
-            path = \"${DESTDIR}/?\"
-        }
-
-        # Remove the /var/tmp prefix
-        { sub( path, \"\", \$3) }
-        # Remove any prefix for symlinks too
-        { sub( path, \"/\", \$3) }
-
-        # Fix permissions on $PREFIX paths
-        \$3 && prefix ~ \$3 {
-            printf \"%s %s %s ? ? ?\n\", \$1, \$2, \$3
-            next
-        }
-
-        { print }
-        " >> prototype
-}
-
-#############################################################################
-# Looks for any pre/post install scripts and adds them to the package
-#############################################################################
-add_install_scripts() {
-    local i
-    INSTALL_SCRIPTS=""
-    logmsg "------ Checking for install scripts to add"
-    for i in $SRCDIR/scripts/*; do
-        if [[ -f $i ]]; then
-            logmsg "--------- $i"
-            # Append $i to the install_scripts array
-            INSTALL_SCRIPTS="$INSTALL_SCRIPTS `basename $i`"
-            cp $i .
-        fi
-    done
-    if [[ $INSTALL_SCRIPTS == "" ]]; then
-        logmsg "--------- No install scripts found"
-        return 1
+    logmsg "--- Generating package metadata"
+    echo "set name=pkg.fmri value=$FMRI" > $MY_MOG_FILE
+    # Set human-readable version, if it exists
+    if [[ -n "$VERHUMAN" ]]; then
+        logmsg "------ Setting human-readable version"
+        echo "set name=pkg.human-version value=\"$VERHUMAN\"" >> $MY_MOG_FILE
     fi
+    echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
+    echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
+    echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
+    if [[ -n "$DEPENDS_IPS" ]]; then
+        logmsg "------ Adding dependencies"
+        for i in $DEPENDS_IPS; do
+            # IPS dependencies have multiple types, of which we care about four:
+            #    require, optional, incorporate, exclude
+            # For backward compatibility, assume no indicator means type=require
+            # FMRI attributes are implicitly rooted so we don't have to prefix
+            # 'pkg:/' or worry about ambiguities in names
+            local DEPTYPE="require"
+            case ${i:0:1} in
+                \=)
+                    DEPTYPE="incorporate"
+                    i=${i:1}
+                    ;;
+                \?)
+                    DEPTYPE="optional"
+                    i=${i:1}
+                    ;;
+                \-)
+                    DEPTYPE="exclude"
+                    i=${i:1}
+                    ;;
+            esac
+            echo "depend type=$DEPTYPE fmri=${i}" >> $MY_MOG_FILE
+        done
+    fi
+    if [[ -f $SRCDIR/local.mog ]]; then
+        LOCAL_MOG_FILE=$SRCDIR/local.mog
+    fi
+    logmsg "--- Applying transforms"
+    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
+    logmsg "--- Publishing package"
+    logerr "Intentional pause: Last chance to sanity-check before publication!"
+    logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR -d $TMPDIR/$BUILDDIR \
+        -d $SRCDIR $P5M_FINAL || logerr "------ Failed to publish package"
+    logmsg "--- Published $FMRI" 
 }
 
 #############################################################################
-# Make isa stub binaries
+# Make isaexec stub binaries
 #############################################################################
 make_isa_stub() {
     logmsg "Making isaexec stub binaries"
@@ -726,16 +615,16 @@ make_isaexec_stub_arch() {
 #   - These methods are designed to work in the general case.
 #   - You can set CFLAGS/LDFLAGS (and CFLAGS32/CFLAGS64 for arch specific flags)
 #   - Configure flags are set in CONFIGURE_OPTS_32 and CONFIGURE_OPTS_64 with
-#   defaults set in config.sh. You can append to these variables, replace them
-#   if the defaults don't work for you.
-#   - In the 'normal' case, where you just want to add --enable-feature, set
-#   CONFIGURE_OPTS. This will be appended to the end of CONFIGURE_CMD
-#   for both 32 and 64 bit builds.
+#     defaults set in config.sh. You can append to these variables or replace
+#     them if the defaults don't work for you.
+#   - In the normal case, where you just want to add --enable-feature, set
+#     CONFIGURE_OPTS. This will be appended to the end of CONFIGURE_CMD
+#     for both 32 and 64 bit builds.
 #   - Any of these functions can be overriden in your build script, so if
-#   anything here doesn't apply to the build process for your application,
-#   just override that function with whatever code you need. The build
-#   function itself can be overriden if the build process doesn't fit into a
-#   configure, make, make install pattern.
+#     anything here doesn't apply to the build process for your application,
+#     just override that function with whatever code you need. The build
+#     function itself can be overriden if the build process doesn't fit into a
+#     configure, make, make install pattern.
 #############################################################################
 make_clean() {
     logmsg "--- make (dist)clean"
@@ -775,10 +664,26 @@ make_prog() {
         logerr "--- Make failed"
 }
 
+make_prog32() {
+    make_prog
+}
+
+make_prog64() {
+    make_prog
+}
+
 make_install() {
     logmsg "--- make install"
     logcmd $MAKE DESTDIR=${DESTDIR} install || \
         logerr "--- Make install failed"
+}
+
+make_install32() {
+    make_install
+}
+
+make_install64() {
+    make_install
 }
 
 make_pure_install() {
@@ -827,8 +732,8 @@ build32() {
     export ISALIST="$ISAPART"
     make_clean
     configure32
-    make_prog
-    make_install
+    make_prog32
+    make_install32
     popd > /dev/null
     unset ISALIST
     export ISALIST
@@ -839,31 +744,53 @@ build64() {
     logmsg "Building 64-bit"
     make_clean
     configure64
-    make_prog
-    make_install
+    make_prog64
+    make_install64
     popd > /dev/null
 }
 
 #############################################################################
 # Build function for python programs
 #############################################################################
-# Note: The path to the python binary needs to be set in the $PYTHON variable
-# you probably also need to add paths to the python libs in LDFLAGS depending
-# on what you are bulding (-L and -R maybe required)
-#############################################################################
+pre_python_32() {
+    logmsg "prepping 32bit python build"
+}
+pre_python_64() {
+    logmsg "prepping 32bit python build"
+}
 python_build() {
+    if [[ -z "$PYTHON" ]]; then logerr "PYTHON not set"; fi
+    if [[ -z "$PYTHONPATH" ]]; then logerr "PYTHONPATH not set"; fi
+    if [[ -z "$PYTHONLIB" ]]; then logerr "PYTHONLIB not set"; fi
     logmsg "Building using python setup.py"
     pushd $TMPDIR/$BUILDDIR > /dev/null
-    logmsg "--- setup.py build"
-    LDFLAGS="$LDFLAGS" CFLAGS="$CFLAGS" logcmd $PYTHON ./setup.py build ||
+
+    ISALIST=i386
+    export ISALIST
+    pre_python_32
+    logmsg "--- setup.py (32) build"
+    logcmd $PYTHON ./setup.py build ||
         logerr "--- build failed"
-    logmsg "--- setup.py install"
-    LDFLAGS="$LDFLAGS" CFLAGS="$CFLAGS" logcmd $PYTHON \
+    logmsg "--- setup.py (32) install"
+    logcmd $PYTHON \
+        ./setup.py install --root=$DESTDIR ||
+        logerr "--- install failed"
+
+    ISALIST="amd64 i386"
+    export ISALIST
+    pre_python_64
+    logmsg "--- setup.py (64) build"
+    logcmd $PYTHON ./setup.py build ||
+        logerr "--- build failed"
+    logmsg "--- setup.py (64) install"
+    logcmd $PYTHON \
         ./setup.py install --root=$DESTDIR ||
         logerr "--- install failed"
     popd > /dev/null
-}
 
+    mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages ||
+        logerr "Cannot move from site-packages to vendor-packages"
+}
 
 #############################################################################
 # Build/test function for perl modules
@@ -871,6 +798,12 @@ python_build() {
 # Detects whether to use Build.PL or Makefile.PL
 # Note: Build.PL probably needs Module::Build installed
 #############################################################################
+vendorizeperl() {
+    logcmd mv $DESTDIR/usr/perl5/lib/site_perl $DESTDIR/usr/perl5/vendor_perl || logerr "can't move to vendor_perl"
+    logcmd mkdir -p $DESTDIR/usr/perl5/${DEPVER}
+    logcmd mv $DESTDIR/usr/perl5/man $DESTDIR/usr/perl5/${DEPVER}/man || logerr "can't move perl man"
+}
+
 buildperl() {
     if [[ -f $SRCDIR/${PROG}-${VER}.env ]]; then
         logmsg "Sourcing environment file: $SRCDIR/${PROG}-${VER}.env"
@@ -989,13 +922,10 @@ build_install() {
 }
 
 test_if_core() {
-    if [[ -z "$USEIPS" ]]; then
-        logerr "Individual Perl module packages are IPS-only"
-    fi
     logmsg "Testing whether $MODNAME is in core"
-    logmsg "--- Ensuring ${PKGPREFIX}${PKG} is not installed"
-    if logcmd pkg info ${PKGPREFIX}${PKG}; then
-        logerr "------ Package ${PKGPREFIX}${PKG} appears to be installed.  Please uninstall it."
+    logmsg "--- Ensuring ${PKG} is not installed"
+    if logcmd pkg info ${PKG}; then
+        logerr "------ Package ${PKG} appears to be installed.  Please uninstall it."
     else
         logmsg "------ Not installed, good." 
     fi
@@ -1009,24 +939,43 @@ test_if_core() {
 }
 
 #############################################################################
+# Scan the destination install and strip the non-stipped ELF objects
+#############################################################################
+strip_install() {
+    logmsg "Stripping installation"
+    pushd $DESTDIR > /dev/null || logerr "Cannot change to installation directory"
+    while read file
+    do
+        if [[ "$1" = "-x" ]]; then
+            ACTION=$(file $file | grep ELF | egrep -v "(, stripped|debugging)")
+        else
+            ACTION=$(file $file | grep ELF | grep "not stripped")
+        fi
+        if [[ -n "$ACTION" ]]; then
+          logmsg "------ stripping $file"
+          MODE=$(stat -c %a "$file")
+          logcmd chmod 644 "$file" || logerr "chmod failed: $file"
+          logcmd strip $* "$file" || logerr "strip failed: $file"
+          logcmd chmod $MODE "$file" || logerr "chmod failed: $file"
+        fi
+    done < <(find . -depth -type f)
+    popd > /dev/null
+}
+
+#############################################################################
 # Clean up and print Done message
 #############################################################################
 clean_up() {
     logmsg "Cleaning up"
     if [[ -z $DONT_REMOVE_INSTALL_DIR ]]; then
         logmsg "--- Removing temporary install directory $DESTDIR"
+        logcmd chmod -R u+w $DESTDIR > /dev/null 2>&1
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove temporary install directory"
+        logmsg "--- Cleaning up temporary manifest and transform files"
+        logcmd rm -f $P5M_INT $P5M_FINAL $MY_MOG_FILE || \
+            logerr "Failed to remove temporary manifest and transform files"
         logmsg "Done."
-    fi
-    if [[ -z "$USEIPS" ]]; then
-        # Hack to dereference relative paths (/home/someone/../someoneelse/)
-        REALOUTDIR=`cd $OUTDIR;echo $PWD`
-        logmsg "If all went well, the package is now in $REALOUTDIR:"
-        logmsg `ls -l $OUTDIR | grep $PKGFILE`
-        if [[ -d /usr/include/openssl.omnibuild.safety ]]; then
-            mv /usr/include/openssl.omnibuild.safety /usr/include/openssl
-        fi
     fi
 }
 
@@ -1039,3 +988,6 @@ save_function() {
     local NEWNAME_FUNC="$2${ORIG_FUNC#$1}"
     eval "$NEWNAME_FUNC"
 }
+
+# Vim hints
+# vim:ts=4:sw=4:et:
