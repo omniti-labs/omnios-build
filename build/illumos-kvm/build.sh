@@ -71,8 +71,6 @@ make_prog() {
            PROTO_AREA=$PROTO_AREA \
            GCC=/usr/sfw/bin/gcc || \
         logerr "--- Make failed"
-    logcmd mkdir -p $DESTDIR/usr/lib/devfsadm/linkmod || \
-        logerr "--- failed to stub directory"
     logcmd cp $KERNEL_SOURCE/usr/src/OPENSOLARIS.LICENSE $SRCDIR/OPENSOLARIS.LICENSE || \
         logerr "--- failed to copy CDDL from kernel sources"
 }
