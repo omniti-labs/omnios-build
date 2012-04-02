@@ -59,7 +59,7 @@ clone_gate(){
     logcmd mkdir -p $TMPDIR/$BUILDDIR
     pushd $TMPDIR/$BUILDDIR > /dev/null 
     if [[ ! -d illumos-omni-os ]]; then
-        logcmd  $GIT clone -b omni src@src.omniti.com:~omni-os/core/illumos-omni-os 
+        logcmd  $GIT clone -b omni anon@src.omniti.com:~omnios/core/illumos-omni-os 
     fi
     logcmd  cd illumos-omni-os || logerr "gate inaccessible"
     popd > /dev/null 
@@ -82,7 +82,7 @@ clone_source(){
     logcmd mkdir -p $TMPDIR/$BUILDDIR
     pushd $TMPDIR/$BUILDDIR > /dev/null 
     if [[ ! -d pkg ]]; then
-        logcmd $GIT clone -b omni src@src.omniti.com:~omni-os/core/pkg
+        logcmd $GIT clone -b omni anon@src.omniti.com:~omnios/core/pkg
     fi
     pushd pkg > /dev/null || logerr "no source"
     if [ -n "${GITHASH}" ]; then

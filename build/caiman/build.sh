@@ -89,7 +89,7 @@ clone_source(){
         logcmd rm -rf caiman
     fi
     logmsg "Cloning OMNI caiman Source..."
-    logcmd  $GIT clone src@src.omniti.com:~omni-os/core/caiman || \
+    logcmd  $GIT clone anon@src.omniti.com:~omnios/core/caiman || \
         logerr "Failed to $GIT clone repo"
     logmsg "Leaving $TMPDIR/$BUILDDIR"
     popd > /dev/null 

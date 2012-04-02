@@ -58,7 +58,7 @@ clone_source(){
     logcmd mkdir -p $TMPDIR/$BUILDDIR
     pushd $TMPDIR/$BUILDDIR > /dev/null 
     if [[ ! -d g11n ]]; then
-        logcmd  $GIT clone -b omni src@src.omniti.com:~omni-os/core/g11n
+        logcmd  $GIT clone -b omni anon@src.omniti.com:~omnios/core/g11n
     fi
     logcmd  cd g11n || logerr "g11n inaccessible"
     SRC=$TMPDIR/$BUILDDIR/g11n

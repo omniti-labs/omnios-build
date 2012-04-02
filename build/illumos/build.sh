@@ -33,7 +33,7 @@ RELEASE_DATE=2012.03.06
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=omni-os    # App name
+PROG=omnios    # App name
 VER=151002    # App version
 PVER=1          # Package Version (numeric only)
 
@@ -54,13 +54,13 @@ PKGPREFIX=""
 PREFIX=""
 TMPDIR=/code
 BUILDDIR=$PROG-$VER
-CODEMGR_WS=$TMPDIR/$BUILDDIR/illumos-omni-os
+CODEMGR_WS=$TMPDIR/$BUILDDIR/illumos-omnios
 
 #Since these variables are used in a sed statment make sure to escape properly
 ILLUMOS_NO="NIGHTLY\_OPTIONS=\'\-nCmpr\'"
-ILLUMOS_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/illumos\-omni\-os"
+ILLUMOS_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/illumos\-omnios"
 #ILLUMOS_CLONE_WS="CLONE\_WS=\'ssh:\/\/anonhg@hg.illumos.org\/illumos\-gate\'"
-ILLUMOS_CLONE_WS="CLONE\_WS=\'src@src.omniti.com:~omni-os\/core\/illumos\-omni\-os\'"
+ILLUMOS_CLONE_WS="CLONE\_WS=\'anon@src.omniti.com:~omnios\/core\/illumos\-omnios\'"
 
 ILLUMOS_PKG_REDIST="PKGPUBLISHER\_REDIST=\'jeos\.omniti\.com\'"
 
@@ -95,9 +95,9 @@ clone_source(){
     logmsg "Entering $TMPDIR/$BUILDDIR"
     pushd $TMPDIR/$BUILDDIR > /dev/null 
     logmsg "Cloning OMNI Illumos Source..."
-    logcmd  $GIT clone src@src.omniti.com:~omni-os/core/illumos-omni-os 
-    pushd illumos-omni-os 
-    ILLUMOS_VERSION="VERSION=\'omni\-os\-`$GIT log --pretty=format:'%h' -n 1`'" 
+    logcmd  $GIT clone anon@src.omniti.com:~omnios/core/illumos-omnios 
+    pushd illumos-omnios 
+    ILLUMOS_VERSION="VERSION=\'omnios\-`$GIT log --pretty=format:'%h' -n 1`'" 
     echo $ILLUMOS_VERSION
     popd > /dev/null 
     logmsg "Leaving $TMPDIR/$BUILDDIR"
