@@ -40,6 +40,8 @@ DESC="Ruby 1.8 ($VER)"             # Longer description, must be filled in
 # Default to 32-bit
 [[ "$BUILDARCH" == "both" ]] && BUILDARCH=32
 
+CONFIGURE_OPTS="--without-gcc --enable-pthread --enable-shared"
+
 export CLFAGS="-I/usr/include/openssl"
 export EXTLIBS=-lm
 
