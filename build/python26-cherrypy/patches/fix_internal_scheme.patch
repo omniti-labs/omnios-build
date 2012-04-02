@@ -1,0 +1,13 @@
+diff -ru CherryPy-3.2.2.orig/cherrypy/wsgiserver/wsgiserver2.py CherryPy-3.2.2/cherrypy/wsgiserver/wsgiserver2.py
+--- CherryPy-3.2.2.orig/cherrypy/wsgiserver/wsgiserver2.py	Wed Oct 19 04:12:29 2011
++++ CherryPy-3.2.2/cherrypy/wsgiserver/wsgiserver2.py	Mon Apr  2 15:44:41 2012
+@@ -802,6 +802,9 @@
+             # If there's a scheme (and it must be http or https), then:
+             # http_URL = "http:" "//" host [ ":" port ] [ abs_path [ "?" query ]]
+             scheme, remainder = uri[:i].lower(), uri[i + 3:]
++            if scheme != "http" or scheme != "https":
++                scheme = None
++                remainder = uri
+             authority, path = remainder.split(FORWARD_SLASH, 1)
+             path = FORWARD_SLASH + path
+             return scheme, authority, path
