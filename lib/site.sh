@@ -1,3 +1,3 @@
 # Package server URL and publisher
-PKGPUBLISHER=jeos.omniti.com
-PKGSRVR=http://pkg.omniti.com:10006/
+PKGPUBLISHER=omnios
+PKGSRVR=http://pkg-internal.omniti.com:10006/
