@@ -27,20 +27,30 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=myapp      # App name
-VER=            # App version
+PROG=rubygems      # App name
+VER=1.8.21            # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
-PKG=            # Package name (e.g. library/foo)
-SUMMARY=""      # One-liner, must be filled in
-DESC=""         # Longer description, must be filled in
+PKG=omniti/developer/ruby/ruby-gems            # Package name (e.g. library/foo)
+SUMMARY="Ruby Gems"      # One-liner, must be filled in
+DESC="Ruby Gems ($VER) only really needed for ruby-18 since ruby-19 has gem build in"         # Longer description, must be filled in
+
+BUILD_DEPENDS_IPS="runtime/ruby-18"
+RUBY=/opt/omni/bin/ruby
+
+build() {
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    logmsg "Building gems"
+    $RUBY setup.rb -V --no-rdoc --prefix=$DESTDIR/$PREFIX --destdir=$DESTDIR/$PREFIX/lib/ruby/vendor_ruby/1.8/rubygems
+    popd > /dev/null
+}
 
 init
-download_source $PROG $PROG $VER
+download_source ruby $PROG $VER
 patch_source
 prep_build
 build
-make_isa_stub
+#make_isa_stub
 make_package
 clean_up
 
