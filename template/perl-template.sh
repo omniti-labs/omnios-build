@@ -70,7 +70,6 @@ download_source CPAN/authors/id/${AUTHORID:0:1}/${AUTHORID:0:2}/${AUTHORID} $PRO
 patch_source
 prep_build
 buildperl
-fix_permissions
 make_package
 clean_up
 
