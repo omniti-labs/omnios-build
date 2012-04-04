@@ -1,0 +1,11 @@
+--- configure.in	2010-01-22 20:40:25.000000000 +0000
++++ configure.in.1	2012-04-04 18:51:23.183566840 +0000
+@@ -1,7 +1,7 @@
+ AC_INIT(zetaback.in)
+ AC_PATH_PROG(ZFS,zfs,/usr/sbin/zfs,/usr/sbin /sbin)
+ AC_PATH_PROG(PERL,perl, ,/usr/bin /usr/perl5/bin)
+-AC_PATH_PROG(POD2MAN,pod2man, ,/usr/bin /usr/perl5/bin /usr/local/bin)
++AC_PATH_PROG(POD2MAN,pod2man, ,/usr/bin /usr/perl5/bin /usr/local/bin /usr/perl5/5.14.2/bin)
+ AC_SUBST(PERL)
+ AC_SUBST(POD2MAN)
+ AC_OUTPUT([
