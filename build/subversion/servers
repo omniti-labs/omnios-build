@@ -1,0 +1,2 @@
+[global]
+ssl-authority-files = /opt/omni/etc/subversion/cacert.pem;

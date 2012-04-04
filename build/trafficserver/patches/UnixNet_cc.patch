@@ -1,0 +1,37 @@
+--- trafficserver/traffic/trunk/iocore/net/UnixNet.cc	2011/04/20 14:38:28	1095423
++++ trafficserver/traffic/trunk/iocore/net/UnixNet.cc	2011/04/20 14:42:25	1095424
+@@ -389,10 +389,8 @@
+   pd->result = 0;
+ 
+ #if defined(USE_EDGE_TRIGGER)
+-  UnixNetVConnection *next_vc = NULL;
+-  vc = read_ready_list.head;
+-  while (vc) {
+-    next_vc = vc->read.ready_link.next;
++ // UnixNetVConnection *
++  while ((vc = read_ready_list.dequeue())) {
+     if (vc->closed)
+       close_UnixNetVConnection(vc, trigger_event->ethread);
+     else if (vc->read.enabled && vc->read.triggered)
+@@ -407,12 +405,8 @@
+       }
+ #endif
+     }
+-    vc = next_vc;
+   }
+-  next_vc = NULL;
+-  vc = write_ready_list.head;
+-  while (vc) {
+-    next_vc = vc->write.ready_link.next;
++  while ((vc = write_ready_list.dequeue())) {
+     if (vc->closed)
+       close_UnixNetVConnection(vc, trigger_event->ethread);
+     else if (vc->write.enabled && vc->write.triggered)
+@@ -427,7 +421,6 @@
+       }
+ #endif
+     }
+-    vc = next_vc;
+   }
+ #else /* !USE_EDGE_TRIGGER */
+   while ((vc = read_ready_list.dequeue())) {
