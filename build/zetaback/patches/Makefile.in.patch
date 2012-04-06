@@ -1,0 +1,11 @@
+--- Makefile.in	2010-01-22 20:40:25.000000000 +0000
++++ Makefile.in.1	2012-04-04 19:01:06.497565837 +0000
+@@ -18,7 +18,7 @@
+ 
+ zfs=@ZFS@
+ perl=@PERL@
+-pod2man=@POD2MAN@
++pod2man=/usr/perl5/5.14.2/bin/pod2man
+ 
+ all:
+ 	sed -e "s#/usr/bin/perl#$(perl)#;" -e "s#__PREFIX__#$(prefix)#;" \

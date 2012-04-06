@@ -1,0 +1,2 @@
+pod2man.patch -p0
+Makefile.in.patch -p0

@@ -1,0 +1,10 @@
+--- subversion-1.6.9/subversion/libsvn_subr/config_impl.h.orig  Wed Feb  3 17:44:36 2010
++++ subversion-1.6.9/subversion/libsvn_subr/config_impl.h       Wed Feb  3 17:45:11 2010
+@@ -110,7 +110,7 @@
+ #ifdef WIN32
+ #  define SVN_CONFIG__SUBDIRECTORY    "Subversion"
+ #else  /* ! WIN32 */
+-#  define SVN_CONFIG__SYS_DIRECTORY   "/etc/subversion"
++#  define SVN_CONFIG__SYS_DIRECTORY   "/opt/omni/etc/subversion"
+ #  define SVN_CONFIG__USR_DIRECTORY   ".subversion"
+ #endif /* WIN32 */
