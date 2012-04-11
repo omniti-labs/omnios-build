@@ -62,7 +62,7 @@ ILLUMOS_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/illumos\-omnios"
 #ILLUMOS_CLONE_WS="CLONE\_WS=\'ssh:\/\/anonhg@hg.illumos.org\/illumos\-gate\'"
 ILLUMOS_CLONE_WS="CLONE\_WS=\'anon@src.omniti.com:~omnios\/core\/illumos\-omnios\'"
 
-ILLUMOS_PKG_REDIST="PKGPUBLISHER\_REDIST=\'jeos\.omniti\.com\'"
+ILLUMOS_PKG_REDIST="PKGPUBLISHER\_REDIST=\'omnios\'"
 
 #these variables are appended to the end of the script so no need to escape
 ILLUMOS_GNUC="export __GNUC='';"
