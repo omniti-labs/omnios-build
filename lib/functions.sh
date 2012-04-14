@@ -178,6 +178,22 @@ if [[ -f $LOGFILE ]]; then
 fi
 process_opts $@
 
+BasicRequirements(){
+    local needed=""
+    [[ -x /opt/gcc-4.6.3/bin/gcc ]] || needed+=" developer/gcc46"
+    [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
+    [[ -x /usr/bin/ls ]] || needed+=" developer/linker"
+    [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
+    if [[ -n "$needed" ]]; then
+        logmsg "You appear to be missing some basic build requirements."
+        logmsg "To fix this run:"
+        logmsg " "
+        logmsg "  sudo pkg install$needed"
+        logerr
+    fi
+}
+BasicRequirements
+
 #############################################################################
 # Running as root is not safe
 #############################################################################
