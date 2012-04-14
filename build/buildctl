@@ -86,7 +86,7 @@ build() {
             fi
             rm $SCRIPT.final
         else
-            $SCRIPT
+            PATH=$PATH:. $SCRIPT
         fi
     popd >/dev/null
 }
