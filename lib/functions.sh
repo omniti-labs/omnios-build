@@ -182,7 +182,7 @@ BasicRequirements(){
     local needed=""
     [[ -x /opt/gcc-4.6.3/bin/gcc ]] || needed+=" developer/gcc46"
     [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
-    [[ -x /usr/bin/ls ]] || needed+=" developer/linker"
+    [[ -x /usr/bin/ld ]] || needed+=" developer/linker"
     [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
     [[ -x /usr/bin/gmake ]] || needed+=" developer/build/gnu-make"
     [[ -f /usr/include/sys/types.h ]] || needed+=" system/header"
