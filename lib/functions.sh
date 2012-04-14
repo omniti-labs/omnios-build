@@ -117,14 +117,14 @@ logerr() {
     # Print an error message and ask the user if they wish to continue
     logmsg $@
     if [[ -z $BATCH ]]; then
-        ask_to_continue
+        ask_to_continue "An Error occured in the build. "
     else
         exit 1
     fi
 }
 ask_to_continue() {
     # Ask the user if they want to continue or quit in the event of an error
-    echo -n "An Error occured in the build. Do you wish to continue anyway? (y/n) "
+    echo -n "${1}Do you wish to continue anyway? (y/n) "
     read
     while [[ ! "$REPLY" =~ [yYnN] ]]; do
         echo -n "continue? (y/n) "
@@ -134,7 +134,7 @@ ask_to_continue() {
         logmsg "===== Build aborted ====="
         exit 1
     fi
-    logmsg "===== Error occured, user chose to continue anyway. ====="
+    logmsg "===== User elected to continue after prompt. ====="
 }
 
 #############################################################################
@@ -249,6 +249,15 @@ init() {
         BUILDDIR=$PROG-$VER
     fi
 
+    RPATH=`echo $PKGSRVR | sed -e 's/^file:\/*/\//'`
+    if [[ "$RPATH" != "$PKGSRVR" ]]; then
+        if [[ ! -d $RPATH ]]; then
+            pkgrepo create $RPATH || \
+                logerr "Could not local repo"
+            pkgrepo add-publisher -s $RPATH $PKGPUBLISHER || \
+                logerr "Could not set publisher on repo"
+        fi
+    fi
     pkgrepo get -s $PKGSRVR > /dev/null 2>&1 || \
         logerr "The PKGSRVR ($PKGSRVR) isn't available. All is doomed."
     verify_depends
@@ -580,7 +589,8 @@ make_package() {
     logmsg "--- Applying transforms"
     $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
     logmsg "--- Publishing package"
-    logerr "Intentional pause: Last chance to sanity-check before publication!"
+    logmsg "Intentional pause: Last chance to sanity-check before publication!"
+    ask_to_continue
     logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR -d $TMPDIR/$BUILDDIR \
         -d $SRCDIR $P5M_FINAL || logerr "------ Failed to publish package"
     logmsg "--- Published $FMRI" 
