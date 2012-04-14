@@ -184,6 +184,7 @@ BasicRequirements(){
     [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
     [[ -x /usr/bin/ls ]] || needed+=" developer/linker"
     [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
+    [[ -x /usr/bin/gmake ]] || needed+=" developer/build/gnu-make"
     if [[ -n "$needed" ]]; then
         logmsg "You appear to be missing some basic build requirements."
         logmsg "To fix this run:"
