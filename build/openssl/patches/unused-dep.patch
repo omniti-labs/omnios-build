@@ -9,9 +9,18 @@
  	else \
  		echo "There's no support for shared libraries on this platform" >&2; \
  		exit 1; \
---- C	Mon Mar 26 21:59:11 2012
-+++ Configure	Mon Mar 26 21:59:16 2012
-@@ -223,7 +223,7 @@
+--- Configure.orig	Sat Mar  3 13:18:06 2012
++++ Configure	Mon Apr 16 05:15:45 2012
+@@ -211,7 +211,7 @@
+ # surrounds it with #APP #NO_APP comment pair which (at least Solaris
+ # 7_x86) /usr/ccs/bin/as fails to assemble with "Illegal mnemonic"
+ # error message.
+-"solaris-x86-gcc","gcc:-O3 -fomit-frame-pointer -march=pentium -Wall -DL_ENDIAN -DOPENSSL_NO_INLINE_ASM::-D_REENTRANT::-lsocket -lnsl -ldl:BN_LLONG ${x86_gcc_des} ${x86_gcc_opts}:${x86_elf_asm}:dlfcn:solaris-shared:-fPIC:-shared:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
++"solaris-x86-gcc","gcc:-O3 -fomit-frame-pointer -march=pentium -Wall -DL_ENDIAN -DOPENSSL_NO_INLINE_ASM::-D_REENTRANT::-lsocket -lnsl:BN_LLONG ${x86_gcc_des} ${x86_gcc_opts}:${x86_elf_asm}:dlfcn:solaris-shared:-fPIC:-shared:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
+ # -shared -static-libgcc might appear controversial, but modules taken
+ # from static libgcc do not have relocations and linking them into our
+ # shared objects doesn't have any negative side-effects. On the contrary,
+@@ -220,7 +220,7 @@
  # actually recommend to consider using gcc shared build even with vendor
  # compiler:-)
  #						<appro@fy.chalmers.se>
