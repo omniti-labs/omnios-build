@@ -71,19 +71,12 @@ ILLUMOS_BUILDNUM="ONNV_BUILDNUM=$VER; export ONNV_BUILDNUM;"
 
 sunstudio_location() {
     logmsg "Ensuring that Sun Studio is where Illumos thinks it is..."
-    if [[ -d /opt/SUNWspro ]]; then
-	logmsg "--- fake SUNWspro directory exists, good"
+    if [[ -L /opt/SUNWspro ]]; then
+	logmsg "--- fake SUNWspro link exists, good"
     else
 	logmsg "--- making fake SUNWspro directory"
-	logcmd mkdir -p /opt/SUNWspro || \
-	    logerr "--- Error: failed to make directory"
-    fi
-    if [[ -L /opt/SUNWspro/sunstudio12.1 ]]; then
-	logmsg "--- sunstudio12.1 link exists, good"
-    else
-	logmsg "--- soft-linking to /opt/sunstudio12.1"
-        logcmd ln -s /opt/sunstudio12.1 /opt/SUNWspro/sunstudio12.1 || \
-            logerr "--- Failed: ln -s /opt/sunstudio12.1/ /opt/SUNWspro"
+	logcmd sudo ln -s /opt/sunstudio12.1 /opt/SUNWspro || \
+	    logerr "--- Error: failed to make link"
     fi
 }
 
