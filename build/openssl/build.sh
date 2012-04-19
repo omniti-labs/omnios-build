@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=openssl                 # App name
-VER=1.0.1                   # App version
+VER=1.0.1a                   # App version
 PKG=library/security/openssl # Package name (without prefix)
 SUMMARY="$PROG - A toolkit for Secure Sockets Layer (SSL v2/v3) and Transport Layer (TLS v1) protocols and general purpose cryptographic library"
 DESC="$SUMMARY"
