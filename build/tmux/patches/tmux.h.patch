@@ -1,0 +1,15 @@
+--- tmux-1.6.orig/tmux.h	Mon Jan 23 12:24:01 2012
++++ tmux-1.6/tmux.h	Thu Apr 19 01:39:30 2012
+@@ -26,6 +26,12 @@
+ #include <sys/uio.h>
+ 
+ #include <event.h>
++#include <event_compat.h>
++#include <event_struct.h>
++#include <buffer.h>
++#include <bufferevent.h>
++#include <bufferevent_struct.h>
++#include <buffer_compat.h>
+ #include <limits.h>
+ #include <signal.h>
+ #include <stdarg.h>
