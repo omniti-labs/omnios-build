@@ -48,7 +48,7 @@ SUMMARY="Kayak - network installer (server files)"
 DESC="Kayak is the network installer for OmniOS, using PXE, DHCP and HTTP"
 
 BUILD_DEPENDS_IPS="developer/versioning/git"
-DEPENDS_IPS="developer/build/gnu-make developer/dtrace"
+DEPENDS_IPS="developer/build/gnu-make developer/dtrace service/network/tftp"
 
 GIT=/usr/bin/git
 CHECKOUTDIR=$TMPDIR/$BUILDDIR
