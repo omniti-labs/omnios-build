@@ -95,7 +95,7 @@ clone_source
 prep_build
 logmsg "Now building $PKG"
 build_server
-make_package
+make_package kayak.mog
 clean_up
 
 PKG=system/install/kayak-kernel
