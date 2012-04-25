@@ -15,7 +15,10 @@ reset_configure_opts
 [[ $BUILDARCH == 'both' ]] && BUILDARCH=64
 
 DEPENDS="library/expat library/security/openssl library/pcre database/sqlite-3 \
-	system/library/g++-4-runtime omniti/runtime/tcl-8"
+	system/library/gcc-4-runtime system/library/g++-4-runtime \
+	system/library/c++/sunpro library/zlib library/readline compress/xz \
+	SUNWcs system/library system/library/math \
+	omniti/runtime/tcl-8"
 
 LDFLAGS64="-L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64 \
            -R$PREFIX/lib"
