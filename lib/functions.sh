@@ -200,7 +200,11 @@ BasicRequirements
 # Running as root is not safe
 #############################################################################
 if [[ "$UID" = "0" ]]; then
-    logerr "--- You cannot run this as root"
+    if [[ -n "$ROOT_OK" ]]; then
+        logmsg "--- Running as root, but ROOT_OK is set; continuing"
+    else
+        logerr "--- You cannot run this as root"
+    fi
 fi
 
 #############################################################################
