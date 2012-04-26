@@ -470,30 +470,6 @@ extract_archive() {
 #############################################################################
 make_package() {
     logmsg "Making package"
-    case $BUILDARCH in
-        32)
-            BUILDSTR="32bit-"
-            ;;
-        64)
-            BUILDSTR="64bit-"
-            ;;
-        *)
-            BUILDSTR=""
-            ;;
-    esac
-    # Add the flavor name to the package if it is not the default
-    case $FLAVOR in
-        ""|default)
-            FLAVORSTR=""
-            ;;
-        *)
-            FLAVORSTR="$FLAVOR-"
-            ;;
-    esac
-    DESCSTR="$DESC"
-    if [[ -n "$FLAVORSTR" ]]; then
-        DESCSTR="$DESCSTR ($FLAVOR)"
-    fi
     PKGSEND=/usr/bin/pkgsend
     PKGMOGRIFY=/usr/bin/pkgmogrify
     PKGFMT=/usr/bin/pkgfmt
@@ -504,12 +480,7 @@ make_package() {
 
     ## Strip leading zeros in version components.
     VER=`echo $VER | sed -e 's/\.0*\([1-9]\)/.\1/g;'`
-    if [[ -n "$FLAVOR" ]]; then
-        # We use FLAVOR instead of FLAVORSTR as we don't want the trailing dash
-        FMRI="${PKG}-${FLAVOR}@${VER},${SUNOSVER}-${PVER}"
-    else
-        FMRI="${PKG}@${VER},${SUNOSVER}-${PVER}"
-    fi
+    FMRI="${PKG}@${VER},${SUNOSVER}-${PVER}"
     if [[ -n "$DESTDIR" ]]; then
         logmsg "--- Generating package manifest from $DESTDIR"
         logmsg "------ Running: $PKGSEND generate $DESTDIR > $P5M_INT"
@@ -528,7 +499,7 @@ make_package() {
         echo "set name=pkg.human-version value=\"$VERHUMAN\"" >> $MY_MOG_FILE
     fi
     echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
-    echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
+    echo "set name=pkg.descr value=\"$DESC\"" >> $MY_MOG_FILE
     echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
     if [[ -n "$DEPENDS_IPS" ]]; then
         logmsg "------ Adding dependencies"
