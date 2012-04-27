@@ -151,7 +151,9 @@ build_pkgs() {
 push_pkgs() {
     logmsg "Entering $CODEMGR_WS"
     pushd $CODEMGR_WS > /dev/null
+    logmsg "Intentional pause: Last chance to sanity-check before publication!"
     logmsg "Pushing illumos pkgs to $PKGSERVER..."
+    ask_to_continue
     logcmd pkgrecv -s packages/i386/nightly-nd/repo.redist/ -d $PKGSERVER 'pkg:/*'
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
