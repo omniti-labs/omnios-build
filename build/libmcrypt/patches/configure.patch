@@ -1,0 +1,11 @@
+--- configure.orig	Wed Oct 25 09:55:38 2006
++++ configure	Wed Oct 25 09:56:58 2006
+@@ -3446,7 +3446,7 @@
+ 
+ 
+ EXTRA_OBJECTS=""
+-ALG=`echo -n $opt_include_algos|sed "s/,/ /g"|sed "s/\n/ /g"`
++ALG=`echo $opt_include_algos|sed "s/,/ /g"`
+ for i in $ALG
+ do \
+ test -f modules/algorithms/$i.c && EXTRA_OBJECTS="$EXTRA_OBJECTS ../modules/algorithms/$i.lo"
