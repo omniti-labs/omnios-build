@@ -38,6 +38,7 @@ BUILDARCH=32
 DEPENDS_IPS="omniti/runtime/ruby-19"
 BUILD_DEPENDS_IPS="gnu-coreutils"
 
+# we Fetch all of these direclty from rubygens.org. you can chnage that in the files/gemrc.
 GEM_DEPENDS="
 mixlib-config-1.1.2
 mixlib-cli-1.2.2
@@ -58,16 +59,18 @@ net-ssh-multi-1.1
 erubis-2.7.0
 moneta-0.6.0
 highline-1.6.11
-uuidtools-2.1.2"
+uuidtools-2.1.2
+ffi-1.0.11"
 
 GEM_BIN=/opt/omni/bin/gem
+RUBY_VER=1.9
 
 build32(){
     logmsg "Building"
     pushd $TMPDIR/$BUILDDIR > /dev/null
-    GEM_HOME=${DESTDIR}${PREFIX}/lib/ruby/gems/1.9
+    GEM_HOME=${DESTDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}
     export GEM_HOME
-    RUBYLIB=${DESTDIR}${PREFIX}/lib/ruby:${DESTDIR}${PREFIX}/lib/site_ruby/1.9
+    RUBYLIB=${DESTDIR}${PREFIX}/lib/ruby:${DESTDIR}${PREFIX}/lib/site_ruby/${RUBY_VER}
     export RUBYLIB
     for i in $GEM_DEPENDS; do
       GEM=${i%-[0-9.]*}
@@ -84,22 +87,30 @@ build32(){
     logmsg "--- Fixing include paths on binaries"
     for i in $GEM_HOME/bin/*; do
       sed -e "/require 'rubygems'/ a\\
-Gem.use_paths(Gem.dir, [\"/opt/omni/lib/ruby/gems/1.9\"])\\
+Gem.use_paths(Gem.dir, [\"/opt/omni/lib/ruby/gems/${RUBY_VER}\"])\\
 Gem.refresh\\
 " $i >$i.tmp
       mv $i.tmp $i
       chmod +x $i
     done
 }
-    
 
+patch_ohai() {
+    logmsg "patching ohai"
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    logcmd patch -p1 -t -N ${DESTDIR}${PREFIX}/lib/ruby/gems/1.9/gems/ohai-0.6.12/lib/ohai/plugins/solaris2/platform.rb < $SRCDIR/$PATCHDIR/platform.patch || logerr "failed to patch ohai"
+    popd 
+}
+    
 
 init
 mkdir $TMPDIR/$PROG-$VER
 #download_source $PROG $PROG $VER
-patch_source
+#patch_source
 prep_build
+#patch_source
 build
+patch_ohai
 make_isa_stub
 make_package
 clean_up
