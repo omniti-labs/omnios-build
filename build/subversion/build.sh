@@ -40,7 +40,8 @@ NVER=0.29.0
 BUILD_DEPENDS_IPS="developer/swig@1.3 omniti/server/apache22"
 DEPENDS_IPS="database/sqlite-3@3.7 library/security/openssl@1.0.1 
              omniti/library/apr@1.4 omniti/library/apr-util@1.4
-             library/expat library/zlib system/library/gcc-4-runtime"
+             library/expat library/zlib system/library/gcc-4-runtime
+             omniti/library/serf"
 
 CFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
 CPPFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
@@ -48,7 +49,8 @@ CPPFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
 CONFIGURE_OPTS="$CONFIGURE_OPTS
     --sysconfdir=$PREFIX/etc
     --with-pic
-    --with-ssl
+    --with-serf=/opt/omni
+    --with-openssl
     --without-perl
     --without-python
     --without-berkeley-db
