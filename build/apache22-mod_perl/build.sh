@@ -50,27 +50,9 @@ case $DEPVER in
         ;;
 esac
 
-export P32=/opt/OMNIperl/bin/$ISAPART/perl
+BUILDARCH=64
 export P64=/opt/OMNIperl/bin/$ISAPART64/perl
-export APXS32=/opt/apache22/bin/$ISAPART/apxs
 export APXS64=/opt/apache22/bin/$ISAPART64/apxs
-
-build32() {
-    pushd $TMPDIR/$BUILDDIR > /dev/null
-    logmsg "Building 32-bit"
-    export ISALIST="$ISAPART"
-    make_clean
-    logmsg "--- Makefile.PL"
-    logcmd $P32 Makefile.PL MP_APXS=$APXS32 || \
-        logerr "--- Makefile.PL failed"
-    logmsg "--- make"
-    logcmd make || logerr "--- make failed"
-    logmsg "--- make install"
-    logcmd make DESTDIR=${DESTDIR} install || logerr "--- make install failed"
-    popd > /dev/null
-    unset ISALIST
-    export ISALIST
-}
 
 build64() {
     pushd $TMPDIR/$BUILDDIR > /dev/null

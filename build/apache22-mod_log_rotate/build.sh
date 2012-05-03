@@ -13,22 +13,7 @@ DESC="$SUMMARY"
 
 DEPENDS_IPS="omniti/server/apache22"
 unset PREFIX
-
-build32() {
-  local APXS=/opt/apache22/bin/$ISAPART/apxs
-  logmsg "Building 32-bit"
-  export ISALIST="$ISAPART"
-  logcmd $APXS -c ${PROG}.c || \
-    logerr "--- build failed"
-  logcmd mkdir -p $DESTDIR`$APXS -q LIBEXECDIR`
-  logcmd cp .libs/${PROG}.so $DESTDIR`$APXS -q LIBEXECDIR`/${PROG}.so || \
-    logerr "--- install failed"
-  logmsg "Cleaning up"
-  logcmd rm -f ${PROG}.[osl]*
-  logcmd rm -rf .libs
-  unset ISALIST
-  export ISALIST
-}
+BUILDARCH=64
 
 build64() {
   local APXS=/opt/apache22/bin/$ISAPART64/apxs

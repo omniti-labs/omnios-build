@@ -9,20 +9,37 @@ PKG=omniti/server/apache22
 SUMMARY="$PROG - Apache Web Server ($VER)"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="omniti/library/apr
+DEPENDS_IPS="omniti/library/apr \
              omniti/library/apr-util
-             library/security/openssl
+             library/security/openssl@1.0.0 =library/security/openssl@1.0.1 \
              database/sqlite-3"
 
 PREFIX=/opt/apache22
 reset_configure_opts
 
+# Package info
+NAME=Apache
+CATEGORY=network
+
+BUILDARCH=64
 MIRROR=archive.apache.org
 DIR=dist/httpd # Mirror directory to download from
 MPMS="worker prefork event" # Which MPMs to build
 
-LAYOUT=SolAmd32
-LAYOUT64=SolAmd64
+# Define some architecture specific variables
+if [[ $ISAPART == "i386" ]]; then
+    # i386
+    LAYOUT=SolAmd32
+    LAYOUT64=SolAmd64
+    #DEF="-DALTLAYOUT -DAMD32"
+    #DEF64="-DALTLAYOUT -DAMD64"
+else
+    # sparc
+    LAYOUT=SolSparc32
+    LAYOUT64=SolSparc64
+    #DEF="-DALTLAYOUT -DSPARCV8"
+    #DEF64="-DALTLAYOUT -DSPARCV9"
+fi
 
 # General configure options - BASE is for options to be applied everywhere
 # and the 32/64 variables are for 32/64 bit builds.
@@ -95,6 +112,7 @@ build64() {
 # Extra script/file installs
 add_file() {
     cp $SRCDIR/files/$1 $DESTDIR$PREFIX/$2
+    chown root:root $DESTDIR$PREFIX/$2
     if [[ -n "$3" ]]; then
         chmod $3 $DESTDIR$PREFIX/$2
     else
@@ -124,6 +142,14 @@ save_function patch_source patch_source_orig
 patch_source() {
     patch_source_orig
     chmod +x $TMPDIR/$BUILDDIR/libtool-dep-extract
+}
+
+# Override fix_permissions to only fix permissions on opt/apache22
+# The dtrace stuff installs files in usr
+fix_permissions() {
+    logmsg "Fixing ownership on installed files"
+    logcmd chown -R -P root:root ${DESTDIR}$PREFIX ||
+        logerr "Failed to fix ownership on ${DESTDIR}$PREFIX"
 }
 
 init
