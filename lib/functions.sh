@@ -533,9 +533,16 @@ make_package() {
     logmsg "--- Applying transforms"
     $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
     logmsg "--- Publishing package"
-    logerr "Intentional pause: Last chance to sanity-check before publication!"
-    logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR -d $TMPDIR/$BUILDDIR \
-        -d $SRCDIR $P5M_FINAL || logerr "------ Failed to publish package"
+    logmsg "Intentional pause: Last chance to sanity-check before publication!"
+    ask_to_continue
+    if [[ -n "$DESTDIR" ]]; then
+        logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR -d $TMPDIR/$BUILDDIR \
+            -d $SRCDIR $P5M_FINAL || logerr "------ Failed to publish package"
+    else
+        # If we're a metapackage (no DESTDIR) then there are no directories to check
+        logcmd $PKGSEND -s $PKGSRVR publish $P5M_FINAL || \
+            logerr "------ Failed to publish package"
+    fi
     logmsg "--- Published $FMRI" 
 }
 
