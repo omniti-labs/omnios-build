@@ -34,7 +34,7 @@ PKG=omniti/developer/swig
 SUMMARY="$PROG - Simplified Wrapper and Interface Generator"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="omniti/runtime/perl omniti/runtime/python-26"
+BUILD_DEPENDS_IPS="omniti/runtime/perl omniti/runtime/python-26"
 
 BUILDARCH=64
 
