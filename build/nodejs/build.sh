@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=node
-VER=0.6.16
+VER=0.6.17
 GITREPO=https://github.com/joyent/node.git
-GITHASH=a1d193963ddc80a27da5da01b59751e14e33d1d6
+GITHASH=4ced23deaf36493f4303a18f6fdce768c58becc0
 VERHUMAN=$VER
 PKG=omniti/runtime/nodejs
 SUMMARY="node.js"
