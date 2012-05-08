@@ -1,0 +1,13 @@
+license LICENSE license=Apache2
+group gid=98 groupname=riak
+user ftpuser=false gcos-field="Riak Server" group=riak login-shell=/usr/bin/bash password=NP uid=98 username=riak home-dir=/opt/riak/etc
+<transform dir path=opt/riak/data.* -> set owner riak>
+<transform dir path=opt/riak/data.* -> set group riak>
+<transform dir path=opt/riak/log.* -> set owner riak>
+<transform dir path=opt/riak/log.* -> set group riak>
+<transform dir path=opt/riak/etc -> set owner riak>
+<transform dir path=opt/riak/etc -> set group riak>
+<transform file path=opt/riak/etc/.* -> set owner riak>
+<transform file path=opt/riak/etc/.* -> set group riak>
+<transform file path=opt/riak/etc/.*\.args -> set mode 0644>
+<transform file path=opt/riak/etc/.*\.config -> set mode 0644>
