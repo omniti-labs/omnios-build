@@ -1,0 +1,10 @@
+--- Python-2.6.7/Makefile.pre.in.orig	Thu Sep 8 17:27:00 2011
++++ Python-2.6.7/Makefile.pre.in	Thu Sep 8 17:27:00 2011
+@@ -92,6 +92,6 @@
+ INCLUDEDIR=	@includedir@
+ CONFINCLUDEDIR=	$(exec_prefix)/include
+-SCRIPTDIR=	$(prefix)/lib
++SCRIPTDIR=	@libdir@
+ 
+ # Detailed destination directories
+ BINLIBDEST=	$(LIBDIR)/python$(VERSION)
