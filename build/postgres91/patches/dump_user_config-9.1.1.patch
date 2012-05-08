@@ -1,0 +1,36 @@
+diff --git a/src/bin/pg_dump/pg_dumpall.c b/src/bin/pg_dump/pg_dumpall.c
+new file mode 100644
+index b3ad2ea..bdadb1a
+*** a/src/bin/pg_dump/pg_dumpall.c
+--- b/src/bin/pg_dump/pg_dumpall.c
+*************** dumpRoles(PGconn *conn)
+*** 797,807 ****
+  		}
+  
+  		fprintf(OPF, "%s", buf->data);
+- 
+- 		if (server_version >= 70300)
+- 			dumpUserConfig(conn, rolename);
+  	}
+  
+  	PQclear(res);
+  
+  	fprintf(OPF, "\n\n");
+--- 797,813 ----
+  		}
+  
+  		fprintf(OPF, "%s", buf->data);
+  	}
+  
++ 	/*
++ 	 * Dump configuration settings for roles after all roles have been dumped.
++ 	 * We do it this way because config settings for roles could mention the
++ 	 * names of other roles.
++ 	 */
++ 	if (server_version >= 70300)
++ 		for (i = 0; i < PQntuples(res); i++)
++ 			dumpUserConfig(conn, PQgetvalue(res, i, i_rolname));
++ 
+  	PQclear(res);
+  
+  	fprintf(OPF, "\n\n");
