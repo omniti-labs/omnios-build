@@ -1,6 +1,6 @@
 license LICENSE license=Apache2
-<transform dir path=opt/ts/var/.* -> set user nobody>
+<transform dir path=opt/ts/var/.* -> set owner nobody>
 <transform dir path=opt/ts/var/.* -> set group nobody>
 <transform dir path=opt/ts/var/.* -> set mode 0775>
-<transform file path=opt/ts/var/.* -> set user nobody>
+<transform file path=opt/ts/var/.* -> set owner nobody>
 <transform file path=opt/ts/var/.* -> set group nobody>
