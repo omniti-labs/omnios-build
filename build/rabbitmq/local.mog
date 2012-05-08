@@ -1,0 +1,17 @@
+group gid=89 groupname=rabbitmq
+user ftpuser=false gcos-field="RabbitMQ Server" group=rabbitmq login-shell=/usr/bin/bash password=NP uid=89 username=rabbitmq home-dir=/opt/rabbitmq/var/lib/rabbitmq
+<transform file path=opt/rabbitmq/LICENSE.* -> drop>
+<transform file path=opt/rabbitmq/INSTALL -> drop>
+<transform dir path=opt/rabbitmq/var/lib/rabbitmq.* -> set owner rabbitmq>
+<transform dir path=opt/rabbitmq/var/lib/rabbitmq.* -> set group rabbitmq>
+<transform dir path=opt/rabbitmq/var/log/rabbitmq.* -> set owner rabbitmq>
+<transform dir path=opt/rabbitmq/var/log/rabbitmq.* -> set group rabbitmq>
+license LICENSE license=LICENSE
+license LICENSE-Apache-Basho license=Apache-Basho
+license LICENSE-BSD-glMatrix license=BSD-glMatrix
+license LICENSE-MIT-EJS10 license=MIT-EJS10
+license LICENSE-MIT-eldap license=MIT-eldap
+license LICENSE-MIT-jQuery164 license=MIT-jQuery164
+license LICENSE-MIT-Mochi license=MIT-Mochi
+license LICENSE-MIT-Sammy060 license=MIT-Sammy060
+license LICENSE-MPL-RabbitMQ license=MPL-RabbitMQ
