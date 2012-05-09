@@ -30,7 +30,7 @@
 PROG=postgresql
 VER=9.1.3
 VERHUMAN=$VER
-PKG=omniti/database/postgresql-91
+PKG=omniti/database/postgresql-${VER//./}
 SUMMARY="$PROG - Open Source Database System"
 DESC="$SUMMARY"
 
