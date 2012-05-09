@@ -46,7 +46,8 @@ CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64
     --with-apr=/opt/omni/bin/$ISAPART64/apr-1-config
     --with-apr-util=/opt/omni/bin/$ISAPART64/apu-1-config"
 
-CPPFLAGS32="$CPPFLAGS32 -I/opt/omni/include" 
+CPPFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE \
+    $CPPFLAGS32 -I/opt/omni/include"
 CPPFLAGS64="$CPPFLAGS64 -I/opt/omni/include/amd64" 
 
 init

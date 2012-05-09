@@ -66,6 +66,7 @@ CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64
     --with-apr=/opt/omni/bin/$ISAPART64/apr-1-config
     --with-apr-util=/opt/omni/bin/$ISAPART64/apu-1-config"
 
+CPPFLAGS64="-I/opt/omni/include/amd64"
 CPPFLAGS="$CPPFLAGS -I/opt/omni/include" 
 
 LDFLAGS32="$LDFLAGS32 \
