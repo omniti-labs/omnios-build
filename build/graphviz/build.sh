@@ -34,7 +34,7 @@ PKG=omniti/image/graphviz
 SUMMARY="$PROG - Graph Visualization Software"
 DESC="Graphviz is open source graph visualization software. Graph visualization is a way of representing structural information as diagrams of abstract graphs and networks."
 
-BUILD_DEPENDS_IPS="omniti/developer/swig omniti/library/gd"
+BUILD_DEPENDS_IPS="developer/lexer/flex omniti/developer/swig omniti/library/gd"
 DEPENDS_IPS="system/library/gcc-4-runtime"
 
 CONFIGURE_OPTS="--enable-perl=yes --enable-tcl=no"
