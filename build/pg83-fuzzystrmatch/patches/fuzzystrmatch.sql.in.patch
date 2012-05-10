@@ -1,0 +1,14 @@
+Index: contrib/fuzzystrmatch/fuzzystrmatch.sql.in
+===================================================================
+RCS file: /projects/cvsroot/pgsql/contrib/fuzzystrmatch/fuzzystrmatch.sql.in,v
+retrieving revision 1.9
+diff -r1.9 fuzzystrmatch.sql.in
+2a3
+> START TRANSACTION;
+4c5
+< SET search_path = public;
+---
+> SET search_path = fuzzystrmatch;
+32a34,35
+> 
+> COMMIT;
