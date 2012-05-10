@@ -1,0 +1,11 @@
+--- postgresql-9.1.0/src/bin/psql/Makefile.orig	Fri Oct  1 10:25:44 2010
++++ postgresql-9.1.0/src/bin/psql/Makefile	Thu Dec  2 13:47:25 2010
+@@ -32,7 +32,7 @@
+ all: psql
+ 
+ psql: $(OBJS) | submake-libpq submake-libpgport
+-	$(CC) $(CFLAGS) $(OBJS) $(libpq_pgport) $(LDFLAGS) $(LDFLAGS_EX) $(LIBS) -o $@$(X)
++	$(CC) $(CFLAGS) $(OBJS) $(libpq_builddir)/libpq.a $(LDFLAGS) $(LDFLAGS_EX) $(LIBS) -o $@$(X)
+ 
+ help.o: sql_help.h
+ 
