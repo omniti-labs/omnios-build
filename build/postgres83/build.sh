@@ -34,6 +34,8 @@ PKG=omniti/database/postgresql-${VER//./}
 SUMMARY="PostgreSQL - an open source database system"
 DESC="$SUMMARY"
 
+DEPENDS_IPS="omniti/database/postgresql/common system/library/gcc-4-runtime"
+
 DOWNLOADDIR=postgres
 PREFIX=/opt/pgsql${VER//./}
 reset_configure_opts

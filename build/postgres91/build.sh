@@ -34,7 +34,7 @@ PKG=omniti/database/postgresql-${VER//./}
 SUMMARY="$PROG - Open Source Database System"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="system/library/gcc-4-runtime"
+DEPENDS_IPS="omniti/database/postgresql/common system/library/gcc-4-runtime"
 
 DOWNLOADDIR=postgres
 BUILDARCH=64
