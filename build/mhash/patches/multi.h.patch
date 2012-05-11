@@ -1,0 +1,12 @@
+--- include/mutils/mutils.h.orig    Thu Mar 26 14:11:45 2009
++++ include/mutils/mutils.h Thu Mar 26 14:12:00 2009
+@@ -23,9 +23,7 @@
+ 
+ #include <mutils/mincludes.h>
+ 
+-#if defined(const)
+ #define __const const
+-#endif 
+ 
+ /*
+  * The vast majority of user code won't care about mutils, so changes to
