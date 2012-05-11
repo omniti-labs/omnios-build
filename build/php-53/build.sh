@@ -31,20 +31,20 @@ PROG=php        # App name
 VER=5.3.13      # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
-PKG=omniti/runtime/$PROG-53            # Package name (e.g. library/foo)
+PKG=omniti/runtime/$PROG-${VER//./}            # Package name (e.g. library/foo)
 SUMMARY="PHP 5.3 64 bit build"      # One-liner, must be filled in
 DESC="PHP is a widely-used general-purpose scripting language that is especially suited for Web development and can be embedded into HTML."         # Longer description, must be filled in
 
 BUILD_DEPENDS_IPS="omniti/server/apache22"
 DEPENDS_IPS="web/curl 
-            system/library/freetype-2 
+            omniti/library/freetype2
             omniti/library/gd  
             omniti/library/libjpeg
             system/library/iconv/unicode
             system/library/iconv/utf-8
             system/library/iconv/utf-8/manual
             system/library/iconv/xsh4/latin
-            image/library/libpng
+            omniti/library/libpng
             omniti/library/libpq5
             omniti/library/libssh2
             library/libxml2
@@ -56,7 +56,7 @@ DEPENDS_IPS="web/curl
             omniti/library/libmcrypt"
 
 
-PREFIX=/opt/${PROG}-53 # Install to its own prefix
+PREFIX=/opt/${PROG}-${VER//./} # Install to its own prefix
 reset_configure_opts # We changed prefix, we reset configure_opts
 
 # Php will be compiled once for each of the following options
