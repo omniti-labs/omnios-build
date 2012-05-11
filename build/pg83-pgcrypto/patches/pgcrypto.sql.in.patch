@@ -1,0 +1,9 @@
+--- contrib/pgcrypto/pgcrypto.sql.in.orig	Thu Dec 20 14:25:41 2007
++++ contrib/pgcrypto/pgcrypto.sql.in	Thu Dec 20 14:25:55 2007
+@@ -1,5 +1,5 @@
+ -- Adjust this setting to control where the objects get created.
+-SET search_path = public;
++SET search_path = pgcrypto;
+ 
+ CREATE OR REPLACE FUNCTION digest(text, text)
+ RETURNS bytea
