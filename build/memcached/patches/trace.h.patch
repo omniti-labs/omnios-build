@@ -1,0 +1,21 @@
+--- trace.h.orig	Fri Sep 30 08:21:45 2011
++++ trace.h	Wed Dec 14 18:51:51 2011
+@@ -1,6 +1,9 @@
+ #ifndef TRACE_H
+ #define TRACE_H
+ 
++#define MEMCACHED_COMMAND_TOUCH(arg0, arg1, arg2, arg3, arg4)
++#define MEMCACHED_COMMAND_TOUCH_ENABLED() (0)
++
+ #ifdef ENABLE_DTRACE
+ #include "memcached_dtrace.h"
+ #else
+@@ -22,8 +25,6 @@
+ #define MEMCACHED_COMMAND_DELETE_ENABLED() (0)
+ #define MEMCACHED_COMMAND_GET(arg0, arg1, arg2, arg3, arg4)
+ #define MEMCACHED_COMMAND_GET_ENABLED() (0)
+-#define MEMCACHED_COMMAND_TOUCH(arg0, arg1, arg2, arg3, arg4)
+-#define MEMCACHED_COMMAND_TOUCH_ENABLED() (0)
+ #define MEMCACHED_COMMAND_INCR(arg0, arg1, arg2, arg3)
+ #define MEMCACHED_COMMAND_INCR_ENABLED() (0)
+ #define MEMCACHED_COMMAND_PREPEND(arg0, arg1, arg2, arg3, arg4)
