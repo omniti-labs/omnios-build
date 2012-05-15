@@ -1,0 +1,20 @@
+diff -urN postgresql-8.4.0.orig/contrib/dblink/dblink.sql.in postgresql-8.4.0/contrib/dblink/dblink.sql.in
+--- postgresql-8.4.0.orig/contrib/dblink/dblink.sql.in	2009-06-09 19:41:02.000000000 +0200
++++ postgresql-8.4.0/contrib/dblink/dblink.sql.in	2009-08-13 14:09:49.000000000 +0200
+@@ -1,7 +1,9 @@
+ /* $PostgreSQL: pgsql/contrib/dblink/dblink.sql.in,v 1.18 2009/06/09 17:41:02 tgl Exp $ */
+ 
+ -- Adjust this setting to control where the objects get created.
+-SET search_path = public;
++BEGIN;
++CREATE SCHEMA dblink;
++SET search_path = dblink, public;
+ 
+ -- dblink_connect now restricts non-superusers to password
+ -- authenticated connections
+@@ -202,3 +204,5 @@
+ RETURNS text
+ AS 'MODULE_PATHNAME', 'dblink_error_message'
+ LANGUAGE C STRICT;
++
++COMMIT;

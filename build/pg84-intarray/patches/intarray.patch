@@ -1,0 +1,20 @@
+diff -urN postgresql-8.4.0.orig/contrib/intarray/_int.sql.in postgresql-8.4.0/contrib/intarray/_int.sql.in
+--- postgresql-8.4.0.orig/contrib/intarray/_int.sql.in	2009-06-11 20:30:03.000000000 +0200
++++ postgresql-8.4.0/contrib/intarray/_int.sql.in	2009-08-13 14:09:49.000000000 +0200
+@@ -1,7 +1,9 @@
+ /* $PostgreSQL: pgsql/contrib/intarray/_int.sql.in,v 1.32 2009/06/11 18:30:03 tgl Exp $ */
+ 
+ -- Adjust this setting to control where the objects get created.
+-SET search_path = public;
++BEGIN;
++CREATE SCHEMA intarray;
++SET search_path = intarray, public;
+ 
+ --
+ -- Create the user-defined type for the 1-D integer arrays (_int4)
+@@ -483,3 +485,5 @@
+ 	FUNCTION	3	ginint4_queryextract (internal, internal, int2, internal, internal),
+ 	FUNCTION	4	ginint4_consistent (internal, int2, internal, int4, internal, internal),
+ 	STORAGE		int4;
++
++COMMIT;

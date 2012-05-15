@@ -1,0 +1,20 @@
+diff -urN postgresql-8.4.0.orig/contrib/pg_freespacemap/pg_freespacemap.sql.in postgresql-8.4.0/contrib/pg_freespacemap/pg_freespacemap.sql.in
+--- postgresql-8.4.0.orig/contrib/pg_freespacemap/pg_freespacemap.sql.in	2009-06-11 00:12:28.000000000 +0200
++++ postgresql-8.4.0/contrib/pg_freespacemap/pg_freespacemap.sql.in	2009-08-13 14:09:49.000000000 +0200
+@@ -1,7 +1,9 @@
+ /* $PostgreSQL: pgsql/contrib/pg_freespacemap/pg_freespacemap.sql.in,v 1.12 2009/06/10 22:12:28 tgl Exp $ */
+ 
+ -- Adjust this setting to control where the objects get created.
+-SET search_path = public;
++BEGIN;
++CREATE SCHEMA freespacemap;
++SET search_path = freespacemap, public;
+ 
+ 
+ -- Register the C function.
+@@ -24,3 +26,5 @@
+ -- Don't want these to be available to public.
+ REVOKE ALL ON FUNCTION pg_freespace(regclass, bigint) FROM PUBLIC;
+ REVOKE ALL ON FUNCTION pg_freespace(regclass) FROM PUBLIC;
++
++COMMIT;

@@ -1,0 +1,11 @@
+--- src/include/port/solaris.h.orig	Thu Dec 20 14:51:18 2007
++++ src/include/port/solaris.h	Thu Dec 20 14:51:56 2007
+@@ -5,7 +5,7 @@
+  * symbols are defined on both GCC and Solaris CC, although GCC
+  * doesn't document them.  The __xxx__ symbols are only on GCC.
+  */
+-#if defined(__i386) && !defined(__i386__)
++#if (defined(__x86_64) || defined(__i386)) && !defined(__i386__)
+ #define __i386__
+ #endif
+ 

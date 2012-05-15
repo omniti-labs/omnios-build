@@ -1,0 +1,20 @@
+diff -urN postgresql-8.4.0.orig/contrib/pg_stat_statements/pg_stat_statements.sql.in postgresql-8.4.0/contrib/pg_stat_statements/pg_stat_statements.sql.in
+--- postgresql-8.4.0.orig/contrib/pg_stat_statements/pg_stat_statements.sql.in	2009-01-04 23:19:59.000000000 +0100
++++ postgresql-8.4.0/contrib/pg_stat_statements/pg_stat_statements.sql.in	2009-08-13 14:09:49.000000000 +0200
+@@ -1,7 +1,9 @@
+ /* $PostgreSQL: pgsql/contrib/pg_stat_statements/pg_stat_statements.sql.in,v 1.1 2009/01/04 22:19:59 tgl Exp $ */
+ 
+ -- Adjust this setting to control where the objects get created.
+-SET search_path = public;
++BEGIN;
++CREATE SCHEMA pgstatstatements;
++SET search_path = pgstatstatements, public;
+ 
+ -- Register functions.
+ CREATE FUNCTION pg_stat_statements_reset()
+@@ -29,3 +31,5 @@
+ 
+ -- Don't want this to be available to non-superusers.
+ REVOKE ALL ON FUNCTION pg_stat_statements_reset() FROM PUBLIC;
++
++COMMIT;

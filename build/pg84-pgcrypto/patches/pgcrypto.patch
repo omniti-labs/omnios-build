@@ -1,0 +1,20 @@
+diff -urN postgresql-8.4.0.orig/contrib/pgcrypto/pgcrypto.sql.in postgresql-8.4.0/contrib/pgcrypto/pgcrypto.sql.in
+--- postgresql-8.4.0.orig/contrib/pgcrypto/pgcrypto.sql.in	2007-11-13 05:24:28.000000000 +0100
++++ postgresql-8.4.0/contrib/pgcrypto/pgcrypto.sql.in	2009-08-13 14:09:49.000000000 +0200
+@@ -1,7 +1,9 @@
+ /* $PostgreSQL: pgsql/contrib/pgcrypto/pgcrypto.sql.in,v 1.15 2007/11/13 04:24:28 momjian Exp $ */
+ 
+ -- Adjust this setting to control where the objects get created.
+-SET search_path = public;
++BEGIN;
++CREATE SCHEMA pgcrypto;
++SET search_path = pgcrypto, public;
+ 
+ CREATE OR REPLACE FUNCTION digest(text, text)
+ RETURNS bytea
+@@ -201,3 +203,5 @@
+ AS 'MODULE_PATHNAME', 'pg_dearmor'
+ LANGUAGE C IMMUTABLE STRICT;
+ 
++
++COMMIT;

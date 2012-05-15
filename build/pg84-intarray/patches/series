@@ -1,0 +1,2 @@
+solaris.h.patch -p0
+intarray.patch
