@@ -37,7 +37,7 @@ DESC="Ruby 1.9 ($VER)"             # Longer description, must be filled in
 
 #OK this is lame, but to build 1.9 you need 1.8
 
-BUILD_DEPENDS_IPS="omniti/runtime/ruby-18 omniti/library/libyaml library/libffi omniti/library/libgdbm"
+BUILD_DEPENDS_IPS="omniti/runtime/ruby-19 omniti/library/libyaml library/libffi omniti/library/libgdbm"
 DEPENDS_IPS="omniti/library/libyaml library/libffi omniti/library/libgdbm"
 BASE_RUBY=/opt/omni/bin/ruby
 # Ruby doesn't have the concept of library paths,
