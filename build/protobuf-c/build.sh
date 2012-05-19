@@ -34,13 +34,23 @@ PKG=omniti/library/protobuf-c
 SUMMARY="Protobuf C library"
 DESC="$SUMMARY ($VER)"
 
+BUILD_DEPENDS_IPS="developer/build/autoconf developer/build/automake-111 \
+    developer/build/libtool"
+
 CONFIGURE_OPTS="$CONFIGURE_OPTS --disable-protoc CXXFLAGS=-I/opt/omni/include"
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 LDFLAGS=-L/opt/omni/lib"
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-L/opt/omni/lib/amd64"
 
+reconfig() {
+  pushd $TMPDIR/$BUILDDIR || logerr "--- pushd $BUILDDIR failed"
+  logcmd autoreconf -i || logerr "--- autoconf failed"
+  popd || logerr "--- popd from $BUILDDIR failed"
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
+reconfig
 prep_build
 build
 make_isa_stub
