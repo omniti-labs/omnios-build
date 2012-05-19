@@ -1,0 +1,2 @@
+<transform dir path="opt/omni/bin.*" -> drop>
+license LICENSE-2.0 license=Apache2
