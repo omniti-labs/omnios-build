@@ -35,7 +35,10 @@ export SHELL
 . ../../lib/functions.sh
 
 case $DEPVER in
-    ""|5.14.2)
+    ""|5.16.0)
+        VER=5.16.0
+        ;;
+    5.14.2)
         VER=5.14.2
         ;;
     5.8.8)

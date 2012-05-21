@@ -39,24 +39,28 @@ MODULE=plperl
 CONTRIBDIR=src/pl
 
 # Valid Perl versions
-PERLVERLIST="5.8.8 5.14.2"
+PERLVERLIST="5.8.8 5.14.2 5.16.0"
+
+DEPENDS_IPS="omniti/runtime/perl"
 
 # We have different Perl versions and there is no default
 case $DEPVER in
     5.8.8)
-        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-588-incorporation omniti/runtime/perl"
-        SUMMARY="$PROG $MODULE - Perl Procedural Language for PostgreSQL $VER and Perl $DEPVER"
-        DESC="$SUMMARY"
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-588-incorporation"
         ;;
     5.14.2)
-        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-5142-incorporation omniti/runtime/perl"
-        SUMMARY="$PROG $MODULE - Perl Procedural Language for PostgreSQL $VER and Perl $DEPVER"
-        DESC="$SUMMARY"
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-5142-incorporation"
+        ;;
+    5.16.0)
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-5160-incorporation"
         ;;
     "")
         logerr "You must specify a Perl version with -d DEPVER. Valid versions: $PERLVERLIST"
         ;;
 esac
+
+SUMMARY="$PROG $MODULE - Perl Procedural Language for PostgreSQL $VER and Perl $DEPVER"
+DESC="$SUMMARY"
 
 BUILDARCH=64
 CFLAGS="-O3"
