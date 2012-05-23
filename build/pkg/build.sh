@@ -25,11 +25,6 @@
 # Use is subject to license terms.
 #
 # Load support functions
-if [[ -n "$SUDO_USER" ]]; then
-    echo "Unlike other scripts, this one can't be run under sudo."
-    exit
-fi
-SKIP_ROOT_CHECK=1
 . ../../lib/functions.sh
 
 # This are used so people can see what packages get built.. pkg actually publishes
@@ -42,7 +37,7 @@ PROG=pkg
 VER=omni
 BUILDNUM=151002
 if [[ -z "$PKGPUBLISHER" ]]; then
-    logerr "No PKGPUBLISHER specified in config.sh"
+    logerr "No PKGPUBLISHER specified. Check lib/site.sh?"
     exit # Force it, we're fucked here.
 fi
 
@@ -51,7 +46,7 @@ GITHASH=
 HEADERS="libbrand.h libuutil.h libzonecfg.h"
 BRAND_CFLAGS="-I./gate-include"
 
-BUILD_DEPENDS_IPS="developer/versioning/git developer/versioning/mercurial"
+BUILD_DEPENDS_IPS="developer/versioning/git developer/versioning/mercurial system/zones/internal"
 DEPENDS_IPS="runtime/python-26@2.6.7"
 
 clone_gate(){
@@ -85,8 +80,9 @@ clone_source(){
         logcmd $GIT clone -b omni anon@src.omniti.com:~omnios/core/pkg
     fi
     pushd pkg > /dev/null || logerr "no source"
+    logcmd $GIT pull || logerr "failed to pull"
     if [ -n "${GITHASH}" ]; then
-        logcmd $GIT checkout $GITHASH || logerr "failed update"
+        logcmd $GIT checkout $GITHASH || logerr "failed checkout of $GITHASH"
     fi
     popd > /dev/null
     popd > /dev/null 
@@ -98,10 +94,12 @@ build(){
     touch `find gui/help -depth -name \*.in | sed -e 's/\.in$//'`
     pushd $TMPDIR/$BUILDDIR/pkg/src/brand > /dev/null
     logmsg "--- brand subbuild"
+    logcmd make clean
     ISALIST=i386 CC=gcc CFLAGS="$BRAND_CFLAGS" logcmd make \
         CODE_WS=$TMPDIR/$BUILDDIR/pkg || logerr "brand make failed"
     popd
     logmsg "--- toplevel build"
+    logcmd make clean
     ISALIST=i386 CC=gcc logcmd make \
         CODE_WS=$TMPDIR/$BUILDDIR/pkg || logerr "toplevel make failed"
     logmsg "--- proto install"
@@ -112,6 +110,7 @@ build(){
 package(){
     pushd $TMPDIR/$BUILDDIR/pkg/src/pkg > /dev/null
     logmsg "--- packaging"
+    logcmd make clean
     ISALIST=i386 CC=gcc logcmd make \
         CODE_WS=$TMPDIR/$BUILDDIR/pkg \
         BUILDNUM=$BUILDNUM || logerr "pkg make failed"
