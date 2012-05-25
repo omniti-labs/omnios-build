@@ -27,29 +27,36 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=pciutils
-VER=3.1.9
-VERHUMAN=$VER
-PKG=system/pciutils
-SUMMARY="Programs (lspci, setpci) for inspecting and manipulating configuration of PCI devices"
-DESC="$SUMMARY"
-
-DEPENDS_IPS="system/pciutils/pci.ids@2.2"
+PROG=pci.ids
+FORMAT=2.2
+# The pci.ids file is stored locally; check http://pci-ids.ucw.cz/v${FORMAT}/ for updates
+SNAPDATE=`gawk '$2 == "Version:" { ver = $3; gsub(/\./, "", ver); print ver }' $SRCDIR/$PROG`
+VER=${FORMAT}.${SNAPDATE}
+VERHUMAN="v$FORMAT snapshot from $SNAPDATE"
+PKG=system/pciutils/pci.ids
+SUMMARY="Repository of all known IDs used in PCI devices"
+DESC="Repository of all known IDs used in PCI devices: IDs of vendors, devices, subsystems and device classes. It is used in various programs (like pciutils) to display full human-readable names instead of cryptic numeric codes."
 
 BUILDARCH=32
-NO_PARALLEL_MAKE=1
-CFLAGS="-DBYTE_ORDER=1234"
 
-configure32() {
-    export CC CFLAGS CFLAGS32 PREFIX
+# Nothing to configure or build, just package
+make_install() {
+    logmsg "--- make install"
+    logcmd mkdir -p $DESTDIR$PREFIX/share || \
+        logerr "------ Failed to create destination directory."
+    logcmd cp -p ${PROG}.gz $DESTDIR$PREFIX/share/ ||
+        logerr "------ Failed to copy file into place."
+}
+build32() {
+    pushd $TMPDIR > /dev/null
+    gzip -c $SRCDIR/$PROG > ${PROG}.gz
+    make_install
+    popd > /dev/null
 }
 
 init
-download_source $PROG $PROG $VER
-patch_source
 prep_build
 build
-make_isa_stub
 make_package
 clean_up
 
