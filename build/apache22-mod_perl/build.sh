@@ -35,15 +35,16 @@ SUMMARY="$PROG - embedded Perl $DEPVER interpreter for Apache"
 DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="omniti/server/apache22"
+DEPENDS_IPS="omniti/runtime/perl"
 
 VERLIST="5.8.8 5.14.2"
 
 case $DEPVER in
     5.8.8)
-        DEPENDS_IPS="omniti/runtime/perl =omniti/runtime/perl@5.8.8"
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-588-incorporation"
         ;;
     5.14.2)
-        DEPENDS_IPS="omniti/runtime/perl =omniti/runtime/perl@5.14.2"
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-5142-incorporation"
         ;;
     "")
         logerr "You must specify a version with -d DEPVER. Valid versions: $VERLIST"
