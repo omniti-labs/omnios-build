@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libmemcached
-VER=1.0.7
+VER=1.0.8
 VERHUMAN=$VER
 PKG=omniti/library/libmemcached
 SUMMARY="$PROG - an open source C/C++ client library and tools for the memcached server"
@@ -37,7 +37,14 @@ DESC="It has been designed to be light on memory usage, thread safe, and provide
 BUILD_DEPENDS_IPS="omniti/server/memcached@1.4"
 
 CONFIGURE_OPTS="--with-memcached=/opt/omni/bin/memcached
-    --enable-dtrace"
+                --enable-dtrace"
+
+save_function configure32 configure32_orig
+configure32() {
+    export ISAINFO=no
+    configure32_orig
+    unset ISAINFO
+}
 
 init
 download_source $PROG $PROG $VER
