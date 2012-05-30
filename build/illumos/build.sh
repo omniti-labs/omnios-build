@@ -28,7 +28,7 @@
 SHELL=/usr/bin/bash
 export SHELL
 
-RELEASE_DATE=2012.03.06
+RELEASE_DATE=nightly # This is overridden by the checkout
 
 # Load support functions
 . ../../lib/functions.sh
@@ -91,6 +91,7 @@ clone_source(){
     logcmd  $GIT clone anon@src.omniti.com:~omnios/core/illumos-omnios 
     pushd illumos-omnios 
     ILLUMOS_VERSION="VERSION=\'omnios\-`$GIT log --pretty=format:'%h' -n 1`'" 
+    RELEASE_DATE=`$GIT show --format=format:%ai | awk '{print $1; exit;}' | tr - .` 
     echo $ILLUMOS_VERSION
     popd > /dev/null 
     logmsg "Leaving $TMPDIR/$BUILDDIR"
