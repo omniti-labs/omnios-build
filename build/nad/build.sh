@@ -54,6 +54,7 @@ configure64() {
 
 init
 download_git git://github.com/omniti-labs/nad.git $PROG-$VER
+VERHUMAN="(checkout as of $REVDATE)"
 patch_source
 prep_build
 build
