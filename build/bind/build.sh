@@ -28,14 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=bind
-VER=9.9.1
+VER=9.9.1-P1
 VERHUMAN=$VER
 PKG=omniti/server/dns/bind
 SUMMARY="BIND DNS server and tools"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="library/libxml2 library/security/openssl library/zlib
-             system/library system/library/gcc-4-runtime system/library/math"
+DEPENDS_IPS="library/libxml2 library/zlib system/library system/library/gcc-4-runtime system/library/math"
 
 BUILDARCH=64
 
@@ -45,15 +44,7 @@ CONFIGURE_OPTS="
     --libdir=$PREFIX/lib/dns
     --sysconfdir=/etc
     --localstatedir=/var
-    --with-libtool
-    --with-openssl
-    --enable-threads=yes
-    --enable-devpoll=yes
-    --disable-openssl-version-check
-    --enable-fixed-rrset
-    --disable-getifaddrs
-    --with-pkcs11
-    --enable-shared
+    --without-openssl
     --disable-static
 "
 
@@ -63,6 +54,7 @@ patch_source
 prep_build
 build
 make_isa_stub
+VER=${VER//-P/.}
 make_package
 clean_up
 
