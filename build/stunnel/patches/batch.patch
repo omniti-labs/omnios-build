@@ -1,0 +1,22 @@
+--- stunnel-4.53/tools/Makefile.in.orig	Tue Jun  5 15:56:41 2012
++++ stunnel-4.53/tools/Makefile.in	Tue Jun  5 15:56:57 2012
+@@ -448,7 +448,7 @@
+ 		else \
+ 			RND=""; \
+ 		fi; \
+-		$(OPENSSL) req -new -x509 -days 365 $$RND \
++		$(OPENSSL) req -batch -new -x509 -days 365 $$RND \
+ 			-config $(srcdir)/stunnel.cnf \
+ 			-out stunnel.pem -keyout stunnel.pem; \
+ 		$(OPENSSL) gendh $$RND 1024 >> stunnel.pem; \
+--- stunnel-4.53/tools/Makefile.am.orig	Tue Jun  5 15:56:35 2012
++++ stunnel-4.53/tools/Makefile.am	Tue Jun  5 15:56:49 2012
+@@ -20,7 +20,7 @@
+ 		else \
+ 			RND=""; \
+ 		fi; \
+-		$(OPENSSL) req -new -x509 -days 365 $$RND \
++		$(OPENSSL) req -batch -new -x509 -days 365 $$RND \
+ 			-config $(srcdir)/stunnel.cnf \
+ 			-out stunnel.pem -keyout stunnel.pem; \
+ 		$(OPENSSL) gendh $$RND 1024 >> stunnel.pem; \
