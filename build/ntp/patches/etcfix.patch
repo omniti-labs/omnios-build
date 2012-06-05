@@ -9,3 +9,14 @@
  	int	i, sign, lat_flg, long_flg, ht_flg, mode, mask;
  	double	f1, f2, f3;
  
+--- ./include/ntp_config.h.orig	Tue Jun  5 19:16:14 2012
++++ ./include/ntp_config.h	Tue Jun  5 19:16:22 2012
+@@ -10,7 +10,7 @@
+  */
+ #ifndef CONFIG_FILE
+ # ifndef SYS_WINNT
+-#  define	CONFIG_FILE "/etc/ntp.conf"
++#  define	CONFIG_FILE "/etc/inet/ntp.conf"
+ # else /* SYS_WINNT */
+ #  define	CONFIG_FILE	"%windir%\\system32\\drivers\\etc\\ntp.conf"
+ #  define	ALT_CONFIG_FILE "%windir%\\ntp.conf"
