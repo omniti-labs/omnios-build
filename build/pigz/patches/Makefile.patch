@@ -1,0 +1,28 @@
+--- pigz-2.2.4/Makefile.orig	Sun Feb 12 05:18:18 2012
++++ pigz-2.2.4/Makefile	Thu Jun  7 17:24:23 2012
+@@ -1,8 +1,7 @@
+-CC=cc
+ CFLAGS=-O3 -Wall -Wextra
+ 
+ pigz: pigz.o yarn.o
+-	$(CC) -o pigz pigz.o yarn.o -lpthread -lz
++	$(CC) $(LDFLAGS) -o pigz pigz.o yarn.o -lpthread -lz
+ 	ln -f pigz unpigz
+ 
+ pigz.o: pigz.c yarn.h
+@@ -54,5 +53,15 @@
+ pigz.pdf: pigz.1
+ 	groff -mandoc -f H -T ps pigz.1 | ps2pdf - pigz.pdf
+ 
++install: pigz 
++	if ( test ! -d $(DESTDIR)/$(PREFIX)/bin/$(BINISA) ) ; then mkdir -p $(DESTDIR)/$(PREFIX)/bin/$(BINISA) ; fi
++	if ( test ! -d $(DESTDIR)/$(PREFIX)/man ) ; then mkdir -p $(DESTDIR)/$(PREFIX)/man ; fi
++	if ( test ! -d $(DESTDIR)/$(PREFIX)/man/man1 ) ; then mkdir -p $(DESTDIR)/$(PREFIX)/man/man1 ; fi
++	cp -f pigz $(DESTDIR)/$(PREFIX)/bin/$(BINISA)/pigz
++	chmod a+x $(DESTDIR)/$(PREFIX)/bin/$(BINISA)/pigz
++	ln -s -f $(DESTDIR)/$(PREFIX)/bin/$(BINISA)/pigz $(DESTDIR)/$(PREFIX)/bin/$(BINISA)/unpigz
++	cp -f pigz.1 $(DESTDIR)/$(PREFIX)/man/man1
++	chmod a+r $(DESTDIR)/$(PREFIX)/man/man1/pigz.1
++
+ clean:
+ 	@rm -f *.o pigz unpigz pigzn pigzt pigz.c.gz pigz.c.zz pigz.c.zip

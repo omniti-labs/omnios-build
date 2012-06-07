@@ -1,0 +1,36 @@
+--- pbzip2-1.1.6/Makefile.orig	Sun Oct 30 19:22:47 2011
++++ pbzip2-1.1.6/Makefile	Thu Jun  7 17:10:58 2012
+@@ -37,7 +37,7 @@
+ CFLAGS += -pthread
+ 
+ # External libraries
+-LDFLAGS = -lbz2
++LDFLAGS += -lbz2
+ LDFLAGS += -lpthread
+ 
+ # Where you want pbzip2 installed when you do 'make install'
+@@ -55,15 +55,15 @@
+ 
+ # Install the binary pbzip2 program and man page
+ install: pbzip2
+-	if ( test ! -d $(PREFIX)/bin ) ; then mkdir -p $(PREFIX)/bin ; fi
+-	if ( test ! -d $(PREFIX)/man ) ; then mkdir -p $(PREFIX)/man ; fi
+-	if ( test ! -d $(PREFIX)/man/man1 ) ; then mkdir -p $(PREFIX)/man/man1 ; fi
+-	cp -f pbzip2 $(PREFIX)/bin/pbzip2
+-	chmod a+x $(PREFIX)/bin/pbzip2
+-	ln -s -f $(PREFIX)/bin/pbzip2 $(PREFIX)/bin/pbunzip2
+-	ln -s -f $(PREFIX)/bin/pbzip2 $(PREFIX)/bin/pbzcat
+-	cp -f pbzip2.1 $(PREFIX)/man/man1
+-	chmod a+r $(PREFIX)/man/man1/pbzip2.1
++	if ( test ! -d $(DESTDIR)/$(PREFIX)/bin ) ; then mkdir -p $(DESTDIR)/$(PREFIX)/bin ; fi
++	if ( test ! -d $(DESTDIR)/$(PREFIX)/man ) ; then mkdir -p $(DESTDIR)/$(PREFIX)/man ; fi
++	if ( test ! -d $(DESTDIR)/$(PREFIX)/man/man1 ) ; then mkdir -p $(DESTDIR)/$(PREFIX)/man/man1 ; fi
++	cp -f pbzip2 $(DESTDIR)/$(PREFIX)/bin/pbzip2
++	chmod a+x $(DESTDIR)/$(PREFIX)/bin/pbzip2
++	ln -s -f $(DESTDIR)/$(PREFIX)/bin/pbzip2 $(DESTDIR)/$(PREFIX)/bin/pbunzip2
++	ln -s -f $(DESTDIR)/$(PREFIX)/bin/pbzip2 $(DESTDIR)/$(PREFIX)/bin/pbzcat
++	cp -f pbzip2.1 $(DESTDIR)/$(PREFIX)/man/man1
++	chmod a+r $(DESTDIR)/$(PREFIX)/man/man1/pbzip2.1
+ 
+ clean:
+ 	rm -f *.o pbzip2
