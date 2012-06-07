@@ -41,11 +41,11 @@ CFLAGS="-fast -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -KPIC"
 
 # There is no configure here, so just export vars
 configure64() {
-    export CFLAGS="$CFLAGS $CFLAGS64" \
+    export PREFIX CFLAGS="$CFLAGS $CFLAGS64" \
     CXXFLAGS="$CXXFLAGS $CXXFLAGS64" \
     CPPFLAGS="$CPPFLAGS $CPPFLAGS64" \
     LDFLAGS="$LDFLAGS $LDFLAGS64" \
-    CC=$CC CXX=$CXX PREFIX
+    CC=$CC CXX=$CXX
 }
 
 init

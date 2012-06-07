@@ -1,6 +1,6 @@
 --- pbzip2-1.1.6/Makefile.orig	Sun Oct 30 19:22:47 2011
-+++ pbzip2-1.1.6/Makefile	Thu Jun  7 17:10:58 2012
-@@ -37,7 +37,7 @@
++++ pbzip2-1.1.6/Makefile	Thu Jun  7 19:25:33 2012
+@@ -37,12 +37,9 @@
  CFLAGS += -pthread
  
  # External libraries
@@ -8,8 +8,13 @@
 +LDFLAGS += -lbz2
  LDFLAGS += -lpthread
  
- # Where you want pbzip2 installed when you do 'make install'
-@@ -55,15 +55,15 @@
+-# Where you want pbzip2 installed when you do 'make install'
+-PREFIX = /usr
+-
+ all: pbzip2
+ 
+ # Standard pbzip2 compile
+@@ -55,15 +52,15 @@
  
  # Install the binary pbzip2 program and man page
  install: pbzip2
