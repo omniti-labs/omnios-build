@@ -38,7 +38,7 @@ BUILD_DEPENDS_IPS="omniti/server/apache22/mod_perl"
 DEPENDS_IPS="omniti/server/apache22"
 
 # Valid OMNIperl versions
-VERLIST="5.8.8 5.14.2"
+VERLIST="5.8.8 5.14.2 5.16.0"
 
 case $DEPVER in
     5.8.8)
@@ -46,6 +46,9 @@ case $DEPVER in
         ;;
     5.14.2)
         DEPENDS_IPS="$DEPENDS_IPS omniti/runtime/perl omniti/incorporation/perl-5142-incorporation"
+        ;;
+    5.16.0)
+        DEPENDS_IPS="$DEPENDS_IPS omniti/runtime/perl omniti/incorporation/perl-5160-incorporation"
         ;;
     "")
         logerr "You must specify a version with -d DEPVER. Valid versions: $VERLIST"
