@@ -34,7 +34,8 @@ SUMMARY="Parallel LZMA compressor using liblzma"
 DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="compress/xz developer/versioning/git"
-DEPENDS_IPS="compress/xz system/library/gcc-4-runtime"
+# We require libgomp which only comes with the compiler package
+DEPENDS_IPS="compress/xz developer/gcc46 system/library/gcc-4-runtime"
 
 GIT=/usr/bin/git
 REPO_PXZ=git://github.com/jnovy/pxz.git
@@ -76,8 +77,8 @@ configure64() {
     export BINDIR=$PREFIX/bin/$ISAPART64
     export MANDIR=$PREFIX/share/man
     export CPPFLAGS="-I/usr/include/ast"
-    export CFLAGS="$CFLAGS $CFLAGS64"
-    export LDFLAGS="$LDFLAGS $LDFLAGS64 /usr/lib/$ISAPART64/libast.so.1"
+    export CFLAGS="$CFLAGS $CFLAGS64 -nodefaultlibs -nostdlib"
+    export LDFLAGS="$LDFLAGS $LDFLAGS64 /opt/gcc-4.6.3/lib/$ISAPART64/libgomp.a /usr/lib/$ISAPART64/libast.so.1 -lc -lsocket -lm -lgcc_s -lnsl -lmp -lmd"
     export CC=$CC
 }
 
