@@ -1,0 +1,56 @@
+<?xml version='1.0'?>
+<!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
+<service_bundle type='manifest' name='export'>
+  <service name='network/jabber' type='service' version='0'>
+    <instance name='openfire' enabled='true'>
+      <dependency name='fs-local' grouping='require_all' restart_on='none' type='service'>
+        <service_fmri value='svc:/system/filesystem/local'/>
+      </dependency>
+      <dependency name='network-service' grouping='require_all' restart_on='none' type='service'>
+        <service_fmri value='svc:/network/service'/>
+      </dependency>
+      <dependency name='name-services' grouping='require_all' restart_on='none' type='service'>
+        <service_fmri value='svc:/milestone/name-services'/>
+      </dependency>
+      <dependency name='identity' grouping='optional_all' restart_on='none' type='service'>
+        <service_fmri value='svc:/system/identity:domain'/>
+      </dependency>
+      <dependency name='system-log' grouping='optional_all' restart_on='none' type='service'>
+        <service_fmri value='svc:/system/system-log'/>
+      </dependency>
+      <dependency name='autofs' grouping='optional_all' restart_on='none' type='service'>
+        <service_fmri value='svc:/system/filesystem/autofs'/>
+      </dependency>
+      <dependency name='database' grouping='require_all' restart_on='none' type='service'>
+        <service_fmri value='svc:/database/postgres'/>
+      </dependency>
+      <method_context project=':default' resource_pool=':default' working_directory='/opt/openfire'>
+        <method_credential group='jabber' limit_privileges=':default' privileges=':default' supp_groups=':default' user='jabber'/>
+        <method_environment>
+          <envvar name='HOME' value='/home/jabber'/>
+        </method_environment>
+      </method_context>
+      <exec_method name='start' type='method' exec='/opt/openfire/bin/openfire start' timeout_seconds='120'>
+        <method_context/>
+      </exec_method>
+      <exec_method name='stop' type='method' exec='/opt/openfire/bin/openfire stop' timeout_seconds='900'>
+        <method_context/>
+      </exec_method>
+      <property_group name='startd' type='framework'>
+        <propval name='ignore_error' type='astring' value='core,signal'/>
+      </property_group>
+      <property_group name='general' type='framework'>
+        <propval name='action_authorization' type='astring' value='solaris.smf.manage.openfire'/>
+      </property_group>
+      <template>
+        <common_name>
+          <loctext xml:lang='C'>Openfire XMPP Server</loctext>
+        </common_name>
+        <documentation>
+          <manpage title='openfire' section='1M' manpath='/opt/openfire/man'/>
+        </documentation>
+      </template>
+    </instance>
+    <stability value='Unstable'/>
+  </service>
+</service_bundle>

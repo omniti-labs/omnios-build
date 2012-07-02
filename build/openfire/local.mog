@@ -1,0 +1,15 @@
+group gid=5222 groupname=jabber
+user ftpuser=false gcos-field="Jabber UID" group=jabber login-shell=/usr/bin/pfksh password=NP uid=5222 username=jabber home-dir=/home/jabber
+license opt/openfire/LICENSE.html license=Apache2
+
+<transform dir path=opt/openfire -> set owner jabber>
+<transform dir path=opt/openfire -> set group jabber>
+
+<transform file path=opt/openfire/conf/.* -> set owner jabber>
+<transform file path=opt/openfire/conf/.* -> set group jabber>
+<transform file path=opt/openfire/plugins/.* -> set owner jabber>
+<transform file path=opt/openfire/plugins/.* -> set group jabber>
+<transform file path=opt/openfire/logs/.* -> set owner jabber>
+<transform file path=opt/openfire/logs/.* -> set group jabber>
+<transform file path=opt/openfire/lib/.* -> set owner jabber>
+<transform file path=opt/openfire/lib/.* -> set group jabber>
