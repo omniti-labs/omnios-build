@@ -28,13 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=node
-VER=0.6.17
+VER=0.8.1
 GITREPO=https://github.com/joyent/node.git
-GITHASH=4ced23deaf36493f4303a18f6fdce768c58becc0
+GITHASH=2134aa3d5c622fc3c3b02ccb713fcde0e0df479a
 VERHUMAN=$VER
 PKG=omniti/runtime/nodejs
-SUMMARY="node.js"
-DESC="$SUMMARY ($VER)"
+SUMMARY="evented I/O for v8 javascript"
+DESC="Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices."
 
 BUILD_DEPENDS_IPS="developer/versioning/git runtime/python-26"
 DEPENDS_IPS="library/security/openssl library/zlib runtime/python-26
@@ -43,8 +43,10 @@ DEPENDS_IPS="library/security/openssl library/zlib runtime/python-26
 GIT=git
 MAKE=gmake
 BUILDARCH=64
+CC=gcc
+CXX=g++
 CFLAGS="-m64"
-export CFLAGS
+export CC CXX CFLAGS
 CONFIGURE_OPTS="--shared-zlib --prefix=/opt/omni"
 CONFIGURE_OPTS_64="--dest-cpu=x64"
 
