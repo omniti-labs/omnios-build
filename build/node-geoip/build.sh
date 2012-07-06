@@ -36,7 +36,7 @@ DESC="$SUMMARY"
 REPOS=http://github.com/postwait/node-geoip
 GIT=/usr/bin/git
 
-BUILDARCH=32
+BUILDARCH=64
 
 PATH=/opt/omni/bin:$PATH
 export PATH
@@ -63,13 +63,13 @@ download_git() {
 }
 
 # There is no configuration for this code, so just pretend we did it
-configure32() {
+configure64() {
     true
 }
 
 make_prog() {
     logmsg "--- make node-geoip"
-    CXX="g++ -L/opt/omni/lib -R/opt/omni/lib" \
+    CXX="g++ -m64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64" \
     CXXFLAGS="-DICONV_SRC_CONST=const -I/opt/omni/include" \
     logcmd /opt/omni/bin/node-waf configure build || \
         logerr "------ make failed"
