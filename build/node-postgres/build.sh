@@ -36,13 +36,13 @@ DESC="Non-blocking PostgreSQL client for node.js. Pure JavaScript and native lib
 REPOS=http://github.com/brianc/node-postgres
 GIT=/usr/bin/git
 
-BUILDARCH=32
+BUILDARCH=64
 
 PATH=/opt/omni/bin:$PATH
 export PATH
 
-BUILD_DEPENDS_IPS="developer/versioning/git omniti/runtime/nodejs"
-DEPENDS_IPS="omniti/runtime/nodejs"
+BUILD_DEPENDS_IPS="developer/versioning/git"
+DEPENDS_IPS="omniti/runtime/nodejs omniti/runtime/nodejs/node-pool"
 
 download_git() {
     pushd $TMPDIR > /dev/null
@@ -59,7 +59,7 @@ download_git() {
 }
 
 # There is no configuration for this code, so just pretend we did it
-configure32() {
+configure64() {
     true
 }
 
