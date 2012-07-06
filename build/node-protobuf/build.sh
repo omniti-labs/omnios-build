@@ -37,7 +37,7 @@ REPOS=https://protobuf-for-node.googlecode.com/hg/
 REV=5545aecd5e74
 HG=/usr/bin/hg
 
-BUILDARCH=32
+BUILDARCH=64
 
 PATH=/opt/omni/bin:$PATH
 export PATH
@@ -67,28 +67,28 @@ download_hg() {
     popd > /dev/null
 }
 
-# There is no configuration for this code, so just pretend we did it
-configure32() {
-    true
+configure64() {
+    logmsg "--- configure (64-bit)"
+    PROTOBUF=/opt/omni LIBDIR=/opt/omni/lib/node \
+    NODE_PATH=/opt/omni/lib/node \
+    CXX="g++ -m64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/node" \
+    CXXFLAGS="-DICONV_SRC_CONST=const -I/opt/omni/include -I/opt/omni/include/node/uv-private -fpermissive" \
+    logcmd /opt/omni/bin/node-waf configure || \
+        logerr "--- waf configure failed"
 }
 
 make_prog() {
-    logmsg "--- make node-protobuf"
-    PROTOBUF=/opt/omni LIBDIR=/opt/omni/lib/node \
-    NODE_PATH=/opt/omni/lib/node \
-    CXX="g++ -L/opt/omni/lib -R/opt/omni/lib -R/opt/omni/lib/node" \
-    CXXFLAGS="-DICONV_SRC_CONST=const -I/opt/omni/include -I/opt/omni/include/node/uv-private -fpermissive" \
-    logcmd /opt/omni/bin/node-waf configure || \
-        logerr "------ waf configure failed"
+    logmsg "--- make"
     logcmd /opt/omni/bin/node-waf build || \
-        logerr "------ waf build failed"
+        logerr "--- waf build failed"
 }
 
 make_install() {
     logmsg "--- make install"
     logcmd install -d ${DESTDIR}${PREFIX}/lib/node/ || \
          logerr "--- Failed to make install directory."
-    DESTDIR=${DESTDIR} logcmd /opt/omni/bin/node-waf install
+    DESTDIR=${DESTDIR} logcmd /opt/omni/bin/node-waf install || \
+        logerr "--- waf install failed"
 }
 
 init
