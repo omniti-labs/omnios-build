@@ -69,10 +69,8 @@ make_prog() {
 
 make_install() {
     logmsg "--- make install"
-    logcmd mkdir -p $DESTDIR/opt/omni/lib/node
-    logcmd cp -R $TMPDIR/$BUILDDIR $DESTDIR/opt/omni/lib/node/
-    logcmd mv $DESTDIR/opt/omni/lib/node/$PROG-$VER/lib $DESTDIR/opt/omni/lib/node/generic-pool
-    logcmd rm -rf $DESTDIR/opt/omni/lib/node/$PROG-$VER
+    logcmd mkdir -p $DESTDIR$PREFIX/lib/node/generic-pool
+    logcmd cp -p $TMPDIR/$BUILDDIR/lib/generic-pool.js $DESTDIR$PREFIX/lib/node/generic-pool/index.js
 }
 
 init
