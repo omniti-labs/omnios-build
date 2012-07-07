@@ -58,32 +58,34 @@ download_git() {
     REVDATE=`echo $REV | gawk '{ print strftime("%c %Z",$1) }'`
     VER=0.1.$REV
     VERHUMAN="checkout from $REVDATE"
+    logmsg "Installing local node-gyp for build"
+    logcmd /opt/omni/bin/npm install node-gyp || \
+        logerr "node-gyp install failed"
     popd > /dev/null
     popd > /dev/null
 }
 
 # There is no configuration for this code, so just pretend we did it
 configure64() {
-    true
+    logmsg "--- node-gyp configure"
+    logcmd ./node_modules/node-gyp/bin/node-gyp.js configure || \
+        logerr "node-gyp configure failed"
 }
 
 make_prog() {
-    logmsg "--- make node-geoip"
-    CXX="g++ -m64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64" \
-    CXXFLAGS="-DICONV_SRC_CONST=const -I/opt/omni/include" \
-    logcmd /opt/omni/bin/node-waf configure build || \
-        logerr "------ make failed"
+    logmsg "--- node-gyp build"
+    MAKE=gmake \
+    logcmd ./node_modules/node-gyp/bin/node-gyp.js build || \
+        logerr "node-gyp build failed"
 }
 make_install() {
+    logmsg "--- removing node-gyp"
+    logcmd rm -rf ./node_modules
     logmsg "--- make install"
     logcmd install -d ${DESTDIR}${PREFIX}/lib/node/ || \
          logerr "--- Failed to make install directory."
-    for d in lib/iptrie.node ; do
-         if test -e $d ; then 
-             logcmd cp $d ${DESTDIR}$PREFIX/lib/node/ || \
-             logerr "--- Failed to install $d."
-         fi
-    done
+    logcmd cp -R . ${DESTDIR}${PREFIX}/lib/node/iptrie
+    logcmd rm -rf ${DESTDIR}${PREFIX}/lib/node/iptrie/.git
 }
 
 init
