@@ -33,17 +33,16 @@ PKG=omniti/runtime/nodejs/node-protobuf
 SUMMARY="Protocol Buffers for Node.JS"
 DESC="$SUMMARY"
 
-REPOS=https://protobuf-for-node.googlecode.com/hg/ 
-REV=5545aecd5e74
-HG=/usr/bin/hg
+REPOS=https://github.com/stoke/protobuf.git
+REV=
+GIT=/usr/bin/git
 
 BUILDARCH=64
 
 PATH=/opt/omni/bin:$PATH
 export PATH
 
-BUILD_DEPENDS_IPS="developer/versioning/mercurial
-                   omniti/library/protobuf
+BUILD_DEPENDS_IPS="omniti/library/protobuf
                    omniti/runtime/nodejs
                    system/library/g++-4-runtime
                    system/library/gcc-4-runtime
@@ -54,16 +53,24 @@ DEPENDS_IPS="omniti/library/protobuf
              system/library/gcc-4-runtime
              "
 
-download_hg() {
+download_git() {
     pushd $TMPDIR > /dev/null
     logmsg "Checking for source directory"
     if [ -d $BUILDDIR ]; then
         logmsg "--- removing previous source checkout"
         logcmd rm -rf $BUILDDIR
     fi
-    logmsg "Checking code out from hg repo"
-    logcmd $HG clone $REPOS $BUILDDIR
-    (cd $BUILDDIR && logcmd $HG checkout 5545aecd5e74)
+    logmsg "Checking code out from git repo"
+    logcmd $GIT clone $REPOS $BUILDDIR
+    pushd $BUILDDIR > /dev/null
+    if [ -n "$REV" ]; then
+        logcmd $GIT checkout $REV
+    fi
+    REV=`$GIT log -1  --format=format:%at`
+    REVDATE=`echo $REV | gawk '{ print strftime("%c %Z",$1) }'`
+    VER=0.1.$REV
+    VERHUMAN="checkout from $REVDATE"
+    popd > /dev/null
     popd > /dev/null
 }
 
@@ -89,10 +96,11 @@ make_install() {
          logerr "--- Failed to make install directory."
     DESTDIR=${DESTDIR} logcmd /opt/omni/bin/node-waf install || \
         logerr "--- waf install failed"
+    chmod 555 ${DESTDIR}${PREFIX}/lib/node/protobuf_for_node.node
 }
 
 init
-download_hg
+download_git
 patch_source
 prep_build
 build

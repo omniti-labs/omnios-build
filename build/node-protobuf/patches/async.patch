@@ -1,0 +1,21 @@
+diff --git a/protobuf_for_node.cc b/protobuf_for_node.cc
+index f6db286..af48f1e 100644
+--- a/protobuf_for_node.cc
++++ b/protobuf_for_node.cc
+@@ -546,7 +546,6 @@ namespace protobuf_for_node {
+     class AsyncInvocation {
+     public:
+       static void Init() {
+-        uv_async_init(uv_default_loop(), &ev_done, &InvokeAsyncCallbacks);
+       }
+ 
+       // main thread:
+@@ -616,6 +615,8 @@ namespace protobuf_for_node {
+           InvokeCallback(self);
+         } else {
+           // first delayed response?
++          if(!head)
++            uv_async_init(uv_default_loop(), &ev_done, &InvokeAsyncCallbacks);
+ 
+           // enqueue
+           self->next_ = head;
