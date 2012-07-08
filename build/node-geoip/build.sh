@@ -77,14 +77,10 @@ make_prog() {
 
 make_install() {
     logmsg "--- make install"
-    logcmd install -d ${DESTDIR}${PREFIX}/lib/node/ || \
+    logcmd install -d ${DESTDIR}${PREFIX}/lib/node/geoip || \
          logerr "--- Failed to make install directory."
-    for d in lib/geoip.js lib/ceoip.node ; do
-         if test -e $d ; then 
-             logcmd cp $d ${DESTDIR}$PREFIX/lib/node/ || \
-             logerr "--- Failed to install $d."
-         fi
-    done
+    cp -r . ${DESTDIR}${PREFIX}/lib/node/geoip/
+    rm -rf ${DESTDIR}${PREFIX}/lib/node/geoip/.git
 }
 
 init
