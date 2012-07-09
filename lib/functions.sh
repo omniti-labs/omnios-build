@@ -178,6 +178,26 @@ if [[ -f $LOGFILE ]]; then
 fi
 process_opts $@
 
+BasicRequirements(){
+    local needed=""
+    [[ -x /opt/gcc-4.6.3/bin/gcc ]] || needed+=" developer/gcc46"
+    [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
+    [[ -x /usr/bin/ld ]] || needed+=" developer/linker"
+    [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
+    [[ -x /usr/bin/gmake ]] || needed+=" developer/build/gnu-make"
+    [[ -f /usr/include/sys/types.h ]] || needed+=" system/header"
+    [[ -f /usr/include/math.h ]] || needed+=" system/library/math/header-math"
+    [[ -x /usr/bin/rsync ]] || needed+=" network/rsync"
+    if [[ -n "$needed" ]]; then
+        logmsg "You appear to be missing some basic build requirements."
+        logmsg "To fix this run:"
+        logmsg " "
+        logmsg "  sudo pkg install$needed"
+        logerr
+    fi
+}
+BasicRequirements
+
 #############################################################################
 # Running as root is not safe
 #############################################################################
@@ -914,6 +934,26 @@ test_if_core() {
     else
         logmsg "--- Module is not in core for Perl $DEPVER.  Continuing with build."
     fi
+}
+
+#############################################################################
+# NPM build for node.js modules
+#############################################################################
+build_npm() {
+    logmsg "Building module with npm"
+    [[ -n "$NPM" ]] || NPM=/opt/omni/bin/npm
+    pushd $TMPDIR > /dev/null
+    if [[ -d node_modules ]]; then
+        logcmd rm -rf node_modules
+    fi
+    logcmd $NPM install ${PROG}@${VER} --ws:verbose || \
+        logerr "--- npm build failed"
+    logmsg "Installing module into $DESTDIR"
+    logcmd mkdir -p $DESTDIR$PREFIX/lib/node || \
+        logerr "--- Unable to create destination directory"
+    logcmd rsync -a node_modules/ $DESTDIR$PREFIX/lib/node/ || \
+        logerr "--- Unable to copy files to destination directory"
+    popd > /dev/null
 }
 
 #############################################################################
