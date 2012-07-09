@@ -27,60 +27,23 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=node-postgres
-VER=0.7.0
-PKG=omniti/runtime/nodejs/node-postgres
+PROG=pg
+VER=0.8.0
+PKG=omniti/runtime/nodejs/node-$PROG
 SUMMARY="Non-blocking PostgreSQL client for node.js."
 DESC="Non-blocking PostgreSQL client for node.js. Pure JavaScript and native libpq bindings."
 
-REPOS=http://github.com/brianc/node-postgres
-GIT=/usr/bin/git
-
 BUILDARCH=64
 
-PATH=/opt/omni/bin:$PATH
+PATH=/usr/gnu/bin:$PATH
 export PATH
 
-BUILD_DEPENDS_IPS="developer/versioning/git"
-DEPENDS_IPS="omniti/runtime/nodejs omniti/runtime/nodejs/node-pool"
-
-download_git() {
-    pushd $TMPDIR > /dev/null
-    logmsg "Checking for source directory"
-    if [ -d $BUILDDIR ]; then
-        logmsg "--- removing previous source checkout"
-        logcmd rm -rf $BUILDDIR
-    fi
-    logmsg "Checking code out from git repo"
-    logcmd $GIT clone $REPOS.git $BUILDDIR
-    cd $BUILDDIR
-    logcmd $GIT checkout $VER
-    popd > /dev/null
-}
-
-# There is no configuration for this code, so just pretend we did it
-configure64() {
-    true
-}
-
-make_prog() {
-    logcmd "--- no make"
-}
-
-make_install() {
-    logmsg "--- make install"
-    logcmd mkdir -p $DESTDIR/opt/omni/lib/node
-    logcmd cp -R $TMPDIR/$BUILDDIR $DESTDIR/opt/omni/lib/node/
-    logcmd mv $DESTDIR/opt/omni/lib/node/$PROG-$VER/lib $DESTDIR/opt/omni/lib/node/pg
-    logcmd rm -rf $DESTDIR/opt/omni/lib/node/$PROG-$VER
-}
+BUILD_DEPENDS_IPS="omniti/runtime/nodejs"
+DEPENDS_IPS="omniti/runtime/nodejs"
 
 init
-download_git
-patch_source
 prep_build
-build
-make_isa_stub
+build_npm
 make_package
 clean_up
 
