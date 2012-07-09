@@ -41,7 +41,7 @@ fi
 
 SCRIPTDIR=`dirname $0`
 BUILDDIR=$SCRIPTDIR/build
-TYPESAVAIL="basic perl python"
+TYPESAVAIL="basic node perl python"
 # Default type if not specified
 TYPE="basic"
 NAME=$1
@@ -59,7 +59,10 @@ while getopts "hlt:" opt; do
         t)
             TYPE=$OPTARG
             NAME=$3
-            if [[ "$TYPE" != "basic" && "$TYPE" != "perl" && "$TYPE" != "python" ]]; then
+            if [[ "$TYPE" != "basic" && \
+		  "$TYPE" != "node" && \
+		  "$TYPE" != "perl" && \
+		  "$TYPE" != "python" ]]; then
                 echo "Unknown type: $TYPE"
                 echo "Valid types are: $TYPESAVAIL"
                 exit 2
