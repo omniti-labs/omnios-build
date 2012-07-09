@@ -27,51 +27,23 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=node-socket.io
-VER=0.6.17
-PKG=omniti/runtime/nodejs/node-socket.io
-TAG=$VER
+PROG=socket.io
+VER=0.9.5
+PKG=omniti/runtime/nodejs/node-$PROG
 SUMMARY="Realtime application framework for Node.JS"
-DESC="Realtime application framework for Node.JS, with HTML5 WebSockets and cross-browser fallbacks support."
+DESC="Socket.IO is a Node.JS project that makes WebSockets and realtime possible in all browsers. It also enhances WebSockets by providing built-in multiplexing, horizontal scalability, automatic JSON encoding/decoding, and more."
 
-BUILD_DEPENDS_IPS="developer/versioning/git"
+BUILD_DEPENDS_IPS="omniti/runtime/nodejs"
 DEPENDS_IPS="omniti/runtime/nodejs"
 
-REPOS=http://github.com/LearnBoost/socket.io
-GIT=/usr/bin/git
+BUILDARCH=64
 
-BUILDARCH=32
-
-PATH=/opt/omni/bin:$PATH
+PATH=/usr/gnu/bin:$PATH
 export PATH
 
-download_git() {
-    pushd $TMPDIR > /dev/null
-    logmsg "Checking for source directory"
-    if [ -d $BUILDDIR ]; then
-        logmsg "--- removing previous source checkout"
-        logcmd rm -rf $BUILDDIR
-    fi
-    logmsg "Checking code out from git repo"
-    logcmd $GIT clone $REPOS.git $BUILDDIR
-    if [ -n "$TAG" ]; then
-        cd $BUILDDIR
-        git checkout $TAG
-    fi
-    popd > /dev/null
-}
-
 init
-download_git
-patch_source
 prep_build
-
-# We don't build anything.. just copy it over into the right location
-logcmd mkdir -p $DESTDIR/opt/omni/lib/node
-logcmd cp -R $TMPDIR/$BUILDDIR/ $DESTDIR/opt/omni/lib/node/
-logcmd mv $DESTDIR/opt/omni/lib/node/$PROG-$VER $DESTDIR/opt/omni/lib/node/socket.io
-logcmd rm -rf $DESTDIR/opt/omni/lib/node/socket.io/.git*
-
+build_npm
 make_package
 clean_up
 
