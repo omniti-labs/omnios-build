@@ -1,6 +1,6 @@
---- pciutils-3.1.9/Makefile.orig	Sat Jan 14 14:07:55 2012
-+++ pciutils-3.1.9/Makefile	Thu May 24 22:24:41 2012
-@@ -1,11 +1,12 @@
+--- pciutils-3.1.10/Makefile.orig	2012-06-25 12:45:14.000000000 +0000
++++ pciutils-3.1.10/Makefile	2012-07-10 15:23:33.264779067 +0000
+@@ -1,7 +1,7 @@
  # Makefile for The PCI Utilities
  # (c) 1998--2012 Martin Mares <mj@ucw.cz>
  
@@ -8,22 +8,20 @@
 +OPT=-O2 -DBYTE_ORDER=1234 -DLITTLE_ENDIAN=1234
  CFLAGS=$(OPT) -Wall -W -Wno-parentheses -Wstrict-prototypes -Wmissing-prototypes
  
- VERSION=3.1.9
- DATE=2012-01-14
-+SED=gsed
- 
- # Host OS and release (override if you are cross-compiling)
- HOST=
-@@ -25,7 +26,7 @@
+ VERSION=3.1.10
+@@ -24,8 +24,10 @@
+ # ABI version suffix in the name of the shared library
  ABI_VERSION=.3
  
++SED=gsed
++
  # Installation directories
 -PREFIX=/usr/local
 +PREFIX=/usr
  SBINDIR=$(PREFIX)/sbin
  SHAREDIR=$(PREFIX)/share
  IDSDIR=$(SHAREDIR)
-@@ -35,8 +36,8 @@
+@@ -35,8 +37,8 @@
  PKGCFDIR=$(LIBDIR)/pkgconfig
  
  # Commands
@@ -34,7 +32,7 @@
  STRIP=-s
  CC=$(CROSS_COMPILE)gcc
  AR=$(CROSS_COMPILE)ar
-@@ -78,7 +79,7 @@
+@@ -78,7 +80,7 @@
  common.o: common.c pciutils.h $(PCIINC)
  
  update-pciids: update-pciids.sh
@@ -43,7 +41,7 @@
  	chmod +x $@
  
  # The example of use of libpci
-@@ -89,7 +90,7 @@
+@@ -89,7 +91,7 @@
  	$(CC) $(LDFLAGS) $(TARGET_ARCH) $^ $(LDLIBS) -o $@
  
  %.8 %.7: %.man
@@ -52,7 +50,7 @@
  
  clean:
  	rm -f `find . -name "*~" -o -name "*.[oa]" -o -name "\#*\#" -o -name TAGS -o -name core -o -name "*.orig"`
-@@ -100,7 +101,10 @@
+@@ -100,7 +102,10 @@
  
  install: all
  # -c is ignored on Linux, but required on FreeBSD
@@ -64,7 +62,7 @@
  	$(INSTALL) -c -m 755 $(STRIP) lspci setpci $(DESTDIR)$(SBINDIR)
  	$(INSTALL) -c -m 755 update-pciids $(DESTDIR)$(SBINDIR)
  	$(INSTALL) -c -m 644 $(PCI_IDS) $(DESTDIR)$(IDSDIR)
-@@ -113,7 +117,9 @@
+@@ -113,7 +118,9 @@
  endif
  
  install-lib: $(PCIINC_INS) lib/$(PCILIB) lib/$(PCILIBPC)
