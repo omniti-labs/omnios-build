@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libmemcached
-VER=1.0.8
+VER=1.0.9
 VERHUMAN=$VER
 PKG=omniti/library/libmemcached
 SUMMARY="$PROG - an open source C/C++ client library and tools for the memcached server"
