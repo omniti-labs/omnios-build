@@ -28,10 +28,10 @@
 . ../../lib/functions.sh
 
 PROG=mysql
-VER=5.5.23
+VER=5.5.25a
 VERHUMAN=$VER
 
-BUILD_DEPENDS_IPS="omniti/developer/build/cmake"
+BUILD_DEPENDS_IPS="omniti/developer/build/cmake system/library/g++-4-runtime system/library/gcc-4-runtime"
 DEPENDS_IPS="system/library/g++-4-runtime system/library/gcc-4-runtime"
 
 case $FLAVOR in
@@ -75,6 +75,25 @@ make_clean() {
     logmsg "--- make clean"
     logcmd $MAKE clean
     logcmd rm CMakeCache.txt
+}
+
+# Turn the letter component of the version into a number for IPS versioning
+ord26() {
+    local ASCII=$(printf '%d' "'$1")
+    ASCII=$((ASCII - 64))
+    [[ $ASCII -gt 32 ]] && ASCII=$((ASCII - 32))
+    echo $ASCII
+}
+
+save_function make_package make_package_orig
+make_package() {
+    if [[ -n "`echo $VER | grep [a-z]`" ]]; then
+        NUMVER=${VER::$((${#VER} -1))}
+        ALPHAVER=${VER:$((${#VER} -1))}
+        VER=${NUMVER}.$(ord26 ${ALPHAVER})
+    fi
+
+    make_package_orig
 }
 
 prune_for_libs() {
