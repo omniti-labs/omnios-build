@@ -29,7 +29,7 @@
 
 PROG=freetype
 DOWNLOADDIR=freetype2
-VER=2.4.9
+VER=2.4.10
 VERHUMAN=$VER
 PKG=omniti/library/freetype2
 SUMMARY="A Free, High-Quality, and Portable Font Engine"

@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libssh2
-VER=1.4.1
+VER=1.4.2
 PKG=omniti/library/libssh2
 SUMMARY="$PROG - a client-side C library implementing the SSH2 protocol."
 DESC="$SUMMARY"
