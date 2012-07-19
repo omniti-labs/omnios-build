@@ -31,7 +31,7 @@
 export PATH=/opt/OMNIperl/bin:$PATH
 
 PROG=postgresql
-VER=9.1.3
+VER=9.1.4
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/plperl
 DOWNLOADDIR=postgres
@@ -41,6 +41,7 @@ CONTRIBDIR=src/pl
 # Valid Perl versions
 PERLVERLIST="5.8.8 5.14.2 5.16.0"
 
+BUILD_DEPENDS_IPS="omniti/runtime/perl"
 DEPENDS_IPS="omniti/runtime/perl"
 
 # We have different Perl versions and there is no default

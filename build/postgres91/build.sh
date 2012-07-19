@@ -28,12 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=9.1.3
+VER=9.1.4
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}
 SUMMARY="$PROG - Open Source Database System"
 DESC="$SUMMARY"
 
+BUILD_DEPENDS_IPS="system/library/gcc-4-runtime"
 DEPENDS_IPS="omniti/database/postgresql/common system/library/gcc-4-runtime"
 
 DOWNLOADDIR=postgres
