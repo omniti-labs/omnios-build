@@ -260,9 +260,9 @@ init() {
 # Verify any dependencies
 #############################################################################
 verify_depends() {
-    logmsg "Verifying dependencies"
-    [[ -z "$DEPENDS_IPS" ]] && DEPENDS_IPS=$DEPENDS
-    for i in $DEPENDS_IPS; do
+    logmsg "Verifying build dependencies"
+    [[ -z "$BUILD_DEPENDS_IPS" ]] && BUILD_DEPENDS_IPS=$BUILD_DEPENDS
+    for i in $BUILD_DEPENDS_IPS; do
         # Trim indicators to get the true name (see make_package for details)
         case ${i:0:1} in
             \=|\?)
@@ -277,11 +277,7 @@ verify_depends() {
                 ;;
         esac
         pkg info $i > /dev/null 2<&1 ||
-            logerr "--- Package dependency $i not found"
-    done
-    for i in $BUILD_DEPENDS_IPS; do
-        pkg info $i > /dev/null 2<&1 ||
-            logerr "--- Build-time dependency $i not found"
+            logerr "--- Build dependency $i not found"
     done
 }
 
