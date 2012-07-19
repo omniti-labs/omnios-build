@@ -1,2 +1,2 @@
-set name=pkg.renamed value=true
-depend type=require fmri=omniti/network/stunnel
+license COPYING license=stunnel
+license COPYRIGHT.GPL license=GPLv2

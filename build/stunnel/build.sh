@@ -30,14 +30,17 @@
 PROG=stunnel
 VER=4.53
 VERHUMAN=$VER
-PKG=network/stunnel
+PKG=omniti/network/stunnel
 SUMMARY="stunnel SSL encryption wrapper"
 DESC="$SUMMARY ($VER)"
 
-# We're about to rename this package, so the final version under the old name will have only metadata
 init
+download_source $PROG $PROG $VER
+patch_source
 prep_build
-unset DESTDIR
+build
+rm -f $DESTDIR/$PREFIX/etc/stunnel/stunnel.pem
+make_isa_stub
 make_package
 clean_up
 
