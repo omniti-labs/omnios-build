@@ -28,20 +28,20 @@
 . ../../lib/functions.sh
 
 PROG=subversion
-VER=1.7.4
+VER=1.7.5
 VERHUMAN=$VER
 PKG=omniti/developer/versioning/subversion
 SUMMARY="$PROG - An Open-Source Revision Control System"
 DESC="$SUMMARY"
 
-NEON=neon
-NVER=0.29.0
+#NEON=neon
+#NVER=0.29.0
 
-BUILD_DEPENDS_IPS="developer/swig@1.3 omniti/server/apache22"
 DEPENDS_IPS="database/sqlite-3@3.7 library/security/openssl@1.0.1 
              omniti/library/apr@1.4 omniti/library/apr-util@1.4
              library/expat library/zlib system/library/gcc-4-runtime
              omniti/library/serf"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/swig@1.3 omniti/server/apache22"
 
 CFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
 CPPFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
@@ -94,16 +94,16 @@ add_extra_files() {
     add_file servers etc/subversion/servers
 }
 
-save_function download_source download_source_orig
-download_source() {
-    BUILDDIR=${NEON}-${NVER}
-    download_source_orig $NEON $NEON $NVER
-    BUILDDIR=${PROG}-${VER}
-    download_source_orig $1 $2 $3
-    logmsg "Copying neon to subversion source directory"
-    logcmd cp -r ${TMPDIR}/${NEON}-${NVER} ${TMPDIR}/${PROG}-${VER}/neon || \
-        logerr "Failed to copy neon"
-}
+#save_function download_source download_source_orig
+#download_source() {
+#    BUILDDIR=${NEON}-${NVER}
+#    download_source_orig $NEON $NEON $NVER
+#    BUILDDIR=${PROG}-${VER}
+#    download_source_orig $1 $2 $3
+#    logmsg "Copying neon to subversion source directory"
+#    logcmd cp -r ${TMPDIR}/${NEON}-${NVER} ${TMPDIR}/${PROG}-${VER}/neon || \
+#        logerr "Failed to copy neon"
+#}
 
 init
 download_source $PROG $PROG $VER

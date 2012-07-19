@@ -1,0 +1,47 @@
+Index: outgoing.c
+===================================================================
+--- outgoing.c	(revision 1622)
++++ outgoing.c	(working copy)
+@@ -445,6 +445,20 @@
+          */
+         if (requeue_requests && !old_reqs->written) {
+             serf_request_t *req = old_reqs;
++            /* cancel_request may have requeued some requests and
++             * populated hold_requests.
++             */
++            if (conn->hold_requests){
++              if (conn->requests_tail) {
++                conn->requests_tail->next = conn->hold_requests;
++              }
++              else {
++                conn->requests = conn->hold_requests;
++              }
++              conn->requests_tail = conn->hold_requests_tail;
++              conn->hold_requests = NULL;
++              conn->hold_requests_tail = NULL;
++            }
+             old_reqs = old_reqs->next;
+             req->next = NULL;
+             link_requests(&conn->requests, &conn->requests_tail, req);
+@@ -454,6 +468,21 @@
+         }
+     }
+ 
++    /* cancel_request may have requeued some requests and populated
++     * hold_requests.
++     */
++    if (conn->hold_requests) {
++      if (conn->requests_tail) {
++        conn->requests_tail->next = conn->hold_requests;
++      }
++      else {
++        conn->requests = conn->hold_requests;
++      }
++      conn->requests_tail = conn->hold_requests_tail;
++      conn->hold_requests = NULL;
++      conn->hold_requests_tail = NULL;
++    }
++
+     if (conn->requests_tail) {
+         conn->requests_tail->next = held_reqs;
+     }

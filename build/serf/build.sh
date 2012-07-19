@@ -28,12 +28,15 @@
 . ../../lib/functions.sh
 
 PROG=serf
-VER=1.0.3
+VER=1.1.0
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=omniti/library/serf
 SUMMARY="serf WebDav client library"
 DESC="$SUMMARY"
+
+BUILD_DEPENDS_IPS="developer/swig omniti/library/apr omniti/library/apr-util"
+DEPENDS_IPS="omniti/library/apr-util"
 
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32
     --includedir=/opt/omni/include/serf-1
