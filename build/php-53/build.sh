@@ -27,15 +27,13 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=php        # App name
-VER=5.3.13      # App version
-VERHUMAN=$VER   # Human-readable version
-#PVER=          # Branch (set in config.sh, override here if needed)
-PKG=omniti/runtime/php-53           # Package name (e.g. library/foo)
-SUMMARY="PHP 5.3 64 bit build"      # One-liner, must be filled in
-DESC="PHP is a widely-used general-purpose scripting language that is especially suited for Web development and can be embedded into HTML."         # Longer description, must be filled in
+PROG=php
+VER=5.3.14
+VERHUMAN=$VER
+PKG=omniti/runtime/php-53
+SUMMARY="PHP Server ${VER:0:3}"
+DESC="PHP is a widely-used general-purpose scripting language that is especially suited for Web development and can be embedded into HTML."
 
-BUILD_DEPENDS_IPS="omniti/server/apache22"
 DEPENDS_IPS="web/curl 
             omniti/library/freetype2
             omniti/library/gd  
@@ -54,10 +52,12 @@ DEPENDS_IPS="web/curl
             library/libtool/libltdl
             omniti/library/mhash
             omniti/library/libmcrypt"
+BUILD_DEPENDS_IPS="omniti/server/apache22 $DEPENDS_IPS"
 
-
-PREFIX=/opt/php53 # Install to its own prefix
-reset_configure_opts # We changed prefix, we reset configure_opts
+# Though not strictly needed since we override build(), still nice to set
+BUILDARCH=64
+PREFIX=/opt/php53
+reset_configure_opts
 
 # Php will be compiled once for each of the following options
 APXS_OPTS="--with-apxs2=/opt/apache22/bin/apxs"
@@ -139,12 +139,20 @@ make_install() {
         logerr "--- Make install failed"
 }
 
+# There are some dotfiles/dirs that look like noise
+clean_dotfiles() {
+    logmsg "--- Cleaning up dotfiles in destination directory"
+    logcmd rm -rf $DESTDIR/.??* || \
+        logerr "--- Unable to clean up destination directory"
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
+clean_dotfiles
 make_package
 clean_up
 
