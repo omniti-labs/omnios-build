@@ -34,13 +34,10 @@ PKG=network/stunnel
 SUMMARY="stunnel SSL encryption wrapper"
 DESC="$SUMMARY ($VER)"
 
+# We're about to rename this package, so the final version under the old name will have only metadata
 init
-download_source $PROG $PROG $VER
-patch_source
 prep_build
-build
-rm -f $DESTDIR/$PREFIX/etc/stunnel/stunnel.pem
-make_isa_stub
+unset DESTDIR
 make_package
 clean_up
 
