@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=php
-VER=5.3.14
+VER=5.3.15
 VERHUMAN=$VER
 PKG=omniti/runtime/php-53
 SUMMARY="PHP Server ${VER:0:3}"
@@ -67,11 +67,18 @@ FREETYPE_PATH="/opt/omni"
 CFLAGS="-O2 -I/opt/omni/include"
 LDFLAGS64="$LDFLAGS64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64 \
     -L/opt/omni/lib/$ISAPART64/mysql -R/opt/omni/lib/$ISAPART64/mysql \
-    -L$PREFIX/lib/$ISAPART64 -R$PREFIX/lib/$ISAPART64"
+    -L$PREFIX/lib -R$PREFIX/lib"
 
 # The contents of this variable get passed to configure later on with the
 # apache apxs stuff added in
 PHP_CONFIGURE_OPTS="
+        --prefix=$PREFIX
+        --sysconfdir=$PREFIX/etc
+        --includedir=$PREFIX/include
+        --bindir=$PREFIX/bin
+        --sbindir=$PREFIX/sbin
+        --libdir=$PREFIX/lib
+        --libexecdir=$PREFIX/libexec
         --with-pear=$PREFIX/lib/php
         --with-gd
         --with-jpeg-dir=/opt/omni
@@ -80,6 +87,7 @@ PHP_CONFIGURE_OPTS="
         --with-zlib
         --enable-pdo
         --with-mysql=/opt/omni
+        --with-mysqli=/opt/omni/bin/$ISAPART64/mysql_config
         --with-pdo_sqlite
         --with-pdo-mysql=/opt/omni
         --with-pdo-pgsql=/opt/omni
@@ -104,11 +112,6 @@ PHP_CONFIGURE_OPTS="
         --enable-pcntl
         --with-openssl
         $PHPOPT"
-
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64
-        --with-libdir=lib/$ISAPART64
-        --includedir=$PREFIX/include/$ISAPART64
-        --with-mysqli=/opt/omni/bin/$ISAPART64/mysql_config"
 
 # We need to make a fake httpd.conf so apxs in make install
 make_httpd_conf() {
@@ -151,7 +154,6 @@ download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
-make_isa_stub
 clean_dotfiles
 make_package
 clean_up
