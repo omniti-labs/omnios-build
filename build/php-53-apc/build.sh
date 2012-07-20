@@ -27,13 +27,12 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=APC      # App name
-VER=3.1.9            # App version
-VERHUMAN=$VER   # Human-readable version
-#PVER=          # Branch (set in config.sh, override here if needed)
-PKG=omniti/library/php-53/apc            # Package name (e.g. library/foo)
-SUMMARY="APC for php-5.3"      # One-liner, must be filled in
-DESC="The Alternative PHP Cache (APC) is a free and open opcode cache for PHP. Its goal is to provide a free, open, and robust framework for caching and optimizing PHP intermediate code."         # Longer description, must be filled in
+PROG=APC
+VER=3.1.11
+VERHUMAN=$VER
+PKG=omniti/library/php-53/apc
+SUMMARY="APC for php-53"
+DESC="The Alternative PHP Cache (APC) is a free and open opcode cache for PHP. Its goal is to provide a free, open, and robust framework for caching and optimizing PHP intermediate code."
 
 BUILD_DEPENDS_IPS="omniti/server/apache22
                    omniti/runtime/php-53
@@ -41,7 +40,7 @@ BUILD_DEPENDS_IPS="omniti/server/apache22
 
 DEPENDS_IPS="omniti/runtime/php-53"
 
-PREFIX=/opt/php-53
+PREFIX=/opt/php53
 reset_configure_opts
 
 CONFIGURE_OPTS=" \
