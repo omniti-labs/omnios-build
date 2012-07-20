@@ -39,7 +39,7 @@ PATH=/usr/perl5/5.14.2/bin:$PATH
 export PATH
 
 DEPENDS_IPS="developer/gcc46/libgmp-gcc46 developer/gcc46/libmpfr-gcc46 developer/gcc46/libmpc-gcc46
-	developer/gnu-binutils system/library/gcc-4-runtime"
+	     developer/gnu-binutils developer/library/lint developer/linker system/library/gcc-4-runtime"
 NO_PARALLEL_MAKE=1
 
 # This stuff is in its own domain
