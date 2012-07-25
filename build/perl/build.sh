@@ -37,9 +37,11 @@ export SHELL
 case $DEPVER in
     ""|5.16.0)
         VER=5.16.0
+        MAJOR_MINOR=5.16
         ;;
     5.14.2)
         VER=5.14.2
+        MAJOR_MINOR=5.14
         ;;
     5.8.8)
         VER=5.8.8
@@ -75,6 +77,7 @@ build32() {
         -Dbin=${PREFIX}/bin/$ISAPART \
         -Dsitebin=${PREFIX}/bin/$ISAPART \
         -Dvendorbin=${PREFIX}/bin/$ISAPART \
+        -Dvendorlib=${PREFIX}/lib/vendor_perl/$MAJOR_MINOR \
         -Dscriptdir=${PREFIX}/bin \
         -Dsitescript=${PREFIX}/bin \
         -Dvendorscript=${PREFIX}/bin \
@@ -108,6 +111,7 @@ build64() {
         -Dbin=${PREFIX}/bin/$ISAPART64 \
         -Dsitebin=${PREFIX}/bin/$ISAPART64 \
         -Dvendorbin=${PREFIX}/bin/$ISAPART64 \
+        -Dvendorlib=${PREFIX}/lib/vendor_perl/$MAJOR_MINOR \
         -Dscriptdir=${PREFIX}/bin \
         -Dsitescript=${PREFIX}/bin \
         -Dvendorscript=${PREFIX}/bin \
