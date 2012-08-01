@@ -1,0 +1,3 @@
+license COPYING license=GPLv2
+license COPYING.innodb-deadlock-count-patch license=BSD.Bergen
+license COPYING.show_temp_51 license=BSD.Anuganti
