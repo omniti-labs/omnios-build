@@ -34,8 +34,8 @@ PKG=omniti/server/apache22/mod_perl
 SUMMARY="$PROG - embedded Perl $DEPVER interpreter for Apache"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="omniti/server/apache22 omniti/runtime/perl"
-DEPENDS_IPS="omniti/runtime/perl"
+BUILD_DEPENDS_IPS="omniti/library/apr-util omniti/server/apache22 omniti/runtime/perl"
+DEPENDS_IPS="omniti/runtime/perl omniti/library/apr-util"
 
 VERLIST="5.8.8 5.14.2 5.16.0"
 
