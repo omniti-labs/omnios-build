@@ -37,20 +37,16 @@ DESC="$SUMMARY"
 BUILD_DEPENDS_IPS="omniti/library/apr-util omniti/server/apache22 omniti/runtime/perl"
 DEPENDS_IPS="omniti/runtime/perl omniti/library/apr-util"
 
-VERLIST="5.8.8 5.14.2 5.16.0"
+VERLIST="5.14 5.16"
 
 case $DEPVER in
-    5.8.8)
-        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-588-incorporation"
-        BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS omniti/incorporation/perl-588-incorporation"
+    5.14)
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-514-incorporation"
+        BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS omniti/incorporation/perl-514-incorporation"
         ;;
-    5.14.2)
-        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-5142-incorporation"
-        BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS omniti/incorporation/perl-5142-incorporation"
-        ;;
-    5.16.0)
-        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-5160-incorporation"
-        BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS omniti/incorporation/perl-5160-incorporation"
+    5.16)
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-516-incorporation"
+        BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS omniti/incorporation/perl-516-incorporation"
         ;;
     "")
         logerr "You must specify a version with -d DEPVER. Valid versions: $VERLIST"
@@ -66,7 +62,7 @@ build64() {
     logmsg "Building 64-bit"
     make_clean
     logmsg "--- Makefile.PL"
-    logcmd $P64 Makefile.PL MP_APXS=$APXS64 || \
+    logcmd $P64 Makefile.PL MP_APXS=$APXS64 INSTALLDIRS=vendor || \
         logerr "--- Makefile.PL failed"
     logmsg "--- make"
     logcmd make || logerr "--- make failed"
