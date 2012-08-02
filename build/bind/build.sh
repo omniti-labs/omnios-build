@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=bind
-VER=9.9.1
+VER=9.9.1-P2
 VERHUMAN=$VER
 PKG=network/dns/bind
 SUMMARY="BIND DNS tools"
@@ -63,6 +63,7 @@ patch_source
 prep_build
 build
 make_isa_stub
+VER=${VER//-P/.}
 make_package
 clean_up
 
