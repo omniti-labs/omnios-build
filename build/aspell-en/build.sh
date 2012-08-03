@@ -36,11 +36,9 @@ DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="omniti/library/aspell"
 
-# No bins here, just data
-BUILDARCH=32
-
 # this has a "configure" but it doesn't work the usual way
 unset CONFIGURE_OPTS_32
+unset CONFIGURE_OPTS_64
 
 save_function make_package make_package_orig
 make_package() {
