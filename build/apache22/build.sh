@@ -9,9 +9,10 @@ PKG=omniti/server/apache22
 SUMMARY="$PROG - Apache Web Server ($VER)"
 DESC="$SUMMARY"
 
+BUILD_DEPENDS_IPS="database/sqlite-3 library/security/openssl omniti/library/apr omniti/library/apr-util" 
 DEPENDS_IPS="omniti/library/apr \
              omniti/library/apr-util
-             library/security/openssl@1.0.0 =library/security/openssl@1.0.1 \
+             library/security/openssl \
              database/sqlite-3"
 
 PREFIX=/opt/apache22
@@ -24,7 +25,7 @@ CATEGORY=network
 BUILDARCH=64
 MIRROR=archive.apache.org
 DIR=dist/httpd # Mirror directory to download from
-MPMS="worker prefork event" # Which MPMs to build
+MPMS="worker event prefork" # Which MPMs to build
 
 # Define some architecture specific variables
 if [[ $ISAPART == "i386" ]]; then
