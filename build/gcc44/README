@@ -1,0 +1,3 @@
+This is gcc from Rich Lowe's il-4_4_4 branch, used only for building illumos-gate sources.
+
+The supporting libraries are built using our 4.6.3 copy.
