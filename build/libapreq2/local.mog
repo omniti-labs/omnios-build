@@ -1,1 +1,2 @@
-license LICENSE license=Apache2
+set name=pkg.renamed value=true
+depend fmri=omniti/perl/libapreq2 type=require
