@@ -66,7 +66,7 @@ CONFIGURE_OPTS_32="--prefix=/opt/gcc-${VER}"
 CONFIGURE_OPTS="--host i386-pc-solaris2.11 --build i386-pc-solaris2.11 --target i386-pc-solaris2.11 \
     --with-boot-ldflags=-R/opt/gcc-${VER}/lib \
     --with-gmp=/opt/gcc-${VER} --with-mpfr=/opt/gcc-${VER} --with-mpc=/opt/gcc-${VER} \
-    --enable-languages=c,c++,fortran,lto --enable-ld=no \
+    --enable-languages=c,c++,fortran --enable-ld=no \
     --with-as=/usr/bin/gas --with-gnu-as --with-build-time-tools=/usr/gnu/i386-pc-solaris2.11/bin"
 LDFLAGS32="-R/opt/gcc-${VER}/lib"
 export LD_OPTIONS="-zignore -zcombreloc -Bdirect -i"
