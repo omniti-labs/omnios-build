@@ -29,7 +29,7 @@
 
 PROG=ntp
 VER=dev-4.2.7p259
-VERHUMAN=4.2.7.259
+VERHUMAN=$VER
 PKG=service/network/ntp
 SUMMARY="Network Time Services"
 DESC="$SUMMARY"
@@ -71,7 +71,8 @@ prep_build
 build
 overlay_root
 make_isa_stub
-VER=4.2.7.259
+VER=${VER//dev-/}
+VER=${VER//p/.}
 make_package
 clean_up
 

@@ -29,7 +29,7 @@
 
 PROG=idnkit
 VER=1.0-src
-VERHUMAN=1.0
+VERHUMAN=$VER
 PKG=library/idnkit
 SUMMARY="Internationalized Domain Name kit (idnkit/JPNIC)"
 DESC="Internationalized Domain Name kit (idnkit/JPNIC)"
@@ -45,20 +45,19 @@ prep_build
 build
 make_isa_stub
 
-VER=1.0
+VER=${VER//-src/}
+
 PKG=library/idnkit
 SUMMARY="Internationalized Domain Name kit (idnkit/JPNIC)"
 DESC="Internationalized Domain Name kit (idnkit/JPNIC)"
 make_package lib.mog
 
-VER=1.0
 PKG=library/idnkit/header-idnkit
 DEPENDS_IPS=""
 SUMMARY="Internationalized Domain Name Support Developer Files"
 DESC="Internationalized Domain Name Support Developer Files"
 make_package headers.mog
 
-VER=1.0
 PKG=network/dns/idnconv
 DEPENDS_IPS="library/idnkit"
 SUMMARY="Internationalized Domain Name Support Utilities"

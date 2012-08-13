@@ -29,7 +29,7 @@
 
 PROG=sudo
 VER=1.8.4p1
-VERHUMAN=1.8.4p1
+VERHUMAN=$VER
 PKG=security/sudo
 SUMMARY="$PROG - authority delegation tool"
 DESC="$SUMMARY"
@@ -65,7 +65,7 @@ patch_source
 prep_build
 build
 make_isa_stub
-VER=1.8.4.1
+VER=${VER//p/.}
 make_package
 clean_up
 
