@@ -1,0 +1,18 @@
+--- tree-1.6.0/Makefile.orig	Fri Jun 24 14:25:27 2011
++++ tree-1.6.0/Makefile	Tue Aug 14 21:20:47 2012
+@@ -29,10 +29,13 @@
+ 
+ # Uncomment options below for your particular OS:
+ 
++# OmniOS defaults:
++CFLAGS=-O4 -Wall -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
++
+ # Linux defaults:
+ #CFLAGS=-ggdb -Wall -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+-CFLAGS=-O4 -Wall  -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+-LDFLAGS=-s
++#CFLAGS=-O4 -Wall  -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
++#LDFLAGS=-s
+ 
+ # Uncomment for FreeBSD:
+ #CFLAGS=-O2 -Wall -fomit-frame-pointer
