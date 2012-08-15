@@ -34,25 +34,23 @@ export SHELL
 # Load support functions
 . ../../lib/functions.sh
 
+CURRVERS="5.14 5.16"
+
 case $DEPVER in
-    ""|5.16.0)
-        VER=5.16.0
-        MAJOR_MINOR=5.16
+    ""|5.16)
+        VER=5.16.1
         ;;
-    5.14.2)
+    5.14)
         VER=5.14.2
-        MAJOR_MINOR=5.14
-        ;;
-    5.8.8)
-        VER=5.8.8
         ;;
     *)
-        logerr "Unknown version specified."
+        logerr "Unknown version specified. Current versions: $CURRVERS"
         ;;
 esac
 
 PROG=perl
 VERHUMAN=$VER
+MAJOR_MINOR=${VER:0:4}
 PKG=omniti/runtime/perl
 SUMMARY="$PROG - Perl $VER Programming Language"
 DESC="$SUMMARY"
