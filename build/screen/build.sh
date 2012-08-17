@@ -34,12 +34,22 @@ SUMMARY="GNU Screen terminal multiplexer"
 DESC="$SUMMARY"
 
 BUILDARCH=32
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin"
+CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --with-sys-screenrc=/etc/screenrc"
 gnu_cleanup() {
     logcmd rm $DESTDIR/usr/bin/screen
     logcmd mv $DESTDIR/usr/bin/screen-${VER} $DESTDIR/usr/bin/screen
     logcmd mv $DESTDIR/usr/man $DESTDIR/usr/share/
     logcmd mv $DESTDIR/usr/info $DESTDIR/usr/share/
+}
+
+save_function make_install make_install_orig
+make_install() {
+    make_install_orig
+    logmsg "Installing etc/screenrc"
+    logcmd mkdir $DESTDIR/etc || \
+    	logerr "--- Failed to mkdir $DESTDIR/etc"
+    logcmd cp etc/screenrc $DESTDIR/etc/ || \
+    	logerr "--- Failed to copy screenrc"
 }
 
 init
