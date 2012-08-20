@@ -24,7 +24,7 @@
 # Use is subject to license terms.
 #
 <transform file path=etc/sudoers$ -> set group root>
-<transform file path=etc/sudoers$ -> set preserve true>
+<transform file path=etc/sudoers$ -> set preserve renamenew>
 <transform dir  path=etc/sudoers.d$ -> set group root>
 <transform file path=usr/bin/sudo$ -> set mode 4511>
 <transform file path=usr/bin/sudoreplay$ -> set mode 0511>
