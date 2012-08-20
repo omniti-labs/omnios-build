@@ -1,0 +1,5 @@
+FYI, the namespace.patch does two things:
+ * Removes "using namespace std" from several locations, to stop implicitly namespacing functions, classes, etc.
+ * Fixes most uses of functions/classes that are in the std namespace by explicitly naming them 'std::*'
+
+The only files that are patch are the ones needed for building on a Solaris-like system.

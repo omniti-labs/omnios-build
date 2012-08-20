@@ -1,0 +1,18 @@
+--- iometer-1.1.0-rc1/src/Makefile-Solaris.i386.orig	Mon Nov 29 23:13:41 2010
++++ iometer-1.1.0-rc1/src/Makefile-Solaris.i386	Mon Aug 20 18:24:20 2012
+@@ -82,12 +82,14 @@
+ # Always enable CCFLAGS=-compat=4 on Sparc till the transition from compile
+ # version SC4 to SC5 is complete.
+ # This flag instructs the compiler to build SC4 binaries.
+-CFLAGS= -O \
++CFLAGS= -m64 \
++	-O \
+         -Wall \
+ 	-DIOMTR_OSFAMILY_UNIX -DIOMTR_OS_SOLARIS \
+ 	-DIOMTR_CPU_I386 \
+         -D_LARGEFILE64_SOURCE \
+         -D_REENTRANT \
++        -DNOMINMAX \
+ 	-DUSE_NEW_DISCOVERY_MECHANISM -DFORCE_STRUCT_ALIGN
+ #-I/opt/SUNWspro/include/CC \
+ # CFLAGS=-compat=4
