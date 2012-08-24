@@ -1,0 +1,11 @@
+group gid=6004 groupname=nagios
+user ftpuser=false gcos-field="Nagios User" group=nagios login-shell=/bin/sh password=NP uid=10098 username=nagios home-dir=/home/nagios
+<transform dir path=opt/nagios/libexec.* -> set mode 0755>
+<transform dir path=opt/nagios/share.* -> set user nagios>
+<transform dir path=opt/nagios/share.* -> set group nagios>
+<transform dir path=opt/nagios/share.* -> set mode 0755>
+<transform file path=opt/nagios/share.* -> set user nagios>
+<transform file path=opt/nagios/share.* -> set group nagios>
+<transform dir path=opt/nagios/var.* -> set user nagios>
+<transform dir path=opt/nagios/var.* -> set group nagios>
+license LICENSE license=GPLv2

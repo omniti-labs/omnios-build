@@ -1,0 +1,3 @@
+<transform dir path=opt/nagios/share.* -> set user nagios>
+<transform dir path=opt/nagios/share.* -> set group nagios>
+license COPYING license=GPLv2
