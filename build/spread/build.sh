@@ -37,8 +37,6 @@ DESC="$SUMMARY"
 SRCNAME=$PROG-src
 BUILDDIR=$SRCNAME-$VER
 
-BUILDARCH=32
-
 init
 download_source $PROG $SRCNAME $VER
 patch_source
