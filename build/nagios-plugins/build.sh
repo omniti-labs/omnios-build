@@ -67,6 +67,9 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
     --libdir=$PREFIX/lib
     --libexecdir=$PREFIX/libexec/$ISAPART"
 
+# Need to include libexec in the list of dirs to make isaexec stubs
+ISAEXEC_DIRS="bin sbin libexec"
+
 fix_utils_pm() {
     logmsg "Fixing utils.pm library"
     logcmd rm -f $DESTDIR/$PREFIX/libexec/utils.pm || \
