@@ -31,7 +31,7 @@
 export PATH=/opt/OMNIperl/bin:$PATH
 
 PROG=postgresql
-VER=9.1.4
+VER=9.1.5
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/plperl
 DOWNLOADDIR=postgres
@@ -39,21 +39,18 @@ MODULE=plperl
 CONTRIBDIR=src/pl
 
 # Valid Perl versions
-PERLVERLIST="5.8.8 5.14.2 5.16.0"
+PERLVERLIST="5.14 5.16"
 
 BUILD_DEPENDS_IPS="omniti/runtime/perl"
 DEPENDS_IPS="omniti/runtime/perl"
 
 # We have different Perl versions and there is no default
 case $DEPVER in
-    5.8.8)
-        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-588-incorporation"
+    5.14)
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-514-incorporation"
         ;;
-    5.14.2)
-        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-5142-incorporation"
-        ;;
-    5.16.0)
-        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-5160-incorporation"
+    5.16)
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-516-incorporation"
         ;;
     "")
         logerr "You must specify a Perl version with -d DEPVER. Valid versions: $PERLVERLIST"
