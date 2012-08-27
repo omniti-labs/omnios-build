@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=8.4.12
+VER=8.4.13
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/earthdistance
 DOWNLOADDIR=postgres

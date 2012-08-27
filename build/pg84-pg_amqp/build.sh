@@ -30,7 +30,7 @@
 PROG=pg_amqp
 REV=v0.3.0
 VER=${REV:1}
-PGVER=8412
+PGVER=8413
 PKG=omniti/database/postgresql-${PGVER}/$PROG
 SUMMARY="$PROG - Publish to AMQP from PostgreSQL Statements"
 DESC="$SUMMARY"
