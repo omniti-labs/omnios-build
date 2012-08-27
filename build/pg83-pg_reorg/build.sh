@@ -30,7 +30,7 @@
 PROG=pg_reorg
 VER=1.1.7
 VERHUMAN=$VER
-PGVER=8318
+PGVER=8320
 PKG=omniti/database/postgresql-${PGVER}/pg_reorg
 SUMMARY="$PROG - Reorganize database tables without locks"
 DESC="$PROG can re-organize tables on a postgres database without any locks so that you can retrieve or update rows in tables being reorganized. The module is developed to be a better alternative of CLUSTER and VACUUM FULL."

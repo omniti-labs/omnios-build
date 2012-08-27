@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=8.3.18
+VER=8.3.20
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/pgbench
 DOWNLOADDIR=postgres
