@@ -1,6 +1,6 @@
 # Package server URL and publisher
 PKGPUBLISHER=ms.omniti.com
-PKGSRVR=http://pkg-internal.omniti.com:10007/
+PKGSRVR=http://pkg-il-1.int.omniti.net:10007/
 
 export PATH=$PATH:/opt/omni/bin
 
