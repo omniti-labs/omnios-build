@@ -1,0 +1,11 @@
+--- gdb-7.5/gdb/configure.orig	Wed Jul 18 03:43:41 2012
++++ gdb-7.5/gdb/configure	Thu Sep  6 15:35:45 2012
+@@ -6877,7 +6877,7 @@
+   return 0;
+ }
+ _ACEOF
+-for ac_lib in '' ncurses cursesX curses; do
++for ac_lib in '' curses cursesX ncurses; do
+   if test -z "$ac_lib"; then
+     ac_res="none required"
+   else
