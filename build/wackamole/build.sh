@@ -43,6 +43,7 @@ LDFLAGS="$LDFLAGS -L/opt/omni/lib -R/opt/omni/lib"
 CFLAGS="$CFLAGS -I/opt/omni/include"
 
 BUILD_DEPENDS_IPS="/omniti/network/spread /developer/lexer/flex"
+DEPENDS_IPS="/omniti/network/spread"
 
 copy_manifest() {
     # SMF manifest
