@@ -35,7 +35,7 @@ SUMMARY="$PROG - a utility to retrieve files from the World Wide Web"
 DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="developer/lexer/flex"
-DEPENDS_IPS="library/libidn library/security/openssl@1.0.1"
+DEPENDS_IPS="library/libidn library/security/openssl@1.0.1 web/ca-bundle"
 
 CONFIGURE_OPTS="--with-ssl=openssl --mandir=$PREFIX/share/man"
 

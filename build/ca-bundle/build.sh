@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=cabundle   # App name
-VER=1.0         # App version
+VER=1.1         # App version
 VERHUMAN=$VER   # Human-readable version
 PKG=web/ca-bundle  # Package name (without prefix)
 SUMMARY="$PROG - Bundle of SSL CA certificates"
@@ -56,6 +56,13 @@ install_pem() {
   logmsg "Placing PEM in package root"
   logcmd cp $TMPDIR/$BUILDDIR/cacert.pem $DESTDIR/etc/ ||
     logerr "--- Failed to copy file"
+  logmsg "--- Creating symlink from /etc/ssl"
+  logcmd mkdir -p $DESTDIR/etc/ssl || \
+    logerr "------ Failed to create ssl directory"
+  pushd $DESTDIR/etc/ssl > /dev/null
+  logcmd ln -s ../cacert.pem cacert.pem || \
+    logerr "------ Failed to create symlink"
+  popd > /dev/null
 }
 
 init
