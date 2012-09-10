@@ -30,39 +30,29 @@
 PROG=postgresql
 VER=9.2.0
 VERHUMAN=$VER
-PKG=omniti/library/libpq5
-SUMMARY="PostgreSQL Libs (libpq.so.5)"
-DESC="Use this package if you just need to link and/or build against libpq"
+PKG=omniti/database/postgresql-${VER//./}
+SUMMARY="$PROG - Open Source Database System"
+DESC="$SUMMARY"
+
+BUILD_DEPENDS_IPS="system/library/gcc-4-runtime"
+DEPENDS_IPS="omniti/database/postgresql/common system/library/gcc-4-runtime"
 
 DOWNLOADDIR=postgres
-DEPENDS_IPS="system/library/gcc-4-runtime"
+BUILDARCH=64
+PREFIX=/opt/pgsql${VER//./}
+reset_configure_opts
 
 CFLAGS="-O3"
-CPPFLAGS="-D_REENTRANT"
 
-CONFIGURE_OPTS="
-    --enable-thread-safety
+CONFIGURE_OPTS="--enable-thread-safety
     --enable-debug
     --with-openssl
-    --without-readline
-"
+    --with-libxml
+    --prefix=$PREFIX
+    --with-readline"
 
-# Which directories should we make/make install in?
-MAKE_DIRS="src/include src/interfaces/libpq src/makefiles src/port src/backend
-    src/bin/pg_config"
-INSTALL_DIRS="src/include src/interfaces/libpq src/makefiles src/port
-    src/bin/pg_config"
-
-make_prog() {
-    logmsg "--- make"
-    for d in $MAKE_DIRS; do make_in $d; done
-}
-
-make_install() {
-    logmsg "--- make install"
-    for d in $INSTALL_DIRS; do make_install_in $d; done
-}
-
+# We don't want the default settings for CONFIGURE_OPTS_64
+CONFIGURE_OPTS_64="--enable-dtrace DTRACEFLAGS=\"-64\""
 
 init
 download_source $DOWNLOADDIR $PROG $VER
