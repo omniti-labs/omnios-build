@@ -35,6 +35,7 @@ SUMMARY="PostgreSQL adapter for Python"
 DESC=$SUMMARY
 
 LDFLAGS64="-L$PYTHONLIB -R$PYTHONLIB -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
+LDFLAGS32="-L$PYTHONLIB -R$PYTHONLIB -L/opt/omni/lib/$ISAPART32 -R/opt/omni/lib/$ISAPART32"
 
 DEPENDS_IPS="omniti/runtime/python-26 omniti/library/libpq5"
 BUILD_DEPENDS_IPS=$DEPENDS_IPS
