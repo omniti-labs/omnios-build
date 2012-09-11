@@ -763,6 +763,11 @@ python_build() {
     export ISALIST
     pre_python_32
     logmsg "--- setup.py (32) build"
+    CFLAGS="$CFLAGS32 $CFLAGS" \
+    CXXFLAGS="$CXXFLAGS32 $CXXFLAGS" \
+    CPPFLAGS="$CPPFLAGS32 $CPPFLAGS" \
+    LDFLAGS="$LDFLAGS32 $LDFLAGS" \
+    CC=$CC CXX=$CXX \
     logcmd $PYTHON ./setup.py build ||
         logerr "--- build failed"
     logmsg "--- setup.py (32) install"
@@ -774,6 +779,11 @@ python_build() {
     export ISALIST
     pre_python_64
     logmsg "--- setup.py (64) build"
+    CFLAGS="$CFLAGS64 $CFLAGS" \
+    CXXFLAGS="$CXXFLAGS64 $CXXFLAGS" \
+    CPPFLAGS="$CPPFLAGS64 $CPPFLAGS" \
+    LDFLAGS="$LDFLAGS64 $LDFLAGS" \
+    CC=$CC CXX=$CXX \
     logcmd $PYTHON ./setup.py build ||
         logerr "--- build failed"
     logmsg "--- setup.py (64) install"
