@@ -48,8 +48,10 @@ DEPENDS_IPS="/omniti/network/spread"
 copy_manifest() {
     # SMF manifest
     logmsg "--- Copying SMF manifest"
-    logcmd cp $SRCDIR/wackamole.xml ${DESTDIR}${PREFIX}/etc/wackamole.xml
+    logcmd mkdir -p ${DESTDIR}/lib/svc/manifest/network
+    logcmd cp $SRCDIR/files/wackamole.xml ${DESTDIR}/lib/svc/manifest/network
 }
+
 
 init
 download_source $PROG $PROG $VER
@@ -57,6 +59,7 @@ patch_source
 prep_build
 build
 make_isa_stub
+copy_manifest
 make_package
 clean_up
 

@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
 <service_bundle type='manifest' name='export'>
-  <service name='/omniti/network/wackamole' type='service' version='0'>
+  <service name='network/wackamole' type='service' version='0'>
     <dependency name='filesystem_minimal' grouping='require_all' restart_on='none' type='service'>
       <service_fmri value='svc:/system/filesystem/minimal'/>
     </dependency>
