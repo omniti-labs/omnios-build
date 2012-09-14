@@ -14,22 +14,16 @@
     <dependency name='spread' grouping='require_all' restart_on='error' type='service'>
       <service_fmri value='svc:/network/spread'/>
     </dependency>
-    <exec_method name='stop' type='method' exec=':kill' timeout_seconds='60'>
-      <method_context/>
-    </exec_method>
+    <exec_method name='stop' type='method' exec=':kill' timeout_seconds='60'/>
     <property_group name='tm_common_name' type='template'/>
     <instance name='wackamole' enabled='false'>
       <dependency name='config_data' grouping='require_all' restart_on='none' type='path'>
         <service_fmri value='file://localhost/opt/omni/etc/wackamole.conf'/>
       </dependency>
-      <exec_method name='start' type='method' exec='/opt/omni/sbin/wackamole' timeout_seconds='60'>
-        <method_context>
-          <method_credential user='root' group='root' privileges='basic,!proc_session,!proc_info,!file_link_any,sys_net_config,net_icmpaccess,net_rawaccess,net_privaddr,file_dac_read,file_dac_search,sys_resource'/>
-        </method_context>
-      </exec_method>
+      <exec_method name='start' type='method' exec='/opt/omni/sbin/wackamole -c /opt/omni/etc/wackamole.conf' timeout_seconds='60'/>
       <property_group name='general' type='framework'>
-        <propval name='action_authorization' type='astring' value='solaris.smf.manage.bind'/>
-        <propval name='value_authorization' type='astring' value='solaris.smf.manage.bind'/>
+        <property name='action_authorization' type='astring'/>
+        <property name='value_authorization' type='astring'/>
       </property_group>
     </instance>
     <stability value='Unstable'/>
