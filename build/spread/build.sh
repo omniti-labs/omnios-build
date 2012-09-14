@@ -37,11 +37,18 @@ DESC="$SUMMARY"
 SRCNAME=$PROG-src
 BUILDDIR=$SRCNAME-$VER
 
+# XXX dual architecture support doesn't work with 64bit daemons, so we 
+# remove the 64bit one before generating the package.
+rm_64bit_daemon_hack() {
+  logcmd rm ${DESTDIR}/opt/omni/sbin/amd64/spread
+}
+
 init
 download_source $PROG $SRCNAME $VER
 patch_source
 prep_build
 build
+rm_64bit_daemon_hack
 make_isa_stub
 make_package
 clean_up
