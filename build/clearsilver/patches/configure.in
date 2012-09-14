@@ -1,0 +1,16 @@
+--- clearsilver-0.10.5/configure.in.orig	2012-09-14 22:20:03.151475317 +0000
++++ clearsilver-0.10.5/configure.in	2012-09-14 22:18:46.308456276 +0000
+@@ -250,10 +250,11 @@
+   python_versions="2.4 2.3 2.2 2.1 2.0 1.5 24 23 22 21 20 15"
+   if test $cs_cv_python_path != "no" -a -x $cs_cv_python_path; then
+     python_bin=$cs_cv_python_path
++    python_config_bin="${python_bin}-config"
++    python_inc="$(${python_config_bin} --cflags --includes)"
++    python_lib="$(${python_config_bin} --ldflags)"
+     vers=`$python_bin -c "import sys; print sys.version[[:3]]"`
+     py_inst_dir=`$python_bin -c "import sys; print sys.exec_prefix"`
+-    python_inc=$py_inst_dir/include/python$vers
+-    python_lib="-L$py_inst_dir/lib/python$vers/config -lpython$vers"
+     python_site=$py_inst_dir/lib/python$vers/site-packages
+   else
+     for vers in $python_versions; do
