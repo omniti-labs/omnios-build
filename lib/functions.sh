@@ -291,6 +291,19 @@ run_autoconf() {
     popd > /dev/null
 }
 
+run_autogen() {
+    logmsg "Running autogen.sh"
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    CFLAGS="$CFLAGS32 $CFLAGS" \
+    CXXFLAGS="$CXXFLAGS32 $CXXFLAGS" \
+    CPPFLAGS="$CPPFLAGS32 $CPPFLAGS" \
+    LDFLAGS="$LDFLAGS32 $LDFLAGS" \
+    CC=$CC CXX=$CXX \
+    logcmd ./autogen.sh $CONFIGURE_OPTS_32 $CONFIGURE_OPTS_64 $CONFIGURE_OPTS || \
+        logerr "Failed to run autogen.sh"
+    popd > /dev/null
+}
+
 #############################################################################
 # Stuff that needs to be done/set before we start building
 #############################################################################
