@@ -763,7 +763,7 @@ pre_python_32() {
     logmsg "prepping 32bit python build"
 }
 pre_python_64() {
-    logmsg "prepping 32bit python build"
+    logmsg "prepping 64bit python build"
 }
 python_build() {
     if [[ -z "$PYTHON" ]]; then logerr "PYTHON not set"; fi
