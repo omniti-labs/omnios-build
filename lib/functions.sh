@@ -772,6 +772,16 @@ python_build() {
     logmsg "Building using python setup.py"
     pushd $TMPDIR/$BUILDDIR > /dev/null
 
+    if [[ $BUILDARCH == "32" || $BUILDARCH == "both" ]]; then
+        buildpython32
+    fi
+    if [[ $BUILDARCH == "64" || $BUILDARCH == "both" ]]; then
+        buildpython64
+    fi
+    popd > /dev/null
+}
+
+buildpython32() {
     ISALIST=i386
     export ISALIST
     pre_python_32
@@ -788,6 +798,11 @@ python_build() {
         ./setup.py install --root=$DESTDIR ||
         logerr "--- install failed"
 
+    mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages ||
+        logerr "Cannot move from site-packages to vendor-packages"
+}
+
+buildpython64(){
     ISALIST="amd64 i386"
     export ISALIST
     pre_python_64
@@ -803,10 +818,7 @@ python_build() {
     logcmd $PYTHON \
         ./setup.py install --root=$DESTDIR ||
         logerr "--- install failed"
-    popd > /dev/null
 
-    mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages ||
-        logerr "Cannot move from site-packages to vendor-packages"
 }
 
 #############################################################################
