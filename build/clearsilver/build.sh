@@ -35,6 +35,7 @@ SUMMARY="clearsilver templating language"
 DESC=$SUMMARY
 BUILDARCH=64 # the python we build against is 64bit-only, so this needs to be 64bit too
 CONFIGURE_OPTS="--with-python=/opt/python26/bin/python --disable-csharp $CONFIGURE_OPTS"
+LDFLAGS="-L/opt/python26/lib/ -R/opt/python26/lib/"
 BUILD_DEPENDS_IPS="developer/build/autoconf developer/build/automake-111 omniti/runtime/python-26"
 DEPENDS_IPS="omniti/runtime/python-26"
 
