@@ -27,31 +27,24 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=spread
-VER=3.17.3
-VERHUMAN=$VER
-PKG=omniti/network/spread
-SUMMARY="Spread group communication system"
-DESC="$SUMMARY"
+PROG=M2Crypto
+VER=0.21.1
+PKG=omniti/library/python-2/m2crypto
+SUMMARY="Python interface for openssl"
+DESC="M2Crypto provides a python interface to the openssl library."
 
-SRCNAME=$PROG-src
-BUILDDIR=$SRCNAME-$VER
+LDFLAGS64="-L$PYTHONLIB -R$PYTHONLIB -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
+BUILDARCH=64
+PYTHON=/opt/python26/bin/python
+PATH=/opt/omni/bin:/opt/python26/bin:$PATH
 
-# XXX dual architecture support doesn't work with 64bit daemons, so we 
-# remove the 64bit one before generating the package.
-rm_64bit_daemon_hack() {
-  logcmd rm ${DESTDIR}/opt/omni/sbin/amd64/spread
-}
+DEPENDS_IPS="omniti/runtime/python-26"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS omniti/developer/swig"
 
 init
-download_source $PROG $SRCNAME $VER
+download_source $PROG $PROG $VER
 patch_source
 prep_build
-build
-rm_64bit_daemon_hack
-make_isa_stub
+python_build
 make_package
 clean_up
-
-# Vim hints
-# vim:ts=4:sw=4:et:

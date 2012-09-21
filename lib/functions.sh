@@ -291,6 +291,19 @@ run_autoconf() {
     popd > /dev/null
 }
 
+run_autogen() {
+    logmsg "Running autogen.sh"
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    CFLAGS="$CFLAGS32 $CFLAGS" \
+    CXXFLAGS="$CXXFLAGS32 $CXXFLAGS" \
+    CPPFLAGS="$CPPFLAGS32 $CPPFLAGS" \
+    LDFLAGS="$LDFLAGS32 $LDFLAGS" \
+    CC=$CC CXX=$CXX \
+    logcmd ./autogen.sh $CONFIGURE_OPTS_32 $CONFIGURE_OPTS_64 $CONFIGURE_OPTS || \
+        logerr "Failed to run autogen.sh"
+    popd > /dev/null
+}
+
 #############################################################################
 # Stuff that needs to be done/set before we start building
 #############################################################################
@@ -750,7 +763,7 @@ pre_python_32() {
     logmsg "prepping 32bit python build"
 }
 pre_python_64() {
-    logmsg "prepping 32bit python build"
+    logmsg "prepping 64bit python build"
 }
 python_build() {
     if [[ -z "$PYTHON" ]]; then logerr "PYTHON not set"; fi
@@ -759,6 +772,16 @@ python_build() {
     logmsg "Building using python setup.py"
     pushd $TMPDIR/$BUILDDIR > /dev/null
 
+    if [[ $BUILDARCH == "32" || $BUILDARCH == "both" ]]; then
+        buildpython32
+    fi
+    if [[ $BUILDARCH == "64" || $BUILDARCH == "both" ]]; then
+        buildpython64
+    fi
+    popd > /dev/null
+}
+
+buildpython32() {
     ISALIST=i386
     export ISALIST
     pre_python_32
@@ -775,6 +798,11 @@ python_build() {
         ./setup.py install --root=$DESTDIR ||
         logerr "--- install failed"
 
+    mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages ||
+        logerr "Cannot move from site-packages to vendor-packages"
+}
+
+buildpython64(){
     ISALIST="amd64 i386"
     export ISALIST
     pre_python_64
@@ -790,10 +818,7 @@ python_build() {
     logcmd $PYTHON \
         ./setup.py install --root=$DESTDIR ||
         logerr "--- install failed"
-    popd > /dev/null
 
-    mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages ||
-        logerr "Cannot move from site-packages to vendor-packages"
 }
 
 #############################################################################

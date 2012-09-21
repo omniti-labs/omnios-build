@@ -27,28 +27,26 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=spread
-VER=3.17.3
-VERHUMAN=$VER
-PKG=omniti/network/spread
-SUMMARY="Spread group communication system"
-DESC="$SUMMARY"
-
-SRCNAME=$PROG-src
-BUILDDIR=$SRCNAME-$VER
-
-# XXX dual architecture support doesn't work with 64bit daemons, so we 
-# remove the 64bit one before generating the package.
-rm_64bit_daemon_hack() {
-  logcmd rm ${DESTDIR}/opt/omni/sbin/amd64/spread
-}
+PROG=clearsilver
+VER=0.10.5
+VERHUMAN=$VER   # Human-readable version
+PKG=omniti/templating/clearsilver
+SUMMARY="clearsilver templating language"
+DESC=$SUMMARY
+BUILDARCH=64 # the python we build against is 64bit-only, so this needs to be 64bit too
+CONFIGURE_OPTS="--with-python=/opt/python26/bin/python --disable-csharp $CONFIGURE_OPTS"
+LDFLAGS="-L/opt/python26/lib/ -R/opt/python26/lib/"
+BUILD_DEPENDS_IPS="developer/build/autoconf developer/build/automake-111 omniti/runtime/python-26"
+DEPENDS_IPS="omniti/runtime/python-26"
 
 init
-download_source $PROG $SRCNAME $VER
+download_source $PROG $PROG $VER
 patch_source
+# because autogen.sh runs configure, we run configure twice. not sure if it's 
+# worth the encapsulation break on build() to fix this.
+run_autogen
 prep_build
 build
-rm_64bit_daemon_hack
 make_isa_stub
 make_package
 clean_up

@@ -1,0 +1,14 @@
+--- clearsilver-0.10.5/rules.mk.in.orig	2012-09-14 22:20:21.121194203 +0000
++++ clearsilver-0.10.5/rules.mk.in	2012-09-14 22:17:30.202845308 +0000
+@@ -86,9 +86,9 @@
+ CPPFLAGS   = -I$(NEOTONIC_ROOT) @CPPFLAGS@
+ CFLAGS     = @CFLAGS@ -Wall $(CPPFLAGS) $(PICFLG)
+ OUTPUT_OPTION = -o $@
+-LD         = $(CC) -o
++LD         = $(CC) $(CFLAGS) -o
+ LDFLAGS    = -L$(LIB_DIR) @LDFLAGS@
+-LDSHARED   = $(CC) -shared $(PICFLG)
++LDSHARED   = $(CC) $(CFLAGS) -shared $(PICFLG)
+ CPPLDSHARED   = $(CPP) -shared $(PICFLG)
+ AR         = @AR@ cr
+ RANLIB     = @RANLIB@

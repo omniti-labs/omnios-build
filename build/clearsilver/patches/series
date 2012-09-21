@@ -1,0 +1,3 @@
+configure.in
+rules.mk.in
+python.Makefile
