@@ -43,7 +43,7 @@ DESC="$SUMMARY -- Illumos and some special sauce." # Longer description
 
 #all of the ips depends should be available from OmniTI repos
 
-BUILD_DEPENDS_IPS="developer/astdev developer/build/make developer/build/onbld developer/gcc-3 developer/java/jdk developer/lexer/flex developer/object-file developer/parser/bison library/glib2 library/libxml2 library/libxslt library/nspr/header-nspr library/perl-5/xml-parser library/security/trousers runtime/perl-5142 runtime/perl-5142-64 runtime/perl-5142/manual system/library/math/header-math system/library/install system/library/dbus system/library/libdbus system/library/libdbus-glib system/library/mozilla-nss/header-nss system/management/snmp/net-snmp text/gnu-gettext sunstudio12.1"
+BUILD_DEPENDS_IPS="developer/astdev developer/build/make developer/build/onbld developer/gcc44 developer/java/jdk developer/lexer/flex developer/object-file developer/parser/bison library/glib2 library/libxml2 library/libxslt library/nspr/header-nspr library/perl-5/xml-parser library/security/trousers runtime/perl-5142 runtime/perl-5142-64 runtime/perl-5142/manual system/library/math/header-math system/library/install system/library/dbus system/library/libdbus system/library/libdbus-glib system/library/mozilla-nss/header-nss system/management/snmp/net-snmp text/gnu-gettext sunstudio12.1"
 
 GIT=git
 
@@ -65,8 +65,11 @@ ILLUMOS_CLONE_WS="CLONE\_WS=\'anon@src.omniti.com:~omnios\/core\/illumos\-omnios
 ILLUMOS_PKG_REDIST="PKGPUBLISHER\_REDIST=\'omnios\'"
 
 #these variables are appended to the end of the script so no need to escape
-ILLUMOS_GNUC="export __GNUC='';"
-ILLUMOS_NO_SHADOW="export CW_NO_SHADOW=1;"
+ILLUMOS_GNUC="export __GNUC=''"
+ILLUMOS_GNUC4="export __GNUC4=''"
+ILLUMOS_NO_SHADOW="export CW_NO_SHADOW=1"
+ILLUMOS_GCC_ROOT='export GCC_ROOT="/opt/gcc-4.4.4"'
+ILLUMOS_CW_GCC_DIR='export CW_GCC_DIR="$GCC_ROOT/bin"'
 ILLUMOS_BUILDNUM="ONNV_BUILDNUM=$VER; export ONNV_BUILDNUM;"
 
 sunstudio_location() {
@@ -116,6 +119,9 @@ modify_build_script() {
     logcmd /usr/bin/gsed -i -e 's/^.*export NIGHTLY_OPTIONS.*/export '$ILLUMOS_NO'/g;s/^.*export CODEMGR_WS=.*/export '$ILLUMOS_CODEMGR_WS'/g;s/^.*export CLONE_WS=.*/export '$ILLUMOS_CLONE_WS'/g;s/^.*export PKGPUBLISHER_REDIST=.*/export '$ILLUMOS_PKG_REDIST'/g;s/^.*export VERSION=.*/export '$ILLUMOS_VERSION'/g;/^.*GNUC=.*/d;/^.*CW_NO_SHADOW=.*/d;/^.*ONNV_BUILDNUM=.*/d' illumos.sh || \
         logerr "/usr/bin/gsed failed"
     logcmd `echo $ILLUMOS_GNUC >> illumos.sh` 
+    logcmd `echo $ILLUMOS_GNUC4 >> illumos.sh` 
+    logcmd `echo $ILLUMOS_GCC_ROOT >> illumos.sh` 
+    logcmd `echo $ILLUMOS_CW_GCC_DIR >> illumos.sh`
     logcmd `echo $ILLUMOS_NO_SHADOW >> illumos.sh`
     logcmd `echo $ILLUMOS_BUILDNUM >> illumos.sh`
     logcmd `echo RELEASE_DATE=$RELEASE_DATE >> illumos.sh`
