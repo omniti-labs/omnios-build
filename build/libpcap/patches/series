@@ -1,3 +1,4 @@
 10-linkclean.patch
-20-zonenameprefix.patch
+#20-zonenameprefix.patch
 30-getifaddrs.patch
+40-not-on-solaris.patch
