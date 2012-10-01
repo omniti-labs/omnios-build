@@ -34,7 +34,7 @@ PKG=system/library/pcap
 SUMMARY="libpcap - a packet capture library"
 DESC="$SUMMARY"
 
-CONFIGURE_OPTS="$CONFIGURE_OPTS --mandir=/usr/share/man"
+CONFIGURE_OPTS="$CONFIGURE_OPTS --mandir=/usr/share/man --with-pcap=dlpi"
 
 save_function configure32 configure32_orig
 save_function configure64 configure64_orig
@@ -45,6 +45,8 @@ configure32(){
 configure64(){
     configure64_orig
     gsed -i 's/#define HAVE_NETPACKET_PACKET_H 1//;' config.h
+    echo "#define HAVE_SYS_BUFMOD_H 1" >> config.h
+    gsed -i 's/^LDFLAGS =.*/LDFLAGS =/;' Makefile
 }
 fixup_man3(){
     mv $DESTDIR/usr/share/man/man3 $DESTDIR/usr/share/man/man3pcap

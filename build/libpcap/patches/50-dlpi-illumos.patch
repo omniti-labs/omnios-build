@@ -1,0 +1,47 @@
+diff -ru libpcap-1.3.0/aclocal.m4 libpcap-1.3.0.unbork/aclocal.m4
+--- libpcap-1.3.0/aclocal.m4	Mon Oct  1 14:10:09 2012
++++ libpcap-1.3.0.unbork/aclocal.m4	Mon Oct  1 14:11:40 2012
+@@ -931,7 +931,7 @@
+ AC_DEFUN(AC_C___ATTRIBUTE__, [
+ AC_MSG_CHECKING(for __attribute__)
+ AC_CACHE_VAL(ac_cv___attribute__, [
+-AC_COMPILE_IFELSE(
++AC_COMPILE_IFELSE([
+   AC_LANG_SOURCE([[
+ #include <stdlib.h>
+ 
+@@ -948,7 +948,7 @@
+ {
+   foo();
+ }
+-  ]]),
++  ]])],
+ ac_cv___attribute__=yes,
+ ac_cv___attribute__=no)])
+ if test "$ac_cv___attribute__" = "yes"; then
+diff -ru libpcap-1.3.0/pcap-libdlpi.c libpcap-1.3.0.unbork/pcap-libdlpi.c
+--- libpcap-1.3.0/pcap-libdlpi.c	Thu Mar 29 12:57:32 2012
++++ libpcap-1.3.0.unbork/pcap-libdlpi.c	Mon Oct  1 14:09:17 2012
+@@ -235,9 +235,9 @@
+ static int
+ dlpromiscon(pcap_t *p, bpf_u_int32 level)
+ {
+-	int err;
++	int err, retv;
+ 
+-	retv = dlpi_promiscon(p->hd, level);
++	retv = dlpi_promiscon(p->dlpi_hd, level);
+ 	if (retv != DLPI_SUCCESS) {
+ 		if (retv == DL_SYSERR &&
+ 		    (errno == EPERM || errno == EACCES))
+--- libpcap-1.3.0/Makefile.in	Mon Oct  1 14:29:53 2012
++++ libpcap-1.3.0.unbork/Makefile.in	Mon Oct  1 14:30:09 2012
+@@ -82,7 +82,7 @@
+ 	@rm -f $@
+ 	$(CC) $(FULL_CFLAGS) -c $(srcdir)/$*.c
+ 
+-PSRC =	pcap-@V_PCAP@.c @USB_SRC@ @BT_SRC@ @CAN_SRC@ @NETFILTER_SRC@ @CANUSB_SRC@
++PSRC =	pcap-@V_PCAP@.c @USB_SRC@ @BT_SRC@ @CAN_SRC@ @NETFILTER_SRC@ @CANUSB_SRC@ dlpisubs.c
+ FSRC =  fad-@V_FINDALLDEVS@.c
+ SSRC =  @SSRC@
+ CSRC =	pcap.c inet.c gencode.c optimize.c nametoaddr.c etherent.c \
