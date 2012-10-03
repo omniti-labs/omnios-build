@@ -1,0 +1,36 @@
+<?xml version='1.0'?>
+<!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
+<service_bundle type='manifest' name='export'>
+  <service name='network/tomcat7' type='service' version='0'>
+    <create_default_instance enabled='false'/>
+    <dependency name='fs' grouping='require_all' restart_on='none' type='service'>
+      <service_fmri value='svc:/system/filesystem/local'/>
+    </dependency>
+    <dependency name='autofs' grouping='optional_all' restart_on='none' type='service'>
+      <service_fmri value='svc:/system/filesystem/autofs'/>
+    </dependency>
+    <dependency name='network' grouping='require_all' restart_on='none' type='service'>
+      <service_fmri value='svc:/milestone/network'/>
+    </dependency>
+
+    <method_context>
+      <method_environment>
+        <envvar name='JAVA_HOME' value='/usr/java'/>
+        <envvar name='CATALINA_HOME' value='/opt/tomcat7'/>
+        <envvar name='CLASSPATH' value='/opt/tomcat7/bin/bootstrap.jar:/opt/tomcat7/bin/commons-daemon.jar:/opt/tomcat7/webapps:/opt/tomcat7/bin/tomcat-juli.jar'/>
+        <envvar name='LOGDIR' value='/var/log/tomcat7'/>
+        <!-- make this unique if you run multiple instances -->
+        <envvar name='PIDFILE' value='/var/run/tomcat7.pid'/>
+      </method_environment>
+    </method_context>
+
+    <exec_method name='start' type='method' exec='/opt/tomcat7/bin/jsvc -pidfile $PIDFILE -Dcatalina.home=$CATALINA_HOME -classpath $CLASSPATH -outfile $LOGDIR/tomcat-out.log -errfile $LOGDIR/tomcat-err.log org.apache.catalina.startup.Bootstrap ' timeout_seconds='0'/>
+    <exec_method name='stop' type='method' exec='/opt/tomcat7/bin/jsvc -stop -pidfile $PIDFILE  -Dcatalina.home=$CATALINA_HOME -classpath $CLASSPATH -outfile $LOGDIR/tomcat-out.log -errfile $LOGDIR/tomcat-err.log org.apache.catalina.startup.Bootstrap' timeout_seconds='30'/>
+    <stability value='Unstable'/>
+    <template>
+      <common_name>
+        <loctext xml:lang='C'>Apache Tomcat Java Web Application Server</loctext>
+      </common_name>
+    </template>
+  </service>
+</service_bundle>
