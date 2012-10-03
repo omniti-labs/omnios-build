@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 PROG=httpd
-VER=2.2.22
+VER=2.2.23
 PKG=omniti/server/apache22
 SUMMARY="$PROG - Apache Web Server ($VER)"
 DESC="$SUMMARY"
@@ -29,21 +29,16 @@ MPMS="worker event prefork" # Which MPMs to build
 
 # Define some architecture specific variables
 if [[ $ISAPART == "i386" ]]; then
-    # i386
-    LAYOUT=SolAmd32
     LAYOUT64=SolAmd64
-    #DEF="-DALTLAYOUT -DAMD32"
     #DEF64="-DALTLAYOUT -DAMD64"
 else
     # sparc
-    LAYOUT=SolSparc32
     LAYOUT64=SolSparc64
-    #DEF="-DALTLAYOUT -DSPARCV8"
     #DEF64="-DALTLAYOUT -DSPARCV9"
 fi
 
 # General configure options - BASE is for options to be applied everywhere
-# and the 32/64 variables are for 32/64 bit builds.
+# and the *64 variables are for 64 bit builds.
 CONFIGURE_OPTS_BASE="--enable-dtrace
     --enable-ldap
     --enable-authnz-ldap
@@ -58,18 +53,11 @@ CONFIGURE_OPTS_BASE="--enable-dtrace
     --enable-modules=all
     --disable-reqtimeout
     --disable-proxy-scgi"
-CONFIGURE_OPTS_32="
-    --enable-layout=$LAYOUT
-    --with-apr=/opt/omni/bin/$ISAPART/apr-1-config
-    --with-apr-util=/opt/omni/bin/$ISAPART/apu-1-config"
 CONFIGURE_OPTS_64="
     --enable-layout=$LAYOUT64
     --with-apr=/opt/omni/bin/$ISAPART64/apr-1-config
     --with-apr-util=/opt/omni/bin/$ISAPART64/apu-1-config"
 
-CFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
-CPPFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
-LDFLAGS32="$LDFLAGS32 -L/opt/omni/lib -R/opt/omni/lib"
 LDFLAGS64="$LDFLAGS64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
 CFLAGS64="$CFLAGS64 -g"
 
@@ -93,16 +81,11 @@ build_mpm() {
     done
 }
 
-# Redefine the build32/build64 to build all MPMs
-save_function build32 build32_orig
+# Redefine the build64 to build all MPMs
 save_function build64 build64_orig
 
-build32() {
-    build_mpm build32_orig
-}
-
 build64() {
-    perl -pi -e "
+    logcmd perl -pi -e "
     s#-L/opt/omni/lib#-L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64#g;
     s#(-[LR]/opt/omni/lib(?!/))#"'$1'"/$ISAPART64#g;
     s#^EXTRA_LDFLAGS = .+#EXTRA_LDFLAGS = #;
@@ -112,21 +95,20 @@ build64() {
 
 # Extra script/file installs
 add_file() {
-    cp $SRCDIR/files/$1 $DESTDIR$PREFIX/$2
-    chown root:root $DESTDIR$PREFIX/$2
+    logcmd cp $SRCDIR/files/$1 $DESTDIR$PREFIX/$2
+    logcmd chown root:root $DESTDIR$PREFIX/$2
     if [[ -n "$3" ]]; then
-        chmod $3 $DESTDIR$PREFIX/$2
+        logcmd chmod $3 $DESTDIR$PREFIX/$2
     else
-        chmod 0444 $DESTDIR$PREFIX/$2
+        logcmd chmod 0444 $DESTDIR$PREFIX/$2
     fi
 }
 
 add_extra_files() {
     logmsg "Installing custom files and scripts"
     add_file manifest-http-apache.xml conf/http-apache.xml
-    add_file method-http-apache bin/method-http-apache 0555
-    rm -f $DESTDIR$PREFIX/conf/httpd.*.conf
-    mv $DESTDIR$PREFIX/conf/httpd.conf $DESTDIR$PREFIX/conf/httpd.conf.dist
+    logcmd rm -f $DESTDIR$PREFIX/conf/httpd.*.conf
+    logcmd mv $DESTDIR$PREFIX/conf/httpd.conf $DESTDIR$PREFIX/conf/httpd.conf.dist
     add_file httpd.conf conf/httpd.conf
 }
 
@@ -134,7 +116,7 @@ add_extra_files() {
 save_function download_source download_source_orig
 download_source() {
     download_source_orig "$@"
-    cp $SRCDIR/files/config.layout $TMPDIR/$BUILDDIR/
+    logcmd cp $SRCDIR/files/config.layout $TMPDIR/$BUILDDIR/
 }
 
 # Add another step after patching the source (a new file needs to be made
@@ -142,15 +124,7 @@ download_source() {
 save_function patch_source patch_source_orig
 patch_source() {
     patch_source_orig
-    chmod +x $TMPDIR/$BUILDDIR/libtool-dep-extract
-}
-
-# Override fix_permissions to only fix permissions on opt/apache22
-# The dtrace stuff installs files in usr
-fix_permissions() {
-    logmsg "Fixing ownership on installed files"
-    logcmd chown -R -P root:root ${DESTDIR}$PREFIX ||
-        logerr "Failed to fix ownership on ${DESTDIR}$PREFIX"
+    logcmd chmod +x $TMPDIR/$BUILDDIR/libtool-dep-extract
 }
 
 init

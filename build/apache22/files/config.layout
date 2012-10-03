@@ -1,26 +1,3 @@
-<Layout SolAmd32>
-    prefix:        /opt/apache22
-    exec_prefix:   ${prefix}
-    bindir:        ${exec_prefix}/bin/i386
-    sbindir:       ${exec_prefix}/bin/i386
-    libdir:        ${exec_prefix}/lib
-    libexecdir:    ${exec_prefix}/libexec/i386
-    mandir:        ${prefix}/man
-    sysconfdir:    ${prefix}/conf
-    datadir:       ${prefix}/share
-    installbuilddir: ${datadir}/build/i386
-    errordir:      ${datadir}/error
-    iconsdir:      ${datadir}/icons
-    htdocsdir:     ${datadir}/htdocs
-    manualdir:     ${datadir}/manual
-    cgidir:        ${datadir}/cgi-bin
-    includedir:    ${prefix}/include
-    localstatedir: ${prefix}/var
-    runtimedir:    ${localstatedir}/run
-    logfiledir:    ${localstatedir}/logs
-    proxycachedir: ${localstatedir}/proxy
-</Layout>
-
 <Layout SolAmd64>
     prefix:        /opt/apache22
     exec_prefix:   ${prefix}
@@ -38,29 +15,6 @@
     manualdir:     ${datadir}/manual
     cgidir:        ${datadir}/cgi-bin
     includedir:    ${prefix}/include/amd64
-    localstatedir: ${prefix}/var
-    runtimedir:    ${localstatedir}/run
-    logfiledir:    ${localstatedir}/logs
-    proxycachedir: ${localstatedir}/proxy
-</Layout>
-
-<Layout SolSparc32>
-    prefix:        /opt/apache22
-    exec_prefix:   ${prefix}
-    bindir:        ${exec_prefix}/bin/sparcv8plus
-    sbindir:       ${exec_prefix}/bin/sparcv8plus
-    libdir:        ${exec_prefix}/lib
-    libexecdir:    ${exec_prefix}/libexec/sparcv8plus
-    mandir:        ${prefix}/man
-    sysconfdir:    ${prefix}/conf
-    datadir:       ${prefix}/share
-    installbuilddir: ${datadir}/build/sparcv8plus
-    errordir:      ${datadir}/error
-    iconsdir:      ${datadir}/icons
-    htdocsdir:     ${datadir}/htdocs
-    manualdir:     ${datadir}/manual
-    cgidir:        ${datadir}/cgi-bin
-    includedir:    ${prefix}/include
     localstatedir: ${prefix}/var
     runtimedir:    ${localstatedir}/run
     logfiledir:    ${localstatedir}/logs
