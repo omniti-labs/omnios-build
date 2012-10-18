@@ -39,8 +39,8 @@ SUMMARY="This isn't used, it's in the makefiles for pkg"
 DESC="This isn't used, it's in the makefiles for pkg"
 
 PROG=g11n
-VER=0.151002
-BUILDNUM=151002
+VER=0.151004
+BUILDNUM=151004
 if [[ -z "$PKGPUBLISHER" ]]; then
     logerr "No PKGPUBLISHER specified in config.sh"
     exit # Force it, we're fucked here.

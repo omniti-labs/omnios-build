@@ -1,4 +1,4 @@
-set name=pkg.fmri value=system/library/c++/sunpro@0.5.11,5.11-0.151002
+set name=pkg.fmri value=system/library/c++/sunpro@0.5.11,5.11-0.151004
 set name=pkg.summary value="Sun Workshop Compilers Bundled libC"
 set name=pkg.description value="Sun Workshop Compilers Bundled libC"
 set name=description value="Sun Workshop Compilers Bundled libC"

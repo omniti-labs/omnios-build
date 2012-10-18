@@ -1,4 +1,4 @@
-set name=pkg.fmri value=library/python-2/python-extra-26@0.5.11,5.11-0.151002
+set name=pkg.fmri value=library/python-2/python-extra-26@0.5.11,5.11-0.151004
 set name=variant.arch value=i386
 set name=pkg.description value="Supplemental Python libraries and utilities"
 set name=variant.opensolaris.zone value=global value=nonglobal

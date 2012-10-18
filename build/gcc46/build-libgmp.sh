@@ -46,6 +46,8 @@ PREFIX=/opt/gcc-${GCCVER}
 CC=gcc
 CONFIGURE_OPTS="--enable-cxx"
 CFLAGS="-fexceptions"
+ABI=32
+export ABI
 
 make_install32() {
     logcmd mkdir -p $DESTDIR/opt/gcc-${GCCVER}/share/info

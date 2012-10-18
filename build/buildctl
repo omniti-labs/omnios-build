@@ -75,16 +75,28 @@ build() {
         fi
         SCRIPT=$(basename ${targets[$1]})
         if [[ -n $(echo $SCRIPT | grep ".p5m$") ]]; then
-            echo "Simple manifest to import... importing to $PKGSRVR"
+            echo "Found a manifest file. Preparing it for publishing."
             sed -e "s/@PKGPUBLISHER@/$PKGPUBLISHER/g" < $SCRIPT > $SCRIPT.final
             if [[ -f root.tar.bz2 ]]; then
-                bzip2 -dc root.tar.bz2 | tar xf -
+                echo "File archive found. Extracting..."
+                bzip2 -dc root.tar.bz2 | tar xf - || \
+                    bail "Failed to extract root.tar.bz2"
+                echo "Publishing from $SCRIPT.final"
+                pkgsend -s $PKGSRVR publish -d $PKGROOT $SCRIPT.final || \
+                    bail "pkgsend failed"
+                rm -rf $PKGROOT
+            # In case we just have a tree of files and not a tarball
+            elif [[ -d $PKGROOT ]]; then
+                echo "Publishing from $SCRIPT.final"
+                pkgsend -s $PKGSRVR publish -d $PKGROOT $SCRIPT.final || \
+                    bail "pkgsend failed"
+            # Else we just have a manifest to import
+            else
+                echo "Simple manifest to import... importing to $PKGSRVR"
+                pkgsend -s $PKGSRVR publish $SCRIPT.final || \
+                    bail "pkgsend failed"
+                rm $SCRIPT.final
             fi
-            pkgsend -s $PKGSRVR publish -d $PKGROOT $SCRIPT.final
-            if [[ -f root.tar.bz2 ]]; then
-                rm -rf ./root
-            fi
-            rm $SCRIPT.final
         else
             PATH=$PATH:. $SCRIPT
         fi

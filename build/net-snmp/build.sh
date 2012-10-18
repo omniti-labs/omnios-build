@@ -41,6 +41,9 @@ DEPENDS_IPS="SUNWcs shell/bash system/library
 
 MIB_MODULES="host disman/event-mib ucd-snmp/diskio udp-mib tcp-mib if-mib"
 
+LDFLAGS32="$LDFLAGS32 -L/lib"
+LDFLAGS64="$LDFLAGS64 -L/lib/$ISAPART64"
+
 # We want dual-arch libs but only care about 32-bit binaries
 # We will elide 64-bit binaries with pkgmogrify (local.mog)
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=$PREFIX/bin --sbindir=$PREFIX/sbin"

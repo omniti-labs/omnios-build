@@ -29,17 +29,19 @@
 
 # First we build the kernel module
 PROG=illumos-kvm
-VER=1.0.2         # Keep this the same for the utilities build below
-COMMIT=9621d5228ac4dbdd99cdfe8f2946e7315261a893
+VER=1.0.3
+# Default to building tip, but if needed, specify the desired commit here
+COMMIT=
 SRC_REPO=https://github.com/joyent/illumos-kvm.git
-KERNEL_SOURCE=/code/omni-os-151002/illumos-omni-os
-PROTO_AREA=$KERNEL_SOURCE/proto
+KERNEL_SOURCE=/code/omnios-151004/illumos-omnios
+PROTO_AREA=$KERNEL_SOURCE/proto/root_i386
 PATCHDIR=patches.$PROG
 PKG=driver/virtualization/kvm
-SUMMARY="Illumos KVM kernel driver ($PROG ${COMMIT:0:10})"
-DESC="KVM is the kernel virtual machine, a framework for the in-kernel acceleration of QEMU."
+SUMMARY="placeholder; reset below"
+DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="developer/gcc-3 developer/versioning/git"
+# These are the dependencies for both the module and the cmds
+BUILD_DEPENDS_IPS="archiver/gnu-tar developer/gcc46 developer/versioning/git file/gnu-coreutils"
 
 # Only 64-bit matters
 BUILDARCH=64
@@ -53,11 +55,19 @@ download_source() {
         logmsg "--- Removing existing directory for a fresh start"
         logcmd rm -rf $TMPDIR/$BUILDDIR
     fi
-    logcmd /bin/git clone $SRC_REPO $TMPDIR/$BUILDDIR
-    logmsg "--- Setting revision to $COMMIT"
-    pushd $TMPDIR/$BUILDDIR > /dev/null
-    logcmd /bin/git checkout $COMMIT
-    popd > /dev/null
+    logcmd /bin/git clone $SRC_REPO $TMPDIR/$BUILDDIR || \
+        logerr "--- Failed to clone from $SRC_REPO"
+    if [[ -n "$COMMIT" ]]; then
+        logmsg "--- Setting revision to $COMMIT"
+        pushd $TMPDIR/$BUILDDIR > /dev/null
+        logcmd /bin/git checkout $COMMIT
+        popd > /dev/null
+    fi
+    if [[ -z "$COMMIT" ]]; then
+        pushd $TMPDIR/$BUILDDIR > /dev/null
+        COMMIT=$(git log -1 --format=format:%H)
+        popd > /dev/null
+    fi
 }
 
 configure64() {
@@ -69,7 +79,7 @@ make_prog() {
     logcmd $MAKE \
            KERNEL_SOURCE=$KERNEL_SOURCE \
            PROTO_AREA=$PROTO_AREA \
-           GCC=/usr/sfw/bin/gcc || \
+           CC=/opt/gcc-4.4.4/bin/gcc || \
         logerr "--- Make failed"
     logcmd cp $KERNEL_SOURCE/usr/src/OPENSOLARIS.LICENSE $SRCDIR/OPENSOLARIS.LICENSE || \
         logerr "--- failed to copy CDDL from kernel sources"
@@ -85,30 +95,33 @@ patch_source
 prep_build
 build
 fix_drivers
+SUMMARY="Illumos KVM kernel driver ($PROG ${COMMIT:0:10})"
+DESC="KVM is the kernel virtual machine, a framework for the in-kernel acceleration of QEMU."
 make_package kvm.mog
 clean_up
-#
 
-# Next, the utilities
+# Next, the utilities (they follow the kernel module version)
 PROG=illumos-kvm-cmd
-VER=1.0.2         # Keep this the same as the kernel driver above
-COMMIT=099e212e968550ab97f7ba3431e55d9c16a0c78d
+# Default to building tip, but if needed, specify the desired commit here
+COMMIT=
 SRC_REPO=https://github.com/joyent/illumos-kvm-cmd.git
-KERNEL_SOURCE=/code/omni-os-151002/illumos-omni-os
+KERNEL_SOURCE=/code/omnios-151004/illumos-omnios
 KVM_DIR=$TMPDIR/illumos-kvm-$VER
 PATCHDIR=patches.$PROG
 PKG=system/kvm
-SUMMARY="Illumos KVM utilities ($PROG ${COMMIT:0:10})"
-DESC="KVM is the kernel virtual machine, a framework for the in-kernel acceleration of QEMU."
 
 # Reset a couple of important things
-BUILDDIR=$TMPDIR/$PROG-$VER  # This must be explicitly reset from the run above
+BUILDDIR=$PROG-$VER  # This must be explicitly reset from the run above
 PREFIX=/usr
-
-BUILD_DEPENDS_IPS="developer/gcc-3 developer/versioning/git file/gnu-coreutils"
 
 # Only 64-bit matters
 BUILDARCH=64
+
+# Borrowed from Joyent's build.sh within the source
+# so we can find ctfconvert during 'make install'
+CTFBINDIR="$KERNEL_SOURCE"/usr/src/tools/proto/root_i386-nd/opt/onbld/bin/i386
+export CTFBINDIR
+export PATH="$PATH:$CTFBINDIR"
 
 make_prog() {
     CC=/opt/gcc-4.6.3/bin/gcc
@@ -118,11 +131,18 @@ make_prog() {
         logerr "--- build.sh failed"
 }
 
-init
+make_install() {
+    logmsg "--- make install"
+    logcmd $MAKE DESTDIR=${DESTDIR} V=1 install || \
+        logerr "--- Make install failed"
+}
+
 download_source
 patch_source
 prep_build
 build
+SUMMARY="Illumos KVM utilities ($PROG ${COMMIT:0:10})"
+DESC="KVM is the kernel virtual machine, a framework for the in-kernel acceleration of QEMU."
 make_package kvm-cmd.mog
 clean_up
 

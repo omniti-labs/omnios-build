@@ -34,7 +34,7 @@ RELEASE_DATE=nightly # This is overridden by the checkout
 . ../../lib/functions.sh
 
 PROG=omnios    # App name
-VER=151002    # App version
+VER=151004    # App version
 PVER=1          # Package Version (numeric only)
 
 PKG=illumos-gate # Package name (without prefix)

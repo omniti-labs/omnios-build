@@ -1,0 +1,104 @@
+Open Maryland, not Indiana Operating System (OmniOS)
+Copyright 2012 OmniTI Computer Consulting, Inc. All rights reserved.
+
+OpenIndiana Project, part of The Illumos Foundation (C) 2010
+
+Copyright  2009 Sun Microsystems, Inc., 4150 Network Circle,
+Santa Clara, California 95054, U.S.A. All rights reserved.
+
+Sun Microsystems, Inc. has intellectual property rights relating
+to technology embodied in the product that is described in this
+document. In particular, and without limitation, these intellectual
+property rights may include one or more of the U.S. patents listed at
+http://www.sun.com/patents and one or more additional patents or pending
+patent applications in the U.S. and in other countries.
+
+U.S. Government Rights - Commercial software. Government users
+are subject to the Sun Microsystems, Inc. standard license agreement and
+applicable provisions of the FAR and its supplements.
+
+Use is subject to license terms.
+
+This distribution may include materials developed by third parties.
+
+Parts of the product may be derived from Berkeley BSD systems,
+licensed from the University of California. UNIX is a registered
+trademark in the U.S. and in other countries, exclusively licensed
+through X/Open Company, Ltd.
+
+Sun, Sun Microsystems, the Sun logo, Java, Solaris, OpenSolaris
+and the Java Coffee Cup logo are trademarks or registered trademarks of
+Sun Microsystems, Inc. in the U.S. and other countries.
+
+The OPEN LOOK and Sun(TM) Graphical User Interface was developed
+by Sun Microsystems, Inc. for its users and licensees. Sun acknowledges
+the pioneering efforts of Xerox in researching and developing the
+concept of visual or graphical user interfaces for the computer
+industry. Sun holds a non-exclusive license from Xerox to the Xerox
+Graphical User Interface, which license also covers Sun's licensees who
+implement OPEN LOOK GUIs and otherwise comply with Sun's written license
+agreements.
+
+This product is covered and controlled by U.S. Export Control
+laws and may be subject to the export or import laws in other countries.
+Nuclear, missile, chemical biological weapons or nuclear maritime end
+uses or end users, whether direct or indirect, are strictly prohibited.
+Export or reexport to countries subject to U.S. embargo or to entities
+identified on U.S. export exclusion lists, including, but not limited
+to, the denied persons and specially designated nationals lists is
+strictly prohibited.
+
+Copyright  2009 Sun Microsystems, Inc., 4150 Network Circle,
+Santa Clara, California 95054, Etats-Unis. Tous droits rservs.
+
+Sun Microsystems, Inc. dtient les droits de proprit
+intellectuels relatifs  la technologie incorpore dans le produit qui
+est dcrit dans ce document. En particulier, et ce sans limitation, ces
+droits de proprit intellectuelle peuvent inclure un ou plus des
+brevets amricains lists  l'adresse http://www.sun.com/patents et un
+ou les brevets supplmentaires ou les applications de brevet en attente
+aux Etats - Unis et dans les autres pays.
+
+L'utilisation est soumise aux termes de la Licence.
+
+Cette distribution peut comprendre des composants dvelopps par
+des tierces parties.
+
+Des parties de ce produit pourront tre drives des systmes
+Berkeley BSD licencis par l'Universit de Californie. UNIX est une
+marque dpose aux Etats-Unis et dans d'autres pays et licencie
+exclusivement par X/Open Company, Ltd.
+
+Sun, Sun Microsystems, le logo Sun, Java, Solaris, OpenSolaris
+et le logo Java Coffee Cup sont des marques de fabrique ou des marques
+dposes de Sun Microsystems, Inc. aux Etats-Unis et dans d'autres pays.
+
+L'interface d'utilisation graphique OPEN LOOK et Sun(TM) a t
+dveloppe par Sun Microsystems, Inc. pour ses utilisateurs et
+licencis. Sun reconnat les efforts de pionniers de Xerox pour la
+recherche et le dveloppement du concept des interfaces d'utilisation
+visuelle ou graphique pour l'industrie de l'informatique. Sun dtient
+une license non exclusive de Xerox sur l'interface d'utilisation
+graphique Xerox, cette licence couvrant galement les licencis de Sun
+qui mettent en place l'interface d'utilisation graphique OPEN LOOK et
+qui, en outre, se conforment aux licences crites de Sun.
+
+Ce produit est soumis  la lgislation amricaine en matire de
+contrle des exportations et peut tre soumis  la rglementation en
+vigueur dans d'autres pays dans le domaine des exportations et
+importations. Les utilisations, ou utilisateurs finaux, pour des armes
+nuclaires,des missiles, des armes biologiques et chimiques ou du
+nuclaire maritime, directement ou indirectement, sont strictement
+interdites. Les exportations ou rexportations vers les pays sous
+embargo amricain, ou vers des entits figurant sur les listes
+d'exclusion d'exportation amricaines, y compris, mais de manire non
+exhaustive, la liste de personnes qui font objet d'un ordre de ne pas
+participer, d'une faon directe ou indirecte, aux exportations des
+produits ou des services qui sont rgis par la lgislation amricaine en
+matire de contrle des exportations et la liste de ressortissants
+spcifiquement dsigns, sont rigoureusement interdites.
+
+
+
+
+

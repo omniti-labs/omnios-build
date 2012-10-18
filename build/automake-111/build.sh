@@ -28,13 +28,14 @@
 . ../../lib/functions.sh
 
 PROG=automake
-VER=1.11.3
+VER=1.11.6
 VERHUMAN=$VER
 PKG=developer/build/automake-111
 SUMMARY="GNU Automake $VER"
 DESC="GNU Automake - A Makefile generator ($VER)"
 
 BUILDARCH=32
+BUILD_DEPENDS_IPS="compress/xz developer/build/autoconf"
 DEPENDS_IPS="developer/macro/gnu-m4 runtime/perl-5142"
 
 # Since it's 32-bit only we don't worry about isaexec for bins

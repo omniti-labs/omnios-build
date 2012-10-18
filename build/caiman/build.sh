@@ -37,14 +37,14 @@ fi
 . ../../lib/functions.sh
 
 PROG=caiman
-VER=151002
+VER=151004
 PKG=caiman
 SUMMARY="$PROG"
 DESC="$SUMMARY"
 
 #all of the ips depends should be available from OmniTI repos
 
-BUILD_DEPENDS_IPS="developer/sunstudio12.1 system/boot/wanboot system/boot/wanboot/internal developer/build/onbld system/library developer/versioning/git"
+BUILD_DEPENDS_IPS="developer/sunstudio12.1 system/boot/wanboot system/boot/wanboot/internal developer/build/onbld system/library developer/versioning/git developer/swig"
 
 GIT=git
 

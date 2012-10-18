@@ -65,7 +65,6 @@ make_install64() {
 init
 download_source $PROG $PROG $VER
 patch_source
-force_links
 prep_build
 build
 make_isa_stub

@@ -1,0 +1,11 @@
+--- illumos-kvm-cmd-1.0.3/ctf.sh.orig	Tue Oct  9 19:42:05 2012
++++ illumos-kvm-cmd-1.0.3/ctf.sh	Tue Oct  9 19:46:21 2012
+@@ -10,7 +10,7 @@
+ #
+ 
+ sh_arg0=$(basename $0)
+-ctf_bin=$(pwd)/../../../illumos/usr/src/tools/proto/root_i386-nd/opt/onbld/bin/i386/ctfconvert
++ctf_bin=${CTFBINDIR}/ctfconvert
+ 
+ function fail
+ {

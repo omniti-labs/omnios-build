@@ -1,6 +1,0 @@
-These is the precise version of gcc recommended by Illumos for building
-the kernel.  It is only required (and useful) for building the kernel.
-It is distributed in binary form, because it is painful to build and
-if you need to rebuild it, you likely need to revalidate the kernel on
-the newly built version and that version should be something more recent
-like 4.6.

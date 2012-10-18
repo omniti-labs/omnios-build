@@ -39,8 +39,8 @@
 
 PROG=make
 VER=0.5.11
-PKG=developer/build/make ##IGNORE##
-SUMMARY="Omni-OS Bundled Development Tools"
+PKG=developer/build/make
+SUMMARY="OmniOS Bundled Development Tools (aka DevPro)"
 DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="sunstudio12.1 compatibility/ucb"
