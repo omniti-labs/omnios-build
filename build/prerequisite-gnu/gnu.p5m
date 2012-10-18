@@ -1,4 +1,4 @@
-set name=pkg.fmri value=pkg://@PKGPUBLISHER@/system/prerequisite/gnu@0.5.11,5.11-0.151004:20120222T000000Z
+set name=pkg.fmri value=pkg://@PKGPUBLISHER@/system/prerequisite/gnu@0.5.11,5.11-0.151005:20120222T000000Z
 set name=org.opensolaris.consolidation value=sfw
 set name=variant.arch value=i386
 set name=info.classification value=org.opensolaris.category.2008:Development/GNU

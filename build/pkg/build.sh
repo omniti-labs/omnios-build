@@ -35,7 +35,7 @@ DESC="This isn't used, it's in the makefiles for pkg"
 
 PROG=pkg
 VER=omni
-BUILDNUM=151004
+BUILDNUM=151005
 if [[ -z "$PKGPUBLISHER" ]]; then
     logerr "No PKGPUBLISHER specified. Check lib/site.sh?"
     exit # Force it, we're fucked here.

@@ -37,7 +37,7 @@ fi
 . ../../lib/functions.sh
 
 PROG=caiman
-VER=151004
+VER=151005
 PKG=caiman
 SUMMARY="$PROG"
 DESC="$SUMMARY"
