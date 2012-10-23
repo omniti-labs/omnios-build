@@ -1,8 +1,13 @@
 set name=pkg.fmri value=pkg://@PKGPUBLISHER@/entire@11,5.11-0.151004
+set name=pkg.depend.install-hold value=core-os
 set name=pkg.summary value="Incorporation to constrain core system packages to same build"
 set name=pkg.description value="This package constrains core system package versions to the same build and provides a minimal set of additional packages."
 depend fmri=incorporation/jeos/illumos-gate@11,5.11-0.151004 type=incorporate
 depend fmri=incorporation/jeos/illumos-gate type=require
+depend fmri=consolidation/osnet/osnet-incorporation@0.5.11,5.11-0.151004 type=incorporate
+depend fmri=consolidation/osnet/osnet-incorporation type=require
+depend fmri=incorporation/jeos/omnios-userland@11,5.11-0.151004 type=incorporate
+depend fmri=incorporation/jeos/omnios-userland type=require
 depend fmri=SUNWcs@0.5.11,5.11-0.151004 type=require
 depend fmri=SUNWcsd@0.5.11,5.11-0.151004 type=require
 depend fmri=compatibility/ucb@0.5.11,5.11-0.151004 type=require

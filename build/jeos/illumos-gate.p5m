@@ -1,4 +1,5 @@
 set name=pkg.fmri value=pkg://@PKGPUBLISHER@/incorporation/jeos/illumos-gate@11,5.11-0.151004
+set name=pkg.depend.install-hold value=core-os.omnios
 set name=pkg.description value="This incorporation constrains packages from illumos-gate."
 set name=pkg.summary value="OmniOS Illumos incorporation"
 depend fmri=BRCMbnx@0.5.11,5.11-0.133 type=incorporate
