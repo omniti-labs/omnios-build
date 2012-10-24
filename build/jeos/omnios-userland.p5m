@@ -86,8 +86,8 @@ depend fmri=shell/pipe-viewer@1.2.0,5.11-0.151004 type=incorporate
 depend fmri=shell/tcsh@6.18.1,5.11-0.151004 type=incorporate
 depend fmri=shell/which@2.20,5.11-0.151004 type=incorporate
 depend fmri=shell/zsh@5.0.0,5.11-0.151004 type=incorporate
-depend fmri=system/install/kayak@1.0,5.11-0.151004 type=incorporate
-depend fmri=system/install/kayak-kernel@1.0,5.11-0.151004 type=incorporate
+depend fmri=system/install/kayak@1.1,5.11-0.151004 type=incorporate
+depend fmri=system/install/kayak-kernel@1.1,5.11-0.151004 type=incorporate
 depend fmri=system/kvm@1.0.3,5.11-0.151004 type=incorporate
 depend fmri=system/library/c++/sunpro@0.5.11,5.11-0.151004 type=incorporate
 depend fmri=system/library/dbus@1.4.16,5.11-0.151004 type=incorporate
