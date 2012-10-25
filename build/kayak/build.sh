@@ -41,7 +41,7 @@ if [[ `zonename` != "global" ]]; then
 fi
 
 PROG=kayak
-VER=1.0
+VER=1.1
 VERHUMAN=$VER
 PKG=system/install/kayak
 SUMMARY="Kayak - network installer (server files)"
@@ -69,6 +69,10 @@ clone_source() {
         $GIT pull || logerr "failed to update"
         popd > /dev/null
     fi
+    pushd kayak > /dev/null
+    GITREV=$(git rev-parse HEAD)
+    VERHUMAN="$VERHUMAN (git: ${GITREV:0:7})"
+    popd > /dev/null
     popd > /dev/null
 }
 
