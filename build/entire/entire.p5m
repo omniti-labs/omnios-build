@@ -1,4 +1,3 @@
-=======
 set name=pkg.fmri value=pkg://@PKGPUBLISHER@/entire@11,5.11-0.151005
 set name=pkg.depend.install-hold value=core-os
 set name=pkg.summary value="Incorporation to constrain core system packages to same build"
