@@ -125,8 +125,8 @@ ISAPART=i386
 ISAPART64=amd64
 
 # For OmniOS we (almost) always want GCC
-CC=/opt/gcc-4.6.3/bin/gcc
-CXX=/opt/gcc-4.6.3/bin/g++
+CC=/opt/gcc-4.7.2/bin/gcc
+CXX=/opt/gcc-4.7.2/bin/g++
 
 # CFLAGS applies to both builds, 32/64 only gets applied to the respective
 # build
