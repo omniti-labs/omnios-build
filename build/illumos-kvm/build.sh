@@ -41,7 +41,7 @@ SUMMARY="placeholder; reset below"
 DESC="$SUMMARY"
 
 # These are the dependencies for both the module and the cmds
-BUILD_DEPENDS_IPS="archiver/gnu-tar developer/gcc46 developer/versioning/git file/gnu-coreutils"
+BUILD_DEPENDS_IPS="archiver/gnu-tar developer/gcc47 developer/versioning/git file/gnu-coreutils"
 
 # Only 64-bit matters
 BUILDARCH=64
@@ -124,7 +124,7 @@ export CTFBINDIR
 export PATH="$PATH:$CTFBINDIR"
 
 make_prog() {
-    CC=/opt/gcc-4.6.3/bin/gcc
+    CC=/opt/gcc-4.7.2/bin/gcc
     export KERNEL_SOURCE KVM_DIR PREFIX CC
     logmsg "--- build.sh"
     logcmd ./build.sh || \
