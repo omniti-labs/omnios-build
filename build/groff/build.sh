@@ -34,7 +34,7 @@ SUMMARY="$PROG - GNU Troff typesetting package"
 DESC="$SUMMARY"
 
 DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library/g++-4-runtime
-	runtime/perl-5142 system/library/math system/library"
+	runtime/perl-5161 system/library/math system/library"
 
 BUILDARCH=32
 CONFIGURE_OPTS_32="--prefix=$PREFIX
