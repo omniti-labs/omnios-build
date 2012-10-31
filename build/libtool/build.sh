@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libtool
-VER=2.4
+VER=2.4.2
 PKG=developer/build/libtool  ##IGNORE##
 SUMMARY="libtool - GNU libtool utility"
 DESC="GNU libtool - library support utility ($VER)"
