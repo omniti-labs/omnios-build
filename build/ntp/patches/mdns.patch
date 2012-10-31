@@ -116,43 +116,8 @@
       /* equivalenced to  */ NO_EQUIVALENT,
       /* min, max, act ct */ 0, 1, 0,
       /* opt state flags  */ PROPAGATIONDELAY_FLAGS, 0,
---- ntpd/ntpd.c.orig	Wed Aug 12 04:07:05 2009
-+++ ntpd/ntpd.c	Thu Jul 29 09:48:44 2010
-@@ -166,7 +166,7 @@
-  * after we have synched the first time. If the attempt fails, then try again once per 
-  * minute for up to 5 times. After all, we may be starting before mDNS.
-  */
--int mdnsreg = TRUE;
-+int mdnsreg = FALSE;
- int mdnstries = 5;
- #endif  /* HAVE_DNSREGISTRATION */
- 
-@@ -540,6 +540,9 @@
- 	if (HAVE_OPT( NOVIRTUALIPS ))
- 		listen_to_virtual_ips = 0;
- 
-+	if (HAVE_OPT( MDNS ))
-+		mdnsreg = TRUE;
-+
- 	/*
- 	 * Limit specific interfaces
- 	 */
 --- ntpd/ntpd-opts.h.orig	Wed Feb 22 05:47:38 2012
 +++ ntpd/ntpd-opts.h	Sun Feb 26 21:45:00 2012
-@@ -99,10 +99,11 @@
-     INDEX_OPT_PCCFREQ           = 32,
-     INDEX_OPT_VERSION           = 33,
-     INDEX_OPT_HELP              = 34,
--    INDEX_OPT_MORE_HELP         = 35
-+    INDEX_OPT_MORE_HELP         = 35,
-+    INDEX_OPT_MDNS              = 36
- } teOptIndex;
- 
--#define OPTION_CT    36
-+#define OPTION_CT    37
- #define NTPD_VERSION       "4.2.7p259"
- #define NTPD_FULL_VERSION  "ntpd 4.2.7p259"
- 
 @@ -199,6 +200,10 @@
  #  warning undefining NOVIRTUALIPS due to option name conflict
  #  undef   NOVIRTUALIPS

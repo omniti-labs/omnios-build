@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ntp
-VER=dev-4.2.7p259
+VER=dev-4.2.7p316
 VERHUMAN=$VER
 PKG=service/network/ntp
 SUMMARY="Network Time Services"
@@ -36,7 +36,7 @@ DESC="$SUMMARY"
 
 BUILDARCH=32
 
-DEPENDS_IPS="SUNWcs library/security/openssl service/network/dns/mdns system/library/math system/library runtime/perl-5142"
+DEPENDS_IPS="SUNWcs library/security/openssl service/network/dns/mdns system/library/math system/library runtime/perl-5161"
 
 CFLAGS="$CFLAGS -std=c99 -D_XOPEN_SOURCE=600 -D__EXTENSIONS__"
 CONFIGURE_OPTS_32="--prefix=/usr
