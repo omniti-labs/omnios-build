@@ -28,13 +28,25 @@
 . ../../lib/functions.sh
 
 PROG=nettle
-VER=2.4
+VER=2.5
 VERHUMAN=$VER
 PKG=library/security/nettle
 SUMMARY="Nettle - a low-level cryptographic library"
 DESC="$SUMMARY"
 
 CONFIGURE_OPTS="--enable-shared"
+
+configure64() {
+    logmsg "--- configure (64-bit)"
+    CFLAGS="$CFLAGS $CFLAGS64" \
+    CXXFLAGS="$CXXFLAGS $CXXFLAGS64" \
+    CPPFLAGS="$CPPFLAGS $CPPFLAGS64" \
+    LDFLAGS="$LDFLAGS $LDFLAGS64" \
+    CC="$CC -m64" CXX=$CXX \
+    logcmd $CONFIGURE_CMD $CONFIGURE_OPTS_64 \
+    $CONFIGURE_OPTS || \
+        logerr "--- Configure failed"
+}
 
 init
 download_source $PROG $PROG $VER
