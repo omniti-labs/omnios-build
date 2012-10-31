@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libxslt
-VER=1.1.26
+VER=1.1.27
 PKG=library/libxslt
 SUMMARY="The XSLT library"
 DESC="$SUMMARY"
@@ -45,9 +45,22 @@ CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --with-python=/usr/bin/$ISAPART64/python2.
 
 NO_PARALLEL_MAKE="true"
 
+backup_man() {
+    logmsg "making a backup of xsltproc.1"
+    logcmd cp $TMPDIR/$BUILDDIR/doc/xsltproc.1 $TMPDIR/$BUILDDIR/backup.1
+}
+save_function configure64 configure64_orig
+configure64() {
+    configure64_orig
+    logmsg "restoring backup of xsltproc.1"
+    logcmd cp $TMPDIR/$BUILDDIR/backup.1 $TMPDIR/$BUILDDIR/doc/xsltproc.1
+    logcmd touch $TMPDIR/$BUILDDIR/doc/xsltproc.1
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
+backup_man
 prep_build
 build
 make_isa_stub

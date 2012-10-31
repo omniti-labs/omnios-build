@@ -1,11 +1,11 @@
---- libxslt-1.1.26/configure.orig	Thu Sep 24 14:28:13 2009
-+++ libxslt-1.1.26/configure	Thu Mar  8 21:28:02 2012
-@@ -13402,7 +13402,7 @@
+--- configure.orig	Wed Sep 12 06:33:52 2012
++++ configure	Wed Oct 31 18:40:52 2012
+@@ -12850,7 +12850,7 @@
  $(/usr/bin/ld --help 2>&1 | grep -- --version-script >/dev/null) && \
      VERSION_SCRIPT_FLAGS=-Wl,--version-script=
- test "`uname`" == "SunOS" && \
+ test "`uname`" = "SunOS" && \
 -    VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,"
-+    VERSION_SCRIPT_FLAGS=
++    VERSION_SCRIPT_FLAGS=""
  
   if test -n "$VERSION_SCRIPT_FLAGS"; then
    USE_VERSION_SCRIPT_TRUE=

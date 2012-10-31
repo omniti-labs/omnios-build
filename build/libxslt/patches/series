@@ -1,1 +1,1 @@
-configure.patch
+configure.patch -p0
