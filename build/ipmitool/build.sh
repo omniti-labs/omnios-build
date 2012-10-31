@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ipmitool
-VER=1.8.11
+VER=1.8.12
 VERHUMAN=$VER
 PKG=system/management/ipmitool
 SUMMARY="IPMI management tool"
