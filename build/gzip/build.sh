@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=gzip
-VER=1.4
+VER=1.5
 VERHUMAN=$VER
 PKG=compress/gzip
 SUMMARY="The GNU Zip (gzip) compression utility"
