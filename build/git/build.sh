@@ -28,14 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=git
-VER=1.7.10.1
+VER=1.8.0
 PKG=developer/versioning/git
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="compatibility/ucb developer/build/autoconf"
 
-DEPENDS_SVR4="OMNIpython26 OMNIcurl OMNIlibiconv OMNIopenssl OMNIzlib OMNIperl"
 DEPENDS_IPS="runtime/python-26 \
              web/curl \
              library/security/openssl@1.0.1
