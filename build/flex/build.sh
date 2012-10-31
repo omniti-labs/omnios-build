@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=flex
-VER=2.5.35
+VER=2.5.37
 PKG=developer/lexer/flex
 SUMMARY="$PROG - A fast lexical analyser generator"
 DESC="$SUMMARY"
@@ -38,6 +38,19 @@ BUILD_DEPENDS_IPS="developer/macro/gnu-m4"
 CONFIGURE_OPTS="--mandir=$PREFIX/share/man
 	--infodir=$PREFIX/share/info"
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --includedir=/usr/include"
+
+make_prog() {
+    [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
+    logmsg "--- make"
+    logcmd $MAKE dist_doc_DATA="" $MAKE_JOBS || \
+        logerr "--- Make failed"
+}
+
+make_install() {
+    logmsg "--- make install"
+    logcmd $MAKE dist_doc_DATA="" DESTDIR=${DESTDIR} install || \
+        logerr "--- Make install failed"
+}
 
 make_sfw_links() {
     logmsg "Creating SFW symlinks"
