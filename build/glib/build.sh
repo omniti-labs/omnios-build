@@ -28,31 +28,43 @@
 . ../../lib/functions.sh
 
 PROG=glib
-VER=2.30.2
+VER=2.34.1
 PKG=library/glib2
 SUMMARY="$PROG - GNOME GLib utility library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="SUNWcs library/libffi@3.0.10 library/zlib system/library
-	system/library/gcc-4-runtime runtime/perl-5142"
+DEPENDS_IPS="SUNWcs library/libffi@3.0.11 library/zlib system/library
+	system/library/gcc-4-runtime runtime/perl-5161"
 
 CONFIGURE_OPTS="--disable-fam --disable-dtrace"
 
 save_function configure32 configure32_orig
 save_function configure64 configure64_orig
 configure32() {
-    LIBFFI_CFLAGS=-I/usr/lib/libffi-3.0.10/include
+    LIBFFI_CFLAGS=-I/usr/lib/libffi-3.0.11/include
     export LIBFFI_CFLAGS
     LIBFFI_LIBS=-lffi
     export LIBFFI_LIBS
     configure32_orig
+    # one file here requires c99 compilation and most others prohibit it
+    # it is a test, so no runtime issues will be present
+    pushd glib/tests > /dev/null
+    logmsg " one off strfuncs.o c99 compile"
+    logcmd make CFLAGS="-std=c99" strfuncs.o
+    popd > /dev/null
 }
 configure64() {
-    LIBFFI_CFLAGS=-I/usr/lib/amd64/libffi-3.0.10/include
+    LIBFFI_CFLAGS=-I/usr/lib/amd64/libffi-3.0.11/include
     export LIBFFI_CFLAGS
     LIBFFI_LIBS=-lffi
     export LIBFFI_LIBS
     configure64_orig
+    # one file here requires c99 compilation and most others prohibit it
+    # it is a test, so no runtime issues will be present
+    pushd glib/tests > /dev/null
+    logmsg " one off strfuncs.o c99 compile"
+    logcmd make CFLAGS="-m64 -std=c99" strfuncs.o
+    popd > /dev/null
 }
 
 init

@@ -75,9 +75,9 @@ depend fmri=network/dns/idnconv@1.0,5.11-0.151005 type=incorporate
 depend fmri=network/rsync@3.0.9,5.11-0.151005 type=incorporate
 depend fmri=release/name@0.5.11,5.11-0.151005 type=incorporate
 depend fmri=release/notices@0.5.11,5.11-0.151005 type=incorporate
-depend fmri=runtime/perl-5142@5.16.1,5.11-0.151005 type=incorporate
-depend fmri=runtime/perl-5142-64@5.16.1,5.11-0.151005 type=incorporate
-depend fmri=runtime/perl-5142/manual@5.16.1,5.11-0.151005 type=incorporate
+depend fmri=runtime/perl-5161@5.16.1,5.11-0.151005 type=incorporate
+depend fmri=runtime/perl-5161-64@5.16.1,5.11-0.151005 type=incorporate
+depend fmri=runtime/perl-5161/manual@5.16.1,5.11-0.151005 type=incorporate
 depend fmri=runtime/python-26@2.6.7,5.11-0.151005 type=incorporate
 depend fmri=security/sudo@1.8.4.5,5.11-0.151005 type=incorporate
 depend fmri=service/network/ntp@4.2.7.259,5.11-0.151005 type=incorporate
