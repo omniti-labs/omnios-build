@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=less       # App name
-VER=443         # App version
+VER=451         # App version
 PKG=text/less    # Package name (without prefix)
 SUMMARY="$PROG - GNU paginator"
 DESC="$SUMMARY"
