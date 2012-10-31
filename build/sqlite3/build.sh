@@ -28,8 +28,8 @@
 . ../../lib/functions.sh
 
 PROG=sqlite-autoconf
-VER=3071000
-VERHUMAN=3.7.10
+VER=3071401
+VERHUMAN=3.7.14.1
 PKG=database/sqlite-3
 SUMMARY="SQL database engine library"
 DESC="$SUMMARY"
@@ -52,7 +52,7 @@ prep_build
 make_stub_dirs
 build
 make_isa_stub
-VER=3.7.10
+VER=$VERHUMAN
 make_package
 clean_up
 
