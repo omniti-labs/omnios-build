@@ -26,7 +26,7 @@ PERLVERLIST="5.16.1"
 
 # Add any additional deps here; OMNIperl added below
 BUILD_DEPENDS_IPS="perl-5161 perl-5161-64"
-DEPENDS_IPS="library/libxml2"
+DEPENDS_IPS="library/expat"
 
 # We require a Perl version to use for this build and there is no default
 case $DEPVER in
