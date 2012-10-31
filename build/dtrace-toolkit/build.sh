@@ -33,7 +33,7 @@ PKG=developer/dtrace/toolkit
 SUMMARY="$PROG ($VER)"
 DESC="$PROG - a collection of over 200 useful and documented DTrace scripts"
 
-DEPENDS_IPS="developer/dtrace runtime/perl-5142 runtime/python-26"
+DEPENDS_IPS="developer/dtrace runtime/perl-5161 runtime/python-26"
 
 PREFIX=/opt/DTT
 
