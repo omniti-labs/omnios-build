@@ -265,7 +265,7 @@ depend fmri=network/telnet@0.5.11,5.11-0.151005 type=require
 depend fmri=package/pkg@0.5.11,5.11-0.151005 type=require
 depend fmri=release/name@0.5.11,5.11-0.151005 type=require
 depend fmri=release/notices@0.5.11,5.11-0.151005 type=require
-depend fmri=runtime/perl-5142/module/sun-solaris@0.5.11,5.11-0.151005 type=require
+depend fmri=runtime/perl-5161/module/sun-solaris@0.5.11,5.11-0.151005 type=require
 depend fmri=runtime/python-26@2.6.7,5.11-0.151005 type=require
 depend fmri=security/sudo@1.8.4.1,5.11-0.151005 type=require
 depend fmri=service/fault-management@0.5.11,5.11-0.151005 type=require
