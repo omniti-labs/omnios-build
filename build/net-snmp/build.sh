@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=net-snmp
-VER=5.4.4
+VER=5.7.2
 VERHUMAN=$VER
 PKG=system/management/snmp/net-snmp
 SUMMARY="Net-SNMP Agent files and libraries"
