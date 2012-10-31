@@ -35,7 +35,7 @@ SUMMARY="gcc ${VER}"
 DESC="$SUMMARY"
 
 export LD_LIBRARY_PATH=/opt/gcc-${VER}/lib
-PATH=/usr/perl5/5.14.2/bin:$PATH
+PATH=/usr/perl5/5.16.1/bin:$PATH
 export PATH
 
 DEPENDS_IPS="developer/gcc47/libgmp-gcc47 developer/gcc47/libmpfr-gcc47 developer/gcc47/libmpc-gcc47

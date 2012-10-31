@@ -28,12 +28,12 @@
 . ../../lib/functions.sh
 
 PROG=libxml2        # App name
-VER=2.7.8           # App version
+VER=2.9.0           # App version
 PKG=library/libxml2 # Package name (without prefix)
 SUMMARY="$PROG - XML C parser and toolkit"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="system/library/gcc-4-runtime library/zlib@1.2.6"
+DEPENDS_IPS="system/library/gcc-4-runtime library/zlib@1.2.7"
 
 fix_python_install() {
     logcmd mkdir -p $DESTDIR/usr/lib/python2.6/vendor-packages/64 || logerr "failed mkdir"

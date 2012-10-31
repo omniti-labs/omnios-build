@@ -35,7 +35,7 @@ export SHELL
 
 case $DEPVER in
     "")
-	DEPVER=5.14.2
+	DEPVER=5.16.1
         logmsg "no version specified, using $DEPVER"
         ;;
 esac
@@ -157,7 +157,7 @@ build64() {
         logerr "--- Make install failed"
 
     pushd $DESTDIR/$PREFIX/bin > /dev/null
-    gsed -i 's:usr/perl5/5.14.2/bin/amd64:usr/perl5/5.14.2/bin:g' \
+    gsed -i 's:usr/perl5/5.16.1/bin/amd64:usr/perl5/5.16.1/bin:g' \
         `find . -type f | xargs file | grep script | cut -f1 -d:`
     popd > /dev/null
     popd > /dev/null
@@ -181,13 +181,13 @@ make_package $TMPDIR/perl.mog
 PKG=runtime/perl-$NODOTVER/manual
 SUMMARY="Perl $VER Programming Language Docs"
 DESC="$SUMMARY"
-DEPENDS_IPS="=runtime/perl-5142@${VER},5.11-${PVER} runtime/perl-5142@${VER},5.11-${PVER}"
+DEPENDS_IPS="=runtime/perl-5161@${VER},5.11-${PVER} runtime/perl-5161@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-docs.mog
 
 PKG=runtime/perl-$NODOTVER-64
 SUMMARY="Perl $VER Programming Language (64-bit)"
 DESC="$SUMMARY"
-DEPENDS_IPS="=runtime/perl-5142@${VER},5.11-${PVER} runtime/perl-5142@${VER},5.11-${PVER}"
+DEPENDS_IPS="=runtime/perl-5161@${VER},5.11-${PVER} runtime/perl-5161@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-64.mog
 
 clean_up

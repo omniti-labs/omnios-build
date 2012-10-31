@@ -28,12 +28,12 @@
 . ../../lib/functions.sh
 
 PROG=tmux
-VER=1.6
+VER=1.7
 VERHUMAN=$VER
 PKG=terminal/tmux
 SUMMARY="terminal multiplexer"
 DESC="$SUMMARY"
-LIBEVENT_VER=2.0.18
+LIBEVENT_VER=2.0.20
 LDIR=libevent-${LIBEVENT_VER}-stable
 
 BUILDARCH=32

@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 PROG=zlib
-VER=1.2.6
+VER=1.2.7
 PKG=library/zlib
 SUMMARY="$PROG - A massively spiffy yet delicately unobtrusive compression library"
 DESC="$SUMMARY"

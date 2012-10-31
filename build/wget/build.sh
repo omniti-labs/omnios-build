@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=wget       # App name
-VER=1.13.4      # App version
+VER=1.14        # App version
 VERHUMAN=$VER   # Human-readable version
 PKG=web/wget    # Package name (without prefix)
 SUMMARY="$PROG - a utility to retrieve files from the World Wide Web"

@@ -1,0 +1,11 @@
+--- sudo-1.8.6p3/plugins/sudoers/Makefile.in.orig	Wed Oct 31 04:11:34 2012
++++ sudo-1.8.6p3/plugins/sudoers/Makefile.in	Wed Oct 31 04:11:36 2012
+@@ -47,7 +47,7 @@
+ 
+ # Libraries
+ LT_LIBS = $(top_builddir)/common/libcommon.la $(LIBOBJDIR)libreplace.la
+-LIBS = $(LT_LIBS) @LIBINTL@
++LIBS = $(LT_LIBS) @LIBINTL@ @LIBS@
+ NET_LIBS = @NET_LIBS@
+ SUDOERS_LIBS = @SUDOERS_LIBS@ @AFS_LIBS@ @GETGROUPS_LIB@ $(LIBS) $(NET_LIBS) @ZLIB@
+ REPLAY_LIBS = @REPLAY_LIBS@ @ZLIB@
