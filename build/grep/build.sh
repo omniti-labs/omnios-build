@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=grep       # App name
-VER=2.10         # App version
+VER=2.14         # App version
 PKG=text/gnu-grep    # Package name (without prefix)
 SUMMARY="ggrep - GNU grep utilities"
 DESC="$SUMMARY $VER"
