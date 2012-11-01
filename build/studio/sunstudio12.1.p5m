@@ -1,4 +1,4 @@
-set name=pkg.fmri value=pkg://@PKGPUBLISHER@/developer/sunstudio12.1@12.1,5.11-1:20110928T020752Z
+set name=pkg.fmri value=pkg://@PKGPUBLISHER@/developer/sunstudio12.1@12.1,5.11-@PVER@:20110928T020752Z
 set name=pkg.summary value="sunstudio - Sun Studio"
 set name=pkg.descr value="sunstudio - Sun Studio (12.1)"
 set name=publisher value=sa@omniti.com
