@@ -1,0 +1,11 @@
+--- xz-5.0.4/m4/ax_pthread.m4.orig	Fri Nov  2 17:25:20 2012
++++ xz-5.0.4/m4/ax_pthread.m4	Fri Nov  2 17:25:23 2012
+@@ -156,7 +156,7 @@
+         # who knows whether they'll stub that too in a future libc.)  So,
+         # we'll just look for -pthreads and -lpthread first:
+ 
+-        ax_pthread_flags="-pthreads pthread -mt -pthread $ax_pthread_flags"
++        #ax_pthread_flags="-pthreads pthread -mt -pthread $ax_pthread_flags"
+         ;;
+ 
+         darwin*)

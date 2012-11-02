@@ -13,6 +13,7 @@ DESC="$SUMMARY"
 init
 download_source $PROG $PROG $VER
 patch_source
+run_autoconf
 prep_build
 build
 make_isa_stub
