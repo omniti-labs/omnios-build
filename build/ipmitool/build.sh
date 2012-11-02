@@ -34,6 +34,8 @@ PKG=system/management/ipmitool
 SUMMARY="IPMI management tool"
 DESC="$SUMMARY"
 
+BUILD_DEPENDS_IPS="driver/ipmi"
+
 BUILDARCH=32
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/sbin --sbindir=/usr/lib"
 CONFIGURE_OPTS="$CONFIGURE_OPTS --mandir=/usr/share/man
