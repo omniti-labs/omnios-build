@@ -10736,9 +10736,9 @@ diff -ruN openssl-1.0.1-orig/Makefile.org openssl-1.0.1/Makefile.org
  # Do not edit this manually. Use Configure --openssldir=DIR do change this!
  OPENSSLDIR=/usr/local/ssl
  
-diff -ruN openssl-1.0.1-orig/test/md2test.c openssl-1.0.1/test/md2test.c
---- openssl-1.0.1-orig/test/md2test.c	2002-08-15 22:06:00.000000000 +0000
-+++ openssl-1.0.1/test/md2test.c	2012-03-26 22:16:20.362686982 +0000
+diff -ruN openssl-1.0.1-orig/test/dummytest.c openssl-1.0.1/test/dummytest.c
+--- openssl-1.0.1-orig/test/dummytest.c	2002-08-15 22:06:00.000000000 +0000
++++ openssl-1.0.1/test/dummytest.c	2012-03-26 22:16:20.362686982 +0000
 @@ -1,48 +1,143 @@
 +/* crypto/md2/md2test.c */
 +/* Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
