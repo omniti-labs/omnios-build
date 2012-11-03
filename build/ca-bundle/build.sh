@@ -51,17 +51,24 @@ fetch_pem() {
 
 install_pem() {
   logmsg "Installing PEM file"
-  logcmd mkdir -p $DESTDIR/etc ||
-    logerr "--- Unable to create destination directory"
+  logcmd mkdir -p $DESTDIR/etc/ssl/certs || \
+    logerr "------ Failed to create ssl directory"
   logmsg "Placing PEM in package root"
-  logcmd cp $TMPDIR/$BUILDDIR/cacert.pem $DESTDIR/etc/ ||
+  logcmd cp $TMPDIR/$BUILDDIR/cacert.pem $DESTDIR/etc/ssl ||
     logerr "--- Failed to copy file"
   logmsg "--- Creating symlink from /etc/ssl"
-  logcmd mkdir -p $DESTDIR/etc/ssl || \
-    logerr "------ Failed to create ssl directory"
-  pushd $DESTDIR/etc/ssl > /dev/null
-  logcmd ln -s ../cacert.pem cacert.pem || \
-    logerr "------ Failed to create symlink"
+  pushd $DESTDIR/etc/ssl/certs > /dev/null
+  CNT=`awk '/BEGIN/{n++} END{print n-2}' $DESTDIR/etc/ssl/cacert.pem`
+  logcmd csplit -n3 -f cert $DESTDIR/etc/ssl/cacert.pem '/END CERT/1' "{$CNT}"
+  # first one will be blank
+  for cert in cert*
+  do
+    if [ -s $cert ]; then
+      HASH=`openssl x509 -hash -noout -in $cert`.0
+      openssl x509 -text -in $cert >> $HASH
+    fi
+    rm $cert
+  done
   popd > /dev/null
 }
 
