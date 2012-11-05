@@ -28,24 +28,30 @@
 . ../../lib/functions.sh
 
 PROG=cabundle   # App name
-VER=1.1         # App version
+VER=2.0         # App version
 VERHUMAN=$VER   # Human-readable version
+NSSVER=3.14     # Keep this in sync with the version of system/library/mozilla-nss
 PKG=web/ca-bundle  # Package name (without prefix)
-SUMMARY="$PROG - Bundle of SSL CA certificates"
-DESC="$SUMMARY"
-
-MIRROR=curl.haxx.se
+SUMMARY="$PROG - Bundle of SSL Root CA certificates"
+DESC="SSL Root CA certificates extracted from mozilla-nss $NSSVER source"
 
 BUILDARCH=32
 
-fetch_pem() {
-  mkdir -p $TMPDIR/$BUILDDIR
-  logmsg "Fetching PEM file from $MIRROR"
+build_pem() {
+  logmsg "Extracting certdata.txt from nss-$NSSVER source"
+  # Fetch and extract the NSS source to get certdata.txt
+  BUILDDIR_ORIG=$BUILDDIR
+  BUILDDIR=nss-$NSSVER
+  download_source nss nss $NSSVER
+  BUILDDIR=$BUILDDIR_ORIG
+  logcmd mkdir -p $TMPDIR/$BUILDDIR
   pushd $TMPDIR/$BUILDDIR > /dev/null
-  $WGET -a $LOGFILE http://$MIRROR/ca/cacert.pem ||
-    logerr "--- Failed to download PEM file"
-  awk '/BEGIN LICENSE/,/END LICENSE/{print}' cacert.pem | \
-    grep -v 'LICENSE BLOCK' > license
+  logcmd cp $TMPDIR/nss-$NSSVER/mozilla/security/nss/lib/ckfw/builtins/certdata.txt . || \
+    logerr "--- Failed to copy certdata.txt file"
+  logcmd $SRCDIR/mk-ca-bundle.pl -n cacert.pem || \
+    logerr "--- Failed to convert certdata.txt into PEM format"
+  logcmd cp $TMPDIR/nss-$NSSVER/mozilla/security/nss/COPYING license || \
+    logerr "--- Failed to copy license file"
   popd > /dev/null
 }
 
@@ -54,7 +60,7 @@ install_pem() {
   logcmd mkdir -p $DESTDIR/etc/ssl/certs || \
     logerr "------ Failed to create ssl directory"
   logmsg "Placing PEM in package root"
-  logcmd cp $TMPDIR/$BUILDDIR/cacert.pem $DESTDIR/etc/ssl ||
+  logcmd cp $TMPDIR/$BUILDDIR/cacert.pem $DESTDIR/etc/ssl || \
     logerr "--- Failed to copy file"
   logmsg "--- Creating symlink from /etc/ssl"
   pushd $DESTDIR/etc/ssl/certs > /dev/null
@@ -74,7 +80,7 @@ install_pem() {
 
 init
 prep_build
-fetch_pem
+build_pem
 install_pem
 make_package
 clean_up

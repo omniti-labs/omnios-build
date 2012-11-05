@@ -32,7 +32,6 @@
 #
 use Getopt::Std;
 use MIME::Base64;
-use LWP::UserAgent;
 use strict;
 use vars qw($opt_b $opt_h $opt_i $opt_l $opt_n $opt_q $opt_t $opt_u $opt_v);
 
