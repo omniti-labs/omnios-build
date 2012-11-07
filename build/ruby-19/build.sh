@@ -44,8 +44,18 @@ BASE_RUBY=/opt/omni/bin/ruby
 #   so only one arch can be installed in $PREFIX
 # Default to 32-bit
 [[ "$BUILDARCH" == "both" ]] && BUILDARCH=32
+NOSCRIPTSTUB=true
 
 CONFIGURE_OPTS="--without-gcc --enable-pthread --enable-shared ac_cv_func_dl_iterate_phdr=no --with-baseruby=$BASE_RUBY --with-opt-dir=/opt/omni --disable-install-doc"
+# We're going to reset bindir/sbindir so we should preserve all the rest
+CONFIGURE_OPTS_32="--prefix=$PREFIX
+    --sysconfdir=$SYSCONFDIR
+    --includedir=$PREFIX/include
+    --bindir=$PREFIX/bin
+    --sbindir=$PREFIX/sbin
+    --libdir=$PREFIX/lib
+    --libexecdir=$PREFIX/libexec"
+
 
 export CLFAGS="-I/usr/include/openssl"
 export EXTLIBS=-lm
