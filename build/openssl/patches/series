@@ -1,2 +1,3 @@
 pkcs11.patch -p1
 unused-dep.patch -p0
+man_sections.patch

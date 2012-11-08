@@ -1,0 +1,97 @@
+--- openssl-1.0.1c/doc/apps/config.pod.orig	Thu Nov 25 17:47:29 2004
++++ openssl-1.0.1c/doc/apps/config.pod	Thu Nov  8 18:49:32 2012
+@@ -1,7 +1,7 @@
+ 
+ =pod
+ 
+-=for comment openssl_manual_section:5
++=for comment openssl_manual_section:5SSL
+ 
+ =head1 NAME
+ 
+--- openssl-1.0.1c/doc/apps/x509v3_config.pod.orig	Tue Nov  7 13:44:03 2006
++++ openssl-1.0.1c/doc/apps/x509v3_config.pod	Thu Nov  8 18:49:44 2012
+@@ -1,6 +1,6 @@
+ =pod
+ 
+-=for comment openssl_manual_section:5
++=for comment openssl_manual_section:5SSL
+ 
+ =head1 NAME
+ 
+--- openssl-1.0.1c/doc/crypto/des_modes.pod.orig	Tue Feb 27 07:41:54 2007
++++ openssl-1.0.1c/doc/crypto/des_modes.pod	Thu Nov  8 18:50:11 2012
+@@ -1,6 +1,6 @@
+ =pod
+ 
+-=for comment openssl_manual_section:7
++=for comment openssl_manual_section:7SSL
+ 
+ =head1 NAME
+ 
+--- openssl-1.0.1c/Makefile.org.orig	Sun Apr 22 13:25:19 2012
++++ openssl-1.0.1c/Makefile.org	Thu Nov  8 19:57:30 2012
+@@ -635,10 +635,10 @@
+ 
+ install_docs:
+ 	@$(PERL) $(TOP)/util/mkdir-p.pl \
+-		$(INSTALL_PREFIX)$(MANDIR)/man1 \
+-		$(INSTALL_PREFIX)$(MANDIR)/man3 \
+-		$(INSTALL_PREFIX)$(MANDIR)/man5 \
+-		$(INSTALL_PREFIX)$(MANDIR)/man7
++		$(INSTALL_PREFIX)$(MANDIR)/man1ssl \
++		$(INSTALL_PREFIX)$(MANDIR)/man3ssl \
++		$(INSTALL_PREFIX)$(MANDIR)/man5ssl \
++		$(INSTALL_PREFIX)$(MANDIR)/man7ssl
+ 	@pod2man="`cd ./util; ./pod2mantest $(PERL)`"; \
+ 	here="`pwd`"; \
+ 	filecase=; \
+@@ -647,36 +647,38 @@
+ 	fi; \
+ 	set -e; for i in doc/apps/*.pod; do \
+ 		fn=`basename $$i .pod`; \
+-		sec=`$(PERL) util/extract-section.pl 1 < $$i`; \
+-		echo "installing man$$sec/$$fn.$${sec}$(MANSUFFIX)"; \
++		sec=`$(PERL) util/extract-section.pl 1SSL < $$i`; \
++        seclower=`echo $$sec | tr '[:upper:]' '[:lower:]'`; \
++		echo "installing man$$seclower/$$fn.$${seclower}$(MANSUFFIX)"; \
+ 		(cd `$(PERL) util/dirname.pl $$i`; \
+ 		sh -c "$$pod2man \
+ 			--section=$$sec --center=OpenSSL \
+ 			--release=$(VERSION) `basename $$i`") \
+-			>  $(INSTALL_PREFIX)$(MANDIR)/man$$sec/$$fn.$${sec}$(MANSUFFIX); \
++			>  $(INSTALL_PREFIX)$(MANDIR)/man$$seclower/$$fn.$${seclower}$(MANSUFFIX); \
+ 		$(PERL) util/extract-names.pl < $$i | \
+ 			(grep -v $$filecase "^$$fn\$$"; true) | \
+ 			(grep -v "[	]"; true) | \
+-			(cd $(INSTALL_PREFIX)$(MANDIR)/man$$sec/; \
++			(cd $(INSTALL_PREFIX)$(MANDIR)/man$$seclower/; \
+ 			 while read n; do \
+-				PLATFORM=$(PLATFORM) $$here/util/point.sh $$fn.$${sec}$(MANSUFFIX) "$$n".$${sec}$(MANSUFFIX); \
++				PLATFORM=$(PLATFORM) $$here/util/point.sh $$fn.$${seclower}$(MANSUFFIX) "$$n".$${seclower}$(MANSUFFIX); \
+ 			 done); \
+ 	done; \
+ 	set -e; for i in doc/crypto/*.pod doc/ssl/*.pod; do \
+ 		fn=`basename $$i .pod`; \
+-		sec=`$(PERL) util/extract-section.pl 3 < $$i`; \
+-		echo "installing man$$sec/$$fn.$${sec}$(MANSUFFIX)"; \
++		sec=`$(PERL) util/extract-section.pl 3SSL < $$i`; \
++        seclower=`echo $$sec | tr '[:upper:]' '[:lower:]'`; \
++		echo "installing man$$seclower/$$fn.$${seclower}$(MANSUFFIX)"; \
+ 		(cd `$(PERL) util/dirname.pl $$i`; \
+ 		sh -c "$$pod2man \
+ 			--section=$$sec --center=OpenSSL \
+ 			--release=$(VERSION) `basename $$i`") \
+-			>  $(INSTALL_PREFIX)$(MANDIR)/man$$sec/$$fn.$${sec}$(MANSUFFIX); \
++			>  $(INSTALL_PREFIX)$(MANDIR)/man$$seclower/$$fn.$${seclower}$(MANSUFFIX); \
+ 		$(PERL) util/extract-names.pl < $$i | \
+ 			(grep -v $$filecase "^$$fn\$$"; true) | \
+ 			(grep -v "[	]"; true) | \
+-			(cd $(INSTALL_PREFIX)$(MANDIR)/man$$sec/; \
++			(cd $(INSTALL_PREFIX)$(MANDIR)/man$$seclower/; \
+ 			 while read n; do \
+-				PLATFORM=$(PLATFORM) $$here/util/point.sh $$fn.$${sec}$(MANSUFFIX) "$$n".$${sec}$(MANSUFFIX); \
++				PLATFORM=$(PLATFORM) $$here/util/point.sh $$fn.$${seclower}$(MANSUFFIX) "$$n".$${seclower}$(MANSUFFIX); \
+ 			 done); \
+ 	done
+ 
