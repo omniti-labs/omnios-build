@@ -28,30 +28,33 @@
 . ../../lib/functions.sh
 
 PROG=php
-VER=5.3.15
+VER=5.3.18
 VERHUMAN=$VER
 PKG=omniti/runtime/php-53
 SUMMARY="PHP Server ${VER:0:3}"
 DESC="PHP is a widely-used general-purpose scripting language that is especially suited for Web development and can be embedded into HTML."
 
-DEPENDS_IPS="web/curl 
-            omniti/library/freetype2
-            omniti/library/gd  
-            omniti/library/libjpeg
+DEPENDS_IPS="
+            compress/bzip2
+            database/sqlite-3
+            library/libtool/libltdl
+            library/libxml2
+            library/libxslt
             system/library/iconv/unicode
             system/library/iconv/utf-8
             system/library/iconv/utf-8/manual
             system/library/iconv/xsh4/latin
+            web/curl
+            omniti/database/mysql-55/library
+            omniti/library/freetype2
+            omniti/library/gd  
+            omniti/library/libjpeg
+            omniti/library/libmcrypt
             omniti/library/libpng
             omniti/library/libpq5
             omniti/library/libssh2
-            library/libxml2
-            omniti/database/mysql-55/library
-            database/sqlite-3
-            library/libxslt
-            library/libtool/libltdl
             omniti/library/mhash
-            omniti/library/libmcrypt"
+            "
 BUILD_DEPENDS_IPS="omniti/server/apache22 $DEPENDS_IPS"
 
 # Though not strictly needed since we override build(), still nice to set
@@ -92,7 +95,7 @@ PHP_CONFIGURE_OPTS="
         --with-pdo-mysql=/opt/omni
         --with-pdo-pgsql=/opt/omni
         --with-pgsql=/opt/omni
-        --with-bz2=/opt/omni
+        --with-bz2
         --with-curl=/opt/omni
         --with-ldap=/usr
         --with-ldap-sasl=no
@@ -116,15 +119,15 @@ PHP_CONFIGURE_OPTS="
 # We need to make a fake httpd.conf so apxs in make install
 make_httpd_conf() {
     logmsg "Generating fake httpd.conf file"
-    mkdir -p $DESTDIR/opt/apache22/conf
+    logcmd mkdir -p $DESTDIR/opt/apache22/conf
     echo -e "\n\n\nLoadModule access_module modules/mod_access.so\n\n\n" > \
-        $DESTDIR/opt/apache22/conf/httpd.event.conf
+        $DESTDIR/opt/apache22/conf/httpd.conf
 }
 
 # And a function to remove the temporary httpd.conf files
 remove_httpd_conf() {
     logmsg "Removing Generated httpd.conf file"
-    rm -rf $DESTDIR/opt/apache22/conf ||
+    logcmd rm -rf $DESTDIR/opt/apache22/conf ||
         logerr "Failed to remove apache22 config"
 }
 
