@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=riak
-VER=1.1.2
+VER=1.2.0
 VERHUMAN=$VER
 PKG=omniti/database/riak
 SUMMARY="Riak highly scalable, fault-tolerant distributed database"
