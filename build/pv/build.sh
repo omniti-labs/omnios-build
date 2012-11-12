@@ -28,16 +28,16 @@
 . ../../lib/functions.sh
 
 PROG=pv
-VER=1.2.0
+VER=1.3.9
 VERHUMAN=$VER
 PKG=shell/pipe-viewer
 SUMMARY="Pipe Viewer"
-DESC="pipeline monitoring tool (1.2.0)"
+DESC="pv - a terminal-based tool for monitoring the progress of data through a pipeline."
 
-BUILDARCH=32
+BUILDARCH=64
 DO_GZIP=true
 export DO_GZIP
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --mandir=/usr/share/man --disable-nls"
+CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --bindir=/usr/bin --mandir=/usr/share/man --disable-nls"
 init
 download_source $PROG $PROG $VER
 patch_source
