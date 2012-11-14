@@ -450,6 +450,7 @@ download_source() {
             $WGET -a $LOGFILE $URLPREFIX.tgz || \
             $WGET -a $LOGFILE $URLPREFIX.tbz || \
             $WGET -a $LOGFILE $URLPREFIX.tar || \
+            $WGET -a $LOGFILE $URLPREFIX.zip || \
             logerr "--- Failed to download file"
         find_archive $ARCHIVEPREFIX FILENAME
         if [[ "$FILENAME" == "" ]]; then
@@ -476,7 +477,7 @@ download_source() {
 # Example: find_archive myprog-1.2.3 FILENAME
 #   Stores myprog-1.2.3.tar.gz in $FILENAME
 find_archive() {
-    FILES=`ls $1.{tar.bz2,tar.gz,tar.xz,tgz,tbz,tar} 2>/dev/null`
+    FILES=`ls $1.{tar.bz2,tar.gz,tar.xz,tgz,tbz,tar,zip} 2>/dev/null`
     FILES=${FILES%% *} # Take only the first filename returned
     # This dereferences the second parameter passed
     eval "$2=\"$FILES\""
@@ -492,6 +493,8 @@ extract_archive() {
         $XZCAT $1 | $TAR xvf -
     elif [[ ${1: -4} == ".tar" ]]; then
         $TAR xvf $1
+    elif [[ ${1: -4} == ".zip" ]]; then
+        $UNZIP $1
     else
         return 1
     fi
