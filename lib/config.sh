@@ -96,6 +96,7 @@ TAR=tar
 GZIP=gzip
 BUNZIP2=bunzip2
 XZCAT=xzcat
+UNZIP=unzip
 AWK=gawk
 
 # Figure out number of logical CPUs for use with parallel gmake jobs (-j)
