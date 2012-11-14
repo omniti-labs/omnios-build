@@ -1,0 +1,19 @@
+--- ec2-api-tools-1.6.5.1/bin/ec2-cmd.orig	Mon Nov  5 06:11:42 2012
++++ ec2-api-tools-1.6.5.1/bin/ec2-cmd	Wed Nov 14 20:17:47 2012
+@@ -10,12 +10,13 @@
+ # for maintainability.
+ 
+ # 'Globals'
+-__ZIP_PREFIX__EC2_HOME="${EC2_HOME:-EC2_HOME is not set}"
++__ZIP_PREFIX__EC2_HOME="${EC2_HOME:-/usr}"
+ __RPM_PREFIX__EC2_HOME=/usr/local/aes/cmdline
+-LIBDIR="${EC2_HOME}/lib"
++EC2_HOME=${EC2_HOME:-/usr}
++LIBDIR="${EC2_HOME}/lib/ec2-api-tools"
+ 
+ # Check our Java env
+-JAVA_HOME=${JAVA_HOME:?JAVA_HOME is not set}
++JAVA_HOME=${JAVA_HOME:-/usr}
+ 
+ # If a classpath exists preserve it
+ CP="${CLASSPATH}"
