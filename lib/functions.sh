@@ -155,8 +155,15 @@ url_encode() {
 # Set the LANG to C as the assembler will freak out on unicode in headers
 LANG=C
 export LANG
+# Determine what release we're running as that affects some versions of things
+RELEASE=$(head -1 /etc/release | awk '{ print $3 }')
 # Set the path - This can be overriden/extended in the build script
-PATH="/opt/gcc-4.7.2/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
+PATH="/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
+if [[ ${RELEASE:1} -le 151004 ]]; then
+    PATH="/opt/gcc-4.6.3/bin:$PATH"
+else
+    PATH="/opt/gcc-4.7.2/bin:$PATH"
+fi
 export PATH
 # The dir where this file is located - used for sourcing further files
 MYDIR=$PWD/`dirname $BASH_SOURCE[0]`
@@ -180,7 +187,8 @@ process_opts $@
 
 BasicRequirements(){
     local needed=""
-    [[ -x /opt/gcc-4.7.2/bin/gcc ]] || needed+=" developer/gcc47"
+    [[ -x /opt/gcc-4.6.3/bin/gcc ]] || if [[ ${RELEASE:1} -le 151004 ]]; then needed+=" developer/gcc46"; fi
+    [[ -x /opt/gcc-4.7.2/bin/gcc ]] || if [[ ${RELEASE:1} -ge 151005 ]]; then needed+=" developer/gcc47"; fi
     [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
     [[ -x /usr/bin/ld ]] || needed+=" developer/linker"
     [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
