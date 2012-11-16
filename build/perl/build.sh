@@ -38,7 +38,7 @@ CURRVERS="5.14 5.16"
 
 case $DEPVER in
     ""|5.16)
-        VER=5.16.1
+        VER=5.16.2
         ;;
     5.14)
         VER=5.14.2
