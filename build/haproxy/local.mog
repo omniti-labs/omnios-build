@@ -1,0 +1,3 @@
+license LICENSE license=HAProxy
+license doc/gpl.txt license=GPLv2
+license doc/lgpl.txt license=LGPLv2.1
