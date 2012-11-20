@@ -1,0 +1,8 @@
+# Setuid binaries - list taken from SVR4 package
+
+<transform file path=opt/VirtualBox/amd64/VBoxBFE$ -> set mode 4755>
+<transform file path=opt/VirtualBox/amd64/VBoxHeadless$ -> set mode 4755>
+<transform file path=opt/VirtualBox/amd64/VBoxNetAdpCtl$ -> set mode 4755>
+<transform file path=opt/VirtualBox/amd64/VBoxNetDHCP$ -> set mode 4755>
+<transform file path=opt/VirtualBox/amd64/VBoxSDL$ -> set mode 4755>
+<transform file path=opt/VirtualBox/amd64/VirtualBox$ -> set mode 4755>
