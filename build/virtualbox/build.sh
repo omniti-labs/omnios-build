@@ -33,8 +33,8 @@
 #PKGPUBLISHER=ms.omniti.com
 #PKGSRVR=http://pkg-il-1.int.omniti.net:10007/
 
-PKGPUBLISHER=root.omnios.omniti.com
-PKGSRVR=http://localhost:888/
+#PKGPUBLISHER=root.omnios.omniti.com
+#PKGSRVR=http://localhost:888/
 
 # General approach here is to download the SVR4 package from Oracle, then unpack 
 # it and copy out what we want.
@@ -90,7 +90,7 @@ fi
 #--------------------------------------------------------------------------#
 
 #PVER=               # Branch (set in config.sh, override here if needed)
-PKG=drivers/virtualization/virtualbox   # Package name (e.g. library/foo)
+PKG=omniti/driver/virtualization/virtualbox   # Package name (e.g. library/foo)
 SUMMARY="Kernel modules (drivers) for VirtualBox $VERHUMAN."      # One-liner, must be filled in
 DESC="IPS repackaging of SunOS binaries released by Oracle.  Gotchas about this IPS package:  * Must be installed on a global zone.  * Crossbow networking for VBox is disabled; we get errors when trying to load the module.  * Runs 2 SMF services in the global zone: one custom transient to install drivers, and the zoneaccess service provided by Oracle  * Requires execution of the following command on each NGZ that is to use VirtualBox: zonecfg -z <yourzone> 'add device; set match=/dev/vboxdrv; end'"
 
@@ -140,7 +140,7 @@ clean_up
 #--------------------------------------------------------------------------#
 
 #PVER=               # Branch (set in config.sh, override here if needed)
-PKG=system/virtualbox   # Package name (e.g. library/foo)
+PKG=omniti/system/virtualbox   # Package name (e.g. library/foo)
 
 SUMMARY="VirtualBox, a virtualization system for x86.  Non-global-zone portion."
 DESC="IPS repackaging of SunOS binaries released by Oracle.  Gotchas about this IPS package:  * OmniOS has no X support.  Hence, all the graphical clients are removed.  * Requires execution of the following command on each NGZ that is to use VirtualBox: zonecfg -z <yourzone> 'add device; set match=/dev/vboxdrv; end'"
