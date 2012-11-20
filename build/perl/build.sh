@@ -41,7 +41,7 @@ case $DEPVER in
         VER=5.16.2
         ;;
     5.14)
-        VER=5.14.2
+        VER=5.14.3
         ;;
     *)
         logerr "Unknown version specified. Current versions: $CURRVERS"
