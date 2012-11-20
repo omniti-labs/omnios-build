@@ -137,6 +137,25 @@ ask_to_continue() {
     logmsg "===== Error occured, user chose to continue anyway. ====="
 }
 
+ask_to_continue_nonerror() {
+    # Ask the user if they want to continue or quit in the event of an error
+    if [[ -z $BATCH ]]; then
+        echo -n "Do you wish to continue? (y/n) "
+        read
+        while [[ ! "$REPLY" =~ [yYnN] ]]; do
+            echo -n "continue? (y/n) "
+            read
+        done
+        if [[ "$REPLY" == "n" || "$REPLY" == "N" ]]; then
+            logmsg "===== Build aborted ====="
+            exit 1
+        fi
+    else
+        logmsg "(continuing in batch mode)"
+    fi
+}
+
+
 #############################################################################
 # URL encoding for package names, at least
 #############################################################################
@@ -571,7 +590,7 @@ make_package() {
     $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
     logmsg "--- Publishing package"
     logmsg "Intentional pause: Last chance to sanity-check before publication!"
-    ask_to_continue
+    ask_to_continue_nonerror
     if [[ -n "$DESTDIR" ]]; then
         logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR -d $TMPDIR/$BUILDDIR \
             -d $SRCDIR $P5M_FINAL || logerr "------ Failed to publish package"
