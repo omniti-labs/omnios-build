@@ -28,8 +28,8 @@
 . ../../lib/functions.sh
 . ../../lib/gem-functions.sh
 
-PKGPUBLISHER=root.omnios.omniti.com
-PKGSRVR=http://localhost:888/
+#PKGPUBLISHER=root.omnios.omniti.com
+#PKGSRVR=http://localhost:888/
 
 PROG=vagrant      # App name
 VER=1.0.5            # App version
