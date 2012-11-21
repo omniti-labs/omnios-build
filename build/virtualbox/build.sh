@@ -170,13 +170,15 @@ logcmd rm -rf $DESTDIR/opt/VirtualBox/sdk
 logcmd rm -rf $DESTDIR/usr/share/{applications,application-registry,pixmaps,icons}
 
 #.....
-# Setup SMF zoneaccess service
+# Setup SMF zoneaccess service (or not?)
 #.....
 
-# We need zoneaccess be running in the NGZ, but we have to avoid a name 
-# conflict with the same service in the global.
+# We have to avoid a name conflict with the same service in the global
 logcmd rm $DESTDIR/var/svc/manifest/application/virtualbox/virtualbox-zoneaccess.xml
-logcmd cp $SRCDIR/virtualbox-zoneaccess-ngz.xml $DESTDIR/var/svc/manifest/application/virtualbox/
+
+# Some forum posts on the internet say you need this running in the NGZ, but it 
+# seems to work without it.
+# logcmd cp $SRCDIR/virtualbox-zoneaccess-ngz.xml $DESTDIR/var/svc/manifest/application/virtualbox/
 
 #.....
 # Hack to fix LD_NODIRECT issue
