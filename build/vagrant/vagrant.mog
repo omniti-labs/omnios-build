@@ -1,0 +1,22 @@
+
+# This is provided by chef, which we already depend on
+<transform dir path=opt/omni/lib/ruby/gems/1.9/.*erubis.* -> drop>
+<transform file path=opt/omni/lib/ruby/gems/1.9/.*erubis.* -> drop>
+
+# Don't ship the unit tests, docs
+<transform dir path=opt/omni/lib/ruby/gems/1.9/gems/.*/test(s?) -> drop>
+<transform file path=opt/omni/lib/ruby/gems/1.9/gems/.*/test(s?) -> drop>
+
+<transform dir path=opt/omni/lib/ruby/gems/1.9/gems/.*/benchmark -> drop>
+<transform file path=opt/omni/lib/ruby/gems/1.9/gems/.*/benchmark -> drop>
+
+<transform dir path=opt/omni/lib/ruby/gems/1.9/gems/.*/examples -> drop>
+<transform file path=opt/omni/lib/ruby/gems/1.9/gems/.*/examples -> drop>
+
+<transform dir path=opt/omni/lib/ruby/gems/1.9/gems/.*/doc -> drop>
+<transform file path=opt/omni/lib/ruby/gems/1.9/gems/.*/doc -> drop>
+
+license LICENSE license=MIT_with_additions
+
+# ugggh
+# opt/omni/lib/ruby/gems/1.9/gems/ffi-1.2.0/lib/ffi/platform/arm-linux
