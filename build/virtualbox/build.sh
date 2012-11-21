@@ -169,20 +169,36 @@ logcmd rm -rf $DESTDIR/opt/VirtualBox/sdk
 # This is desktop integration
 logcmd rm -rf $DESTDIR/usr/share/{applications,application-registry,pixmaps,icons}
 
-# TODO - should zoneaccess be running in the NGZ?  If so, 
-# need to rename to avoid conflict with manifest packaged in kernel package.
-logcmd rm  $DESTDIR/var/svc/manifest/application/virtualbox/virtualbox-zoneaccess.xml
+#.....
+# Setup SMF zoneaccess service
+#.....
+
+# We need zoneaccess be running in the NGZ, but we have to avoid a name 
+# conflict with the same service in the global.
+logcmd rm $DESTDIR/var/svc/manifest/application/virtualbox/virtualbox-zoneaccess.xml
+logcmd cp $SRCDIR/virtualbox-zoneaccess-ngz.xml $DESTDIR/var/svc/manifest/application/virtualbox/
+
+#.....
+# Hack to fix LD_NODIRECT issue
+#.....
+# See https://www.illumos.org/issues/1534 , which we are vulnerable to
+ORIG_VBOX_SH=$UNPACKED_SVR4/SUNWvbox/root/opt/VirtualBox/VBox.sh
+PATCHED_VBOX_SH=$DESTDIR/opt/VirtualBox/VBox.sh
+( head -15 $ORIG_VBOX_SH ; 
+  echo "# OMNIOS PATCH - See https://www.illumos.org/issues/1534 " ; 
+  echo "export LD_NODIRECT=1" ;
+  tail +15 $ORIG_VBOX_SH ; ) > $PATCHED_VBOX_SH
 
 #.....
 # Create symlinks
 #.....
 
-# It appears that VBox uses two different symlinking schemes.  First, it links
-# most user-visible binaries to VBox.sh .
+# VBox symlinks most visible binaries to VBox.sh . 
+# Don't bother linking VirtualBox binary, it won't run without the X libs anyway
 
 pushd $DESTDIR/opt/VirtualBox > /dev/null
 export ONE_TRUE_SCRIPT=VBox.sh
-for f in "VBoxAutostart" "VirtualBox" "VBoxManage" "VBoxHeadless" "VBoxBFE"; do 
+for f in "VBoxAutostart" "VBoxManage" "VBoxHeadless" "VBoxBFE"; do 
     ln -s $ONE_TRUE_SCRIPT $f
 done
 popd > /dev/null
@@ -196,6 +212,14 @@ popd > /dev/null
 #  /opt/VirtualBox/amd64/VBoxSDL <setuid root>
 #  /opt/VirtualBox/amd64/VirtualBox <setuid root>
 
+# Convenience links.
+logcmd mkdir -p $DESTDIR/opt/omni/bin
+pushd $DESTDIR
+for f in "VBoxManage" "VBoxHeadless"; do
+    logcmd ln -sf /opt/VirtualBox/$f opt/omni/bin/$f
+done
+popd > /dev/null
+
 # VBox sends the guest additions ISO as an unversioned file, though it very much is version-dependent.
 # May want to have multiple versions available.
 logcmd mv $DESTDIR/opt/VirtualBox/additions/VBoxGuestAdditions.iso $DESTDIR/opt/VirtualBox/additions/VBoxGuestAdditions-$VER.iso
@@ -207,18 +231,8 @@ popd > /dev/null
 #.....
 # Publish Package
 #.....
-
-
 make_package vbox-ngz.mog
 clean_up
-
-
-
-
-
-
-
-
 
 # Vim hints
 # vim:ts=4:sw=4:et:
