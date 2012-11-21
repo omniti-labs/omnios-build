@@ -27,6 +27,8 @@
 # Load support functions
 . ../../lib/functions.sh
 
+# TODO - most of the guts of this build script have been copied into ../../lib/gem-functions.sh .  TODO - alter this script to use them, like vagrant
+
 PROG=chef       # App name
 VER=0.10.8      # App version
 VERHUMAN=$VER   # Human-readable version
