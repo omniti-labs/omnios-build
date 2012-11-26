@@ -26,6 +26,8 @@
 <transform dir path=opt/omni/include -> drop>
 <transform dir path=opt/omni/include/.* -> drop>
 <transform file path=.*\.h$ -> drop>
+<transform dir path=opt/omni/lib.* -> drop>
+<transform file path=opt/omni/lib.* -> drop>
 <transform dir path=opt/omni/share/man/man3 -> drop>
 <transform file path=opt/omni/share/man/man3/.* -> drop>
 <transform hardlink path=opt/omni/share/man/man3/.* -> drop>
