@@ -1,4 +1,8 @@
 
+# Don't ship the cached gemfile, or anything else cached
+<transform dir path=opt/omni/lib/ruby/gems/1.9/cache.* -> drop>
+<transform file path=opt/omni/lib/ruby/gems/1.9/cache.* -> drop>
+
 # This is provided by chef, which we already depend on
 <transform dir path=opt/omni/lib/ruby/gems/1.9/.*erubis.* -> drop>
 <transform file path=opt/omni/lib/ruby/gems/1.9/.*erubis.* -> drop>
