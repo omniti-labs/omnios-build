@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=node
-VER=0.8.1
+VER=0.8.15
 GITREPO=https://github.com/joyent/node.git
-GITHASH=2134aa3d5c622fc3c3b02ccb713fcde0e0df479a
+GITHASH=fdf91afb494a7a2fff2913d817f589c191a2c88f
 VERHUMAN=$VER
 PKG=omniti/runtime/nodejs
 SUMMARY="evented I/O for v8 javascript"
