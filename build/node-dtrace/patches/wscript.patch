@@ -1,0 +1,11 @@
+--- node-dtrace-0.2.4/wscript.orig	Mon Dec  3 16:31:17 2012
++++ node-dtrace-0.2.4/wscript	Mon Dec  3 16:33:29 2012
+@@ -18,7 +18,7 @@
+ def build(ctx):
+     if sys.platform.startswith("sunos") or sys.platform.startswith("darwin") or sys.platform.startswith("freebsd"):
+         ctx.new_task_gen(
+-            rule = "cd ../" + libusdtdir + " && ARCH=i386 make clean all && cd -",
++            rule = "cd ../" + libusdtdir + " && gmake clean all && cd -",
+             shell = True
+             )
+         
