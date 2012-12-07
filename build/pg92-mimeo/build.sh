@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=mimeo
-VER=0.8.0
+VER=0.8.3
 VERHUMAN=$VER
-PGVER=921
+PGVER=922
 PKG=omniti/database/postgresql-${PGVER}/mimeo
 SUMMARY="$PROG - Extension for specialized replication between PostgreSQL instances"
 DESC="$SUMMARY"
@@ -48,9 +48,6 @@ configure64() {
 }
 
 export USE_PGXS=1
-make_prog() {
-    make_param prefix=$PREFIX GREP=ggrep
-}
 make_install() {
     make_param DESTDIR=${DESTDIR} prefix=$PREFIX install
 }

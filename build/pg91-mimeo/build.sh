@@ -27,43 +27,33 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=postgresql
-VER=9.2.2
+PROG=mimeo
+VER=0.8.3
 VERHUMAN=$VER
-PKG=omniti/database/postgresql-${VER//./}/intarray
-DOWNLOADDIR=postgres
-MODULE=intarray
-CONTRIBDIR=contrib/$MODULE
-SUMMARY="$PROG $MODULE - Manipulate One-Dimensional Arrays of Integers for PostgreSQL $VER"
+PGVER=917
+PKG=omniti/database/postgresql-${PGVER}/mimeo
+SUMMARY="$PROG - Extension for specialized replication between PostgreSQL instances"
 DESC="$SUMMARY"
 
+TAR=gtar
+DEPENDS_IPS="omniti/database/postgresql-$PGVER"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS"
+
 BUILDARCH=64
-CFLAGS="-O3"
-CPPFLAGS="-I$TMPDIR/$PROG-$VER/src/backend"
+PREFIX=/opt/pgsql$PGVER
+PATH=$PREFIX/bin:$PATH
 
-PREFIX=/opt/pgsql${VER//./}
-reset_configure_opts
-
-CONFIGURE_OPTS="--enable-thread-safety
-    --enable-debug
-    --with-openssl
-    --prefix=$PREFIX
-    --without-readline"
-# We don't want the default settings
-CONFIGURE_OPTS_64=""
-
-make_prog() {
-    logmsg "--- make"
-    make_in $CONTRIBDIR
+configure64() {
+    logmsg "--- Skipping configure - not required"
 }
 
+export USE_PGXS=1
 make_install() {
-    logmsg "--- make install"
-    make_install_in $CONTRIBDIR
+    make_param DESTDIR=${DESTDIR} prefix=$PREFIX install
 }
 
 init
-download_source $DOWNLOADDIR $PROG $VER
+download_source $PROG $PROG $VER
 patch_source
 prep_build
 build

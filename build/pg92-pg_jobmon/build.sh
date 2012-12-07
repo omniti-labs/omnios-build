@@ -30,7 +30,7 @@
 PROG=pg_jobmon
 VER=0.4.5
 VERHUMAN=$VER
-PGVER=921
+PGVER=922
 PKG=omniti/database/postgresql-${PGVER}/pg_jobmon
 SUMMARY="$PROG - PostgreSQL Extension for logging and monitoring automated jobs"
 DESC="$SUMMARY"
@@ -48,9 +48,6 @@ configure64() {
 }
 
 export USE_PGXS=1
-make_prog() {
-    make_param prefix=$PREFIX GREP=ggrep
-}
 make_install() {
     make_param DESTDIR=${DESTDIR} prefix=$PREFIX install
 }

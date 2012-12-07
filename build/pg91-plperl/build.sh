@@ -31,7 +31,7 @@
 export PATH=/opt/OMNIperl/bin:$PATH
 
 PROG=postgresql
-VER=9.1.6
+VER=9.1.7
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/plperl
 DOWNLOADDIR=postgres

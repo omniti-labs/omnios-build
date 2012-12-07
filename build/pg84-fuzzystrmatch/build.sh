@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=8.4.13
+VER=8.4.15
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/fuzzystrmatch
 DOWNLOADDIR=postgres
