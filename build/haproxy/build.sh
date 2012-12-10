@@ -28,8 +28,8 @@
 . ../../lib/functions.sh
 
 PROG=haproxy
-VER=1.4.22
-VERHUMAN=$VER
+VER=1.5.0.20121210
+VERHUMAN="1.5 snapshot from ${VER:6}"
 PKG=omniti/server/haproxy
 SUMMARY="The Reliable, High Performance TCP/HTTP Load Balancer"
 DESC="$SUMMARY"
@@ -40,6 +40,7 @@ DEPENDS_IPS="$BUILD_DEPENDS_IPS"
 TAR=gtar
 IGNOREGIT=true
 export IGNOREGIT
+BUILDDIR=${PROG}-ss-${VER:6}
 
 BUILDARCH=64
 
@@ -62,7 +63,7 @@ make_install() {
 }
 
 init
-download_source $PROG $PROG $VER
+download_source $PROG $PROG ss-${VER:6}
 patch_source
 prep_build
 build
