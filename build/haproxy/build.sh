@@ -34,7 +34,7 @@ PKG=omniti/server/haproxy
 SUMMARY="The Reliable, High Performance TCP/HTTP Load Balancer"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="library/pcre"
+BUILD_DEPENDS_IPS="library/pcre library/security/openssl library/zlib"
 DEPENDS_IPS="$BUILD_DEPENDS_IPS"
 
 TAR=gtar
@@ -52,7 +52,7 @@ configure64() {
 make_prog() {
     [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
     logmsg "--- make"
-    logcmd $MAKE $MAKE_JOBS TARGET=solaris USE_PCRE=1 USE_REGPARM=1 CFLAGS="-I/usr/include/pcre" || \
+    logcmd $MAKE $MAKE_JOBS TARGET=solaris ARCH=x86_64 USE_OPENSSL=1 USE_ZLIB=1 USE_PCRE=1 USE_REGPARM=1 ADDINC="-I/usr/include/pcre" || \
         logerr "--- Make failed"
 }
 
