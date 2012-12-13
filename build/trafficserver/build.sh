@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 PROG=trafficserver
-VER=3.1.3
+VER=3.2.0
 PKG=omniti/server/trafficserver
 SUMMARY="Apache Traffic Server - HTTP cache"
 DESC="$SUMMARY"
@@ -14,11 +14,8 @@ reset_configure_opts
 
 [[ $BUILDARCH == 'both' ]] && BUILDARCH=64
 
-DEPENDS="library/expat library/security/openssl library/pcre database/sqlite-3 \
-	system/library/gcc-4-runtime system/library/g++-4-runtime \
-	system/library/c++/sunpro library/zlib library/readline compress/xz \
-	SUNWcs system/library system/library/math \
-	omniti/runtime/tcl-8"
+BUILD_DEPENDS_IPS="library/expat library/security/openssl library/pcre database/sqlite-3 library/zlib library/readline compress/xz omniti/runtime/tcl-8"
+DEPENDS_IPS="$BUILD_DEPENDS_IPS system/library/gcc-4-runtime system/library/g++-4-runtime"
 
 LDFLAGS64="-L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64 \
            -R$PREFIX/lib"
