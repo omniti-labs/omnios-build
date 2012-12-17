@@ -33,7 +33,7 @@ VERHUMAN=$VER
 PKG=omniti/security/scponly
 SUMMARY="restricted shell for scp"
 DESC=$SUMMARY
-#BUILDARCH=64
+CONFIGURE_OPTS="--enable-chrooted-binary"
 
 init
 download_source $PROG $PROG $VER
