@@ -1,0 +1,22 @@
+diff -burN scponly-4.8.pristine/Makefile.in scponly-4.8/Makefile.in
+--- scponly-4.8.pristine/Makefile.in	2008-01-15 06:26:13.000000000 +0000
++++ scponly-4.8/Makefile.in	2012-12-17 20:40:26.788918492 +0000
+@@ -38,14 +38,14 @@
+ 	${INSTALL} -d ${DESTDIR}${bindir}
+ 	${INSTALL} -d ${DESTDIR}${mandir}/man8
+ 	${INSTALL} -d ${DESTDIR}${CONFDIR}
+-	${INSTALL} -o 0 -g 0 scponly ${DESTDIR}${bindir}/scponly
+-	${INSTALL} -o 0 -g 0 -m 0644 scponly.8 ${DESTDIR}${mandir}/man8/scponly.8
+-	${INSTALL} -o 0 -g 0 -m 0644 debuglevel ${DESTDIR}${DEBUGFILE}
++	${INSTALL} scponly ${DESTDIR}${bindir}/scponly
++	${INSTALL} -m 0644 scponly.8 ${DESTDIR}${mandir}/man8/scponly.8
++	${INSTALL} -m 0644 debuglevel ${DESTDIR}${DEBUGFILE}
+ 	if test "x${CHROOTED_NAME}" != "x"; then			\
+ 		${INSTALL} -d ${DESTDIR}${sbindir};				\
+ 		rm -f ${DESTDIR}${sbindir}/${CHROOTED_NAME};			\
+ 		cp scponly ${CHROOTED_NAME};				\
+-		${INSTALL} -o 0 -g 0 -m 4755 ${CHROOTED_NAME} ${DESTDIR}${sbindir}/${CHROOTED_NAME};	\
++		${INSTALL} -m 4755 ${CHROOTED_NAME} ${DESTDIR}${sbindir}/${CHROOTED_NAME};	\
+ 	fi
+ 
+ debuglevel:
