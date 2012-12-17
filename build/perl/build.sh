@@ -76,6 +76,7 @@ build32() {
         -Dsitebin=${PREFIX}/bin/$ISAPART \
         -Dvendorbin=${PREFIX}/bin/$ISAPART \
         -Dvendorlib=${PREFIX}/lib/vendor_perl/$MAJOR_MINOR \
+        -Dprivlib=${PREFIX}/lib/$MAJOR_MINOR \
         -Dscriptdir=${PREFIX}/bin \
         -Dsitescript=${PREFIX}/bin \
         -Dvendorscript=${PREFIX}/bin \
@@ -110,6 +111,7 @@ build64() {
         -Dsitebin=${PREFIX}/bin/$ISAPART64 \
         -Dvendorbin=${PREFIX}/bin/$ISAPART64 \
         -Dvendorlib=${PREFIX}/lib/vendor_perl/$MAJOR_MINOR \
+        -Dprivlib=${PREFIX}/lib/$MAJOR_MINOR \
         -Dscriptdir=${PREFIX}/bin \
         -Dsitescript=${PREFIX}/bin \
         -Dvendorscript=${PREFIX}/bin \
