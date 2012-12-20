@@ -28,33 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=php
-VER=5.4.8
+VER=5.4.10
 VERHUMAN=$VER
 PKG=omniti/runtime/php-54
 SUMMARY="PHP Server 5.4"
 DESC="PHP is a widely-used general-purpose scripting language that is especially suited for Web development and can be embedded into HTML."
 
-DEPENDS_IPS="
-            compress/bzip2
-            database/sqlite-3
-            library/libtool/libltdl
-            library/libxml2
-            library/libxslt
-            system/library/iconv/unicode
-            system/library/iconv/utf-8
-            system/library/iconv/utf-8/manual
-            system/library/iconv/xsh4/latin
-            web/curl
-            omniti/database/mysql-55/library
-            omniti/library/freetype2
-            omniti/library/gd  
-            omniti/library/libjpeg
-            omniti/library/libmcrypt
-            omniti/library/libpng
-            omniti/library/libpq5
-            omniti/library/libssh2
-            omniti/library/mhash
-            "
+DEPENDS_IPS="compress/bzip2 database/sqlite-3 library/libtool/libltdl library/libxml2 library/libxslt system/library/iconv/unicode system/library/iconv/utf-8 system/library/iconv/utf-8/manual system/library/iconv/xsh4/latin web/curl omniti/database/mysql-55/library omniti/library/freetype2 omniti/library/gd  omniti/library/libjpeg omniti/library/libmcrypt omniti/library/libpng omniti/library/libpq5 omniti/library/libssh2 omniti/library/mhash"
 BUILD_DEPENDS_IPS="omniti/server/apache22 $DEPENDS_IPS"
 
 # Though not strictly needed since we override build(), still nice to set
