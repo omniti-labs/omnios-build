@@ -60,11 +60,26 @@ configure64() {
     configure64_orig
 }
 
+install_man() {
+    logmsg "Fetching and installing pre-built man pages"
+    if [[ ! -f ${TMPDIR}/${PROG}-man-${VER}.tar.gz ]]; then
+        pushd $TMPDIR > /dev/null
+        logcmd $WGET -a $LOGFILE http://$MIRROR/$PROG/${PROG}-man-${VER}.tar.gz || \
+            logerr "--- Failed to fetch tarball"
+        popd > /dev/null
+    fi
+    pushd ${DESTDIR}${PREFIX} > /dev/null
+    extract_archive ${TMPDIR}/${PROG}-man-${VER}.tar.gz || \
+        logerr "--- Error extracting archive"
+    popd > /dev/null
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
+install_man
 make_package
 clean_up
