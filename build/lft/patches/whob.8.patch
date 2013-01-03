@@ -1,0 +1,316 @@
+--- lft-3.35/whob.8.orig	Thu Aug 21 00:15:49 2008
++++ lft-3.35/whob.8	Thu Jan  3 19:08:19 2013
+@@ -1,63 +1,123 @@
+-.Dd August 17, 2002
+-.Dt WHOB 8
+-.Os WHOB
+-.Sh NAME
+-.Nm whob
+-.Nd display whois-type information of interest to Internet operators
+-.Sh SYNOPSIS
+-.Nm whob
+-.Op Fl h Ar whois-server
+-.Op Fl g
+-.Op Fl aCcfhNnOopRrstuVv
+-.Ar host
+-.Sh DESCRIPTION
+-.Nm 
+-queries various sources of whois information for data of interest to network 
+-operators and their tracing and debugging tools.
+-.Pp
+-.Nm
+-output is designed to be easily parsed, or better yet, its functionality
+-can be added directly into your programs (see whois.h).  
+-.Pp
++.TH WHOB 8 "August 17, 2002"
++.SH NAME
++whob \- display whois-type information of interest to Internet operators
++.SH SYNOPSIS
++.LP
++.nf
++\fBwhob\fR [\fB-h \fIwhois-server\fR] [\fB-g\fR] [\fB-aCcfhNnOopRrstuVv\fR] host
++.fi
++
++.SH DESCRIPTION
++\fBwhob\fR queries various sources of whois information for data of interest to
++network operators and their tracing and debugging tools.
++.sp
++\fBwhob\fR output is designed to be easily parsed, or better yet, its
++functionality can be added directly into your programs (see whois.h).  
++.sp
+ The only mandatory parameter is the target host name or IP number.  
+ Options toggle the display of more interesting data or change the sources
+ used to obtain that data.  
+-.Pp
+-One key advantage of 
+-.Nm
+-is its lookup of ASN information derived from the 
+-global Internet routing table itself, as opposed to relying solely on what
+-has been registered in the RADB/IRR (see below).  This data is, by default, 
++.sp
++One key advantage of \fBwhob\fR is its lookup of ASN information derived from
++the global Internet routing table itself, as opposed to relying solely on what
++has been registered in the RADB/IRR (see below).  This data is, by default,
+ sourced from the global pWhoIs service.  See www.pwhois.org
+-.Pp
++.sp
+ Other options are:
+-.Bl -tag -width Ds
+-.It Fl a Ar ASN
++.sp
++.ne 2
++.na
++\fB\fB-a\fR\ \fIASN\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display all routing advertisements made by the respective Origin-AS.  The
+ Origin-AS may be supplied as the target argument, or a hostname or IP address may
+-be supplied and 
+-.Nm
+-will resolve the ASN automatically.
+-.It Fl P Ar prefix
++be supplied and \fBwhob\fR will resolve the ASN automatically.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-P\fR\ \fIprefix\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display all routing advertisements related to the CIDR prefix supplied by the user.
+-.It Fl N Ar ASN
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-N\fR\ \fIASN\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display all networks registered to the ASN supplied by the user.
+-.It Fl O Ar ASN
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-O\fR\ \fIASN\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display all contact information on file for the ASN supplied by the user.
+-.It Fl g
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-g\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Disable GIGO mode.  By popular request, whob takes input directly from the command line 
+ and passes it without modification to pWhoIs or whatever whois server is requested (-h).  
+ The exact output is returned without any parsing.  To enable parsing and the other 
+ useful switches, disable GIGO mode by passing this (-g) option.
+-.It Fl R
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-R\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display the Origin-AS on record at the RADB/IRR (Routing Arbiter Database/Internet Routing Registry)
+ in addition the the Origin-AS provided by the prefix-based whois data source.
+-.It Fl n
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-n\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display the network name on record with the IP network allocation registry also
+ such as ARIN, RIPE, or APNIC.
+-.It Fl o
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-o\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display the organization name on file at the registrar.
+-.It Fl p
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-p\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display the AS-Path from the perspective of the current pwhois server.  The pwhois
+ server may automatically exclude the initial, least specific ASN received from 
+ the operator of the network to which it is connected (unless that ASN is the only/origin 
+@@ -64,14 +124,46 @@
+ ASN or unless it has multiple peers). Of course, this AS-Path is subjective.  If you 
+ rely on this and want AS-Paths that correspond to *your* network infrastructure, you
+ may want to install your own pwhois server.  See the (-w) option and www.pwhois.org
+-.It Fl t
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-t\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display the date the route was last cached by the pWhoIs server.
+-.It Fl u
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-u\fR\fR
++.ad
++.sp .6
++.RS 4n
+ When possible, display dates in UTC/GMT instead of local time.
+-.It Fl h/w Ar host
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-h/-w\fR\ \fIhost\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Change the source of prefix-based whois data from the default (pWhoIs) to any
+ whois-compatible server of your choice (like your own).
+-.It Fl f Ar file
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-f\fR\ \fIfile\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Read from the specified file and submit its contents as bulk input to pwhois.  The 
+ input will be buffered accordingly and subject to the constraints of the current pwhois
+ server.  Output is written to STDOUT (which may be redirected) and will not be parsed.
+@@ -79,33 +171,75 @@
+ they will only apply to the first buffer of pwhois input.  The first (left-most) field
+ in each line of the file must be the IP address and lines may be up to 255 characters 
+ in length.
+-.It Fl c
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-c\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Change the source of prefix-based whois data from the default (pWhoIs) to Cymru.
+ See www.cymru.com for more details.  When used with the -f option, this switch causes
+-.Nm
+-to use Cymru whois for bulk file resolution instead of pwhois. 
+-.It Fl r
++\fBwhob\fR to use Cymru whois for bulk file resolution instead of pwhois. 
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-r\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display the Origin-AS and prefix according to RIPE NCC RIS (see www.ripe.net/projects/ris/).
+-When used with the -f option, this switch causes
+-.Nm
+-to use RIPE NCC riswhois for bulk file resolution instead of pwhois.
+-.It Fl s
++When used with the -f option, this switch causes \fBwhob\fR to use RIPE NCC
++riswhois for bulk file resolution instead of pwhois.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-s\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Show the status of the (respective) pWhoIs server and exit(0)
+-.It Fl V
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-V\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display verbose/debug output.  Use multiple 'V's for additional verbosity.
+-.It Fl v
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-v\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display this client's version information and exit(1)
+-.El
+-.Pp 
+-.Sh AUTHORS
++.RE
++
++.SH AUTHORS
++.sp
+ Victor Oppleman and Eugene Antsilevitch
+-.Sh REPORTING BUGS
++
++.SH REPORTING BUGS
++.sp
+ To report bugs, send e-mail to <whob@oppleman.com>
+-.Sh SEE ALSO
+-.Xr lft 8 ,
+-.Xr whois 1
+-.Sh HISTORY
+-The
+-.Nm
+-command first appeared in 2004.  This whois framework has been a component of
+-LFT since 2002.
++
++.SH SEE ALSO
++.sp
++\fBlft\fR(8), \fBwhois\fR(1)
++
++.SH HISTORY
++.sp
++The \fBwhob\fR command first appeared in 2004.  This whois framework has been a
++component of LFT since 2002.

@@ -1,0 +1,780 @@
+--- lft-3.35/lft.8.orig	Sun Oct 17 19:33:48 2010
++++ lft-3.35/lft.8	Thu Jan  3 18:53:05 2013
+@@ -1,181 +1,353 @@
+-.Dd August 17, 2002
+-.Dt LFT 8
+-.Os LFT
+-.Sh NAME
+-.Nm lft
+-.Nd display the route packets take to a network host/socket using one of several
+-layer-4 protocols and methods; optionally show heuristic network information in transitu
+-.Sh SYNOPSIS
+-.Nm lft
+-.Op Fl d Ar dport
+-.Op Fl s Ar sport
+-.Op Fl m Ar retry min
+-.Op Fl M Ar retry max
+-.Op Fl a Ar ahead
+-.Op Fl c Ar scatter ms
+-.Op Fl t Ar timeout ms
+-.Op Fl l Ar min ttl
+-.Op Fl H Ar max ttl
+-.Op Fl L Ar length
+-.Op Fl q Ar ISN
+-.Op Fl D Ar device
+-.Op Fl f Ar device
+-.Op Fl ACEINPRSTUVbehinpruvz
+-.Ar [<gateway> <...>]
+-.Ar target:dport
+-.Sh DESCRIPTION
++.TH LFT 8 "August 17, 2002"
++.SH NAME
++lft \- display the route packets take to a network host/socket using one of several layer-4 protocols and methods; optionally show heuristic network information in transit
++.SH SYNOPSIS
++.LP
++.nf
++\fBlft\fR [\fB-d \fIdport\fR] [\fB-s \fIsport\fR] [\fB-m \fIretry min\fR] [\fB-M \fIretry max\fR]
++    [\fB-a \fIahead\fR] [\fB-c \fIscatter ms\fR] [\fB-t \fItimeout ms\fR] [\fB-l \fImin ttl\fR]
++    [\fB-H \fImax ttl\fR] [\fB-L \fIlength\fR] [\fB-q \fIISN\fR] [\fB-D \fIdevice\fR]
++    [\fB-f \fIdevice\fR] [\fB-ACEINPRSTUVbehinpruvz\fR] [<gateway> <...>] target:dport
++.fi
++
++.SH DESCRIPTION
++.sp
+ The Internet is a large and complex aggregation of network hardware, 
+ connected together by gateways.  Tracking the route one's packets follow 
+ (or finding the miscreant gateway that's discarding your packets) can be 
+ difficult.  (from traceroute(8)) 
+-.Pp
+-.Nm 
+-was developed to automate a solution to the above, taking into 
++.sp
++\fBlft\fR was developed to automate a solution to the above, taking into 
+ account that modern networks contain many configurations of load balancers, 
+ proxies, and stateful firewalls.
+-.Pp
+-.Nm 
+-implements numerous network tracing methods and strategies.  Generally,
+-.Nm
+-sends various types of layer-4 probes utilizing the IP protocol `time to live' 
+-field and attempts to elicit an
+-.Tn ICMP `time exceeded in transit'
+-response from each gateway along the path to some host.  RFC 1393 Traceroute 
+-Using an IP Option is also available as one of several tracing methods.
+-.Pp
+-.Nm 
+-additionally listens for various messages along the way to assist network
+-managers in ascertaining per-protocol heuristic routing information.  
+-.Nm
+-can optionally retrieve various information about the networks it traverses using
+-a variety of sources such as registries, routing arbiters, etc.
+-.Pp
++.sp
++\fBlft\fR implements numerous network tracing methods and strategies.
++Generally, \fBlft\fR sends various types of layer-4 probes utilizing the IP
++protocol `time to live' field and attempts to elicit an \fBICMP\fR `time 
++exceeded in transit' response from each gateway along the path to some host.
++RFC 1393 Traceroute Using an IP Option is also available as one of several 
++tracing methods.
++.sp
++\fBlft\fR additionally listens for various messages along the way to assist 
++network managers in ascertaining per-protocol heuristic routing information.  
++\fBlft\fR can optionally retrieve various information about the networks it 
++traverses using a variety of sources such as registries, routing arbiters, etc.
++.sp
+ The only mandatory parameter is the target host name or IP number.  
+ Options toggle the display of more interesting data or change the variables
+ of the trace itself.  The (-E/-e) adaptive option tries several combinations 
+ of TCP states (changing flags inside the probes it sends) in order to improve 
+ the chances of a successful trace and expose stateful packet filters.
+-.Pp
++.sp
+ Other options are:
+-.Bl -tag -width Ds
+-.It Fl d Ar dport
+-Set
+-.Ar dport
+-as the destination TCP port of the probes LFT generates.  Default is 80.  This option is useful to see if packets follow a different route based on protocol destination, a likely scenario when load balancers or proxies are involved.  This option may also bypass less sophisticated packet filter configurations.
+-.It Fl s Ar sport
+-Set
+-.Ar sport
+-as the origin TCP port of the probes LFT generates.  Default is 53.  This option is useful to see if packets follow a different route based on protocol source. This option may also bypass less sophisticated packet filter configurations.
+-.It Fl z
+-Automatically select a pseudo-random source port.  This option may be useful if your local
+-packet filter or proxy doesn't allow you to use source ports outside of the dymanic range allocation.
+-.It Fl m Ar min
+-Set 
+-.Ar min
+-as the minimum number of re-attempts to send per host.  Default is 1 unless adaptive
+-(-E) mode is used.
+-.It Fl M Ar max
+-Set 
+-.Ar max
+-as the maximum number of re-attempts to send per host.  Default is 3.
+-.It Fl a Ar ahead
+-Set 
+-.Ar ahead
+-as the number of hops forward to query before waiting for a response.  Default
+-is 5.
+-.It Fl c Ar scatter ms
+-Set 
+-.Ar scatter ms
+-as the minimum number of milliseconds to wait between sending probes.  Default
+-is 20.
+-.It Fl t Ar timeout ms
+-Set 
+-.Ar timeout ms
+-as the maximum number of milliseconds to wait before assuming a probe was 
+-lost/discarded.  Default is 1000.
+-.It Fl l Ar min ttl
+-Set 
+-.Ar min tll
+-as the minimum TTL (time-to-live) on outgoing probes (essentially, the 
+-first hop in the line that you want to display).  Default is 1.
+-.It Fl q Ar ISN
+-Set 
+-.Ar ISN
+-as the ISN (initial sequence number) of the first probe.  If unset, one will be
+-automatically generated using a pseudo-random, time-seeded algorithm.
+-.It Fl L Ar length
+-Set 
+-.Ar length
+-as the size of probe packets in bytes.  This includes layer-3 and layer-4 headers, but
+-does not include layer-2 headers.  For example, setting the length to 1500 would create
+-a 1500-byte probe packet which would result in a 1514-byte frame on an Ethernet network.
+-.It Fl D Ar device
+-Set 
+-.Ar device
+-as the network device or address to receive traffic.  (e.g., "en1" or "1.2.3.4")  If unset, 
+-.Nm
+-will attempt to determine and acquire the appropriate interface based on routing.
+-.It Fl f Ar device
+-Set 
+-.Ar device
+-as the network device or address to transmit traffic.  (e.g., "en1" or "1.2.3.4")  If unset, 
+-.Nm
+-will attempt to determine and acquire the appropriate interface based on routing.
+-This serves to operate 
+-.Nm
+-in a passive mode where you may transmit from a (potentially) spoofed IP address on one
+-interface, yet receive on another. This allows you to trace from a different
+-IP address whose traffic you can see in order to intercept replies.
+-.It Fl H Ar ttl
+-Set 
+-.Ar ttl
+-as the maximum TTL, essentially the maximum route traversal distance in 
+-hops.  Default is 30.
+-.It Fl I
++.sp
++.ne 2
++.na
++\fB\fB-d\fR\ \fIdport\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fIdport\fR as the destination TCP port of the probes LFT generates.
++Default is 80.  This option is useful to see if packets follow a different route
++based on protocol destination, a likely scenario when load balancers or proxies
++are involved.  This option may also bypass less sophisticated packet filter
++configurations.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-s\fR\ \fIsport\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fIsport\fR as the origin TCP port of the probes LFT generates.  Default is
++53.  This option is useful to see if packets follow a different route based on
++protocol source. This option may also bypass less sophisticated packet filter
++configurations.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-z\fR\fR
++.ad
++.sp .6
++.RS 4n
++Automatically select a pseudo-random source port.  This option may be useful if
++your local packet filter or proxy doesn't allow you to use source ports outside
++of the dymanic range allocation.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-m\fR\ \fImin\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fImin\fR as the minimum number of re-attempts to send per host.  Default is
++1 unless adaptive (-E) mode is used.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-M\fR\ \fImax\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fImax\fR as the maximum number of re-attempts to send per host.  Default is
++3.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-a\fR\ \fIahead\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fIahead\fR as the number of hops forward to query before waiting for a
++response.  Default is 5.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-c\fR\ \fIscatter ms\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fIscatter ms\fR as the minimum number of milliseconds to wait between
++sending probes.  Default is 20.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-t\fR\ \fItimeout ms\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fItimeout ms\fR as the maximum number of milliseconds to wait before
++assuming a probe was lost/discarded.  Default is 1000.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-l\fR\ \fImin ttl\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fImin ttl\fR as the minimum TTL (time-to-live) on outgoing probes
++(essentially, the first hop in the line that you want to display).  Default is
++1.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-q\fR\ \fIISN\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fIISN\fR as the ISN (initial sequence number) of the first probe.  If
++unset, one will be automatically generated using a pseudo-random, time-seeded
++algorithm.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-L\fR\ \fIlength\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fIlength\fR as the size of probe packets in bytes.  This includes layer-3
++and layer-4 headers, but does not include layer-2 headers.  For example,
++setting the length to 1500 would create a 1500-byte probe packet which would
++result in a 1514-byte frame on an Ethernet network.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-D\fR\ \fIdevice\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fIdevice\fR as the network device or address to receive traffic.  (e.g.,
++"en1" or "1.2.3.4")  If unset, \fBlft\fR will attempt to determine and acquire
++the appropriate interface based on routing.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-f\fR\ \fIdevice\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fIdevice\fR as the network device or address to transmit traffic.  (e.g.,
++"en1" or "1.2.3.4")  If unset, \fBlft\fR will attempt to determine and acquire
++the appropriate interface based on routing.  This serves to operate \fBlft\fR
++in a passive mode where you may transmit from a (potentially) spoofed IP
++address on one interface, yet receive on another. This allows you to trace from
++a different IP address whose traffic you can see in order to intercept replies.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-H\fR\ \fIttl\fR\fR
++.ad
++.sp .6
++.RS 4n
++Set \fIttl\fR as the maximum TTL, essentially the maximum route traversal
++distance in hops.  Default is 30.
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-I\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Set the ToS (Type of Serice) bit on outgoing IP datagrams.  The ToS will
+ be set to the differentiated services request minimize-delay.
+-.It Fl i
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-i\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Disable "stop" on ICMP other than TTL expired.
+-.It Fl n
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-n\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Print addresses numerically rather than symbolically and numerically.  
+ Disables use of the DNS resolver completely. 
+-.It Fl h
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-h\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Print addresses symbolically rather than symbolically and numerically.  If
+ the DNS resolver fails to resolve an address, the address is printed numerically.
+-.It Fl E/e
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-E/-e\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Enable use of the adaptive engine which tries several combinations of TCP states
+ (changing flags inside the probes it sends) in order to improve
+ the chances of a successful trace.  The engine also displays other useful
+ information such as stateful inspection firewalls or broken IP stacks 
+ encountered along the way.
+-.It Fl F 
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-F\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Enable use of TCP packets with the FIN flag set.  This strategy fools unsophisticated
+ packet filters that don't maintain a proper state table.  Such devices will forward the packet 
+ to its destination rather than filter it, assuming a handshake has already taken place and 
+ the probes are part of an existing and valid TCP stream.  
+-.It Fl u
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-u\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Enable use of UDP-based probes instead of TCP-based probes.  This strategy is similar
+ to the traditional traceroute method, but many of LFT's other options (such as source
+ and destination port selection) are still available.  By default, LFT's UDP probes
+ have a small payload (unlike LFT's TCP probes that carry no payload).  
+-.It Fl N
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-N\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Enable lookup and display of network or AS names (e.g., [GNTY-NETBLK-4]).  This 
+ option queries Prefix WhoIs, RIPE NCC, or the RADB (as requested).  In the case of 
+ Prefix WhoIs or RADB, the network name is displayed.  In the case of RIPE NCC, the 
+ AS name is displayed.
+-.It Fl P
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-P\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Enable RFC 1393 tracing method using ICMP and an IP option.  While this strategy
+ has been formalized in an RFC, few network equipment vendors support it.  
+-.It Fl p
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-p\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Enable use of ICMP-based probes instead of TCP-based probes.  This strategy 
+ is sometimes the fastest, however firewalls commonly filter ICMP at network borders.
+ ICMP probes are echo request (ping) packets.
+-.It Fl b
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-b\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Enable TCP basic tracing method.  Unlike the default method, the basic method generates
+ TCP probes without relying upon sequence numbers being conveyed correctly.  This
+ makes LFT more comptabile with networks employing NAT, but is slower than the default
+ method.  TCP basic may also be used with adaptive mode (-E).
+-.It Fl A
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-A\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Enable lookup and display of of AS (autonomous system) numbers (e.g., [1]).  
+ This option queries one of several whois servers (see options 'C' and 'r')
+ in order to ascertain the origin ASN of the IP address in question.  By 
+@@ -182,41 +354,111 @@
+ default, LFT uses the pWhoIs service whose ASN data tends to be more accurate 
+ and more timely than using the RADB as it is derived from the Internet's global 
+ routing table.  See www.pwhois.org
+-.It Fl r
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-r\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Force use of the RIPE NCC RIS whois service to lookup ASNs.  This is an alternative
+ source of timely ASN-related information built using the Internet's global
+ routing table.  See www.ripe.net/projects/ris
+-.It Fl C
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-C\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Force use of the Cymru whois service to lookup ASNs.  This is an
+ alternative source of timely ASN-related information built using the 
+ Internet's global routing table.  See www.cymru.com
+-.It Fl R
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-R\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Force use of the RADB whois service to lookup ASNs.  This tends to be quick,
+ but incomplete and usually inaccurate with regard to the 'actual' Internet
+ routing table.  See www.radb.net
+-.It Fl T
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-T\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Enable display of LFT's execution timer.  This option places timers on the
+ trace itself and on lookups and name resolution to show where LFT is spending
+ its time, waiting on resolvers, or processing trace packets.  Use with -V (verbose) 
+ to display additional detail.
+-.It Fl U
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-U\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display all times in UTC/GMT0.  This option also enables the -T option automatically.
+-.It Fl S
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-S\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Suppress display of the real-time status bar.  This option makes LFT show its
+ completed trace output only, no-frills.
+-.It Fl V
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-V\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display verbose output.  Use more V's for more info.
+-.It Fl v
++.RE
++
++.sp
++.ne 2
++.na
++\fB\fB-v\fR\fR
++.ad
++.sp .6
++.RS 4n
+ Display version information, then exit(1).
+-.El
+-.Pp
++.RE
++
++.sp
++.LP
+ Any hosts listed after these options and before the final host/target will comprise
+ the loose source route.  Since network operators have security concerns
+ regarding the use of source routing, don't expect the LSRR options
+ to do anything for you in most public networks.
+-.Sh EXAMPLES
++
++.SH EXAMPLES
++.LP
+ A sample use and output might be:
+-.Bd -literal
++.sp
++.in +2
++.nf
+ [edge.lax]$ lft -S 4.2.2.2
+ 
+ Hop  LFT trace to vnsc-bak.sys.gtei.net (4.2.2.2):80/tcp
+@@ -233,25 +475,28 @@
+ **   [neglected] no reply packets received from TTLs 11 through 20
+ **   [4.2-3 BSD bug] the next gateway may errantly reply with reused TTLs
+ 21   [target] vnsc-bak.sys.gtei.net (4.2.2.2) 11.2ms
++.fi
++.in -2
+ 
+-.Ed
+-.Pp
++.sp
+ The (-S) option was used to suppress the real-time status bar for clean output.
+-LFT's "**" notifiers in between hops 10 and 21 represent additional useful information: the first is a "[neglected]" indicator that lets us know that none of the probes sent with the TTLs indicated elicited responses.  This could be for a variety of reasons, but the cause of this specific occurrence is described in the next informative message which indicates that this is likely the result of a bug in
+-the 4.[23]
+-.Tn BSD
+-network code (and its derivatives):  BSD 4.x (x < 3)
+-sends an unreachable message using whatever TTL remains in the
+-original datagram.  Since, for gateways, the remaining TTL is
+-zero, the
+-.Tn ICMP
+-"time exceeded" is guaranteed to not make it back
+-to us.  LFT does its best to identify this condition rather than print 
+-lots and lots of hops that don't exist (trying to reach a high enough TTL).
+-.Pp
+-Now, using the adaptive engine option:
+-.Bd -literal 
++LFT's "**" notifiers in between hops 10 and 21 represent additional useful
++information: the first is a "[neglected]" indicator that lets us know that none
++of the probes sent with the TTLs indicated elicited responses.  This could be
++for a variety of reasons, but the cause of this specific occurrence is
++described in the next informative message which indicates that this is likely
++the result of a bug in the 4.[23] BSD network code (and its derivatives):  BSD
++4.x (x < 3) sends an unreachable message using whatever TTL remains in the
++original datagram.  Since, for gateways, the remaining TTL is zero, the ICMP
++"time exceeded" is guaranteed to not make it back to us.  LFT does its best to
++identify this condition rather than print lots and lots of hops that don't
++exist (trying to reach a high enough TTL).
+ 
++.LP
++Now, using the adaptive engine option:
++.sp
++.in +2
++.nf
+ [edge.lax]$ lft -E -S 4.2.2.1
+ 
+ Hop  LFT trace to vnsc-pri.sys.gtei.net (4.2.2.1):80/tcp
+@@ -262,12 +507,15 @@
+ **   [firewall] the next gateway may statefully inspect packets
+  5   p0-0-0.lsanca1-csr1.bbnplanet.net (4.24.4.10) 155.4/3.7ms
+  6   [target] vnsc-pri.sys.gtei.net (4.2.2.1) 22.6/3.7/*/*/*/*/*ms
++.fi
++.in -2
+ 
+-.Ed
+-.Pp
+-In the scenario above, the adaptive engine was able to identify a stateful, packet-inspecting firewall in the path.  Another example with more options:
+-.Bd -literal
+-
++.sp
++In the scenario above, the adaptive engine was able to identify a stateful,
++packet-inspecting firewall in the path.  Another example with more options:
++.sp
++.in +2
++.nf
+ [edge.lax]$ lft -S -A -T -m 2 -d 80 -s 53 www.yahoo.com
+ 
+ Hop  LFT trace to w9.scd.yahoo.com (66.218.71.88):80/tcp
+@@ -285,17 +533,21 @@
+ 12   [3356] cust-int.level3.net (64.152.81.62)  52 ms
+ 13   [10310] vl17.bas2.scd.yahoo.com (66.218.64.150)  53 ms
+ 14   [10310] w9.scd.yahoo.com (66.218.71.88) [target]  54 ms
+-.Pp
++.fi
++.in -2
++
++.sp
+ LFT's trace took 5.23 seconds.  Resolution required 3.58 seconds.
+ 
+-.Ed
+-.Pp
+-Note the -Ar above displays ASNs using the RADB as a whois source.  A better option may have been
+-to use the -A alone or perhaps -AC.
+-.Pp
+-And why not request netblock lookups?
+-.Bd -literal
++.sp
++Note the -Ar above displays ASNs using the RADB as a whois source.  A better
++option may have been to use the -A alone or perhaps -AC.
+ 
++.LP
++And why not request netblock lookups?
++.sp
++.in +2
++.nf
+ [edge.lax]$ lft -S -N www.microsoft.com
+ 
+ Hop  LFT trace to www.us.microsoft.com (207.46.197.113):80/tcp
+@@ -315,16 +567,16 @@
+ 14   [MICROSOFT-GLOBAL-NET] 207.46.154.9  32 ms
+ 15   [MICROSOFT-GLOBAL-NET] 207.46.155.17  33 ms
+ 16   [MICROSOFT-GLOBAL-NET] 207.46.129.51 [prohibited]  35 ms
++.fi
++.in -2
+ 
+-.Ed
+-.Pp 
+-.Sh TROUBLESHOOTING
++.SH TROUBLESHOOTING
++.sp
+ If traces don't appear to go anywhere, there are a number of things to try.  
+-If you are receiving an error related to permissions, be sure the
+-.Nm
++If you are receiving an error related to permissions, be sure the \fBlft\fR
+ executable is set-uid root so it may execute with root-level permissions
+ required to utilize raw sockets on most operating systems.
+-.Pp
++.sp
+ If you do not receive permissions-related errors, but traces still don't go 
+ anywhere, first activate verbose output by adding -VV to your command line 
+ options.  Then, reading the verbose output, if you see trace
+@@ -332,28 +584,31 @@
+ you may:  Use the TCP basic (-b) method if you wish to use TCP probes and you 
+ fear NAT may be causing your trace to fail.  Alternatively, select a different
+ trace method and protocol such as UDP (-u) or ICMP (-p).
+-.Pp
++.sp
+ If you are attempting to use RFC 1393 (-P) and your trace is failing, this is 
+ likely because network equipment somewhere in the path does not conform to 
+ RFC 1393.  Your only option is to select an alternative tracing method or protocol.
+-.Pp
++.sp
+ If you are attempting to utilize adaptive mode (-E/-e) and traces fail, first
+ try enabling NAT compatibility using TCP basic (-b).  If traces still fail, the
+ most likely reason is a close-proximity stateful firewall in your network, which 
+ prevents this feature from working.
+-.Pp
+-.Sh AUTHORS
++
++.SH AUTHORS
++.sp
+ Victor Oppleman, Eugene Antsilevitch, Sergey Kondryukov and other helpers around the world.
+-.Sh REPORTING BUGS
++
++.SH REPORTING BUGS
++.sp
+ To report bugs, send e-mail to <lft@oppleman.com>
+-.Sh SEE ALSO
+-.Xr traceroute 8 ,
+-.Xr netstat 1 ,
+-.Xr whois 1 ,
+-.Xr whob 8
+-.Sh HISTORY
+-The
+-.Nm
+-command first appeared in 1998 as 'fft'.  Renamed as a result of confusion with fast fourier transforms, 
+-.Nm
+-stands for 'layer four traceroute.'  Thanks also to Nils McCarthy for writing 'FFT', LFT's predecessor.
++
++.SH SEE ALSO
++.sp
++\fBtraceroute\fR(1M), \fBnetstat\fR(1M), \fBwhois\fR(1), \fBwhob\fR(8)
++
++.SH HISTORY
++.sp
++The \fBlft\fR command first appeared in 1998 as 'fft'.  Renamed as a result of
++confusion with fast fourier transforms, \fBlft\fR stands for 'layer four
++traceroute.'  Thanks also to Nils McCarthy for writing 'FFT', LFT's
++predecessor.
