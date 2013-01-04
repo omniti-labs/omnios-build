@@ -35,7 +35,12 @@ PKG=cat/pkg     # Package name (without prefix)
 SUMMARY=""      # Change this
 DESC=""         # Change this
 
-DEPENDS_IPS="runtime/python-26"
+BUILD_DEPENDS_IPS="omniti/runtime/python-26"
+DEPENDS_IPS="omniti/runtime/python-26"
+
+# omniti-ms python is 64-bit only
+BUILDARCH=64
+PYTHON=/opt/python26/bin/python
 
 init
 download_source $PROG $PROG $VER
