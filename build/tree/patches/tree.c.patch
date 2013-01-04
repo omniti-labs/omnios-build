@@ -1,0 +1,24 @@
+--- tree-1.6.0/tree.c.orig	Fri Jun 24 14:26:30 2011
++++ tree-1.6.0/tree.c	Fri Jan  4 18:19:25 2013
+@@ -45,8 +45,8 @@
+ #ifdef __EMX__
+ const u_short ifmt[]={ FILE_ARCHIVED, FILE_DIRECTORY, FILE_SYSTEM, FILE_HIDDEN, FILE_READONLY, 0};
+ #else
+-  #ifdef S_ISPORT
+-  const u_int ifmt[] = {S_IFREG, S_IFDIR, S_IFLNK, S_IFCHR, S_IFBLK, S_IFSOCK, S_IFIFO, S_ISDOOR, S_ISPORT, 0};
++  #ifdef S_IFPORT
++  const u_int ifmt[] = {S_IFREG, S_IFDIR, S_IFLNK, S_IFCHR, S_IFBLK, S_IFSOCK, S_IFIFO, S_IFDOOR, S_IFPORT, 0};
+   const char fmt[] = "-dlcbspDP?";
+   const char *ftype[] = {"file", "directory", "link", "char", "block", "socket", "fifo", "door", "port", "unknown", NULL};
+   #else
+@@ -1114,8 +1114,8 @@
+   else if (m == S_IFSOCK) return '=';
+   else if (m == S_IFIFO) return '|';
+   else if (m == S_IFLNK) return '@'; /* Here, but never actually used though. */
+-#ifdef S_ISDOOR
+-  else if (m == S_ISDOOR) return '>';
++#ifdef S_IFDOOR
++  else if (m == S_IFDOOR) return '>';
+ #endif
+   else if ((m == S_IFREG) && (mode & (S_IXUSR | S_IXGRP | S_IXOTH))) return '*';
+   return 0;
