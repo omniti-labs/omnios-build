@@ -824,9 +824,6 @@ buildpython32() {
     logcmd $PYTHON \
         ./setup.py install --root=$DESTDIR ||
         logerr "--- install failed"
-
-    mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages ||
-        logerr "Cannot move from site-packages to vendor-packages"
 }
 
 buildpython64(){
@@ -845,7 +842,6 @@ buildpython64(){
     logcmd $PYTHON \
         ./setup.py install --root=$DESTDIR ||
         logerr "--- install failed"
-
 }
 
 #############################################################################
