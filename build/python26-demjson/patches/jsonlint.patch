@@ -1,0 +1,8 @@
+--- demjson-release-1.6/jsonlint.orig	Sun Jun 10 18:50:12 2012
++++ demjson-release-1.6/jsonlint	Fri Jan  4 19:37:40 2013
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/opt/python26/bin/python
+ # -*- coding: utf-8 -*-
+ r"""A JSON syntax validator and formatter tool.
+ 
