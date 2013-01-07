@@ -39,8 +39,6 @@ DESC="llvm"         # Longer description, must be filled in
 export REQUIRES_RTTI=1
 CONFIGURE_OPTS="--enable-optimized --disable-assertions \
     --enable-targets=x86,x86_64,cpp --enable-pic=yes --enable-docs=no"
-LDFLAGS32="-I/usr/lib -I/lib -R/usr/lib -R/lib"
-LDFLAGS64="-I/usr/lib/amd64 -I/lib/amd64 -R/usr/lib/amd64 -R/lib/amd64"
 
 # llvm needs the flags directory inserted into the make file
 make_prog64() {
@@ -59,8 +57,7 @@ make_install64() {
     logcmd $MAKE install \
                  PROJ_bindir="$PREFIX/bin/amd64" \
                  PROJ_libdir="$PREFIX/lib/amd64" \
-                 DESTDIR=${DESTDIR} \
-                 VERBOSE=1 || \
+                 DESTDIR=${DESTDIR} || \
         logerr "--- Make install failed"
 }
 
