@@ -1,8 +1,8 @@
 #
 #	List of PCI ID's
 #
-#	Version: 2012.12.08
-#	Date:    2012-12-08 03:15:01
+#	Version: 2013.01.07
+#	Date:    2013-01-07 03:15:01
 #
 #	Maintained by Martin Mares <mj@ucw.cz> and other volunteers from the
 #	PCI ID Project at http://pci-ids.ucw.cz/.
@@ -79,27 +79,13 @@
 0357  TTTech AG
 	000a  TTP-Monitoring Card V2.0
 036f  Trigem Computer Inc.
-0403  Future Technology Devices International Ltd
 0432  SCM Microsystems, Inc.
 	0001  Pluto2 DVB-T Receiver for PCMCIA [EasyWatch MobilSet]
-0482  Kyocera
-# vendor code used for (at a minimum) RSA cards
-04b3  IBM Corp.
-	4001  Remote System Administration device [RSA2]
-050d  Belkin
-05a9  OmniVision
-	8519  OV519 series
-05e3  CyberDoor
-	0701  CBD516
-066f  SigmaTel
-	3410  SMTP3410
-	3500  SMTP3500
 0675  Dynalink
 	1700  IS64PH ISDN Adapter
 	1702  IS64PH ISDN Adapter
 	1703  ISDN Adapter (PCI Bus, DV, W)
 	1704  ISDN Adapter (PCI Bus, D, C)
-069d  Hughes Network Systems (HNS)
 0721  Sapphire, Inc.
 0777  Ubiquiti Networks, Inc.
 # Atheros, 6th Generation, AR5414, 802.11a, 5GHz
@@ -387,6 +373,7 @@
 		1000 9273  MegaRAID SAS 9270CV-8i
 		1000 9274  MegaRAID SAS 9270-4i
 		1000 9275  MegaRAID SAS 9271-8iCC
+		1000 9276  MegaRAID SAS 9271-4i
 		1000 9285  MegaRAID SAS 9285-8e
 		1000 9288  MegaRAID SAS 9285CV-8e
 		1000 9290  MegaRAID SAS 9286-8e
@@ -1954,6 +1941,7 @@
 	aa98  Caicos HDMI Audio [Radeon HD 6400 Series]
 		174b aa98  Sapphire HD 6450 1GB DDR3
 	aaa0  Tahiti XT HDMI Audio [Radeon HD 7970 Series]
+	aab0  Cape Verde HDMI Audio [Radeon HD 7700 Series]
 	ac00  Theater 600 Pro
 	ac02  TV Wonder HD 600 PCIe
 	ac12  Theater HD T507 (DVB-T) TV tuner/capture device
@@ -3771,6 +3759,7 @@
 		103c 006a  NX9500
 		1043 808d  A7V333 mainboard.
 	8027  PCI4451 IEEE-1394 Controller
+		1028 00e5  Latitude C810
 		1028 00e6  PCI4451 IEEE-1394 Controller (Dell Inspiron 8100)
 	8029  PCI4510 IEEE-1394 Controller
 		1028 0163  Latitude D505
@@ -4987,6 +4976,10 @@
 		10b4 237e  Velocity 4400
 10b5  PLX Technology, Inc.
 	0001  i960 PCI bus interface
+	0557  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
+		10b5 9030  Digium Tormenta 2 T400P-SS7 or E400P-SS7 Quad T1 or E1 PCI card
+	1000  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
+		10b5 9030  ATCOM AT400P Quad T1 PCI card
 	1024  Acromag, Inc. IndustryPack Carrier Card
 	1042  Brandywine / jxi2, Inc. - PMC-SyncClock32, IRIG A & B, Nasa 36
 	106a  Dual OX16C952 4 port serial adapter [Megawolf Romulus/4]
@@ -4996,9 +4989,17 @@
 	1103  VScom 200 2 port serial adaptor
 	1146  VScom 010 1 port parallel adaptor
 	1147  VScom 020 2 port parallel adaptor
+	2000  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
+		10b5 9030  ATCOM AE400P Quad E1 PCI card
 	2540  IXXAT CAN-Interface PC-I 04/PCI
 	2724  Thales PCSM Security Card
 	3376  Cosateq 4 Port CAN Card
+	4000  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
+		10b5 9030  Tormenta 3 Varion V400P/ATCOM TE400P Quad E1/T1/J1 PCI card
+	4001  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
+		10b5 9030  ATCOM A400PE Quad E1 PCI card
+	4002  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
+		10b5 9030  ATCOM A400PT Quad T1 PCI card
 	6140  PCI6140 32-bit 33MHz PCI-to-PCI Bridge
 	6150  PCI6150 32-bit 33MHz PCI-to-PCI Bridge
 	6152  PCI6152 32-bit 66MHz PCI-to-PCI Bridge
@@ -5162,6 +5163,7 @@
 		10b5 3354  Alpermann+Velte PCL PCIe LV: Timecode Reader Board
 		10b5 3355  Alpermann+Velte PCL PCIe L: Timecode Reader Board
 		10b5 3415  Alpermann+Velte PCIe TS: Time Synchronisation Board
+		10b5 3493  Alpermann+Velte PCL PCIe 3G: Timecode Reader Board
 		1369 c001  LX6464ES
 		1369 c201  LX1616ES
 		14b4 d10a  DekTec DTA-110T
@@ -5194,8 +5196,15 @@
 	a100  Blackmagic Design DeckLink
 	bb04  B&B 3PCIOSD1A Isolated PCI Serial
 	c001  CronyxOmega-PCI (8-port RS232)
+	d00d  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
+		10b5 9030  Digium Tormenta 2 T400P or E400P Quad T1 or E1 PCI card
+	d33d  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
+		10b5 9030  Tormenta 3 Varion V401PT Quad T1/J1 PCI card
 	d44d  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
-		10b5 17f6  entVoice E1 Card
+		10b5 17f6  Allo CP100P/E 1-port E1/T1/J1 PCI/PCIe card
+		10b5 17f7  Allo CP400P/E 4-port E1/T1/J1 PCI/PCIe card
+		10b5 17f8  Allo CP200P/E 2-port E1/T1/J1 PCI/PCIe card
+		10b5 9030  Tormenta 3 Varion V401PE Quad E1 PCI card
 10b6  Madge Networks
 	0001  Smart 16/4 PCI Ringnode
 	0002  Smart 16/4 PCI Ringnode Mk2
@@ -7071,6 +7080,7 @@
 	0865  C79 [GeForce 9300]
 	0866  C79 [GeForce 9400M G]
 	0867  C79 [GeForce 9400]
+		106b 00ad  iMac 9,1
 	0868  C79 [nForce 760i SLI]
 	086a  C79 [GeForce 9400]
 	086c  C79 [GeForce 9300 / nForce 730i]
@@ -7139,30 +7149,42 @@
 	0a87  MCP79 Host Bridge
 	0a88  MCP79 Memory Controller
 	0a89  MCP79 Memory Controller
+	0a98  MCP79 Memory Controller
+		10de cb79  iMac 9,1
 	0aa0  MCP79 PCI Express Bridge
+		10de cb79  Apple iMac 9,1
 	0aa2  MCP79 SMBus
+		10de cb79  Apple iMac 9,1
 		19da a123  IONITX-F-E
 	0aa3  MCP79 Co-processor
+		10de cb79  Apple iMac 9,1
 		19da a123  IONITX-F-E
 	0aa4  MCP79 Memory Controller
 		19da a123  IONITX-F-E
 	0aa5  MCP79 OHCI USB 1.1 Controller
+		10de cb79  Apple iMac 9,1
 		19da a123  IONITX-F-E
 	0aa6  MCP79 EHCI USB 2.0 Controller
+		10de cb79  Apple iMac 9,1
 		19da a123  IONITX-F-E
 	0aa7  MCP79 OHCI USB 1.1 Controller
+		10de cb79  Apple iMac 9,1
 		19da a123  IONITX-F-E
 	0aa8  MCP79 OHCI USB 1.1 Controller
 	0aa9  MCP79 EHCI USB 2.0 Controller
+		10de cb79  Apple iMac 9,1
 		19da a123  IONITX-F-E
 	0aaa  MCP79 EHCI USB 2.0 Controller
 	0aab  MCP79 PCI Bridge
+		10de cb79  Apple iMac 9,1
 	0aac  MCP79 LPC Bridge
 	0aad  MCP79 LPC Bridge
 		19da a123  IONITX-F-E
 	0aae  MCP79 LPC Bridge
+		10de cb79  Apple iMac 9,1
 	0aaf  MCP79 LPC Bridge
 	0ab0  MCP79 Ethernet
+		10de cb79  Apple iMac 9,1
 		19da a123  IONITX-F-E
 	0ab1  MCP79 Ethernet
 	0ab2  MCP79 Ethernet
@@ -7174,6 +7196,7 @@
 	0ab7  MCP79 SATA Controller
 	0ab8  MCP79 AHCI Controller
 	0ab9  MCP79 AHCI Controller
+		10de cb79  Apple iMac 9,1
 	0aba  MCP79 AHCI Controller
 	0abb  MCP79 AHCI Controller
 	0abc  MCP79 RAID Controller
@@ -7181,13 +7204,17 @@
 	0abe  MCP79 RAID Controller
 	0abf  MCP79 RAID Controller
 	0ac0  MCP79 High Definition Audio
+		10de cb79  Apple iMac 9,1
 	0ac1  MCP79 High Definition Audio
 	0ac2  MCP79 High Definition Audio
 	0ac3  MCP79 High Definition Audio
 	0ac4  MCP79 PCI Express Bridge
+		10de cb79  Apple iMac 9,1
 	0ac5  MCP79 PCI Express Bridge
 	0ac6  MCP79 PCI Express Bridge
+		10de cb79  Apple iMac 9,1
 	0ac7  MCP79 PCI Express Bridge
+		10de cb79  Apple iMac 9,1
 	0ac8  MCP79 PCI Express Bridge
 	0ad0  MCP78S [GeForce 8200] SATA Controller (non-AHCI mode)
 		1462 7508  K9N2GM-FIH
@@ -7272,6 +7299,7 @@
 	0dee  GF108 [GeForce GT 415M]
 	0def  GF108 [Quadro NVS 5400M]
 	0df0  GF108 [GeForce GT 425M]
+	0df1  GF108 [GeForce GT 420M]
 	0df2  GF108 [GeForce GT 435M]
 	0df4  GF108 [GeForce GT 540M]
 	0df5  GF108 [GeForce GT 540M]
@@ -7286,6 +7314,8 @@
 	0e09  GF110 High Definition Audio Controller
 	0e0a  GK104 HDMI Audio Controller
 	0e0c  GF114 HDMI Audio Controller
+	0e1b  GK107 HDMI Audio Controller
+		1043 8428  GTX650-DC-1GD5
 	0e22  GF104 [GeForce GTX 460]
 		1462 2322  N460GTX Cyclone 1GD5/OC
 # taken from nv_disp.inf
@@ -7301,6 +7331,8 @@
 	0fc0  GK107 [GeForce GT 640]
 # taken from nv_disp.inf
 	0fc1  GK107 [GeForce GT 640]
+	0fc6  GK107 [GeForce GTX 650]
+		1043 8428  GTX650-DC-1GD5
 	0fd1  GK107 [GeForce GT 650M]
 		1043 2103  N56VZ
 	0fd2  GK107 [GeForce GT 640M]
@@ -9475,6 +9507,7 @@
 		144d c018  X20 IV
 		17aa 201d  ThinkPad X60s
 		17aa 20c7  ThinkPad T61
+		17aa 20c8  ThinkPad W500
 	0832  R5C832 IEEE 1394 Controller
 		1025 0121  Aspire 5920G
 		1028 01d7  XPS M1210
@@ -10496,7 +10529,8 @@
 	5201  PCI-2000
 1257  Vertex Networks, Inc.
 1258  Gilbarco, Inc.
-1259  Allied Telesyn International
+# nee Allied Telesyn International
+1259  Allied Telesis
 	2560  AT-2560 Fast Ethernet Adapter (i82557B)
 	2801  AT-2801FX (RTL-8139)
 	a117  RTL81xx Fast Ethernet
@@ -10536,6 +10570,7 @@
 		125d 1989  ESS Modem
 	1998  ES1983S Maestro-3i PCI Audio Accelerator
 		1028 00b1  Latitude C600
+		1028 00e5  Latitude C810
 		1028 00e6  ES1983S Maestro-3i (Dell Inspiron 8100)
 	1999  ES1983S Maestro-3i PCI Modem Accelerator
 	199a  ES1983S Maestro-3i PCI Audio Accelerator
@@ -12594,6 +12629,7 @@
 		1028 01c2  Latitude D620
 		103c 3015  PCIe LAN on Motherboard
 		107b 5048  E4500 Onboard
+		1259 2705  AT-2711FX
 	1601  NetXtreme BCM5752M Gigabit Ethernet PCI Express
 	1612  BCM70012 Video Decoder [Crystal HD]
 	1615  BCM70015 Video Decoder [Crystal HD]
@@ -12808,6 +12844,8 @@
 	1685  NetXtreme II BCM57500S Gigabit Ethernet
 	1686  NetXtreme BCM57766 Gigabit Ethernet PCIe
 	1687  NetXtreme BCM5762 Gigabit Ethernet PCIe
+	1688  NetXtreme BCM5761 10/100/1000BASE-T Ethernet
+		1259 2708  AT-2712 FX
 # The Broadcom 57800 device has two 1Gig ports and two 10Gig ports. The subsystem information can be used to differentiate.
 	168a  NetXtreme II BCM57800 1/10 Gigabit Ethernet
 		1028 1f5c  BCM57800 10-Gigabit Ethernet
@@ -15485,6 +15523,8 @@
 3020  LSI SAS2 9211-8i
 3080  LSI SAS2 9200-8e
 3142  Post Impression Systems.
+31ab  Zonet
+	1faa  ZEW1602 802.11b/g Wireless Adapter
 3388  Hint Corp
 	0013  HiNT HC4 PCI to ISDN bridge, Multimedia audio controller
 	0014  HiNT HC4 PCI to ISDN bridge, Network controller
@@ -17743,6 +17783,7 @@
 		144d c072  Notebook N150P
 		1734 1055  Amilo M1420
 		17aa 20ae  ThinkPad T61
+		8086 544b  Desktop Board D425KT
 		e4bf cc47  CCG-RUMBA
 	2449  82801BA/BAM/CA/CAM Ethernet Controller
 		0e11 0012  EtherExpress PRO/100 VM
@@ -18763,6 +18804,7 @@
 	27bc  NM10 Family LPC Controller
 		144d c072  Notebook N150P
 		8086 4f4d  DeskTop Board D510MO
+		8086 544b  Desktop Board D425KT
 	27bd  82801GHM (ICH7-M DH) LPC Interface Bridge
 		1025 006c  9814 WKMI
 	27c0  NM10/ICH7 Family SATA Controller [IDE mode]
@@ -18774,6 +18816,7 @@
 		1462 2310  MSI Hetis 945
 		1462 7236  945P Neo3-F Rev. 2.2 motherboard
 		1775 11cc  CC11/CL11
+		8086 544b  Desktop Board D425KT
 		8086 544e  DeskTop Board D945GTP
 	27c1  NM10/ICH7 Family SATA Controller [AHCI mode]
 		1028 01df  PowerEdge SC440
@@ -18811,6 +18854,7 @@
 		1775 11cc  CC11/CL11
 		17aa 200a  ThinkPad T60/R60 series
 		8086 4f4d  DeskTop Board D510MO
+		8086 544b  Desktop Board D425KT
 		8086 544e  DeskTop Board D945GTP
 	27c9  NM10/ICH7 Family USB UHCI Controller #2
 		1025 006c  9814 WKMI
@@ -18829,6 +18873,7 @@
 		1775 11cc  CC11/CL11
 		17aa 200a  ThinkPad T60/R60 series
 		8086 4f4d  DeskTop Board D510MO
+		8086 544b  Desktop Board D425KT
 		8086 544e  DeskTop Board D945GTP
 	27ca  NM10/ICH7 Family USB UHCI Controller #3
 		1025 006c  9814 WKMI
@@ -18881,24 +18926,29 @@
 		1775 11cc  CC11/CL11
 		17aa 200b  ThinkPad T60/R60 series
 		8086 4f4d  DeskTop Board D510MO
+		8086 544b  Desktop Board D425KT
 		8086 544e  DeskTop Board D945GTP
 	27d0  NM10/ICH7 Family PCI Express Port 1
 		103c 309f  Compaq nx9420 Notebook
 		103c 30a3  Compaq nw8440
 		144d c072  Notebook N150P
 		1775 11cc  CC11/CL11
+		8086 544b  Desktop Board D425KT
 	27d2  NM10/ICH7 Family PCI Express Port 2
 		103c 309f  Compaq nx9420 Notebook
 		103c 30a3  Compaq nw8440
 		144d c072  Notebook N150P
 		1775 11cc  CC11/CL11
+		8086 544b  Desktop Board D425KT
 	27d4  NM10/ICH7 Family PCI Express Port 3
 		144d c072  Notebook N150P
 		1775 11cc  CC11/CL11
+		8086 544b  Desktop Board D425KT
 	27d6  NM10/ICH7 Family PCI Express Port 4
 		103c 30a3  Compaq nw8440
 		144d c072  Notebook N150P
 		1775 11cc  CC11/CL11
+		8086 544b  Desktop Board D425KT
 	27d8  NM10/ICH7 Family High Definition Audio Controller
 		1025 006c  9814 WKMI
 		1028 01d7  XPS M1210
@@ -18940,6 +18990,7 @@
 		1775 11cc  CC11/CL11
 		17aa 200f  ThinkPad T60/R60 series
 		8086 4f4d  DeskTop Board D510MO
+		8086 544b  Desktop Board D425KT
 		8086 544e  DeskTop Board D945GTP
 		8086 5842  DeskTop Board D975XBX
 	27dc  NM10/ICH7 Family LAN Controller
@@ -19450,7 +19501,7 @@
 		104d 9005  Vaio VGN-FZ260E
 		104d 902d  VAIO VGN-NR120E
 		17aa 20b1  ThinkPad T61
-		17aa 20b3  T61
+		17aa 20b3  ThinkPad T61/R61
 		e4bf cc47  CCG-RUMBA
 	2a01  Mobile PM965/GM965/GL960 PCI Express Root Port
 	2a02  Mobile GM965/GL960 Integrated Graphics Controller (primary)
@@ -19459,14 +19510,14 @@
 		103c 30c0  Compaq 6710b
 		103c 30d9  Presario C700
 		104d 902d  VAIO VGN-NR120E
-		17aa 20b5  T61
+		17aa 20b5  ThinkPad T61/R61
 		e4bf cc47  CCG-RUMBA
 	2a03  Mobile GM965/GL960 Integrated Graphics Controller (secondary)
 		1028 01f3  Dell Inspiron 1420
 		103c 30c0  Compaq 6710b
 		103c 30d9  Presario C700
 		104d 902d  VAIO VGN-NR120E
-		17aa 20b5  T61
+		17aa 20b5  ThinkPad T61/R61
 		e4bf cc47  CCG-RUMBA
 	2a04  Mobile PM965/GM965 MEI Controller
 		103c 30c1  Compaq 6910p
@@ -20595,8 +20646,6 @@
 	8184  Atom Processor E6xx PCI Express Port 1
 	8185  Atom Processor E6xx PCI Express Port 2
 	8186  Atom Processor E6xx LPC Bridge
-	821c  Wellsburg PCI Express Root Port #7
-	821d  Wellsburg PCI Express Root Port #7
 	84c4  450KX/GX [Orion] - 82454KX/GX PCI bridge
 	84c5  450KX/GX [Orion] - 82453KX/GX Memory controller
 	84ca  450NX - 82451NX Memory & I/O Controller
@@ -20729,6 +20778,9 @@
 	8d18  Wellsburg PCI Express Root Port #5
 	8d19  Wellsburg PCI Express Root Port #5
 	8d1a  Wellsburg PCI Express Root Port #6
+	8d1b  Wellsburg PCI Express Root Port #6
+	8d1c  Wellsburg PCI Express Root Port #7
+	8d1d  Wellsburg PCI Express Root Port #7
 	8d1e  Wellsburg PCI Express Root Port #8
 	8d1f  Wellsburg PCI Express Root Port #8
 	8d20  Wellsburg HD Audio Controller
@@ -20836,8 +20888,10 @@
 	9c66  Lynx Point-LP SPI Controller #1
 	a000  Atom Processor D4xx/D5xx/N4xx/N5xx DMI Bridge
 		8086 4f4d  DeskTop Board D510MO
+		8086 544b  Desktop Board D425KT
 	a001  Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller
 		8086 4f4d  DeskTop Board D510MO
+		8086 544b  Desktop Board D425KT
 	a002  Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller
 	a003  Atom Processor D4xx/D5xx/N4xx/N5xx CHAPS counter
 	a010  Atom Processor D4xx/D5xx/N4xx/N5xx DMI Bridge
