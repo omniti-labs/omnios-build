@@ -27,10 +27,13 @@
 # Load support functions
 . ../../lib/functions.sh
 
+PATH=$SRCDIR/bin:$PATH
+export PATH
+
 PROG=erlang
-OTPVER=R14B04
-REPO=git://github.com/slfritchie/otp.git
-VER=14.0.4
+OTPVER=R15B01
+#REPO=git://github.com/slfritchie/otp.git
+VER=15.0.1
 VERHUMAN=$VER
 PKG=omniti/runtime/erlang
 SUMMARY="Erlang OTP Platform"
@@ -40,9 +43,9 @@ TAR=gtar
 BUILDDIR=otp_src_$OTPVER
 ERL_TOP=$TMPDIR/$BUILDDIR
 export ERL_TOP
-
+##
 BUILDARCH=64
-BUILD_DEPENDS_IPS="archiver/gnu-tar perl developer/versioning/git"
+BUILD_DEPENDS_IPS="archiver/gnu-tar perl-5161 developer/versioning/git"
 DEPENDS_IPS="library/security/openssl developer/dtrace
     system/library system/library/math"
 NO_PARALLEL_MAKE=1
@@ -71,7 +74,7 @@ clone_source() {
 
 init
 if [[ -z "$REPO" ]]; then
-  download_source $PROG $PROG $VER
+  download_source $PROG otp_src_$OTPVER
 else
   clone_source
 fi
