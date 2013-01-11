@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=riak
-VER=1.2.0
+VER=1.2.1
 VERHUMAN=$VER
 PKG=omniti/database/riak
 SUMMARY="Riak highly scalable, fault-tolerant distributed database"
@@ -45,19 +45,30 @@ export PATH
 
 build() {
   pushd $TMPDIR/$BUILDDIR > /dev/null || logerr "cannot change to $BUILDDIR"
-  gsed -i -e 's:OpenSolaris:OmniOS:g' $TMPDIR/$BUILDDIR/package/Makefile
-  $MAKE clean
-  CC=gcc CXX=g++ CFLAGS="-m64" $MAKE -C package buildrel REPO=riak REPO_TAG=riak-$VER PKG_VERSION=$VER
-  mkdir -p $DESTDIR/$PREFIX
-  cp -r -p rel/riak/* $DESTDIR/$PREFIX/
+  logcmd gsed -i -e 's:OpenSolaris:OmniOS:g' $TMPDIR/$BUILDDIR/package/Makefile
+  logcmd $MAKE clean
+  CC=gcc CXX=g++ CFLAGS="-m64" logcmd $MAKE -C package buildrel REPO=riak REPO_TAG=riak-$VER PKG_VERSION=$VER
+  logcmd mkdir -p $DESTDIR/$PREFIX
+  logcmd cp -r -p rel/riak/* $DESTDIR/$PREFIX/
   popd > /dev/null
 }
 
 init
 download_source $PROG $PROG $VER
 patch_source
+cp files/vars.config $TMPDIR/$BUILDDIR/rel/vars.config || \
+  logerr "vars.config failed"
 prep_build
 build
+logcmd mkdir -p $DESTDIR/lib/svc/manifest/application
+logcmd cp files/*.xml $DESTDIR/lib/svc/manifest/application/ || \
+  logerr "cannot install SMF manifests"
+logcmd chmod 444 $DESTDIR/lib/svc/manifest/application/*.xml || \
+  logerr "cannot install SMF manifests"
+logcmd cp files/riak-epmd $DESTDIR/opt/riak/bin/riak-epmd || \
+  logerr "cannot install riak-epmd start script"
+logcmd chmod 555 $DESTDIR/opt/riak/bin/riak-epmd || \
+  logerr "cannot chmod riak-epmd start script"
 make_isa_stub
 make_package
 clean_up
