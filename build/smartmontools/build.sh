@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=smartmontools
-VER=5.43
+VER=6.0
 VERHUMAN=$VER
 PKG=omniti/system/storage/smartmontools
 SUMMARY="Control and monitor storage systems using SMART"
