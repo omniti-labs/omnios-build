@@ -33,7 +33,7 @@ PKG=developer/swig
 SUMMARY="The Simplified and Interface Generator (swig)"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="runtime/perl-5161 runtime/python-26"
+BUILD_DEPENDS_IPS="runtime/perl runtime/python-26"
 
 CONFIGURE_OPTS="--disable-ccache"
 

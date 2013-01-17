@@ -34,7 +34,7 @@ SUMMARY="$PROG - GNOME GLib utility library"
 DESC="$SUMMARY"
 
 DEPENDS_IPS="SUNWcs library/libffi@3.0.11 library/zlib system/library
-	system/library/gcc-4-runtime runtime/perl-5161"
+	system/library/gcc-4-runtime runtime/perl"
 
 CONFIGURE_OPTS="--disable-fam --disable-dtrace"
 

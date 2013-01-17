@@ -36,7 +36,7 @@ SUMMARY="Apache Ant is a Java library and command-line tool that help building s
 DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="developer/java/jdk"
-DEPENDS_IPS="runtime/java runtime/perl-5161 runtime/python-26"
+DEPENDS_IPS="runtime/java runtime/perl runtime/python-26"
 
 BUILDARCH=32
 JAVA_HOME="/usr/jdk/instances/jdk1.6.0"
