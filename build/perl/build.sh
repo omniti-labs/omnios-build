@@ -172,22 +172,22 @@ build
 catalog perl.all.bit || logerr "Failed to catalog full install"
 build_mogs
 
-PKG=runtime/perl-$NODOTVER
+PKG=runtime/perl
 SUMMARY="Perl $VER Programming Language"
 DESC="$SUMMARY"
 DEPENDS_IPS="system/library/g++-4-runtime system/library/math system/library"
 make_package $TMPDIR/perl.mog
 
-PKG=runtime/perl-$NODOTVER/manual
+PKG=runtime/perl/manual
 SUMMARY="Perl $VER Programming Language Docs"
 DESC="$SUMMARY"
-DEPENDS_IPS="=runtime/perl-5161@${VER},5.11-${PVER} runtime/perl-5161@${VER},5.11-${PVER}"
+DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-docs.mog
 
-PKG=runtime/perl-$NODOTVER-64
+PKG=runtime/perl-64
 SUMMARY="Perl $VER Programming Language (64-bit)"
 DESC="$SUMMARY"
-DEPENDS_IPS="=runtime/perl-5161@${VER},5.11-${PVER} runtime/perl-5161@${VER},5.11-${PVER}"
+DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-64.mog
 
 clean_up
