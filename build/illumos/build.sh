@@ -43,7 +43,7 @@ DESC="$SUMMARY -- Illumos and some special sauce." # Longer description
 
 #all of the ips depends should be available from OmniTI repos
 
-BUILD_DEPENDS_IPS="developer/astdev developer/build/make developer/build/onbld developer/gcc44 developer/java/jdk developer/lexer/flex developer/object-file developer/parser/bison library/glib2 library/libxml2 library/libxslt library/nspr/header-nspr library/perl-5/xml-parser library/security/trousers runtime/perl-5161 runtime/perl-5161-64 runtime/perl-5161/manual system/library/math/header-math system/library/install system/library/dbus system/library/libdbus system/library/libdbus-glib system/library/mozilla-nss/header-nss system/management/snmp/net-snmp text/gnu-gettext sunstudio12.1"
+BUILD_DEPENDS_IPS="developer/astdev developer/build/make developer/build/onbld developer/gcc44 developer/java/jdk developer/lexer/flex developer/object-file developer/parser/bison library/glib2 library/libxml2 library/libxslt library/nspr/header-nspr library/perl-5/xml-parser library/security/trousers runtime/perl runtime/perl-64 runtime/perl/manual system/library/math/header-math system/library/install system/library/dbus system/library/libdbus system/library/libdbus-glib system/library/mozilla-nss/header-nss system/management/snmp/net-snmp text/gnu-gettext sunstudio12.1"
 
 GIT=git
 
@@ -57,7 +57,7 @@ BUILDDIR=$PROG-$VER
 CODEMGR_WS=$TMPDIR/$BUILDDIR/illumos-omnios
 
 #Since these variables are used in a sed statment make sure to escape properly
-ILLUMOS_NO="NIGHTLY\_OPTIONS=\'\-nCmpr\'"
+ILLUMOS_NO="NIGHTLY\_OPTIONS=\'\-nDCmpr\'"
 ILLUMOS_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/illumos\-omnios"
 #ILLUMOS_CLONE_WS="CLONE\_WS=\'ssh:\/\/anonhg@hg.illumos.org\/illumos\-gate\'"
 ILLUMOS_CLONE_WS="CLONE\_WS=\'anon@src.omniti.com:~omnios\/core\/illumos\-omnios\'"
@@ -71,6 +71,7 @@ ILLUMOS_NO_SHADOW="export CW_NO_SHADOW=1"
 ILLUMOS_GCC_ROOT='export GCC_ROOT="/opt/gcc-4.4.4"'
 ILLUMOS_CW_GCC_DIR='export CW_GCC_DIR="$GCC_ROOT/bin"'
 ILLUMOS_BUILDNUM="ONNV_BUILDNUM=$VER; export ONNV_BUILDNUM;"
+ILLUMOS_MULTI_PROTO="export MULTI_PROTO=yes"
 
 sunstudio_location() {
     logmsg "Ensuring that Sun Studio is where Illumos thinks it is..."
@@ -124,6 +125,7 @@ modify_build_script() {
     logcmd `echo $ILLUMOS_CW_GCC_DIR >> illumos.sh`
     logcmd `echo $ILLUMOS_NO_SHADOW >> illumos.sh`
     logcmd `echo $ILLUMOS_BUILDNUM >> illumos.sh`
+    logcmd `echo $ILLUMOS_MULTI_PROTO >> illumos.sh`
     logcmd `echo RELEASE_DATE=$RELEASE_DATE >> illumos.sh`
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
