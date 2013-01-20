@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+<!--
+CDDL HEADER START
+
+The contents of this file are subject to the terms of the
+Common Development and Distribution License (the "License").
+You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+or http://www.opensolaris.org/os/licensing.
+See the License for the specific language governing permissions
+and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each
+file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+If applicable, add the following below this CDDL HEADER, with the
+fields enclosed by brackets "[]" replaced with your own identifying
+information: Portions Copyright [yyyy] [name of copyright owner]
+
+CDDL HEADER END
+-->
+
+<!--
+    Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+    Use is subject to license terms.
+-->
+<service_bundle type="manifest" name="http:nginx">
+<service name="network/http" type="service" version="1">
+    <instance name="nginx" enabled="false">
+        <dependency name="network" grouping="require_all" restart_on="error" type="service">
+            <service_fmri value="svc:/milestone/network:default"/>
+        </dependency>
+        <dependency name="filesystem-local" grouping="require_all" restart_on="none" type="service">
+            <service_fmri value="svc:/system/filesystem/local:default"/>
+        </dependency>
+        <dependency name="autofs" grouping="optional_all" restart_on="error" type="service">
+            <service_fmri value="svc:/system/filesystem/autofs:default"/>
+        </dependency>
+        <exec_method type="method" name="start" exec="/lib/svc/method/http-nginx start" timeout_seconds="60" />
+        <exec_method type="method" name="stop" exec="/lib/svc/method/http-nginx stop" timeout_seconds="60" />
+        <property_group name="startd" type="framework">
+            <propval name="ignore_error" type="astring" value="core,signal" />
+        </property_group>
+        <template> <common_name> <loctext xml:lang="C"> nginx web server </loctext> </common_name>
+            <documentation>
+                <manpage title="nginx" section="8" manpath="/usr/share/man" />
+                <doc_link name="nginx.org" uri="http://nginx.org/" />
+            </documentation>
+        </template>
+    </instance>
+    <stability value="External" />
+</service>
+</service_bundle>
