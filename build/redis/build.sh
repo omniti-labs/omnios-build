@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=redis
-VER=2.4.14
+VER=2.6.9
 VERHUMAN=$VER
 PKG=omniti/database/redis
 SUMMARY="Redis is an open source, advanced key-value store."
@@ -38,11 +38,11 @@ BUILD_DEPENDS_IPS="archiver/gnu-tar"
 
 TAR=gtar
 BUILDARCH=64
-LDFLAGS="-lresolv -ldl -lnsl -lsocket -lm -lpthread"
-#CFLAGS="-std=c99 -D__EXTENSIONS__ -D_XPG6"
+LDFLAGS="-m64"
+CFLAGS="-m64"
 
 configure64() {
-    export CC LDFLAGS
+    export CC CFLAGS LDFLAGS
 }
 
 make_install() {
