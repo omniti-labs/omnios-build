@@ -1,0 +1,17 @@
+--- libmowgli-2/src/libmowgli/ext/proctitle.c.orig	Thu Jan 17 22:41:26 2013
++++ libmowgli-2/src/libmowgli/ext/proctitle.c	Thu Jan 17 22:41:00 2013
+@@ -188,11 +188,11 @@
+ 	 */
+ 
+ 	char **new_argv;
+-	int i;
++	int j;
+ 
+ 	new_argv = (char **) mowgli_alloc((argc + 1) * sizeof(char *));
+-	for (i = 0; i < argc; i++)
+-		new_argv[i] = mowgli_strdup(argv[i]);
++	for (j = 0; j < argc; j++)
++		new_argv[j] = mowgli_strdup(argv[j]);
+ 	new_argv[argc] = NULL;
+ 
+ #if defined(__darwin__)

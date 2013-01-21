@@ -1,0 +1,20 @@
+--- buildsys.mk.in	Thu Jan 17 21:58:14 2013
++++ buildsys.mk.in.orig	Thu Jan 17 21:57:48 2013
+@@ -101,7 +101,6 @@
+ 
+ MO_FILES = ${LOCALES:.po=.mo}
+ 
+-.SILENT:
+ .SUFFIXES:
+ .SUFFIXES: .beam .c .c.dep .cc .cc.dep .class .cxx .cxx.dep .d .erl .lib.o .java .mo .m .m.dep .mm .mm.dep .o .plugin.o .po .py .pyc .rc .S .S.dep .xpm
+ .PHONY: all subdirs pre-depend depend install install-extra uninstall uninstall-extra clean distclean locales
+--- libmowgli-2/buildsys.mk.in	Wed Apr 18 20:18:42 2012
++++ libmowgli-2/buildsys.mk.in.orig	Thu Jan 17 22:06:49 2013
+@@ -102,7 +102,6 @@
+ 
+ MO_FILES = ${LOCALES:.po=.mo}
+ 
+-.SILENT:
+ .SUFFIXES:
+ .SUFFIXES: .beam .c .c.dep .cc .cc.dep .class .cxx .cxx.dep .d .erl .lib.o .java .mo .m .m.dep .mm .mm.dep .o .plugin.o .po .py .pyc .rc .S .S.dep .xpm
+ .PHONY: all subdirs ${SUBDIRS} pre-depend depend install install-extra uninstall uninstall-extra clean distclean locales

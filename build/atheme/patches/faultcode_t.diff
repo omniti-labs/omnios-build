@@ -1,0 +1,95 @@
+--- atheme-services-7.0.5.orig/libathemecore/services.c	Mon Jan 21 14:30:04 2013
++++ atheme-services-7.0.5/libathemecore/services.c	Mon Jan 21 14:34:58 2013
+@@ -821,7 +821,7 @@
+ 	return out;
+ }
+ 
+-void command_fail(sourceinfo_t *si, faultcode_t code, const char *fmt, ...)
++void command_fail(sourceinfo_t *si, atheme_faultcode_t code, const char *fmt, ...)
+ {
+ 	va_list args;
+ 	char buf[BUFSIZE];
+--- atheme-services-7.0.5.orig/modules/contrib/os_testcmd.c	Mon Jan 21 14:30:04 2013
++++ atheme-services-7.0.5/modules/contrib/os_testcmd.c	Mon Jan 21 14:34:58 2013
+@@ -23,7 +23,7 @@
+ 
+ static void os_cmd_testcmd(sourceinfo_t *si, int parc, char *parv[]);
+ 
+-static void testcmd_command_fail(sourceinfo_t *si, faultcode_t code, const char *message);
++static void testcmd_command_fail(sourceinfo_t *si, atheme_faultcode_t code, const char *message);
+ static void testcmd_command_success_nodata(sourceinfo_t *si, const char *message);
+ static void testcmd_command_success_string(sourceinfo_t *si, const char *result, const char *message);
+ 
+@@ -47,7 +47,7 @@
+ 	service_named_unbind_command("operserv", &os_testcmd);
+ }
+ 
+-static void testcmd_command_fail(sourceinfo_t *si, faultcode_t code, const char *message)
++static void testcmd_command_fail(sourceinfo_t *si, atheme_faultcode_t code, const char *message)
+ {
+ 	struct testcmddata *udata = si->callerdata;
+ 
+--- atheme-services-7.0.5.orig/modules/transport/xmlrpc/main.c	Mon Jan 21 14:30:04 2013
++++ atheme-services-7.0.5/modules/transport/xmlrpc/main.c	Mon Jan 21 14:34:58 2013
+@@ -32,7 +32,7 @@
+ 
+ mowgli_list_t *httpd_path_handlers;
+ 
+-static void xmlrpc_command_fail(sourceinfo_t *si, faultcode_t code, const char *message);
++static void xmlrpc_command_fail(sourceinfo_t *si, atheme_faultcode_t code, const char *message);
+ static void xmlrpc_command_success_nodata(sourceinfo_t *si, const char *message);
+ static void xmlrpc_command_success_string(sourceinfo_t *si, const char *result, const char *message);
+ 
+@@ -144,7 +144,7 @@
+ 	hook_del_config_ready(xmlrpc_config_ready);
+ }
+ 
+-static void xmlrpc_command_fail(sourceinfo_t *si, faultcode_t code, const char *message)
++static void xmlrpc_command_fail(sourceinfo_t *si, atheme_faultcode_t code, const char *message)
+ {
+ 	connection_t *cptr;
+ 	struct httpddata *hd;
+--- atheme-services-7.0.5.orig/modules/operserv/override.c	Mon Jan 21 14:30:04 2013
++++ atheme-services-7.0.5/modules/operserv/override.c	Mon Jan 21 14:34:58 2013
+@@ -34,7 +34,7 @@
+ 	sourceinfo_t *parent_si;
+ } cooked_sourceinfo_t;
+ 
+-static void override_command_fail(sourceinfo_t *si, faultcode_t code, const char *message)
++static void override_command_fail(sourceinfo_t *si, atheme_faultcode_t code, const char *message)
+ {
+ 	cooked_sourceinfo_t *csi = (cooked_sourceinfo_t *) si;
+ 
+--- atheme-services-7.0.5.orig/include/sourceinfo.h	Mon Jan 21 14:30:04 2013
++++ atheme-services-7.0.5/include/sourceinfo.h	Mon Jan 21 14:34:58 2013
+@@ -12,7 +12,7 @@
+ struct sourceinfo_vtable
+ {
+ 	const char *description;
+-	void (*cmd_fail)(sourceinfo_t *si, faultcode_t code, const char *message);
++	void (*cmd_fail)(sourceinfo_t *si, atheme_faultcode_t code, const char *message);
+ 	void (*cmd_success_nodata)(sourceinfo_t *si, const char *message);
+ 	void (*cmd_success_string)(sourceinfo_t *si, const char *result, const char *message);
+ 	const char *(*get_source_name)(sourceinfo_t *si);
+--- atheme-services-7.0.5.orig/include/services.h	Mon Jan 21 14:30:04 2013
++++ atheme-services-7.0.5/include/services.h	Mon Jan 21 14:36:27 2013
+@@ -112,7 +112,7 @@
+ E bool bad_password(sourceinfo_t *si, myuser_t *mu);
+ 
+ E sourceinfo_t *sourceinfo_create(void);
+-E void command_fail(sourceinfo_t *si, faultcode_t code, const char *fmt, ...) PRINTFLIKE(3, 4);
++E void command_fail(sourceinfo_t *si, atheme_faultcode_t code, const char *fmt, ...) PRINTFLIKE(3, 4);
+ E void command_success_nodata(sourceinfo_t *si, const char *fmt, ...) PRINTFLIKE(2, 3);
+ E void command_success_string(sourceinfo_t *si, const char *result, const char *fmt, ...) PRINTFLIKE(3, 4);
+ E void command_success_table(sourceinfo_t *si, table_t *table);
+--- atheme-services-7.0.5.orig/include/common.h	Mon Jan 21 14:30:04 2013
++++ atheme-services-7.0.5/include/common.h	Mon Jan 21 14:34:58 2013
+@@ -120,7 +120,7 @@
+ 	fault_badauthcookie	= 15
+ };
+ 
+-typedef enum faultcode_ faultcode_t;
++typedef enum faultcode_ atheme_faultcode_t;
+ 
+ #if defined(__GNUC__) || defined(__INTEL_COMPILER)
+ #define PRINTFLIKE(fmtarg, firstvararg) \

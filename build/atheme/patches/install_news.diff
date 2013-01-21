@@ -1,0 +1,11 @@
+--- src/services/Makefile.orig	Mon Jan 21 14:50:08 2013
++++ src/services/Makefile	Mon Jan 21 14:51:58 2013
+@@ -83,7 +83,7 @@
+ 			done; \
+ 			cd ..; \
+ 		fi; \
+-	done; install -m 644 ../NEWS $(DESTDIR)$(DOCDIR)/RELEASE)
++	done; install -m 644 ../../NEWS $(DESTDIR)$(DOCDIR)/RELEASE)
+ 	(cd ../../help/default; for i in *; do \
+ 		[ -f $$i ] && $(INSTALL) -m 644 $$i $(DESTDIR)$(SHAREDIR)/help; \
+ 		if [ -d $$i ]; then \

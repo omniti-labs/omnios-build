@@ -1,0 +1,9 @@
+--- libmowgli-2/src/libmowgli/thread/Makefile.orig	Thu Jan 17 22:36:55 2013
++++ libmowgli-2/src/libmowgli/thread/Makefile	Thu Jan 17 22:37:07 2013
+@@ -14,5 +14,5 @@
+ 
+ includesubdir = $(PACKAGE_NAME)/thread
+ 
+-CPPFLAGS += -I. -I.. -I../../.. -DMOWGLI_CORE
++CPPFLAGS += -I.. -I../../.. -DMOWGLI_CORE
+ 
