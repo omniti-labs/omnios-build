@@ -1,0 +1,12 @@
+diff -rupN xmlstarlet-1.4.2.pristine/src/select-usage.txt xmlstarlet-1.4.2/src/select-usage.txt
+--- xmlstarlet-1.4.2.pristine/src/select-usage.txt	2012-07-16 02:16:20.000000000 +0000
++++ xmlstarlet-1.4.2/src/select-usage.txt	2013-01-21 22:50:17.031188189 +0000
+@@ -49,7 +49,7 @@ There can be multiple --match, --copy-of
+ in a single template. The effect of applying command line templates
+ can be illustrated with the following XSLT analogue
+ 
+-PROG sel -t -c "xpath0" -m "xpath1" -m "xpath2" -v "xpath3" \
++PROG sel -t -c "xpath0" -m "xpath1" -m "xpath2" -v "xpath3"
+         -t -m "xpath4" -c "xpath5"
+ 
+ is equivalent to applying the following XSLT
