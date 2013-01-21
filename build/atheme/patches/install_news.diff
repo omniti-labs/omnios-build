@@ -5,7 +5,7 @@
  			cd ..; \
  		fi; \
 -	done; install -m 644 ../NEWS $(DESTDIR)$(DOCDIR)/RELEASE)
-+	done; install -m 644 ../../NEWS $(DESTDIR)$(DOCDIR)/RELEASE)
++	done; )
  	(cd ../../help/default; for i in *; do \
  		[ -f $$i ] && $(INSTALL) -m 644 $$i $(DESTDIR)$(SHAREDIR)/help; \
  		if [ -d $$i ]; then \
