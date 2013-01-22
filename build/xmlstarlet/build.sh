@@ -38,19 +38,15 @@ DESC="Provides grep/sed/calc-like capabilities for XML files using xpath"       
 BUILD_DEPENDS_IPS="library/libxml2" 
 DEPENDS_IPS="library/libxml2" 
 
-
-# http://voxel.dl.sourceforge.net/project/xmlstar/xmlstarlet/1.4.2/xmlstarlet-1.4.2.tar.gz
-MIRROR=voxel.dl.sourceforge.net
-DLDIR=project/xmlstar/xmlstarlet/$VER
-
 # Don't care about 32-bit
 BUILDARCH="64"
 
 # You'd think it would pick this up itself.
-CFLAGS=`/usr/bin/xml2-config --cflags`
+#CFLAGS=`/usr/bin/xml2-config --cflags`
+CFLAGS="-I/usr/include/amd64/libxml2"
 
 init
-download_source $DLDIR $PROG $VER
+download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
