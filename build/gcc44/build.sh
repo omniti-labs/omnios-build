@@ -29,7 +29,7 @@
 
 PROG=gcc
 VER=4.4.4
-COMMIT=f268959251b72d88d1539f41a53b24b13afebd39
+COMMIT=bcf43ddb4958677ebd7dd6daba9d526d2865df10
 VERHUMAN="$VER from ${COMMIT:0:10}"
 PKG=developer/gcc44
 SUMMARY="gcc ${VER} (richlowe il-4_4_4 branch)"
