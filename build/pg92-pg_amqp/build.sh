@@ -33,8 +33,8 @@
 . ../../lib/functions.sh
 
 PROG=pg_amqp
-REV=v0.3.0
-VER=${REV:1}
+REV=f79421f
+VER=0.3.0
 PGVER=922
 PKG=omniti/database/postgresql-${PGVER}/$PROG
 SUMMARY="$PROG - Publish to AMQP from PostgreSQL Statements"
