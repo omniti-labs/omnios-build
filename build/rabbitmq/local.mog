@@ -2,6 +2,8 @@ group gid=89 groupname=rabbitmq
 user ftpuser=false gcos-field="RabbitMQ Server" group=rabbitmq login-shell=/usr/bin/bash password=NP uid=89 username=rabbitmq home-dir=/opt/rabbitmq/var/lib/rabbitmq
 <transform file path=opt/rabbitmq/LICENSE.* -> drop>
 <transform file path=opt/rabbitmq/INSTALL -> drop>
+<transform file path=opt/rabbitmq/sbin/rabbitmq-defaults -> set overlay allow>
+<transform file path=opt/rabbitmq/sbin/rabbitmq-defaults -> set preserve renamenew>
 <transform dir path=opt/rabbitmq/var/lib/rabbitmq.* -> set owner rabbitmq>
 <transform dir path=opt/rabbitmq/var/lib/rabbitmq.* -> set group rabbitmq>
 <transform dir path=opt/rabbitmq/var/log/rabbitmq.* -> set owner rabbitmq>
