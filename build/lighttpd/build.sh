@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=lighttpd
-VER=1.4.30
+VER=1.4.32
 VERHUMAN=$VER
 PKG=omniti/server/lighttpd
 SUMMARY="$PROG - High-performance, efficient webserver"
