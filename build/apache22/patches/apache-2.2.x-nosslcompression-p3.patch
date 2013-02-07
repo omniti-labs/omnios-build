@@ -1,0 +1,94 @@
+diff -ur httpd-2.2.23.orig/modules/ssl/mod_ssl.c httpd-2.2.23/modules/ssl/mod_ssl.c
+--- httpd-2.2.23.orig/modules/ssl/mod_ssl.c   2010-07-12 11:47:45.000000000 -0700
++++ httpd-2.2.23/modules/ssl/mod_ssl.c   2012-05-15 13:28:16.944634119 -0700
+@@ -146,6 +146,9 @@
+                 "(`[+-][SSLv2|SSLv3|TLSv1] ...' - see manual)")
+     SSL_CMD_SRV(HonorCipherOrder, FLAG,
+                 "Use the server's cipher ordering preference")
++    SSL_CMD_SRV(Compression, FLAG,
++                "Enable SSL level compression"
++                "(`on', `off')")
+     SSL_CMD_SRV(InsecureRenegotiation, FLAG,
+                 "Enable support for insecure renegotiation")
+     SSL_CMD_ALL(UserName, TAKE1,
+diff -ur httpd-2.2.23.orig/modules/ssl/ssl_engine_config.c httpd-2.2.23/modules/ssl/ssl_engine_config.c
+--- httpd-2.2.23.orig/modules/ssl/ssl_engine_config.c 2011-04-14 06:56:17.000000000 -0700
++++ httpd-2.2.23/modules/ssl/ssl_engine_config.c 2012-05-18 11:05:21.794791776 -0700
+@@ -178,6 +178,7 @@
+ #ifdef HAVE_FIPS
+     sc->fips                   = UNSET;
+ #endif
++    sc->compression            = UNSET;
+ 
+     modssl_ctx_init_proxy(sc, p);
+ 
+@@ -275,6 +276,7 @@
+ #ifdef HAVE_FIPS
+     cfgMergeBool(fips);
+ #endif
++    cfgMergeBool(compression);
+ 
+     modssl_ctx_cfg_merge_proxy(base->proxy, add->proxy, mrg->proxy);
+ 
+@@ -708,6 +710,17 @@
+ 
+ }
+ 
++const char *ssl_cmd_SSLCompression(cmd_parms *cmd, void *dcfg, int flag)
++{
++#if defined(SSL_OP_NO_COMPRESSION) || OPENSSL_VERSION_NUMBER >= 0x00908000L
++    SSLSrvConfigRec *sc = mySrvConfig(cmd->server);
++    sc->compression = flag?TRUE:FALSE;
++    return NULL;
++#else
++    return "Setting Compression mode unsupported; not implemented by the SSL library";
++#endif
++}
++
+ const char *ssl_cmd_SSLHonorCipherOrder(cmd_parms *cmd, void *dcfg, int flag)
+ {
+ #ifdef SSL_OP_CIPHER_SERVER_PREFERENCE
+diff -ur httpd-2.2.23.orig/modules/ssl/ssl_engine_init.c httpd-2.2.23/modules/ssl/ssl_engine_init.c
+--- httpd-2.2.23.orig/modules/ssl/ssl_engine_init.c   2012-05-18 11:16:02.674768867 -0700
++++ httpd-2.2.23/modules/ssl/ssl_engine_init.c   2012-05-18 11:13:25.334774491 -0700
+@@ -505,6 +505,21 @@
+     }
+ #endif
+ 
++#ifdef SSL_OP_NO_COMPRESSION
++    /* OpenSSL >= 1.0 only */
++    if (sc->compression == FALSE) {
++        SSL_CTX_set_options(ctx, SSL_OP_NO_COMPRESSION);
++    }
++#elif OPENSSL_VERSION_NUMBER >= 0x00908000L
++    /* workaround for OpenSSL 0.9.8 */
++    if (sc->compression == FALSE) {
++   SSL_CTX * tls_ctx;
++        STACK_OF(SSL_COMP)* comp_methods;
++   comp_methods = SSL_COMP_get_compression_methods();
++        sk_SSL_COMP_zero(comp_methods);
++    }
++#endif
++
+ #ifdef SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION
+     if (sc->insecure_reneg == TRUE) {
+         SSL_CTX_set_options(ctx, SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION);
+diff -ur httpd-2.2.23.orig/modules/ssl/ssl_private.h httpd-2.2.23/modules/ssl/ssl_private.h
+--- httpd-2.2.23.orig/modules/ssl/ssl_private.h   2011-04-14 06:56:17.000000000 -0700
++++ httpd-2.2.23/modules/ssl/ssl_private.h   2012-05-15 13:28:16.944634119 -0700
+@@ -486,6 +486,7 @@
+ #ifdef HAVE_FIPS
+     BOOL             fips;
+ #endif
++    BOOL             compression;
+ };
+ 
+ /**
+@@ -542,6 +543,7 @@
+ const char  *ssl_cmd_SSLCARevocationPath(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLCARevocationFile(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLHonorCipherOrder(cmd_parms *cmd, void *dcfg, int flag);
++const char  *ssl_cmd_SSLCompression(cmd_parms *, void *, int flag);
+ const char  *ssl_cmd_SSLVerifyClient(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLVerifyDepth(cmd_parms *, void *, const char *);
+ const char  *ssl_cmd_SSLSessionCache(cmd_parms *, void *, const char *);
