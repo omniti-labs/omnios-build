@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=9.2.2
+VER=9.2.3
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/citext
 DOWNLOADDIR=postgres
@@ -57,7 +57,7 @@ make_prog() {
     make_in $CONTRIBDIR
 }
 
-make_install() {
+make_ins3all() {
     logmsg "--- make install"
     make_install_in $CONTRIBDIR
 }

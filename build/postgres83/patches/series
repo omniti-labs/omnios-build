@@ -1,2 +1,0 @@
-pg_probes.patch -p0
-dtrace_header.patch
