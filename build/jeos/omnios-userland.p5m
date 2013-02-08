@@ -65,7 +65,7 @@ depend fmri=library/python-2/simplejson-26@2.3.2,5.11-0.151004 type=incorporate
 depend fmri=library/readline@6.2,5.11-0.151004 type=incorporate
 depend fmri=library/security/libgpg-error@1.10,5.11-0.151004 type=incorporate
 depend fmri=library/security/nettle@2.4,5.11-0.151004 type=incorporate
-depend fmri=library/security/openssl@1.0.1.3,5.11-0.151004 type=incorporate
+depend fmri=library/security/openssl@1.0.1,5.11-0.151004 type=incorporate
 depend fmri=library/security/trousers@0.3.8,5.11-0.151004 type=incorporate
 depend fmri=library/unixodbc@2.2.14,5.11-0.151004 type=incorporate
 depend fmri=library/zlib@1.2.6,5.11-0.151004 type=incorporate
