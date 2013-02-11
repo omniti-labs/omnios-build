@@ -1,0 +1,3 @@
+license LICENSE license=GPLv2
+<transform file path=etc/login_duo.conf -> set preserve true>
+<transform file path=etc/pam_duo.conf -> set preserve true>
