@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=openssl
-VER=1.0.1d
+VER=1.0.1e
 VERHUMAN=$VER
 PKG=library/security/openssl # Package name (without prefix)
 SUMMARY="$PROG - A toolkit for Secure Sockets Layer (SSL v2/v3) and Transport Layer (TLS v1) protocols and general purpose cryptographic library"
@@ -44,6 +44,9 @@ make_prog() {
     # This will setup the internal runpath of libssl and libcrypto
     logcmd $MAKE $MAKE_JOBS SHARED_LDFLAGS="$SHARED_LDFLAGS" || \
         logerr "--- Make failed"
+    logmsg "--- make test"
+    logcmd $MAKE test || \
+        logerr "--- make test failed"
 }
 
 configure32() {
