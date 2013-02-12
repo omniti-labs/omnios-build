@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=git
-VER=1.8.0
+VER=1.8.1.3
 PKG=developer/versioning/git
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
@@ -62,14 +62,15 @@ configure64() {
 
 install_man() {
     logmsg "Fetching and installing pre-built man pages"
-    if [[ ! -f ${TMPDIR}/${PROG}-man-${VER}.tar.gz ]]; then
+    if [[ ! -f ${TMPDIR}/${PROG}-manpages-${VER}.tar.gz ]]; then
         pushd $TMPDIR > /dev/null
-        logcmd $WGET -a $LOGFILE http://$MIRROR/$PROG/${PROG}-man-${VER}.tar.gz || \
+        logcmd $WGET -a $LOGFILE http://$MIRROR/$PROG/${PROG}-manpages-${VER}.tar.gz || \
             logerr "--- Failed to fetch tarball"
         popd > /dev/null
     fi
-    pushd ${DESTDIR}${PREFIX} > /dev/null
-    extract_archive ${TMPDIR}/${PROG}-man-${VER}.tar.gz || \
+    logcmd mkdir -p ${DESTDIR}${PREFIX}/share/man
+    pushd ${DESTDIR}${PREFIX}/share/man > /dev/null
+    extract_archive ${TMPDIR}/${PROG}-manpages-${VER}.tar.gz || \
         logerr "--- Error extracting archive"
     popd > /dev/null
 }
