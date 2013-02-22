@@ -1,0 +1,43 @@
+<?xml version='1.0'?>
+<!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
+<service_bundle type='manifest' name='export'>
+  <service name='network/epmd' type='service' version='0'>
+    <dependency name='network' grouping='require_all' restart_on='none' type='service'>
+      <service_fmri value='svc:/milestone/network:default'/>
+    </dependency>
+    <dependency name='epmd_multi-user-server' grouping='require_all' restart_on='none' type='service'>
+      <service_fmri value='svc:/milestone/multi-user-server'/>
+    </dependency>
+    <instance name='default' enabled='false'>
+        <method_context working_directory='/var/lib/epmd'>
+          <method_environment>
+            <envvar name='HOME' value='/var/lib/epmd'/>
+            <envvar name='PATH' value='/opt/omni/lib/amd64/erlang/erts-5.9.1/bin:/opt/omni/lib/erlang/bin:/usr/bin:/usr/sbin:/opt/omni/bin'/>
+            <envvar name='BINDIR' value='/opt/omni/lib/amd64/erlang/erts-5.9.1/bin'/>
+            <envvar name='EMU' value='beam'/>
+            <envvar name='PROGNAME' value='erl'/>
+            <envvar name='ROOTDIR' value='/opt/omni/lib/amd64/erlang'/>
+          </method_environment>
+        </method_context>
+        <exec_method name='start' type='method' exec='/opt/omni/lib/amd64/erlang/erts-5.9.1/bin/epmd -daemon' timeout_seconds='60'>
+          <method_context>
+            <method_credential user='nobody' group='nobody'/>
+          </method_context>
+        </exec_method>
+        <exec_method name='stop' type='method' exec=':kill' timeout_seconds='60'>
+          <method_context>
+            <method_credential user='nobody' group='nobody'/>
+          </method_context>
+        </exec_method>
+    </instance>
+    <stability value='Evolving'/>
+    <template>
+      <common_name>
+        <loctext xml:lang='C'>Erlang Port Mapper Daemon</loctext>
+      </common_name>
+      <documentation>
+        <manpage title='Erlang' section='8'/>
+      </documentation>
+    </template>
+  </service>
+</service_bundle>

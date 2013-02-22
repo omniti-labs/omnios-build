@@ -45,7 +45,7 @@ ERL_TOP=$TMPDIR/$BUILDDIR
 export ERL_TOP
 ##
 BUILDARCH=64
-BUILD_DEPENDS_IPS="archiver/gnu-tar perl-5161 developer/versioning/git"
+BUILD_DEPENDS_IPS="archiver/gnu-tar omniti/runtime/perl developer/versioning/git"
 DEPENDS_IPS="library/security/openssl developer/dtrace
     system/library system/library/math"
 NO_PARALLEL_MAKE=1
@@ -82,6 +82,15 @@ patch_source
 prep_build
 build
 make_isa_stub
+
+# Copy in an XML manifest for the Erlang Port Mapper Daemon
+logcmd mkdir -p $DESTDIR/var/svc/manifest/network/
+logcmd cp $SRCDIR/erlang-empd.xml $DESTDIR/var/svc/manifest/network/
+
+# Setup working dir for epmd
+logcmd mkdir -p $DESTDIR/var/lib/epmd
+logcmd chown nobody:nobody $DESTDIR/var/lib/epmd
+
 make_package
 clean_up
 
