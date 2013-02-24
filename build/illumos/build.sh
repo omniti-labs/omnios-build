@@ -52,7 +52,7 @@ USE_SYSTEM_SSL_HEADERS="TRUE"
 PKGSERVER=$PKGSRVR
 PKGPREFIX=""
 PREFIX=""
-TMPDIR=/code
+TMPDIR=/code	# This directory must be writable as your non-root user
 BUILDDIR=$PROG-$VER
 CODEMGR_WS=$TMPDIR/$BUILDDIR/illumos-omnios
 
@@ -88,11 +88,13 @@ sunstudio_location() {
 
 clone_source(){
     logmsg "Creating build dir $TMPDIR/$BUILDDIR"
-    logcmd mkdir $TMPDIR/$BUILDDIR
+    logcmd mkdir -p $TMPDIR/$BUILDDIR || \
+        logerr "--- Failed to create build dir $TMPDIR/$BUILDDIR"
     logmsg "Entering $TMPDIR/$BUILDDIR"
     pushd $TMPDIR/$BUILDDIR > /dev/null 
     logmsg "Cloning OMNI Illumos Source..."
-    logcmd  $GIT clone anon@src.omniti.com:~omnios/core/illumos-omnios 
+    logcmd  $GIT clone anon@src.omniti.com:~omnios/core/illumos-omnios || \
+        logerr "--- Failed to clone source"
     pushd illumos-omnios 
     ILLUMOS_VERSION="VERSION=\'omnios\-`$GIT log --pretty=format:'%h' -n 1`'" 
     RELEASE_DATE=`$GIT show --format=format:%ai | awk '{print $1; exit;}' | tr - .` 
