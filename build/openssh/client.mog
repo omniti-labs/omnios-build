@@ -1,0 +1,10 @@
+<transform file path=etc/ssh/moduli -> drop>
+<transform file path=etc/ssh/sshd_config -> drop>
+<transform file path=usr/libexec/sftp-server -> drop>
+<transform dir path=usr/sbin -> drop>
+<transform file path=usr/sbin/sshd -> drop>
+<transform file path=usr/share/man/man4/moduli.4 -> drop>
+<transform file path=usr/share/man/man4/sshd_config.4 -> drop>
+<transform file path=usr/share/man/man1m/sftp-server.1m -> drop>
+<transform file path=usr/share/man/man1m/sshd.1m -> drop>
+<transform dir path=var/empty -> drop>

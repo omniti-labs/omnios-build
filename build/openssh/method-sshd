@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# SMF method script for OpenSSH server
+# Copyright 2013 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+
+. /lib/svc/share/smf_include.sh
+
+CONFDIR=/etc/ssh
+PIDFILE=/var/run/sshd.pid
+
+create_host_key() {
+    TYPE=$1
+    FILE=$2
+    /usr/bin/ssh-keygen -t $TYPE -N '' -f $FILE || \
+        exit $SMF_EXIT_ERR_CONFIG
+}
+
+[[ -x /usr/sbin/sshd ]] || exit $SMF_EXIT_ERR_FATAL
+
+case $1 in
+    "start")
+    	[[ -f $CONFDIR/ssh_host_dsa_key ]] || create_host_key dsa $CONFDIR/ssh_host_dsa_key
+    	[[ -f $CONFDIR/ssh_host_rsa_key ]] || create_host_key rsa $CONFDIR/ssh_host_rsa_key
+    	[[ -f $CONFDIR/ssh_host_ecdsa_key ]] || create_host_key ecdsa $CONFDIR/ssh_host_ecdsa_key
+        /usr/sbin/sshd
+	;;
+    "restart")
+    	if [[ -f $PIDFILE ]]; then
+	    /usr/bin/kill -HUP `/usr/bin/cat $PIDFILE`
+	fi
+	;;
+esac        
+
+exit $SMF_EXIT_OK
