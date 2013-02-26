@@ -1,0 +1,20 @@
+--- openssh-6.1p1/sshd_config.orig	2012-07-31 02:21:34.000000000 +0000
++++ openssh-6.1p1/sshd_config	2013-02-26 15:16:29.775204829 +0000
+@@ -37,7 +37,7 @@
+ # Authentication:
+ 
+ #LoginGraceTime 2m
+-#PermitRootLogin yes
++PermitRootLogin no
+ #StrictModes yes
+ #MaxAuthTries 6
+ #MaxSessions 10
+@@ -95,7 +95,7 @@
+ #X11Forwarding no
+ #X11DisplayOffset 10
+ #X11UseLocalhost yes
+-#PrintMotd yes
++PrintMotd no
+ #PrintLastLog yes
+ #TCPKeepAlive yes
+ #UseLogin no

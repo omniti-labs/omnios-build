@@ -2,6 +2,7 @@ group groupname=sshd gid=92
 user ftpuser=false gcos-field="OpenSSH privsep user" group=sshd login-shell=/bin/false password=NP uid=92 username=sshd home-dir=/var/empty
 <transform file path=etc/ssh/moduli -> set preserve true>
 <transform file path=etc/ssh/ssh_config -> drop>
+<transform file path=etc/ssh/sshd_config -> set preserve true>
 <transform dir path=usr/bin -> drop>
 <transform file path=usr/bin/.* -> drop>
 <transform link path=usr/bin/.* -> drop>
