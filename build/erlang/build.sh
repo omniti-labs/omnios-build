@@ -84,8 +84,8 @@ build
 make_isa_stub
 
 # Copy in an XML manifest for the Erlang Port Mapper Daemon
-logcmd mkdir -p $DESTDIR/var/svc/manifest/network/
-logcmd cp $SRCDIR/erlang-empd.xml $DESTDIR/var/svc/manifest/network/
+logcmd mkdir -p $DESTDIR/lib/svc/manifest/network/
+logcmd cp $SRCDIR/erlang-empd.xml $DESTDIR/lib/svc/manifest/network/
 
 # Setup working dir for epmd
 logcmd mkdir -p $DESTDIR/var/lib/epmd
