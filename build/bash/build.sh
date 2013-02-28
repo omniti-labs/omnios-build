@@ -20,10 +20,16 @@
 #
 # CDDL HEADER END
 #
+
 #
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
+
+#
+# Copyright (c) 2013 by Delphix. All rights reserved.
+#
+
 # Load support functions
 . ../../lib/functions.sh
 
@@ -37,6 +43,7 @@ DESC="$SUMMARY version $VER"
 DEPENDS_IPS="system/library system/library/gcc-4-runtime"
 
 BUILDARCH=32
+NO_PARALLEL_MAKE=1
 
 # Cribbed from upstream but modified for gcc
 # "let's shrink the SHT_SYMTAB as much as we can"

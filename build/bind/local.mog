@@ -19,10 +19,16 @@
 #
 # CDDL HEADER END
 #
+
 #
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
+
+#
+# Copyright (c) 2013 by Delphix. All rights reserved.
+#
+
 <transform dir  path=etc -> drop>
 <transform file path=etc/bind.keys -> drop>
 <transform dir  path=usr/include -> drop>
@@ -37,11 +43,9 @@
 <transform file path=usr/sbin/named.* -> drop>
 <transform link path=usr/sbin/named.* -> drop>
 <transform file path=usr/sbin/nsec3hash -> drop>
-<transform file path=usr/sbin/nslookup -> drop>
 <transform file path=usr/sbin/pkcs11.* -> drop>
 <transform file path=usr/share/man/man1/arpaname.1 -> drop>
 <transform file path=usr/share/man/man1/isc-config.sh.1 -> drop>
-<transform file path=usr/share/man/man1/nslookup.1 -> drop>
 <transform dir  path=usr/share/man/man3 -> drop>
 <transform file path=usr/share/man/man3/.* -> drop>
 <transform hardlink path=usr/share/man/man3/.* -> drop>
