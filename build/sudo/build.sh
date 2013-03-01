@@ -28,12 +28,16 @@
 . ../../lib/functions.sh
 
 PROG=sudo
-VER=1.8.4p5
+VER=1.8.6p7
 VERHUMAN=$VER
 PKG=security/sudo
 SUMMARY="$PROG - authority delegation tool"
 DESC="$SUMMARY"
 
+NO_PARALLEL_MAKE=true
+
+LIBS="-lssp_nonshared"
+export LIBS
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --sbindir=/usr/sbin --libexecdir=/usr/lib/sudo"
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --libexecdir=/usr/lib/sudo/amd64"
 CONFIGURE_OPTS="
