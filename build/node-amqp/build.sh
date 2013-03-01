@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=node-amqp # App name
-VER=0.1.3      # App version
+VER=0.1.6      # App version
 PKG=omniti/runtime/nodejs/node-amqp
-TAG=54a55826c5fb50cc9895c70a1bcadf0988706bfa
+TAG=02d6ef15c756647a2331160ce616f1ce26280bfa
 SUMMARY="AMQP client for nodejs"
 DESC="$SUMMARY"
 
