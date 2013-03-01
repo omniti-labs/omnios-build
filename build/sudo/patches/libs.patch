@@ -1,5 +1,38 @@
---- sudo-1.8.6p3/plugins/sudoers/Makefile.in.orig	Wed Oct 31 04:11:34 2012
-+++ sudo-1.8.6p3/plugins/sudoers/Makefile.in	Wed Oct 31 04:11:36 2012
+--- sudo-1.8.6p7/src/Makefile.in.orig	2013-02-25 19:46:09.000000000 +0000
++++ sudo-1.8.6p7/src/Makefile.in	2013-03-01 20:55:52.709440966 +0000
+@@ -109,7 +109,7 @@
+ 	$(LIBTOOL) --mode=link $(CC) -o $@ $(OBJS) $(LDFLAGS) $(PIE_LDFLAGS) $(SSP_LDFLAGS) $(LIBS)
+ 
+ libsudo_noexec.la: sudo_noexec.lo
+-	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) $(LT_LDFLAGS) -o $@ sudo_noexec.lo -avoid-version -rpath $(noexecdir)
++	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) $(LT_LDFLAGS) -o $@ sudo_noexec.lo -avoid-version @LIBS@ -rpath $(noexecdir)
+ 
+ sesh: sesh.o error.o exec_common.o @LIBINTL@ $(LT_LIBS)
+ 	$(LIBTOOL) --mode=link $(CC) -o $@ sesh.o error.o exec_common.o $(LDFLAGS) $(PIE_LDFLAGS) $(SSP_LDFLAGS) @LIBINTL@ $(LIBS)
+--- sudo-1.8.6p7/plugins/sample/Makefile.in.orig	2013-02-25 19:46:09.000000000 +0000
++++ sudo-1.8.6p7/plugins/sample/Makefile.in	2013-03-01 20:55:52.709632320 +0000
+@@ -34,7 +34,7 @@
+ INSTALL = $(SHELL) $(top_srcdir)/install-sh -c
+ 
+ # Libraries
+-LIBS = $(LIBOBJDIR)/libreplace.la
++LIBS = $(LIBOBJDIR)/libreplace.la @LIBS@
+ 
+ # C preprocessor flags
+ CPPFLAGS = -I$(incdir) -I$(top_builddir) -I$(top_srcdir) @CPPFLAGS@
+--- sudo-1.8.6p7/plugins/sample_group/Makefile.in.orig	2013-02-25 19:46:09.000000000 +0000
++++ sudo-1.8.6p7/plugins/sample_group/Makefile.in	2013-03-01 20:56:26.678995408 +0000
+@@ -103,7 +103,7 @@
+ 	@sed 's/^/+e /' $(shlib_exp) > $@
+ 
+ sample_group.la: $(OBJS) $(LT_LIBS) @LT_LDDEP@
+-	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) $(LT_LDFLAGS) -o $@ $(OBJS) $(LIBS) -module -avoid-version -rpath $(plugindir)
++	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) $(LT_LDFLAGS) -o $@ $(OBJS) $(LIBS) -module -avoid-version @LIBS@ -rpath $(plugindir)
+ 
+ pre-install:
+ 
+--- sudo-1.8.6p7/plugins/sudoers/Makefile.in.orig	2013-02-25 19:46:09.000000000 +0000
++++ sudo-1.8.6p7/plugins/sudoers/Makefile.in	2013-03-01 20:55:52.710024876 +0000
 @@ -47,7 +47,7 @@
  
  # Libraries
@@ -9,3 +42,14 @@
  NET_LIBS = @NET_LIBS@
  SUDOERS_LIBS = @SUDOERS_LIBS@ @AFS_LIBS@ @GETGROUPS_LIB@ $(LIBS) $(NET_LIBS) @ZLIB@
  REPLAY_LIBS = @REPLAY_LIBS@ @ZLIB@
+--- sudo-1.8.6p7/plugins/system_group/Makefile.in.orig	2013-02-25 19:46:09.000000000 +0000
++++ sudo-1.8.6p7/plugins/system_group/Makefile.in	2013-03-01 20:56:53.673555947 +0000
+@@ -103,7 +103,7 @@
+ 	@sed 's/^/+e /' $(shlib_exp) > $@
+ 
+ system_group.la: $(OBJS) $(LT_LIBS) @LT_LDDEP@
+-	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) $(LT_LDFLAGS) -o $@ $(OBJS) $(LIBS) -module -avoid-version -rpath $(plugindir)
++	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) $(LT_LDFLAGS) -o $@ $(OBJS) $(LIBS) -module -avoid-version @LIBS@ -rpath $(plugindir)
+ 
+ pre-install:
+ 
