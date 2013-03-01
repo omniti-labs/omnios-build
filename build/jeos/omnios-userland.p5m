@@ -81,7 +81,7 @@ depend fmri=runtime/perl@5.16.1,5.11-0.151005 type=incorporate
 depend fmri=runtime/perl-64@5.16.1,5.11-0.151005 type=incorporate
 depend fmri=runtime/perl/manual@5.16.1,5.11-0.151005 type=incorporate
 depend fmri=runtime/python-26@2.6.7,5.11-0.151005 type=incorporate
-depend fmri=security/sudo@1.8.6.3,5.11-0.151005 type=incorporate
+depend fmri=security/sudo@1.8,5.11-0.151005 type=incorporate
 depend fmri=service/network/ntp@4.2.7.316,5.11-0.151005 type=incorporate
 depend fmri=shell/bash@4.2,5.11-0.151005 type=incorporate
 depend fmri=shell/pipe-viewer@1.2.0,5.11-0.151005 type=incorporate
