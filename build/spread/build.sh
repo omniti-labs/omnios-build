@@ -43,6 +43,13 @@ rm_64bit_daemon_hack() {
   logcmd rm ${DESTDIR}/opt/omni/sbin/amd64/spread
 }
 
+copy_manifest() {
+    # SMF manifest
+    logmsg "--- Copying SMF manifest"
+    logcmd mkdir -p ${DESTDIR}/lib/svc/manifest/network
+    logcmd cp $SRCDIR/files/spread.xml ${DESTDIR}/lib/svc/manifest/network
+}
+
 init
 download_source $PROG $SRCNAME $VER
 patch_source
@@ -50,6 +57,7 @@ prep_build
 build
 rm_64bit_daemon_hack
 make_isa_stub
+copy_manifest
 make_package
 clean_up
 

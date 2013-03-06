@@ -1,0 +1,3 @@
+group groupname=spread
+user ftpuser=false gcos-field="Spread User" group=spread password=NP uid=90 username=spread
+dir path=/var/log/spread owner=spread group=spread
