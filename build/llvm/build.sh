@@ -32,9 +32,9 @@ VER=3.2         # App version
 VERHUMAN=$VER   # Human-readable version
 BUILDDIR="$PROG-$VER.src"
 #PVER=          # Branch (set in config.sh, override here if needed)
-PKG=zero/lang/llvm  # Package name (e.g. library/foo)
-SUMMARY="llvm"      # One-liner, must be filled in
-DESC="llvm"         # Longer description, must be filled in
+PKG="omni/lang/llvm"  # Package name (e.g. library/foo)
+SUMMARY="llvm"        # One-liner, must be filled in
+DESC="llvm"           # Longer description, must be filled in
 
 export REQUIRES_RTTI=1
 CONFIGURE_OPTS="--enable-optimized --disable-assertions \
@@ -62,13 +62,18 @@ make_install64() {
 }
 
 init
-download_source $PROG $VER
+download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
 fix_permissions
-make_package
+make_package llvm.mog
+PKG="omni/lang/clang"
+SUMMARY="clang"
+DESC="clang"
+make_package clang.mog
+exit 1
 clean_up
 
 # Vim hints
