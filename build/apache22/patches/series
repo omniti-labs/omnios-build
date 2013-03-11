@@ -1,3 +1,2 @@
 apache-2.2.16-probes-p2.patch -p1
 apache-2.2.x-probes-p1.patch -p1
-apache-2.2.x-nosslcompression-p3.patch -p1
