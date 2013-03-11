@@ -1,0 +1,26 @@
+--- ./llvm-3.2.src/tools/clang/lib/Frontend/InitHeaderSearch.cpp	2012-10-24 18:19:39.000000000 +0200
++++ ./llvm-3.2.src_backup/tools/clang/lib/Frontend/InitHeaderSearch.cpp	2013-03-10 13:15:55.996040432 +0100
+@@ -325,7 +325,9 @@
+ #endif
+     }
+     break;
+-      
++  case llvm::Triple::Solaris:
++    AddPath("/opt/gcc-4.6.3/include", System, true, false, false);
++    break;
+   default:
+     break;
+   }
+@@ -431,9 +433,9 @@
+                                 "", "", "", triple);
+     break;
+   case llvm::Triple::Solaris:
+-    AddGnuCPlusPlusIncludePaths("/usr/gcc/4.5/include/c++/4.5.2/",
+-                                "i386-pc-solaris2.11", "", "", triple);
+-    // Solaris - Fall though..
++    AddGnuCPlusPlusIncludePaths("/opt/gcc-4.6.3/include/c++/4.6.3/",
++                                "i386-pc-solaris2.11", "", "amd64", triple);
++    break;
+   case llvm::Triple::AuroraUX:
+     // AuroraUX
+     AddGnuCPlusPlusIncludePaths("/opt/gcc4/include/c++/4.2.4",

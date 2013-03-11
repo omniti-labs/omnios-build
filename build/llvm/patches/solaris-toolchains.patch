@@ -1,0 +1,20 @@
+--- llvm-3.2.src/tools/clang/lib/Driver/ToolChains.cpp	2012-12-16 16:59:27.000000000 +0100
++++ llvm-3.2.src_backup/tools/clang/lib/Driver/ToolChains.cpp	2013-03-09 20:37:58.903845003 +0100
+@@ -1799,8 +1799,16 @@
+   if (getDriver().getInstalledDir() != getDriver().Dir)
+     getProgramPaths().push_back(getDriver().Dir);
+ 
++  if (Triple.getArch() == llvm::Triple::x86) {
++    getFilePaths().push_back("/lib");
++    getFilePaths().push_back("/usr/lib");
++    getFilePaths().push_back("/opt/gcc-4.6.3/lib/gcc/i386-pc-solaris2.11/4.6.3");
++  } else {
++    getFilePaths().push_back("/lib/amd64");
++    getFilePaths().push_back("/usr/lib/amd64");
++    getFilePaths().push_back("/opt/gcc-4.6.3/lib/gcc/i386-pc-solaris2.11/4.6.3/amd64");
++  }
+   getFilePaths().push_back(getDriver().Dir + "/../lib");
+-  getFilePaths().push_back("/usr/lib");
+ }
+ 
+ Tool &Solaris::SelectTool(const Compilation &C, const JobAction &JA,
