@@ -38,7 +38,7 @@ DESC="$SUMMARY ($VER)" # Longer description
 
 BUILDARCH=32
 DEPENDS_IPS="omniti/runtime/ruby-19"
-BUILD_DEPENDS_IPS="gnu-coreutils"
+BUILD_DEPENDS_IPS="gnu-coreutils gnu-findutils omniti/runtime/ruby-19"
 
 # we Fetch all of these direclty from rubygens.org. you can chnage that in the files/gemrc.
 GEM_DEPENDS="
@@ -103,17 +103,25 @@ patch_ohai() {
     logcmd patch -p1 -t -N ${DESTDIR}${PREFIX}/lib/ruby/gems/1.9/gems/ohai-0.6.12/lib/ohai/plugins/solaris2/platform.rb < $SRCDIR/$PATCHDIR/platform.patch || logerr "failed to patch ohai"
     popd 
 }
+
+make_bin_symlinks() {
+    logmsg "Linking commands into $PREFIX/bin"
+    logcmd mkdir -p ${DESTDIR}${PREFIX}/bin
+    pushd ${DESTDIR}${PREFIX}/bin > /dev/null
+    for c in $(gfind ${DESTDIR}${PREFIX}/lib/ruby/gems/1.9/bin/ -type f -printf "%f "); do
+        logcmd ln -s $PREFIX/lib/ruby/gems/1.9/bin/$c $c
+    done
+    popd > /dev/null
+}
     
 
 init
-mkdir $TMPDIR/$PROG-$VER
-#download_source $PROG $PROG $VER
-#patch_source
+mkdir -p $TMPDIR/$PROG-$VER
 prep_build
-#patch_source
 build
 patch_ohai
 make_isa_stub
+make_bin_symlinks
 make_package
 clean_up
 
