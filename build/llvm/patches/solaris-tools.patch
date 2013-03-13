@@ -56,10 +56,6 @@
 +                                ToolChain.GetFilePath("values-Xa.o")));
 +      CmdArgs.push_back(Args.MakeArgString(
 +                                ToolChain.GetFilePath("crtbegin.o")));
-+      //CmdArgs.push_back(Args.MakeArgString(LibPath + "crt1.o"));
-+      //CmdArgs.push_back(Args.MakeArgString(LibPath + "crti.o"));
-+      //CmdArgs.push_back(Args.MakeArgString(LibPath + "values-Xa.o"));
-+      //CmdArgs.push_back(Args.MakeArgString(GCCLibPath + "crtbegin.o"));
      } else {
 -      CmdArgs.push_back(Args.MakeArgString(LibPath + "crti.o"));
 -      CmdArgs.push_back(Args.MakeArgString(LibPath + "values-Xa.o"));
@@ -70,15 +66,9 @@
 +                                ToolChain.GetFilePath("values-Xa.o")));
 +      CmdArgs.push_back(Args.MakeArgString(
 +                                ToolChain.GetFilePath("crtbegin.o")));
-+      //CmdArgs.push_back(Args.MakeArgString(LibPath + "crti.o"));
-+      //CmdArgs.push_back(Args.MakeArgString(LibPath + "values-Xa.o"));
-+      //CmdArgs.push_back(Args.MakeArgString(GCCLibPath + "crtbegin.o"));
      }
 -    if (getToolChain().getDriver().CCCIsCXX)
 -      CmdArgs.push_back(Args.MakeArgString(LibPath + "cxa_finalize.o"));
-+    if (ToolChain.getDriver().CCCIsCXX)
-+      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("cxa_finalize.o")));
    }
  
 -  CmdArgs.push_back(Args.MakeArgString("-L" + GCCLibPath));
@@ -87,7 +77,6 @@
 +  for (ToolChain::path_list::const_iterator i = Paths.begin(), e = Paths.end();
 +       i != e; ++i)
 +    CmdArgs.push_back(Args.MakeArgString(StringRef("-L") + *i));
-+  //CmdArgs.push_back(Args.MakeArgString("-L" + GCCLibPath));
  
    Args.AddAllArgs(CmdArgs, options::OPT_L);
    Args.AddAllArgs(CmdArgs, options::OPT_T_Group);
