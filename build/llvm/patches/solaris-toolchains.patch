@@ -1,6 +1,6 @@
---- llvm-3.2.src/tools/clang/lib/Driver/ToolChains.cpp	2012-12-16 16:59:27.000000000 +0100
-+++ llvm-3.2.src_backup/tools/clang/lib/Driver/ToolChains.cpp	2013-03-09 20:37:58.903845003 +0100
-@@ -1799,8 +1799,16 @@
+--- llvm-3.2.src.orig/tools/clang/lib/Driver/ToolChains.cpp	2012-12-16 16:59:27.000000000 +0100
++++ llvm-3.2.src/tools/clang/lib/Driver/ToolChains.cpp	2013-03-09 20:37:58.903845003 +0100
+@@ -1799,8 +1799,16 @@ Solaris::Solaris(const Driver &D, const
    if (getDriver().getInstalledDir() != getDriver().Dir)
      getProgramPaths().push_back(getDriver().Dir);
  

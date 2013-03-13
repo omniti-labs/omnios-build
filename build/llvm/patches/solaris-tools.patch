@@ -1,6 +1,6 @@
---- llvm-3.2.src/tools/clang/lib/Driver/Tools.cpp	2012-11-21 08:56:23.000000000 +0100
-+++ llvm-3.2.src_backup/tools/clang/lib/Driver/Tools.cpp	2013-03-09 21:27:01.087438984 +0100
-@@ -4880,27 +4880,9 @@
+--- llvm-3.2.src.orig/tools/clang/lib/Driver/Tools.cpp	2012-11-21 08:56:23.000000000 +0100
++++ llvm-3.2.src/tools/clang/lib/Driver/Tools.cpp	2013-03-09 21:27:01.087438984 +0100
+@@ -4880,27 +4880,9 @@ void solaris::Link::ConstructJob(Compila
                                    const InputInfoList &Inputs,
                                    const ArgList &Args,
                                    const char *LinkingOutput) const {
@@ -30,7 +30,7 @@
  
    // Demangle C++ names in errors
    CmdArgs.push_back("-C");
-@@ -4920,7 +4902,8 @@
+@@ -4920,7 +4902,8 @@ void solaris::Link::ConstructJob(Compila
        CmdArgs.push_back("-shared");
      } else {
        CmdArgs.push_back("--dynamic-linker");
@@ -40,7 +40,7 @@
      }
    }
  
-@@ -4934,32 +4917,52 @@
+@@ -4934,32 +4917,52 @@ void solaris::Link::ConstructJob(Compila
    if (!Args.hasArg(options::OPT_nostdlib) &&
        !Args.hasArg(options::OPT_nostartfiles)) {
      if (!Args.hasArg(options::OPT_shared)) {
@@ -106,7 +106,7 @@
      CmdArgs.push_back("-lgcc_s");
      if (!Args.hasArg(options::OPT_shared)) {
        CmdArgs.push_back("-lgcc");
-@@ -4970,14 +4973,16 @@
+@@ -4970,14 +4973,16 @@ void solaris::Link::ConstructJob(Compila
  
    if (!Args.hasArg(options::OPT_nostdlib) &&
        !Args.hasArg(options::OPT_nostartfiles)) {
@@ -126,4 +126,3 @@
 +    Args.MakeArgString(ToolChain.GetProgramPath("ld"));
    C.addCommand(new Command(JA, *this, Exec, CmdArgs));
  }
- 
