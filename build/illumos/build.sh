@@ -92,9 +92,13 @@ clone_source(){
         logerr "--- Failed to create build dir $TMPDIR/$BUILDDIR"
     logmsg "Entering $TMPDIR/$BUILDDIR"
     pushd $TMPDIR/$BUILDDIR > /dev/null 
-    logmsg "Cloning OMNI Illumos Source..."
-    logcmd  $GIT clone anon@src.omniti.com:~omnios/core/illumos-omnios || \
-        logerr "--- Failed to clone source"
+    if [ -d illumos-omnios ]; then
+        logmsg "OMNI Illumos Source in place. Using existing workspace."
+    else
+        logmsg "Cloning OMNI Illumos Source..."
+        logcmd  $GIT clone anon@src.omniti.com:~omnios/core/illumos-omnios || \
+            logerr "--- Failed to clone source"
+    fi
     pushd illumos-omnios 
     ILLUMOS_VERSION="VERSION=\'omnios\-`$GIT log --pretty=format:'%h' -n 1`'" 
     RELEASE_DATE=`$GIT show --format=format:%ai | awk '{print $1; exit;}' | tr - .` 
