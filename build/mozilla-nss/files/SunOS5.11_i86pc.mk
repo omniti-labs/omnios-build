@@ -45,7 +45,7 @@ endif
 #
 # ***** END LICENSE BLOCK *****
 
-SOL_CFLAGS	= -D_SVID_GETTOD
+SOL_CFLAGS	= #-D_SVID_GETTOD
 
 include $(CORE_DEPTH)/coreconf/SunOS5.mk
 

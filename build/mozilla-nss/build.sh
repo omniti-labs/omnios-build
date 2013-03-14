@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=nss
-VER=3.14
+VER=3.14.3
 VERHUMAN=$VER
 PKG=$PROG ##IGNORE##
 SUMMARY="Netscape Portable Runtime"
