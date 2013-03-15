@@ -27,17 +27,17 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=mimeo
-VER=0.11.1
+PROG=pg_partman
+VER=1.1.0
 VERHUMAN=$VER
 PGVER=923
-PKG=omniti/database/postgresql-${PGVER}/mimeo
-SUMMARY="$PROG - Extension for specialized replication between PostgreSQL instances"
+PKG=omniti/database/postgresql-${PGVER}/pg_partman
+SUMMARY="$PROG - Partition management extention for PostgreSQL"
 DESC="$SUMMARY"
 
 TAR=gtar
-DEPENDS_IPS="omniti/database/postgresql-$PGVER  omniti/database/postgresql-${PGVER}/dblink omniti/database/postgresql-${PGVER}/pg_jobmon"
-BUILD_DEPENDS_IPS="omniti/database/postgresql-$PGVER"
+DEPENDS_IPS="omniti/database/postgresql-$PGVER"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS"
 
 BUILDARCH=64
 PREFIX=/opt/pgsql$PGVER
