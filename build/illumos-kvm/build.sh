@@ -29,11 +29,11 @@
 
 # First we build the kernel module
 PROG=illumos-kvm
-VER=1.0.3
+VER=1.0.4
 # Default to building tip, but if needed, specify the desired commit here
 COMMIT=
 SRC_REPO=https://github.com/joyent/illumos-kvm.git
-KERNEL_SOURCE=/code/omnios-151005/illumos-omnios
+KERNEL_SOURCE=/code/omnios-$RELVER/illumos-omnios
 PROTO_AREA=$KERNEL_SOURCE/proto/root_i386
 PATCHDIR=patches.$PROG
 PKG=driver/virtualization/kvm
@@ -105,7 +105,7 @@ PROG=illumos-kvm-cmd
 # Default to building tip, but if needed, specify the desired commit here
 COMMIT=
 SRC_REPO=https://github.com/joyent/illumos-kvm-cmd.git
-KERNEL_SOURCE=/code/omnios-151005/illumos-omnios
+KERNEL_SOURCE=/code/omnios-$RELVER/illumos-omnios
 KVM_DIR=$TMPDIR/illumos-kvm-$VER
 PATCHDIR=patches.$PROG
 PKG=system/kvm
@@ -124,7 +124,7 @@ export CTFBINDIR
 export PATH="$PATH:$CTFBINDIR"
 
 make_prog() {
-    CC=/opt/gcc-4.7.2/bin/gcc
+    CC=/opt/gcc-4.4.4/bin/gcc
     export KERNEL_SOURCE KVM_DIR PREFIX CC
     logmsg "--- build.sh"
     logcmd ./build.sh || \
