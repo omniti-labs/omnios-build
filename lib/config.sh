@@ -28,7 +28,8 @@
 #############################################################################
 
 # Default branch
-PVER=0.151005
+RELVER=151005
+PVER=0.$RELVER
 
 # Which server to fetch files from
 MIRROR=mirrors.omniti.com
