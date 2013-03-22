@@ -36,7 +36,7 @@
 # Patches are synced from gnu.org, e.g.
 #   rsync -a --exclude=*.sig rsync://ftp.gnu.org/ftp/bash/bash-4.2-patches/ patches/bash-4.2-patches/
 #   cd patches
-#   ls bash-4.2-patches/* | sed -e 's/\([0-9]\)$/\1 -p2/' > series
+#   ls bash-4.2-patches/* | sed -e 's/\([0-9]\)$/\1 -p0/' > series
 # Then set PATCHLEVEL to the highest patch number in the updated list
 
 PROG=bash       # App name
