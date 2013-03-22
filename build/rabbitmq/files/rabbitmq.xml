@@ -13,7 +13,6 @@
     <method_context working_directory="/opt/rabbitmq/var/lib/rabbitmq">
       <method_environment>
         <envvar name="HOME" value="/opt/rabbitmq/var/lib/rabbitmq"/>
-        <envvar name="ERL_EPMD_PORT" value="4379"/>
         <envvar name="PATH" value="/usr/bin:/usr/sbin:/opt/omni/bin"/>
       </method_environment>
     </method_context>
