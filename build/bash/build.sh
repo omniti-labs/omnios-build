@@ -22,7 +22,7 @@
 #
 
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2013 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 
@@ -33,9 +33,16 @@
 # Load support functions
 . ../../lib/functions.sh
 
+# Patches are synced from gnu.org, e.g.
+#   rsync -a --exclude=*.sig rsync://ftp.gnu.org/ftp/bash/bash-4.2-patches/ patches/bash-4.2-patches/
+#   cd patches
+#   ls bash-4.2-patches/* | sed -e 's/\([0-9]\)$/\1 -p2/' > series
+# Then set PATCHLEVEL to the highest patch number in the updated list
+
 PROG=bash       # App name
 VER=4.2         # App version
-VERHUMAN=$VER   # Human-readable version
+PATCHLEVEL=45   # Patch level
+VERHUMAN="$VER patchlevel $PATCHLEVEL"
 PKG=shell/bash  # Package name (without prefix)
 SUMMARY="GNU Bourne-Again shell (bash)"
 DESC="$SUMMARY version $VER"
@@ -124,6 +131,7 @@ build
 make_isa_stub
 install_files
 make_symlink
+VER=${VER}.$PATCHLEVEL
 make_package
 clean_up
 
