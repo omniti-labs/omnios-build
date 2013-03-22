@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=nginx
-VER=1.2.6
+VER=1.2.7
 VERHUMAN=$VER
 PKG=omniti/server/nginx
 SUMMARY="nginx web server"
