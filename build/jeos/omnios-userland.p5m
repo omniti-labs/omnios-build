@@ -30,7 +30,7 @@ depend fmri=developer/sunstudio12.1@12.1,5.11-0.151005 type=incorporate
 depend fmri=developer/swig@2.0.8,5.11-0.151005 type=incorporate
 depend fmri=developer/versioning/git@1.8,5.11-0.151005 type=incorporate
 depend fmri=developer/versioning/mercurial@2.3.2,5.11-0.151005 type=incorporate
-depend fmri=driver/virtualization/kvm@1.0.3,5.11-0.151005 type=incorporate
+depend fmri=driver/virtualization/kvm@1.0,5.11-0.151005 type=incorporate
 depend fmri=editor/vim@7.3,5.11-0.151005 type=incorporate
 depend fmri=file/gnu-coreutils@8.20,5.11-0.151005 type=incorporate
 depend fmri=file/gnu-findutils@4.4.2,5.11-0.151005 type=incorporate
@@ -96,7 +96,7 @@ depend fmri=system/install/kayak-kernel@1.1,5.11-0.151005 type=incorporate
 depend fmri=system/install/media/internal@0.5.11,5.11-0.151005 type=incorporate
 depend fmri=system/install/tests@0.5.11,5.11-0.151005 type=incorporate
 depend fmri=system/install/text-install@0.5.11,5.11-0.151005 type=incorporate
-depend fmri=system/kvm@1.0.3,5.11-0.151005 type=incorporate
+depend fmri=system/kvm@1.0,5.11-0.151005 type=incorporate
 depend fmri=system/library/boot-management@0.5.11,5.11-0.151005 type=incorporate
 depend fmri=system/library/c++/sunpro@0.5.11,5.11-0.151005 type=incorporate
 depend fmri=system/library/dbus@1.6.8,5.11-0.151005 type=incorporate
