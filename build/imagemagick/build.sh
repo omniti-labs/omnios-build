@@ -28,14 +28,14 @@
 . ../../lib/functions.sh
 
 PROG=ImageMagick
-VER=6.7.9-0
+VER=6.7.9-10
 VERHUMAN=$VER
 PKG=omniti/image/imagemagick
 SUMMARY="software suite to create, edit, compose, or convert bitmap images"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="omniti/library/libjpeg omniti/library/libpng"
-DEPENDS_IPS="omniti/library/libjpeg omniti/library/libpng"
+BUILD_DEPENDS_IPS="omniti/library/freetype2 omniti/library/libjpeg omniti/library/libpng"
+DEPENDS_IPS="omniti/library/freetype2 omniti/library/libjpeg omniti/library/libpng"
 
 CFLAGS="-I/opt/omni/include"
 LDFLAGS32="$LDFLAGS32 -L/opt/omni/lib -R/opt/omni/lib"
