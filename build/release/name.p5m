@@ -1,4 +1,4 @@
-set name=pkg.fmri value=release/name@0.5.11,5.11-0.151005
+set name=pkg.fmri value=release/name@0.5.11,5.11-0.151006
 set name=pkg.summary value="OmniOS Name"
 set name=pkg.description value="OmniOS Name"
 set name=description value="OmniOS /etc/release file"
