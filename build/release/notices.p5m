@@ -1,4 +1,4 @@
-set name=pkg.fmri value=release/notices@0.5.11,5.11-0.151005
+set name=pkg.fmri value=release/notices@0.5.11,5.11-0.@RELVER@
 set name=description value="OpenIndiana licensing"
 set name=pkg.description value="OpenIndiana licensing"
 set name=pkg.summary value="OpenIndiana licensing"
