@@ -76,7 +76,7 @@ build() {
         SCRIPT=$(basename ${targets[$1]})
         if [[ -n $(echo $SCRIPT | grep ".p5m$") ]]; then
             echo "Found a manifest file. Preparing it for publishing."
-            sed -e "s/@PKGPUBLISHER@/$PKGPUBLISHER/g; s/@PVER@/$PVER/g;" < $SCRIPT > $SCRIPT.final
+            sed -e "s/@PKGPUBLISHER@/$PKGPUBLISHER/g; s/@RELVER@/$RELVER/g; s/@PVER@/$PVER/g;" < $SCRIPT > $SCRIPT.final
             if [[ -f root.tar.bz2 ]]; then
                 echo "File archive found. Extracting..."
                 bzip2 -dc root.tar.bz2 | tar xf - || \
