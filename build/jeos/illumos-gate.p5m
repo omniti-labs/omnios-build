@@ -417,6 +417,7 @@ depend fmri=driver/graphics/usbvc@0.5.11,5.11-0.151004 type=incorporate
 depend fmri=driver/i86pc/fipe@0.5.11,5.11-0.151004 type=incorporate
 depend fmri=driver/i86pc/ioat@0.5.11,5.11-0.151004 type=incorporate
 depend fmri=driver/i86pc/platform@0.5.11,5.11-0.151004 type=incorporate
+depend fmri=driver/ipmi@0.5.11-0.151004 type=incorporate
 depend fmri=driver/network/afe@0.5.11,5.11-0.151004 type=incorporate
 depend fmri=driver/network/amd8111s@0.5.11,5.11-0.151004 type=incorporate
 depend fmri=driver/network/arbel@0.5.11,5.11-0.151004 type=incorporate
