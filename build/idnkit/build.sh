@@ -47,9 +47,6 @@ make_isa_stub
 
 VER=${VER//-src/}
 
-PKG=library/idnkit
-SUMMARY="Internationalized Domain Name kit (idnkit/JPNIC)"
-DESC="Internationalized Domain Name kit (idnkit/JPNIC)"
 make_package lib.mog
 
 PKG=library/idnkit/header-idnkit
