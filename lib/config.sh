@@ -127,6 +127,7 @@ ISAPART64=amd64
 # For OmniOS we (almost) always want GCC
 CC=gcc
 CXX=g++
+GIT=git
 
 # CFLAGS applies to both builds, 32/64 only gets applied to the respective
 # build

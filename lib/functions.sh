@@ -412,6 +412,53 @@ patch_file() {
 }
 
 #############################################################################
+# Download source from git
+#############################################################################
+# Parameters
+#   $1 - repos
+#   $2 - branch
+#   $3 - commit
+#   $4 - version
+#
+# E.g.
+#       download_git https://github.com/omniti-labs/nab master HEAD
+download_git() {
+    local REPOS=$1
+    local BRANCH=$2
+    local COMMIT=$3
+    local VERSION=$4
+    if [ -n "$BRANCH" ]; then
+        BRANCH="master"
+    fi
+    if [ -n "$COMMIT" ]; then
+        COMMIT="HEAD"
+    fi
+    pushd $TMPDIR > /dev/null
+    logmsg "Checking for source directory"
+    if [ -d $BUILDDIR ]; then
+        logmsg "--- removing previous source checkout"
+        logcmd rm -rf $BUILDDIR
+    fi
+    logmsg "Checking code out from git repo"
+    logcmd $GIT clone $REPOS $BUILDDIR
+    pushd $BUILDDIR > /dev/null
+    if [ -n "$COMMIT" ]; then
+        logcmd $GIT checkout $COMMIT
+    fi
+    if [ -n "$VERSION" ]; then
+        VER=$VERSION
+        VERHUMAN=$VER
+    else
+        REV=`$GIT log -1  --format=format:%at`
+        REVDATE=`echo $REV | gawk '{ print strftime("%c %Z",$1) }'`
+        VER=0.1.$REV
+        VERHUMAN="checkout from $REVDATE"
+    fi
+    popd > /dev/null
+    popd > /dev/null
+}
+
+#############################################################################
 # Download source tarball if needed and extract it
 #############################################################################
 # Parameters
