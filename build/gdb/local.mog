@@ -24,7 +24,9 @@
 # Use is subject to license terms.
 #
 <transform file path=opt/omni/lib/charset.alias -> drop>
+<transform file path=opt/omni/lib/amd64/charset.alias -> drop>
 <transform file path=opt/omni/lib/.*\.a$ -> drop>
+<transform file path=opt/omni/lib/amd64/.*\.a$ -> drop>
 <transform dir path=opt/omni/lib -> drop>
 license COPYING license=GPLv2
 license COPYING.LIB license=LGPLv2
