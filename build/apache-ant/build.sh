@@ -28,15 +28,15 @@
 . ../../lib/functions.sh
 
 PROG=apache-ant
-VER=1.8.4
+VER=1.9.0
 VERHUMAN=$VER
 JUNITVER=4.11
-PKG=developer/build/ant
+PKG=omniti/developer/build/ant
 SUMMARY="Apache Ant is a Java library and command-line tool that help building software."
 DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="developer/java/jdk"
-DEPENDS_IPS="runtime/java runtime/perl-5161 runtime/python-26"
+DEPENDS_IPS="runtime/java omniti/runtime/perl omniti/runtime/python-26"
 
 BUILDARCH=32
 JAVA_HOME="/usr/jdk/instances/jdk1.6.0"

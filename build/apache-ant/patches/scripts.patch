@@ -1,0 +1,32 @@
+--- apache-ant-1.9.0/src/script/antRun.pl.orig	Wed Mar  6 03:47:26 2013
++++ apache-ant-1.9.0/src/script/antRun.pl	Fri Mar 29 19:33:14 2013
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/opt/OMNIperl/bin/perl
+ #
+ # Licensed to the Apache Software Foundation (ASF) under one or more
+ #  contributor license agreements.  See the NOTICE file distributed with
+--- apache-ant-1.9.0/src/script/complete-ant-cmd.pl.orig	Wed Mar  6 03:47:26 2013
++++ apache-ant-1.9.0/src/script/complete-ant-cmd.pl	Fri Mar 29 19:33:30 2013
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/opt/OMNIperl/bin/perl
+ #
+ #  Licensed to the Apache Software Foundation (ASF) under one or more
+ #  contributor license agreements.  See the NOTICE file distributed with
+--- apache-ant-1.9.0/src/script/runant.pl.orig	Wed Mar  6 03:47:26 2013
++++ apache-ant-1.9.0/src/script/runant.pl	Fri Mar 29 19:33:46 2013
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/opt/OMNIperl/bin/perl
+ #
+ # Licensed to the Apache Software Foundation (ASF) under one or more
+ #  contributor license agreements.  See the NOTICE file distributed with
+--- apache-ant-1.9.0/src/script/runant.py.orig	Wed Mar  6 03:47:26 2013
++++ apache-ant-1.9.0/src/script/runant.py	Fri Mar 29 19:34:14 2013
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/opt/python26/bin/python
+ # Licensed to the Apache Software Foundation (ASF) under one or more
+ #  contributor license agreements.  See the NOTICE file distributed with
+ #  this work for additional information regarding copyright ownership.
