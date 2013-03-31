@@ -1,2 +1,4 @@
 tmux.h.patch
 sysv.patch
+errno-for-errno.patch
+job-libevheader.patch

@@ -1,0 +1,10 @@
+--- tmux-1.8.orig/job.c	Sun Mar 31 01:31:32 2013
++++ tmux-1.8/job.c	Sun Mar 31 01:31:35 2013
+@@ -25,6 +25,7 @@
+ #include <unistd.h>
+ 
+ #include "tmux.h"
++#include "event2/bufferevent_compat.h"
+ 
+ /*
+  * Job scheduling. Run queued commands in the background and record their
