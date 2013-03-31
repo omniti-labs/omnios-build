@@ -42,13 +42,15 @@ usage() {
     echo $0
     echo "    list [grep pattern]"
     echo "    licenses"
-    echo "    build <pkg>"
+    echo "    build <pkg> | all"
     exit
 }
+
 bail() {
     echo $*
     exit
 }
+
 list() {
     PAT=${1-.}
     for target in "${!targets[@]}"
@@ -60,6 +62,7 @@ list() {
         fi
     done | sort
 }
+
 build() {
     if [[ -z "${targets[$1]}" ]]; then
         bail "Unknown package: $1"
@@ -98,10 +101,11 @@ build() {
                 rm $SCRIPT.final
             fi
         else
-            PATH=$PATH:. $SCRIPT
+            PATH=$PATH:. $SCRIPT $batch_flag
         fi
     popd >/dev/null
 }
+
 licenses() {
     LCNT=0
     for target in "${!licenses[@]}"
@@ -127,10 +131,35 @@ DEFAULT_PKGSRVR=$PKGSRVR
 DEFAULT_PKGPUBLISHER=$PKGPUBLISHER
 
 case "$1" in
-    list) list $2 ; exit ;;
-    licenses) licenses ; exit ;;
-    build) shift ;
-        for tgt in $* ; do build $tgt ; done
-        exit ;;
-    *) usage ;;
+    list)
+	list $2
+	exit
+	;;
+
+    licenses)
+	licenses
+	exit
+	;;
+
+    build)
+	shift
+	tobuild=$*
+	if [ -z "$tobuild" ] || [ "$tobuild" == "all" ]; then
+		batch_flag="-b"
+		for tgt in "${!targets[@]}"; do
+			build $tgt
+		done
+	else
+		batch_flag=""
+		for tgt in $tobuild; do
+			build $tgt
+		done
+	fi
+        exit
+	;;
+
+    *)
+	usage
+	;;
 esac
+
