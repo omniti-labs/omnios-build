@@ -212,6 +212,20 @@ fi
 # Print startup message
 #############################################################################
 [[ -z "$NOBANNER" ]] && logmsg "===== Build started at `date` ====="
+
+
+#############################################################################
+# Libtool -nostdlib hacking
+# libtool doesn't put -nostdlib in the shared archive creation command
+# we need it sometimes.
+#############################################################################
+libtool_nostdlib() {
+    FILE=$1
+    EXTRAS=$2
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib '"$EXTRAS"'#g;' libtool ||
+        logerr "--- Patching libtool:$FILE for -nostdlib support failed"
+}
+
 #############################################################################
 # Initialization function
 #############################################################################
@@ -703,6 +717,9 @@ configure64() {
 
 make_prog() {
     [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
+    if [[ -n $LIBTOOL_NOSTDLIB ]]; then
+        libtool_nostdlib $LIBTOOL_NOSTDLIB $LIBTOOL_NOSTDLIB_EXTRAS
+    fi
     logmsg "--- make"
     logcmd $MAKE $MAKE_JOBS || \
         logerr "--- Make failed"
