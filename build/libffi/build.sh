@@ -41,6 +41,8 @@ make_prog32() {
     logmsg "Making program (32)"
     logcmd gmake
     pushd i386-pc-solaris2.11 > /dev/null
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib -lc -lpthread#g;' libtool ||
+        logerr "libtool patch failed"
     logcmd gmake clean
     logcmd gmake || logerr "make failed"
     popd > /dev/null
@@ -56,6 +58,8 @@ make_prog64() {
     logmsg "Making program (64)"
     logcmd gmake
     pushd i386-pc-solaris2.11 > /dev/null
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib -lc -lpthread#g;' libtool ||
+        logerr "libtool patch failed"
     logcmd gmake clean
     logcmd gmake || logerr "make failed"
     popd > /dev/null
