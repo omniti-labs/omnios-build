@@ -51,6 +51,20 @@ secv1_links() {
     done
 }
 
+make_prog32() {
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    perl -pi -e 's/^(DSO_LDOPTS\s+=.+)$/$1 -nostdlib/g;' config/autoconf.mk
+    logcmd gmake || logerr "gmake failed"
+    popd > /dev/null
+}
+
+make_prog64() {
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    perl -pi -e 's/^(DSO_LDOPTS\s+=.+)$/$1 -nostdlib/g;' config/autoconf.mk
+    logcmd gmake || logerr "gmake failed"
+    popd > /dev/null
+}
+
 init
 download_source $PROG $PROG $VER
 BUILDDIR=$PROG-$VER/mozilla/nsprpub
