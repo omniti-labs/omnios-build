@@ -37,6 +37,8 @@ DEPENDS_IPS="web/ca-bundle library/security/openssl@1.0.1 library/zlib"
 
 CONFIGURE_OPTS="--enable-thread --with-ca-bundle=/etc/ssl/cacert.pem"
 
+LIBTOOL_NOSTDLIB=libtool
+
 init
 download_source $PROG $PROG $VER
 patch_source
