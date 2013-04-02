@@ -37,6 +37,8 @@ DESC="IDN - The Internationalized Domains Library"
 DEPENDS_IPS="system/library system/library/gcc-4-runtime"
 
 CONFIGURE_OPTS="--disable-static"
+LIBTOOL_NOSTDLIB=libtool
+LIBTOOL_NOSTDLIB_EXTRAS=-lc
 
 init
 download_source $PROG $PROG $VER
