@@ -60,4 +60,5 @@ ifeq ($(OS_RELEASE),5.11_i86pc)
 	OS_DEFINES += -DSOLARIS2_11
 endif
 
-OS_LIBS += -lthread -lnsl -lsocket -lposix4 -ldl -lc
+OS_LIBS += -lnsl -lsocket -lposix4 -ldl -lc
+DSO_LDOPTS += -nostdlib
