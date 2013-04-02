@@ -49,6 +49,18 @@ build() {
     fi
 }
 
+make_prog64() {
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool ||
+        logerr "libtool patch failed"
+    logcmd gmake || logerr "Make failed"
+}
+
+make_prog32() {
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool ||
+        logerr "libtool patch failed"
+    logcmd gmake || logerr "Make failed"
+}
+
 post_install() {
     mkdir -p $DESTDIR/var/svc/manifest/system
     cp files/dbus.xml $DESTDIR/var/svc/manifest/system/dbus.xml
