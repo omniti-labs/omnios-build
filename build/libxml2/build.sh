@@ -47,6 +47,18 @@ install_license(){
     logcmd cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
 }
 
+make_prog64() {
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool ||
+        logerr "libtool patch failed"
+    logcmd gmake || logerr "Make failed"
+}
+
+make_prog32() {
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool ||
+        logerr "libtool patch failed"
+    logcmd gmake || logerr "Make failed"
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
