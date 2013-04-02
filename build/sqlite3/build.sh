@@ -36,6 +36,8 @@ DESC="$SUMMARY"
 
 DEPENDS_IPS="SUNWcs library/readline system/library/gcc-4-runtime"
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --includedir=/usr/include"
+LIBTOOL_NOSTDLIB=libtool
+LIBTOOL_NOSTDLIB_EXTRAS=-lc
 
 make_stub_dirs() {
     logcmd mkdir -p $DESTDIR/usr/bin
