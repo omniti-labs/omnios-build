@@ -55,6 +55,8 @@ configure32() {
     sed -e 's/S\["GLIB_GENMARSHAL"\]=""/S["GLIB_GENMARSHAL"]="glib-genmarshal"/' < config.status.old > config.status || logerr "sed failed"
     logcmd chmod 755 config.status || logerr "chmod failed"
     logcmd ./config.status || logerr "config status"
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool ||
+        logerr "libtool patch failed"
 }
 configure64() {
     DBUS_LIBS=-ldbus-1
@@ -70,6 +72,8 @@ configure64() {
     sed -e 's/S\["GLIB_GENMARSHAL"\]=""/S["GLIB_GENMARSHAL"]="glib-genmarshal"/' < config.status.old > config.status || logerr "sed failed"
     logcmd chmod 755 config.status || logerr "chmod failed"
     logcmd ./config.status || logerr "config status"
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool ||
+        logerr "libtool patch failed"
 }
 
 init
