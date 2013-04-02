@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libxslt
-VER=1.1.27
+VER=1.1.28
 PKG=library/libxslt
 SUMMARY="The XSLT library"
 DESC="$SUMMARY"
@@ -55,6 +55,19 @@ configure64() {
     logmsg "restoring backup of xsltproc.1"
     logcmd cp $TMPDIR/$BUILDDIR/backup.1 $TMPDIR/$BUILDDIR/doc/xsltproc.1
     logcmd touch $TMPDIR/$BUILDDIR/doc/xsltproc.1
+}
+
+save_function make_prog64 make_prog64_orig
+save_function make_prog32 make_prog32_orig
+make_prog64() {
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool || \
+        logerr "libtool patch failed"
+    make_prog64_orig
+}
+make_prog32() {
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool || \
+        logerr "libtool patch failed"
+    make_prog32_orig
 }
 
 init
