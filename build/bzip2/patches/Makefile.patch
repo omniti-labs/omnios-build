@@ -122,7 +122,7 @@ diff -ru bzip2-1.0.6.orig/Makefile-libbz2_so bzip2-1.0.6/Makefile-libbz2_so
  
  all: $(OBJS)
 -	$(CC) -shared -Wl,-soname -Wl,libbz2.so.1.0 -o libbz2.so.1.0.6 $(OBJS)
-+	$(CC) $(LDFLAGS) -shared -Wl,-soname -Wl,libbz2.so.1.0 -o libbz2.so.1.0.6 $(OBJS)
++	$(CC) $(LDFLAGS) -shared -Wl,-soname -Wl,libbz2.so.1.0 -o libbz2.so.1.0.6 -nostdlib -lc $(OBJS)
  	$(CC) $(CFLAGS) -o bzip2-shared bzip2.c libbz2.so.1.0.6
  	rm -f libbz2.so.1.0
  	ln -s libbz2.so.1.0.6 libbz2.so.1.0
