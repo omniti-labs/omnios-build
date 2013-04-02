@@ -37,6 +37,9 @@ DESC="PCRE - Perl-Compatible Regular Expressions (8.30)"
 DEPENDS_IPS="library/readline compress/bzip2 library/zlib system/library/g++-4-runtime
 	system/library/gcc-4-runtime system/library system/library/math"
 
+LIBTOOL_NOSTDLIB=libtool
+LIBTOOL_NOSTDLIB_EXTRAS=-lc
+
 CONFIGURE_OPTS="$CONFIGURE_OPTS
 	--includedir=/usr/include/pcre
 	--localstatedir=/var
