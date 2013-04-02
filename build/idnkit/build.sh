@@ -37,6 +37,8 @@ DESC="Internationalized Domain Name kit (idnkit/JPNIC)"
 DEPENDS_IPS="system/library"
 
 CONFIGURE_OPTS="--disable-static --mandir=/usr/share/man"
+LIBTOOL_NOSTDLIB=libtool
+LIBTOOL_NOSTDLIB_EXTRAS=-lc
 
 init
 download_source $PROG $PROG $VER
