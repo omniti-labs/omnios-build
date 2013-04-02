@@ -41,8 +41,8 @@ DEPENDS_IPS="SUNWcs shell/bash system/library
 
 MIB_MODULES="host disman/event-mib ucd-snmp/diskio udp-mib tcp-mib if-mib"
 
-LDFLAGS32="$LDFLAGS32 -L/lib"
-LDFLAGS64="$LDFLAGS64 -L/lib/$ISAPART64"
+LDFLAGS32="-Wl,-zignore $LDFLAGS32 -L/lib"
+LDFLAGS64="-Wl,-zignore $LDFLAGS64 -L/lib/$ISAPART64"
 
 # We want dual-arch libs but only care about 32-bit binaries
 # We will elide 64-bit binaries with pkgmogrify (local.mog)
@@ -79,6 +79,7 @@ configure32() {
                     --with-transports="UDP TCP UDPIPv6 TCPIPv6" \
                     --with-mib-modules="$MIB_MODULES" || \
         logerr "--- Configure failed"
+    perl -pi -e 's#^^(archive_cmds=.*)"$#$1 -nostdlib"#g;' libtool
 }
 
 configure64() {
@@ -93,6 +94,7 @@ configure64() {
                     --with-transports="UDP TCP UDPIPv6 TCPIPv6" \
                     --with-mib-modules="$MIB_MODULES" || \
         logerr "--- Configure failed"
+    perl -pi -e 's#^^(archive_cmds=.*)"$#$1 -nostdlib"#g;' libtool
 }
 
 # Jam in some SMF files
