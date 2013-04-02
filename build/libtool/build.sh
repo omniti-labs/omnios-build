@@ -39,6 +39,8 @@ DEPENDS_IPS="system/library system/library/gcc-4-runtime"
 # The includes also are not arch-dependent
 CONFIGURE_OPTS="--bindir=$PREFIX/bin --includedir=$PREFIX/include --disable-static"
 reset_configure_opts
+LIBTOOL_NOSTDLIB=libtool
+LIBTOOL_NOSTDLIB_EXTRAS=-lc
 
 init
 download_source $PROG $PROG $VER
