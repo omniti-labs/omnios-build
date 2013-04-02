@@ -55,21 +55,13 @@ links() {
     logcmd mkdir -m 0755 $DESTDIR/usr/lib
     logcmd mkdir -m 0755 $DESTDIR/usr/lib/amd64
     logcmd ln -s ../../lib/libm.so.2 $DESTDIR/usr/lib/libm.so
-    logcmd ln -s ../../lib/libmtsk.so.1 $DESTDIR/usr/lib/libmtsk.so
     logcmd ln -s ../../lib/libm.so.1 $DESTDIR/usr/lib/libm.so.1
     logcmd ln -s ../../lib/libm.so.2 $DESTDIR/usr/lib/libm.so.2
-    logcmd ln -s ../../lib/libmtsk.so.1 $DESTDIR/usr/lib/libmtsk.so.1
-    logcmd ln -s ../../lib/libmtsk_db.so.1 $DESTDIR/usr/lib/libmtsk_db.so
-    logcmd ln -s ../../lib/libmtsk_db.so.1 $DESTDIR/usr/lib/libmtsk_db.so.1
     logcmd ln -s ../../lib/libmvec.so.1 $DESTDIR/usr/lib/libmvec.so
     logcmd ln -s ../../lib/libmvec.so.1 $DESTDIR/usr/lib/libmvec.so.1
     logcmd ln -s ../../../lib/amd64/libm.so.2 $DESTDIR/usr/lib/amd64/libm.so
     logcmd ln -s ../../../lib/amd64/libm.so.1 $DESTDIR/usr/lib/amd64/libm.so.1
     logcmd ln -s ../../../lib/amd64/libm.so.2 $DESTDIR/usr/lib/amd64/libm.so.2
-    logcmd ln -s ../../../lib/amd64/libmtsk.so.1 $DESTDIR/usr/lib/amd64/libmtsk.so
-    logcmd ln -s ../../../lib/amd64/libmtsk.so.1 $DESTDIR/usr/lib/amd64/libmtsk.so.1
-    logcmd ln -s ../../../lib/amd64/libmtsk_db.so.1 $DESTDIR/usr/lib/amd64/libmtsk_db.so
-    logcmd ln -s ../../../lib/amd64/libmtsk_db.so.1 $DESTDIR/usr/lib/amd64/libmtsk_db.so.1
     logcmd ln -s ../../../lib/amd64/libmvec.so.1 $DESTDIR/usr/lib/amd64/libmvec.so
     logcmd ln -s ../../../lib/amd64/libmvec.so.1 $DESTDIR/usr/lib/amd64/libmvec.so.1
     logcmd ln -s ../../lib/llib-lm $DESTDIR/usr/lib/llib-lm
