@@ -1,0 +1,54 @@
+--- libxslt-1.1.28/libxslt/libxslt.syms.orig	Tue Apr  2 13:39:50 2013
++++ libxslt-1.1.28/libxslt/libxslt.syms	Tue Apr  2 13:56:39 2013
+@@ -30,6 +30,7 @@
+   xsltNewStyleDocument;
+ 
+ # extensions
++  xsltCopyTree;
+   xsltCheckExtPrefix;
+   xsltExtElementLookup;
+   xsltExtModuleElementLookup;
+@@ -107,7 +108,6 @@
+   xsltFreeCompMatchList;
+   xsltFreeTemplateHashes;
+   xsltGetTemplate;
+-  xsltMatchPattern;
+   xsltTestCompMatchList;
+ 
+ # preproc
+@@ -407,7 +407,6 @@
+     global:
+ 
+ # xsltInternals
+-  xsltConstNamespaceNameXSLT; # variable
+   xsltExtensionInstructionResultFinalize;
+   xsltExtensionInstructionResultRegister;
+   xsltInitCtxtKey;
+@@ -416,24 +415,18 @@
+   xsltInit;
+ 
+ # xsltInternals
+-  xsltParseAnyXSLTElem;
+-  xsltParseSequenceConstructor;
+-  xsltPointerListAddSize;
+-  xsltPointerListClear;
+-  xsltPointerListCreate;
+-  xsltPointerListFree;
+   xsltRegisterLocalRVT;
+   xsltReleaseRVT;
+-  xsltRestoreDocumentNamespaces;
+ 
+ # extensions
+-  xsltStyleStylesheetLevelGetExtData;
++# variables
++  xsltComputingGlobalVarMarker;
++  xsltDefaultTrace;
+ 
+ # xsltInternals
+ # xsltTransStorageAdd; removed in 1.1.28
+ # xsltTransStorageRemove; removed in 1.1.28
+   xsltUninit;
+-  xsltXSLTAttrMarker; # variable
+ } LIBXML2_1.1.9;
+ 
+ LIBXML2_1.1.20 {
