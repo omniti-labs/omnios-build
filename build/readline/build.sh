@@ -46,6 +46,11 @@ fix_permissions() {
     done
 }
 
+make_prog() {
+    logcmd gmake SHOBJ_LDFLAGS='-shared -Wl,-i -Wl,-h,$@ -nostdlib -lc' || \
+        logerr "--- Make failed"
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
