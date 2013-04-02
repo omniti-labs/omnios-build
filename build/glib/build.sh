@@ -46,6 +46,9 @@ configure32() {
     LIBFFI_LIBS=-lffi
     export LIBFFI_LIBS
     configure32_orig
+
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool ||
+        logerr "libtool patch failed"
     # one file here requires c99 compilation and most others prohibit it
     # it is a test, so no runtime issues will be present
     pushd glib/tests > /dev/null
@@ -59,6 +62,9 @@ configure64() {
     LIBFFI_LIBS=-lffi
     export LIBFFI_LIBS
     configure64_orig
+
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool ||
+        logerr "libtool patch failed"
     # one file here requires c99 compilation and most others prohibit it
     # it is a test, so no runtime issues will be present
     pushd glib/tests > /dev/null
