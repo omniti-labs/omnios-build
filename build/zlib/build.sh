@@ -27,6 +27,18 @@ install_license(){
         $TMPDIR/$BUILDDIR/zlib.h > $DESTDIR/license
 }
 
+make_prog32() {
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    logcmd gmake LDSHARED="gcc -shared -nostdlib" || logerr "gmake failed"
+    popd > /dev/null
+}
+
+make_prog64() {
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    logcmd gmake LDSHARED="gcc -shared -nostdlib" || logerr "gmake failed"
+    popd > /dev/null
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
