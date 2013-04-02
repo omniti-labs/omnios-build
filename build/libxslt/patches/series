@@ -1,1 +1,1 @@
-configure.patch -p0
+libxslt.syms.patch
