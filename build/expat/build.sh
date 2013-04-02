@@ -34,6 +34,9 @@ SUMMARY="libexpat - XML parser library"
 DESC="$SUMMARY"
 BUILDDIR=$PROG-2007-06-05
 
+LIBTOOL_NOSTDLIB=libtool
+LIBTOOL_NOSTDLIB_EXTRAS=-lc
+
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --includedir=/usr/include"
 init
 download_source $PROG $PROG $VER
