@@ -64,15 +64,15 @@ CONFIGURE_OPTS="--host i386-pc-solaris2.11 --build i386-pc-solaris2.11 --target 
 	--enable-languages=c,c++,fortran,lto --enable-ld=no \
 	--with-as=/usr/bin/gas --with-gnu-as --with-build-time-tools=/usr/gnu/i386-pc-solaris2.11/bin"
 LDFLAGS32="-R/opt/gcc-${VER}/lib"
-export LD_OPTIONS="-zignore -zcombreloc -Bdirect -i"
+export LD_OPTIONS="-zignore -zcombreloc -i"
 
 save_function configure32 configure32_orig
 configure32() {
     logmsg "This is evil... sudo chmod'ing gnu ld"
     logcmd sudo chmod 644 /usr/gnu/i386-pc-solaris2.11/bin/ld
     configure32_orig
-    logmsg "This is evil... chmodding gnu ld back"
-    logcmd sudo chmod 755 /usr/gnu/i386-pc-solaris2.11/bin/ld
+    #logmsg "This is evil... chmodding gnu ld back"
+    #logcmd sudo chmod 755 /usr/gnu/i386-pc-solaris2.11/bin/ld
 }
 
 init
