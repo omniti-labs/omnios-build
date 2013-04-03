@@ -222,7 +222,7 @@ fi
 libtool_nostdlib() {
     FILE=$1
     EXTRAS=$2
-    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib '"$EXTRAS"'#g;' libtool ||
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib '"$EXTRAS"'#g;' $FILE ||
         logerr "--- Patching libtool:$FILE for -nostdlib support failed"
 }
 
