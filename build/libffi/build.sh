@@ -42,6 +42,7 @@ make_prog32() {
     logcmd gmake
     pushd i386-pc-solaris2.11 > /dev/null
     logcmd gmake clean
+    libtool_nostdlib libtool -lc
     logcmd gmake || logerr "make failed"
     popd > /dev/null
 }
@@ -57,6 +58,7 @@ make_prog64() {
     logcmd gmake
     pushd i386-pc-solaris2.11 > /dev/null
     logcmd gmake clean
+    libtool_nostdlib libtool -lc
     logcmd gmake || logerr "make failed"
     popd > /dev/null
 }

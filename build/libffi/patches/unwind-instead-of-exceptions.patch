@@ -1,0 +1,42 @@
+diff -ru libffi-3.0.11.orig/configure libffi-3.0.11/configure
+--- libffi-3.0.11.orig/configure	Thu Apr 12 03:13:17 2012
++++ libffi-3.0.11/configure	Wed Apr  3 14:23:04 2013
+@@ -12925,7 +12925,7 @@
+ 
+ 
+ if test "x$GCC" = "xyes"; then
+-  CFLAGS="$CFLAGS -fexceptions"
++  CFLAGS="$CFLAGS -funwind-tables"
+ fi
+ 
+ 
+@@ -14450,7 +14450,7 @@
+ 
+   	libffi_cv_ro_eh_frame=no
+   	echo 'extern void foo (void); void bar (void) { foo (); foo (); }' > conftest.c
+-  	if $CC $CFLAGS -S -fpic -fexceptions -o conftest.s conftest.c > /dev/null 2>&1; then
++  	if $CC $CFLAGS -S -fpic -funwind-tables -o conftest.s conftest.c > /dev/null 2>&1; then
+   	    if grep '.section.*eh_frame.*"a"' conftest.s > /dev/null; then
+   		libffi_cv_ro_eh_frame=yes
+   	    elif grep '.section.*eh_frame.*#alloc' conftest.c \
+diff -ru libffi-3.0.11.orig/configure.ac libffi-3.0.11/configure.ac
+--- libffi-3.0.11.orig/configure.ac	Thu Apr 12 03:10:51 2012
++++ libffi-3.0.11/configure.ac	Wed Apr  3 14:22:10 2013
+@@ -39,7 +39,7 @@
+ AX_CC_MAXOPT
+ AX_CFLAGS_WARN_ALL
+ if test "x$GCC" = "xyes"; then
+-  CFLAGS="$CFLAGS -fexceptions"
++  CFLAGS="$CFLAGS -funwind-tables"
+ fi
+ 
+ AM_MAINTAINER_MODE
+@@ -380,7 +380,7 @@
+       libffi_cv_ro_eh_frame, [
+   	libffi_cv_ro_eh_frame=no
+   	echo 'extern void foo (void); void bar (void) { foo (); foo (); }' > conftest.c
+-  	if $CC $CFLAGS -S -fpic -fexceptions -o conftest.s conftest.c > /dev/null 2>&1; then
++  	if $CC $CFLAGS -S -fpic -funwind-tables -o conftest.s conftest.c > /dev/null 2>&1; then
+   	    if grep '.section.*eh_frame.*"a"' conftest.s > /dev/null; then
+   		libffi_cv_ro_eh_frame=yes
+   	    elif grep '.section.*eh_frame.*#alloc' conftest.c \
