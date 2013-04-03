@@ -19,7 +19,7 @@ configure32() {
     pushd src/liblzma > /dev/null
     logcmd gmake foo 2>&1 /dev/null
     popd > /dev/null
-    logcmd perl -pi -e 's#^^(archive_cmds=.*)"$#$1 -nostdlib -lc -lm"#g;' libtool || \
+    logcmd perl -pi -e 's#^^(archive_cmds=.*)"$#$1 -nostdlib -lc"#g;' libtool || \
         logerr "patching libtool failed"
     popd > /dev/null
 }
@@ -30,7 +30,7 @@ configure64() {
     pushd src/liblzma > /dev/null
     logcmd gmake foo 2>&1 /dev/null
     popd > /dev/null
-    logcmd perl -pi -e 's#^^(archive_cmds=.*)"$#$1 -nostdlib -lc -lm"#g;' libtool || \
+    logcmd perl -pi -e 's#^^(archive_cmds=.*)"$#$1 -nostdlib -lc"#g;' libtool || \
         logerr "patching libtool failed"
     popd > /dev/null
 }
