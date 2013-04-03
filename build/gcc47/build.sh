@@ -71,8 +71,8 @@ configure32() {
     logmsg "This is evil... sudo chmod'ing gnu ld"
     logcmd sudo chmod 644 /usr/gnu/i386-pc-solaris2.11/bin/ld
     configure32_orig
-    #logmsg "This is evil... chmodding gnu ld back"
-    #logcmd sudo chmod 755 /usr/gnu/i386-pc-solaris2.11/bin/ld
+    logmsg "This is evil... chmodding gnu ld back"
+    logcmd sudo chmod 755 /usr/gnu/i386-pc-solaris2.11/bin/ld
 }
 
 init
