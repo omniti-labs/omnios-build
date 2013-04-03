@@ -1,0 +1,34 @@
+--- expat-2007-06-05.orig/configure	Wed Apr  3 03:47:15 2013
++++ expat-2007-06-05/configure	Wed Apr  3 03:47:42 2013
+@@ -19361,9 +19361,9 @@
+ 
+ if test "$GCC" = yes ; then
+                         OLDCFLAGS="$CFLAGS -Wall -Wmissing-prototypes -Wstrict-prototypes"
+-    CFLAGS="$OLDCFLAGS -fexceptions"
+-    echo "$as_me:$LINENO: checking whether $CC accepts -fexceptions" >&5
+-echo $ECHO_N "checking whether $CC accepts -fexceptions... $ECHO_C" >&6
++    CFLAGS="$OLDCFLAGS -funwind-tabless"
++    echo "$as_me:$LINENO: checking whether $CC accepts -funwind-tabless" >&5
++echo $ECHO_N "checking whether $CC accepts -funwind-tabless... $ECHO_C" >&6
+     cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+--- expat-2007-06-05.orig/configure.in	Wed Apr  3 03:47:22 2013
++++ expat-2007-06-05/configure.in	Wed Apr  3 03:47:42 2013
+@@ -66,13 +66,13 @@
+ 
+ if test "$GCC" = yes ; then
+     dnl
+-    dnl Be careful about adding the -fexceptions option; some versions of
++    dnl Be careful about adding the -funwind-tabless option; some versions of
+     dnl GCC don't support it and it causes extra warnings that are only
+     dnl distracting; avoid.
+     dnl
+     OLDCFLAGS="$CFLAGS -Wall -Wmissing-prototypes -Wstrict-prototypes"
+-    CFLAGS="$OLDCFLAGS -fexceptions"
+-    AC_MSG_CHECKING(whether $CC accepts -fexceptions)
++    CFLAGS="$OLDCFLAGS -funwind-tabless"
++    AC_MSG_CHECKING(whether $CC accepts -funwind-tabless)
+     AC_TRY_LINK( , ,
+                    AC_MSG_RESULT(yes),
+                    AC_MSG_RESULT(no); CFLAGS="$OLDCFLAGS")
