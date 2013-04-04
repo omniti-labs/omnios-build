@@ -1,0 +1,5 @@
+path.conf: /opt/elasticsearch/config
+path.data: /opt/elasticsearch/var/data
+path.work: /opt/elasticsearch/var/work
+path.logs: /opt/elasticsearch/var/log
+path.plugins: /opt/elasticsearch/bin/plugin
