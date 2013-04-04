@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=8.4.16
+VER=8.4.17
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/cube
 DOWNLOADDIR=postgres
