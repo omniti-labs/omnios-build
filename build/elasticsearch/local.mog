@@ -1,0 +1,4 @@
+license LICENSE.txt license=Apache2.0
+<transform file path=opt/elasticsearch/config/elasticsearch.yml -> set preserve true>
+<transform file path=opt/elasticsearch/config/logging.yml -> set preserve true>
+<transform dir path=opt/elasticsearch/var/.* -> set owner nobody>
