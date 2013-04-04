@@ -634,8 +634,12 @@ make_package() {
     PKGLINT=/usr/bin/pkglint
     PKGMOGRIFY=/usr/bin/pkgmogrify
     PKGFMT=/usr/bin/pkgfmt
+    PKGDEPEND=/usr/bin/pkgdepend
     P5M_INT=$TMPDIR/${PKGE}.p5m.int
+    P5M_INT2=$TMPDIR/${PKGE}.p5m.int.2
+    P5M_INT3=$TMPDIR/${PKGE}.p5m.int.3
     P5M_FINAL=$TMPDIR/${PKGE}.p5m
+    MANUAL_DEPS=$TMPDIR/${PKGE}.deps.mog
     GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
     MY_MOG_FILE=$TMPDIR/${PKGE}.mog
 
@@ -667,8 +671,20 @@ make_package() {
     echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
     echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
     echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
+    if [[ -f $SRCDIR/local.mog ]]; then
+        LOCAL_MOG_FILE=$SRCDIR/local.mog
+    fi
+    logmsg "--- Applying transforms"
+    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_INT2
+    logmsg "--- Resolving dependencies"
+    (
+        set -e
+        $PKGDEPEND generate -md $DESTDIR $P5M_INT2 > $P5M_INT3
+        $PKGDEPEND resolve -m $P5M_INT3
+    ) || logerr "--- Dependency resolution failed"
+    echo > "$MANUAL_DEPS"
     if [[ -n "$RUN_DEPENDS_IPS" ]]; then
-        logmsg "------ Adding dependencies"
+        logmsg "------ Adding manual dependencies"
         for i in $RUN_DEPENDS_IPS; do
             # IPS dependencies have multiple types, of which we care about four:
             #    require, optional, incorporate, exclude
@@ -690,14 +706,34 @@ make_package() {
                     i=${i:1}
                     ;;
             esac
-            echo "depend type=$DEPTYPE fmri=${i}" >> $MY_MOG_FILE
+            case $i in
+                *@*)
+                    depname=${i%@*}
+                    explicit_ver=true
+                    ;;
+                *)
+                    depname=$i
+                    explicit_ver=false
+                    ;;
+            esac
+            # ugly grep, but pkgmogrify doesn't seem to provide any way to add
+            # actions while avoiding duplicates (except maybe by running it
+            # twice, using drop transform on the first run)
+            if grep -q "^depend .*fmri=[^ ]*$depname" "${P5M_INT3}.res"; then
+                autoresolved=true
+            else
+                autoresolved=false
+            fi
+            if $autoresolved && [ "$DEPTYPE" = "require" ]; then
+                if $explicit_ver; then
+                    echo "<transform depend fmri=(.+/)?$depname -> set fmri $i>" >> $MANUAL_DEPS
+                fi
+            else
+                echo "depend type=$DEPTYPE fmri=$i" >> $MANUAL_DEPS
+            fi
         done
     fi
-    if [[ -f $SRCDIR/local.mog ]]; then
-        LOCAL_MOG_FILE=$SRCDIR/local.mog
-    fi
-    logmsg "--- Applying transforms"
-    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
+    $PKGMOGRIFY "${P5M_INT3}.res" "$MANUAL_DEPS" | $PKGFMT -u > $P5M_FINAL
     if [[ -z $SKIP_PKGLINT ]] && ( [[ -n $BATCH ]] ||  ask_to_pkglint ); then
         $PKGLINT -c $TMPDIR/lint-cache -r $PKGSRVR $P5M_FINAL || \
             logerr "----- pkglint failed"
@@ -1126,7 +1162,7 @@ clean_up() {
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove temporary install directory"
         logmsg "--- Cleaning up temporary manifest and transform files"
-        logcmd rm -f $P5M_INT $P5M_FINAL $MY_MOG_FILE || \
+        logcmd rm -f $P5M_INT $P5M_INT2 $P5M_INT3 $P5M_FINAL $MY_MOG_FILE $MANUAL_DEPS || \
             logerr "Failed to remove temporary manifest and transform files"
         logmsg "Done."
     fi
