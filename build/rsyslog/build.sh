@@ -28,8 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=rsyslog
-VER=7.2.6
-VERHUMAN=$VER
+VER=7.3.9
+VERDEV=7
+VERHUMAN="$VER (v${VERDEV}-devel)"
 PKG=omniti/logging/rsyslog
 SUMMARY="The enhanced syslogd for Linux and Unix"
 DESC="$SUMMARY"
@@ -54,11 +55,12 @@ export LIBESTR_CFLAGS LIBESTR_LIBS \
        LIBUUID_CFLAGS LIBUUID_LIBS
 
 init
-download_source $PROG $PROG $VER
+download_source $PROG $PROG ${VER}-v7-devel
 patch_source
 prep_build
 build
 make_isa_stub
+VER=${VER}.${VERDEV}
 make_package
 clean_up
 
