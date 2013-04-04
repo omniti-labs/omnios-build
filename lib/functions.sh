@@ -634,7 +634,10 @@ make_package() {
     PKGLINT=/usr/bin/pkglint
     PKGMOGRIFY=/usr/bin/pkgmogrify
     PKGFMT=/usr/bin/pkgfmt
+    PKGDEPEND=/usr/bin/pkgdepend
     P5M_INT=$TMPDIR/${PKGE}.p5m.int
+    P5M_INT2=$TMPDIR/${PKGE}.p5m.int.2
+    P5M_INT3=$TMPDIR/${PKGE}.p5m.int.3
     P5M_FINAL=$TMPDIR/${PKGE}.p5m
     GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
     MY_MOG_FILE=$TMPDIR/${PKGE}.mog
@@ -697,7 +700,14 @@ make_package() {
         LOCAL_MOG_FILE=$SRCDIR/local.mog
     fi
     logmsg "--- Applying transforms"
-    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
+    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_INT2
+    logmsg "--- Resolving dependencies"
+    (
+        set -e
+        $PKGDEPEND generate -md $DESTDIR $P5M_INT2 > $P5M_INT3
+        $PKGDEPEND resolve -m $P5M_INT3
+        mv ${P5M_INT3}.res $P5M_FINAL
+    ) || logerr "--- Dependency resolution failed"
     if [[ -z $SKIP_PKGLINT ]] && ( [[ -n $BATCH ]] ||  ask_to_pkglint ); then
         $PKGLINT -c $TMPDIR/lint-cache -r $PKGSRVR $P5M_FINAL || \
             logerr "----- pkglint failed"
