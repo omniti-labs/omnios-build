@@ -40,19 +40,23 @@ CPPFLAGS='-std=c99'
 CFLAGS="-std=c99"
 LD=/usr/ccs/bin/ld
 export LD
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --libdir=/usr/gnu/lib"
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --libdir=/usr/gnu/lib/$ISAPART64"
 CONFIGURE_OPTS="
     --program-prefix=g
-    --prefix=/usr/gnu
     --mandir=/usr/gnu/share/man
-    --includedir=/usr/include/ncurses
+    --disable-overwrite
     --with-normal
     --with-shared
-    --enable-rpath
     --enable-widec
     --without-debug
 "
+# with --disable-overwrite the headers will go to $PREFIX/include/ncurses which
+# is what we want, so no point doing --includedir
+CONFIGURE_OPTS_32="--prefix=$PREFIX
+    --bindir=$PREFIX/bin/$ISAPART"
+
+CONFIGURE_OPTS_64="--prefix=$PREFIX
+    --bindir=$PREFIX/bin/$ISAPART64
+    --libdir=$PREFIX/lib/$ISAPART64"
 
 gnu_links() {
     mkdir $DESTDIR/usr/gnu/bin
