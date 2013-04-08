@@ -1,1 +1,2 @@
 old-msgfmt.patch -p0
+nolibthreads.patch -T -p1
