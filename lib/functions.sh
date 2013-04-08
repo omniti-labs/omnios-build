@@ -647,7 +647,7 @@ make_isaexec_stub_arch() {
     for file in $1/*; do
         [[ -f $file ]] || continue # Deals with empty dirs & non-files
         # Check to make sure we don't have a script
-        read -n 5 < $file
+        read -n 4 REPLY < $file
         file=`echo $file | sed -e "s/$1\///;"`
         # Skip if we already made a stub for this file
         [[ -f $file ]] && continue
