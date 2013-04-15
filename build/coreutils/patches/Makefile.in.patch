@@ -1,75 +1,22 @@
---- coreutils-8.15/Makefile.in.orig	Fri Jan  6 15:49:22 2012
-+++ coreutils-8.15/Makefile.in	Thu Mar  8 19:38:24 2012
-@@ -339,7 +339,7 @@
+diff -ru coreutils-8.20.orig/Makefile.in coreutils-8.20/Makefile.in
+--- coreutils-8.20.orig/Makefile.in	Tue Oct 23 16:26:32 2012
++++ coreutils-8.20/Makefile.in	Wed Oct 31 14:34:05 2012
+@@ -1253,7 +1253,7 @@
  am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
    | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
  distcleancheck_listfiles = find . -type f -print
 -pkglibexecdir = @pkglibexecdir@
 +pkglibexecdir = @libexecdir@
- ACLOCAL = @ACLOCAL@
- ALLOCA = @ALLOCA@
- ALLOCA_H = @ALLOCA_H@
---- coreutils-8.15/lib/Makefile.in.orig	Fri Jan  6 15:49:23 2012
-+++ coreutils-8.15/lib/Makefile.in	Thu Mar  8 19:47:37 2012
-@@ -436,7 +436,7 @@
- ETAGS = etags
- CTAGS = ctags
- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
--pkglibexecdir = @pkglibexecdir@
-+pkglibexecdir = @libexecdir@
- ACLOCAL = @ACLOCAL@
- ALLOCA = @ALLOCA@
- ALLOCA_H = @ALLOCA_H@
---- coreutils-8.15/doc/Makefile.in.orig	Fri Jan  6 15:49:22 2012
-+++ coreutils-8.15/doc/Makefile.in	Thu Mar  8 19:48:21 2012
-@@ -336,7 +336,7 @@
-          $(am__cd) "$$dir" && rm -f $$files; }; \
-   }
- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
--pkglibexecdir = @pkglibexecdir@
-+pkglibexecdir = @libexecdir@
- ACLOCAL = @ACLOCAL@
- ALLOCA = @ALLOCA@
- ALLOCA_H = @ALLOCA_H@
---- coreutils-8.15/man/Makefile.in.orig	Fri Jan  6 15:49:22 2012
-+++ coreutils-8.15/man/Makefile.in	Thu Mar  8 19:49:17 2012
-@@ -303,7 +303,7 @@
- NROFF = nroff
- MANS = $(dist_man1_MANS)
- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
--pkglibexecdir = @pkglibexecdir@
-+pkglibexecdir = @libexecdir@
- ACLOCAL = @ACLOCAL@
- ALLOCA = @ALLOCA@
- ALLOCA_H = @ALLOCA_H@
---- coreutils-8.15/src/Makefile.in.orig	Fri Jan  6 17:28:25 2012
-+++ coreutils-8.15/src/Makefile.in	Thu Mar  8 19:47:09 2012
-@@ -703,7 +703,7 @@
- ETAGS = etags
- CTAGS = ctags
- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
--pkglibexecdir = @pkglibexecdir@
-+pkglibexecdir = @libexecdir@
  
- # Use `ginstall' in the definition of PROGRAMS and in dependencies to avoid
- # confusion with the `install' target.  The install rule transforms `ginstall'
---- coreutils-8.15/gnulib-tests/Makefile.in.orig	Fri Jan  6 15:49:23 2012
-+++ coreutils-8.15/gnulib-tests/Makefile.in	Thu Mar  8 19:48:39 2012
-@@ -2067,7 +2067,7 @@
+ # Use 'ginstall' in the definition of PROGRAMS and in dependencies to avoid
+ # confusion with the 'install' target.  The install rule transforms 'ginstall'
+diff -ru coreutils-8.20.orig/gnulib-tests/Makefile.in coreutils-8.20/gnulib-tests/Makefile.in
+--- coreutils-8.20.orig/gnulib-tests/Makefile.in	Tue Oct 23 14:22:00 2012
++++ coreutils-8.20/gnulib-tests/Makefile.in	Wed Oct 31 14:34:05 2012
+@@ -2255,7 +2255,7 @@
      dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
    done; \
    reldir="$$dir2"
--pkglibexecdir = @pkglibexecdir@
-+pkglibexecdir = @libexecdir@
- ACLOCAL = @ACLOCAL@
- ALLOCA = @ALLOCA@
- ALLOCA_H = @ALLOCA_H@
---- coreutils-8.15/tests/Makefile.in.orig	Fri Jan  6 15:49:23 2012
-+++ coreutils-8.15/tests/Makefile.in	Thu Mar  8 19:49:52 2012
-@@ -385,7 +385,7 @@
- TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
- 	$(TEST_LOG_FLAGS)
- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 -pkglibexecdir = @pkglibexecdir@
 +pkglibexecdir = @libexecdir@
  ACLOCAL = @ACLOCAL@

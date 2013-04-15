@@ -33,7 +33,7 @@ depend fmri=developer/versioning/git@1.7.10.1,5.11-0.151004 type=incorporate
 depend fmri=developer/versioning/mercurial@2.1,5.11-0.151004 type=incorporate
 depend fmri=driver/virtualization/kvm@1.0,5.11-0.151004 type=incorporate
 depend fmri=editor/vim@7.3,5.11-0.151004 type=incorporate
-depend fmri=file/gnu-coreutils@8.15,5.11-0.151004 type=incorporate
+depend fmri=file/gnu-coreutils@8,5.11-0.151004 type=incorporate
 depend fmri=file/gnu-findutils@4.4.2,5.11-0.151004 type=incorporate
 depend fmri=install/distribution-constructor@0.5.11,5.11-0.151004 type=incorporate
 depend fmri=install/installadm@0.5.11,5.11-0.151004 type=incorporate
@@ -140,5 +140,5 @@ depend fmri=text/groff@1.21,5.11-0.151004 type=incorporate
 depend fmri=text/less@443,5.11-0.151004 type=incorporate
 depend fmri=text/texinfo@4.13,5.11-0.151004 type=incorporate
 depend fmri=web/ca-bundle@1.1,5.11-0.151004 type=incorporate
-depend fmri=web/curl@7.24.0,5.11-0.151004 type=incorporate
+depend fmri=web/curl@7,5.11-0.151004 type=incorporate
 depend fmri=web/wget@1.13.4,5.11-0.151004 type=incorporate
