@@ -33,7 +33,8 @@ VERHUMAN=$VER
 PKG=omniti/mail/mailman
 SUMMARY="The GNU Mailman mailing list manager"
 DESC=$SUMMARY
-DEPENDS_IPS="omniti/runtime/python-26"
+BUILD_DEPENDS_IPS="omniti/runtime/python-26"
+DEPENDS_IPS=$BUILD_DEPENDS_IPS
 PREFIX=/opt/mailman
 CONFIGURE_OPTS="--prefix=${PREFIX} --with-permcheck=no --with-python=/opt/python26/bin/python --with-cgi-gid=nobody --with-cgi-uid=nobody"
 
