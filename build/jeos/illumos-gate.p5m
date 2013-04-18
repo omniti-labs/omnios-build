@@ -371,7 +371,6 @@ depend fmri=consolidation/man/man-incorporation@0.5.11,5.11-0.148 type=incorpora
 depend fmri=consolidation/osnet/osnet-incorporation@0.5.11,5.11-0.151006 type=incorporate
 depend fmri=consolidation/osnet/osnet-message-files@0.5.11,5.11-0.151006 type=incorporate
 depend fmri=consolidation/osnet/osnet-redistributable@0.5.11,5.11-0.151006 type=incorporate
-depend fmri=crypto/ca-certificates@0.5.11,5.11-0.151006 type=incorporate
 depend fmri=developer/appcert@0.5.11,5.11-0.151006 type=incorporate
 depend fmri=developer/apptrace/ucblib@0.5.11,5.11-0.151006 type=incorporate
 depend fmri=developer/apptrace@0.5.11,5.11-0.151006 type=incorporate

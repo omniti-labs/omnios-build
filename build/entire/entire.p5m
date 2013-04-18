@@ -13,7 +13,6 @@ depend fmri=compress/p7zip@9.20.1,5.11-0.151006 type=require
 depend fmri=compress/unzip@6.0,5.11-0.151006 type=require
 depend fmri=compress/xz@5.0.4,5.11-0.151006 type=require
 depend fmri=compress/zip@3.0,5.11-0.151006 type=require
-depend fmri=crypto/ca-certificates@0.5.11,5.11-0.151006 type=require
 depend fmri=database/sqlite-3@3.7.14.1,5.11-0.151006 type=require
 depend fmri=developer/debug/mdb@0.5.11,5.11-0.151006 type=require
 depend fmri=diagnostic/cpu-counters@0.5.11,5.11-0.151006 type=require
@@ -354,6 +353,6 @@ depend fmri=text/gnu-sed@4.2.1,5.11-0.151006 type=require
 depend fmri=text/groff@1.21,5.11-0.151006 type=require
 depend fmri=text/less@451,5.11-0.151006 type=require
 depend fmri=text/locale@0.5.11,5.11-0.151006 type=require
-depend fmri=web/ca-bundle@2.0,5.11-0.151006 type=require
+depend fmri=web/ca-bundle@5.11,5.11-0.151006 type=require
 depend fmri=web/curl@7.29.0,5.11-0.151006 type=require
 depend fmri=web/wget@1.14,5.11-0.151006 type=require
