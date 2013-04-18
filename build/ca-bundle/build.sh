@@ -28,14 +28,16 @@
 . ../../lib/functions.sh
 
 PROG=cabundle   # App name
-VER=2.0         # App version
+VER=5.11        # App version
 VERHUMAN=$VER   # Human-readable version
-NSSVER=3.14     # Keep this in sync with the version of system/library/mozilla-nss
+NSSVER=3.14.3   # Keep this in sync with the version of system/library/mozilla-nss
 PKG=web/ca-bundle  # Package name (without prefix)
 SUMMARY="$PROG - Bundle of SSL Root CA certificates"
 DESC="SSL Root CA certificates extracted from mozilla-nss $NSSVER source"
 
 BUILDARCH=32
+
+DEPENDS_IPS="=system/library/mozilla-nss@$NSSVER"
 
 build_pem() {
   logmsg "Extracting certdata.txt from nss-$NSSVER source"
