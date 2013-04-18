@@ -38,12 +38,20 @@ DEPENDS_IPS=$BUILD_DEPENDS_IPS
 PREFIX=/opt/mailman
 CONFIGURE_OPTS="--prefix=${PREFIX} --with-permcheck=no --with-python=/opt/python26/bin/python --with-cgi-gid=nobody --with-cgi-uid=nobody"
 
+copy_manifest() {
+    # SMF manifest
+    logmsg "--- Copying SMF manifest"
+    logcmd mkdir -p ${DESTDIR}/lib/svc/manifest/network
+    logcmd cp $SRCDIR/files/mailman.xml ${DESTDIR}/lib/svc/manifest/network
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
+copy_manifest
 make_package
 clean_up
 
