@@ -49,7 +49,6 @@ GIT=git
 
 USE_SYSTEM_SSL_HEADERS="TRUE"
 
-PKGSERVER=$PKGSRVR
 PKGPREFIX=""
 PREFIX=""
 TMPDIR=/code	# This directory must be writable as your non-root user
@@ -167,9 +166,9 @@ push_pkgs() {
     logmsg "Entering $CODEMGR_WS"
     pushd $CODEMGR_WS > /dev/null
     logmsg "Intentional pause: Last chance to sanity-check before publication!"
-    logmsg "Pushing illumos pkgs to $PKGSERVER..."
+    logmsg "Pushing illumos pkgs to $PKGSRVR..."
     ask_to_continue
-    logcmd pkgrecv -s packages/i386/nightly-nd/repo.redist/ -d $PKGSERVER 'pkg:/*'
+    logcmd pkgrecv -s packages/i386/nightly-nd/repo.redist/ -d $PKGSRVR 'pkg:/*'
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
 }
