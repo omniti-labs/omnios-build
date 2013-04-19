@@ -35,18 +35,18 @@ export SHELL
 
 case $DEPVER in
     "")
-	DEPVER=5.16.3
+	DEPVER=5.16.1
         logmsg "no version specified, using $DEPVER"
         ;;
 esac
 
 PROG=perl
 VER=$DEPVER
-MAJOR_MINOR=${VER%\.**}
-PKG=runtime/perl
+NODOTVER=$(echo $DEPVER| sed -e's/\.//g;')
+PKG=runtime/perl-$NODOTVER
 SUMMARY="Perl $VER Programming Language"
 DESC="$SUMMARY"
-PREFIX=/usr/perl5
+PREFIX=/usr/perl5/${VER}
 
 BUILD_DEPENDS_IPS="text/gnu-sed"
 
@@ -71,8 +71,10 @@ links() {
     mkdir -p $DESTDIR/usr/bin
     for firstclass in perl perldoc cpan
     do
-        ln -s ../perl5/bin/$firstclass $DESTDIR/usr/bin/$firstclass
+        ln -s ../perl5/${VER}/bin/$firstclass $DESTDIR/usr/bin/$firstclass
     done
+    mkdir -p $DESTDIR/usr/perl5/bin
+    ln -s ../${VER}/bin/perl $DESTDIR/usr/perl5/bin/perl
 }
 
 build32() {
@@ -94,8 +96,8 @@ build32() {
         -Dsitescript=${PREFIX}/bin \
         -Dvendorscript=${PREFIX}/bin \
 	-Dprivlib=${PREFIX}/lib \
-	-Dsitelib=/usr/perl5/site_perl/$MAJOR_MINOR \
-	-Dvendorlib=/usr/perl5/vendor_perl/$MAJOR_MINOR \
+	-Dsitelib=/usr/perl5/site_perl/${VER} \
+	-Dvendorlib=/usr/perl5/vendor_perl/${VER} \
         -des || \
     logerr "--- Configure failed"
     gsed -i 's/-fstack-protector//g;' config.sh
@@ -137,8 +139,8 @@ build64() {
         -Dsitescript=${PREFIX}/bin \
         -Dvendorscript=${PREFIX}/bin \
 	-Dprivlib=${PREFIX}/lib \
-        -Dsitelib=/usr/perl5/site_perl/$MAJOR_MINOR \
-        -Dvendorlib=/usr/perl5/vendor_perl/$MAJOR_MINOR \
+        -Dsitelib=/usr/perl5/site_perl/${VER} \
+        -Dvendorlib=/usr/perl5/vendor_perl/${VER} \
         -des || \
     logerr "--- Configure failed"
     gsed -i 's/-fstack-protector//g;' config.sh
