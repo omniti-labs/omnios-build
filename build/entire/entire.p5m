@@ -16,6 +16,7 @@ depend fmri=compress/zip@3.0,5.11-0.151005 type=require
 depend fmri=crypto/ca-certificates@0.5.11,5.11-0.151005 type=require
 depend fmri=database/sqlite-3@3.7.14.1,5.11-0.151005 type=require
 depend fmri=developer/debug/mdb@0.5.11,5.11-0.151005 type=require
+depend fmri=developer/linker@0.5.11,5.11-0.151005 type=require
 depend fmri=diagnostic/cpu-counters@0.5.11,5.11-0.151005 type=require
 depend fmri=diagnostic/latencytop@0.5.11,5.11-0.151005 type=require
 depend fmri=diagnostic/powertop@0.5.11,5.11-0.151005 type=require
