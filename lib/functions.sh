@@ -117,14 +117,14 @@ logerr() {
     # Print an error message and ask the user if they wish to continue
     logmsg $@
     if [[ -z $BATCH ]]; then
-        ask_to_continue
+        ask_to_continue "An Error occured in the build. "
     else
         exit 1
     fi
 }
 ask_to_continue() {
-    # Ask the user if they want to continue or quit in the event of an error
-    echo -n "An Error occured in the build. Do you wish to continue anyway? (y/n) "
+    # Ask the user if they want to continue or quit
+    echo -n "${1}Do you wish to continue anyway? (y/n) "
     read
     while [[ ! "$REPLY" =~ [yYnN] ]]; do
         echo -n "continue? (y/n) "
@@ -134,27 +134,8 @@ ask_to_continue() {
         logmsg "===== Build aborted ====="
         exit 1
     fi
-    logmsg "===== Error occured, user chose to continue anyway. ====="
+    logmsg "===== User elected to continue after prompt. ====="
 }
-
-ask_to_continue_nonerror() {
-    # Ask the user if they want to continue or quit in the event of an error
-    if [[ -z $BATCH ]]; then
-        echo -n "Do you wish to continue? (y/n) "
-        read
-        while [[ ! "$REPLY" =~ [yYnN] ]]; do
-            echo -n "continue? (y/n) "
-            read
-        done
-        if [[ "$REPLY" == "n" || "$REPLY" == "N" ]]; then
-            logmsg "===== Build aborted ====="
-            exit 1
-        fi
-    else
-        logmsg "(continuing in batch mode)"
-    fi
-}
-
 
 #############################################################################
 # URL encoding for package names, at least
@@ -636,8 +617,9 @@ make_package() {
     logmsg "--- Applying transforms"
     $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
     logmsg "--- Publishing package"
-    logmsg "Intentional pause: Last chance to sanity-check before publication!"
-    ask_to_continue_nonerror
+    if [[ -z "$BATCH" ]]; then
+        ask_to_continue "Last chance to sanity-check before publication! "
+    fi
     if [[ -n "$DESTDIR" ]]; then
         logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR -d $TMPDIR/$BUILDDIR \
             -d $SRCDIR $P5M_FINAL || logerr "------ Failed to publish package"
