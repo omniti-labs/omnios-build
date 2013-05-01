@@ -1,3 +1,7 @@
 group gid=91 groupname=mailman
 user ftpuser=false gcos-field="Mailman Reserved UID" group=mailman login-shell=/usr/bin/pfksh password=NP uid=91 username=mailman home-dir=/opt/local/mailman
 license gnu-COPYING-GPL license=GPLv2
+<transform dir path=opt/mailman/.* -> set owner mailman>
+<transform dir path=opt/mailman/.* -> set group mailman>
+<transform file path=opt/mailman/.* -> set owner mailman>
+<transform file path=opt/mailman/.* -> set group mailman>
