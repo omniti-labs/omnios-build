@@ -111,8 +111,8 @@ depend fmri=system/library/libdbus@1.6.8,5.11-0.151006 type=incorporate
 depend fmri=system/library/libdbus-glib@0.100,5.11-0.151006 type=incorporate
 depend fmri=system/library/math@0.5.11,5.11-0.151006 type=incorporate
 depend fmri=system/library/math/header-math@0.5.11,5.11-0.151006 type=incorporate
-depend fmri=system/library/mozilla-nss@3.14,5.11-0.151006 type=incorporate
-depend fmri=system/library/mozilla-nss/header-nss@3.12.9,5.11-0.151006 type=incorporate
+depend fmri=system/library/mozilla-nss@3.14.3,5.11-0.151006 type=incorporate
+depend fmri=system/library/mozilla-nss/header-nss@3.14.3,5.11-0.151006 type=incorporate
 depend fmri=system/library/pcap@1.3.0,5.11-0.151006 type=incorporate
 depend fmri=system/management/ipmitool@1.8.12,5.11-0.151006 type=incorporate
 depend fmri=system/management/snmp/net-snmp@5.7.2,5.11-0.151006 type=incorporate
