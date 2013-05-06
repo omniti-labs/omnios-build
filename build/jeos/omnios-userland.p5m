@@ -47,7 +47,7 @@ depend fmri=library/libffi@3.0.11,5.11-0.151006 type=incorporate
 depend fmri=library/libidn@1.25,5.11-0.151006 type=incorporate
 depend fmri=library/libtool/libltdl@2.4,5.11-0.151006 type=incorporate
 depend fmri=library/libxml2@2.9.0,5.11-0.151006 type=incorporate
-depend fmri=library/libxslt@1.1.27,5.11-0.151006 type=incorporate
+depend fmri=library/libxslt@1.1.28,5.11-0.151006 type=incorporate
 depend fmri=library/ncurses@5.9,5.11-0.151006 type=incorporate
 depend fmri=library/nspr@4.9.3,5.11-0.151006 type=incorporate
 depend fmri=library/nspr/header-nspr@4.9,5.11-0.151006 type=incorporate
