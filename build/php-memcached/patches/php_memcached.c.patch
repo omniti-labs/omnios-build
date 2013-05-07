@@ -1,0 +1,13 @@
+diff --git a/php_memcached.c b/php_memcached.c
+index 6581365..068bd6f 100644
+--- a/php_memcached.c
++++ b/php_memcached.c
+@@ -212,6 +212,8 @@ enum {
+ 	MEMC_OP_PREPEND
+ };
+ 
++typedef const struct memcached_server_st *memcached_server_instance_st;
++
+ static zend_class_entry *memcached_ce = NULL;
+ static zend_class_entry *memcached_exception_ce = NULL;
+ 

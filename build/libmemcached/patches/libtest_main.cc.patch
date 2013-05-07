@@ -1,0 +1,11 @@
+diff -bur pristine.libmemcached-1.0.17/libtest/main.cc libmemcached-1.0.17/libtest/main.cc
+--- pristine.libmemcached-1.0.17/libtest/main.cc	Wed Apr  3 04:22:00 2013
++++ libmemcached-1.0.17/libtest/main.cc	Tue May  7 19:49:29 2013
+@@ -52,6 +52,7 @@
+ #include <unistd.h>
+ 
+ #include <signal.h>
++#include <strings.h>
+ 
+ #ifndef __INTEL_COMPILER
+ #pragma GCC diagnostic ignored "-Wold-style-cast"

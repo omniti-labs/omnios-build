@@ -1,0 +1,3 @@
+byteorder.cc.patch
+libtest_main.cc.patch
+Makefile.in.patch

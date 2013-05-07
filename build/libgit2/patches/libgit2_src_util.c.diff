@@ -1,0 +1,13 @@
+diff --git a/src/util.c b/src/util.c
+index 8c8bc1a..f0fa07d 100644
+--- a/src/util.c
++++ b/src/util.c
+@@ -685,7 +685,7 @@ static int GIT_STDLIB_CALL git__qsort_r_glue_cmp(
+ void git__qsort_r(
+ 	void *els, size_t nel, size_t elsize, git__sort_r_cmp cmp, void *payload)
+ {
+-#if defined(__MINGW32__) || defined(__OpenBSD__)
++#if defined(__MINGW32__) || defined(__OpenBSD__) || defined(__sun)
+ 	git__insertsort_r(els, nel, elsize, NULL, cmp, payload);
+ #elif defined(GIT_WIN32)
+ 	git__qsort_r_glue glue = { cmp, payload };

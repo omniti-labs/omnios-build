@@ -1,0 +1,11 @@
+--- libmemcached-1.0.17/Makefile.in     Tue May  7 20:25:22 2013
++++ libmemcached-1.0.17/Makefile.in     Tue May  7 20:25:33 2013
+@@ -2734,7 +2734,7 @@
+ LCOV = @LCOV@
+ LCOV_GENHTML = @LCOV_GENHTML@
+ LD = @LD@
+-LDFLAGS = @LDFLAGS@
++LDFLAGS = -lnsl -lsocket
+ LEX = @LEX@
+ LIBEVENT_LIB = @LIBEVENT_LIB@
+ LIBGEARMAN_CPPFLAGS = @LIBGEARMAN_CPPFLAGS@

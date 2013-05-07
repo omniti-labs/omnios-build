@@ -1,0 +1,13 @@
+diff -bur pristine.libmemcached-1.0.17/libmemcached/byteorder.cc libmemcached-1.0.17/libmemcached/byteorder.cc
+--- pristine.libmemcached-1.0.17/libmemcached/byteorder.cc	Wed Apr  3 04:22:00 2013
++++ libmemcached-1.0.17/libmemcached/byteorder.cc	Tue May  7 19:47:33 2013
+@@ -37,6 +37,9 @@
+ 
+ #include "mem_config.h"
+ #include "libmemcached/byteorder.h"
++#include <sys/types.h>
++#include <netinet/in.h>
++#include <inttypes.h>
+ 
+ /* Byte swap a 64-bit number. */
+ #ifndef swap64
