@@ -1,0 +1,4 @@
+group groupname=logstash
+user ftpuser=false gcos-field="Logstash User" group=logstash password=NP username=logstash
+<transform dir path=opt/logstash$ -> set owner logstash>
+<transform dir path=opt/logstash$ -> set group logstash>

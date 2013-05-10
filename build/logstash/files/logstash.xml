@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+
+<service_bundle type='manifest' name='logstash'>
+
+<service
+	name='network/logstash'
+	type='service'
+	version='1'>
+
+	<create_default_instance enabled='false' />
+
+	<single_instance />
+
+	<dependency
+		name='multi-user'
+		grouping='require_all'
+		restart_on='none'
+		type='service'> 
+		<service_fmri value='svc:/milestone/multi-user' />
+	</dependency>
+
+	<!-- Need / & /usr filesystems mounted, /var mounted read/write -->
+	<dependency
+		name='fs-local'
+		type='service'
+		grouping='require_all'
+		restart_on='none'>
+			<service_fmri value='svc:/system/filesystem/local' />
+	</dependency>
+
+	<dependency
+		name='name-services'
+		grouping='optional_all'
+		restart_on='none'
+		type='service'>
+		<service_fmri value='svc:/milestone/name-services' />
+	</dependency>
+
+	<dependency
+		name='system-log'
+		grouping='optional_all'
+		restart_on='none'
+		type='service'>
+		<service_fmri value='svc:/system/system-log' />
+	</dependency>
+
+	<exec_method
+        	type='method'
+		name='start'
+		exec='/lib/svc/method/logstash start'
+		timeout_seconds='60'>
+		<method_context>
+				<method_credential user='logstash' group='logstash'
+						privileges='zone'/>
+		</method_context>
+        </exec_method>
+
+	<exec_method
+		type='method'
+		name='stop'
+		exec='/lib/svc/method/logstash stop'
+		timeout_seconds='60'>
+	</exec_method>
+
+	<exec_method
+		type='method'
+		name='refresh'
+		exec='/lib/svc/method/logstash restart'
+		timeout_seconds='60'>
+	</exec_method>
+
+	<stability value='Unstable' />
+
+	<template>
+		<common_name>
+			<loctext xml:lang='C'>
+			Logstash log consumption daemon
+			</loctext>
+		</common_name>
+
+	</template>
+
+</service>
+
+</service_bundle>
