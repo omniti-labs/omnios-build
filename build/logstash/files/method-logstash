@@ -1,0 +1,48 @@
+#!/sbin/sh
+
+. /lib/svc/share/smf_include.sh
+
+PATH=${PATH}:/usr/sbin:/opt/logstash
+
+LOGSTASH_HOME=/opt/logstash
+LOGSTASH_JAR=logstash.jar
+
+LOGSTASH_CONFIG=logstash.conf
+LOGSTASH_ARGS="agent -f $LOGSTASH_HOME/$LOGSTASH_CONFIG -- web -b elasticsearch:///?local"
+
+JAVA_HOME=
+export JAVA_HOME
+
+start_logstash() {
+	cd $LOGSTASH_HOME && \
+	java -jar $LOGSTASH_HOME/$LOGSTASH_JAR $LOGSTASH_ARGS &
+}
+
+stop_logstash() {
+	PID=`pgrep -x -u logstash java`
+	kill $PID
+}
+
+case "$1" in
+	start)
+		start_logstash
+		;;
+
+	stop)
+		stop_logstash
+		;;
+
+	restart)
+		stop_logstash
+		pwait $PID
+		start_logstash
+		;;
+
+	*)
+		echo "Usage: $0 \c" >&2
+		echo "(start|stop|restart)" >&2
+		exit 1
+		;;
+
+esac
+exit $SMF_EXIT_OK
