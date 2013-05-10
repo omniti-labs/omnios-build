@@ -6,11 +6,11 @@
 PROG=fontconfig
 VER=2.8.0
 VERHUMAN=$VER
-PKG=system/library/fontconfig
+PKG=omniti/library/fontconfig
 SUMMARY="Fontconfig - Font configuration and customization library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="library/expat system/library/freetype-2 system/library"
+DEPENDS_IPS="library/expat omniti/library/freetype2 system/library"
 
 CONFIGURE_OPTS="
     --with-confdir=/etc/fonts
