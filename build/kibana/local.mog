@@ -1,0 +1,2 @@
+license LICENSE.md license=MIT
+<transform file path=opt/kibana/KibanaConfig.rb -> set preserve true>
