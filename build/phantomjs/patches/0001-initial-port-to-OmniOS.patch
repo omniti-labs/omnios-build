@@ -1,0 +1,2259 @@
+From 38c01a03a8f296199571cd3282b5de03433bf937 Mon Sep 17 00:00:00 2001
+From: Theo Schlossnagle <jesus@omniti.com>
+Date: Thu, 9 May 2013 17:53:17 +0000
+Subject: [PATCH] initial "port" to OmniOS
+
+---
+ build.sh                                           |  12 +-
+ src/mongoose/mongoose.pri                          |   1 +
+ src/phantomjs.pro                                  |  10 ++
+ src/qt/mkspecs/common/solaris.conf                 |  67 ++++++++
+ src/qt/mkspecs/features/default_post.prf           |   1 -
+ src/qt/mkspecs/solaris-g++-64/qmake.conf           |  26 +++
+ src/qt/mkspecs/solaris-g++-64/qplatformdefs.h      |  42 +++++
+ src/qt/mkspecs/solaris-g++/qmake.conf              |  16 ++
+ src/qt/mkspecs/solaris-g++/qplatformdefs.h         |  95 +++++++++++
+ .../Source/JavaScriptCore/API/JSValueRef.cpp       |   2 +-
+ .../bytecompiler/BytecodeGenerator.cpp             |   2 +-
+ .../JavaScriptCore/heap/MachineStackMarker.cpp     |  31 +++-
+ .../Source/JavaScriptCore/heap/MarkedSpace.cpp     |  12 +-
+ .../Source/JavaScriptCore/heap/MarkedSpace.h       |   1 +
+ .../webkit/Source/JavaScriptCore/jit/JITStubs.cpp  |   2 +-
+ .../Source/JavaScriptCore/parser/JSParser.cpp      |   4 +-
+ .../JavaScriptCore/runtime/DateConstructor.cpp     |  28 ++--
+ .../Source/JavaScriptCore/runtime/DateInstance.cpp |   4 +-
+ .../JavaScriptCore/runtime/DatePrototype.cpp       |  10 +-
+ .../webkit/Source/JavaScriptCore/runtime/Error.cpp |   6 +
+ .../Source/JavaScriptCore/runtime/JSDateMath.cpp   |   4 +-
+ .../runtime/JSGlobalObjectFunctions.cpp            |   6 +-
+ .../Source/JavaScriptCore/runtime/JSValue.cpp      |   2 +-
+ .../JavaScriptCore/runtime/JSValueInlineMethods.h  |   4 +-
+ .../Source/JavaScriptCore/runtime/MathObject.cpp   |   6 +-
+ .../JavaScriptCore/runtime/NumberPrototype.cpp     |   8 +-
+ .../JavaScriptCore/runtime/StringPrototype.cpp     |   2 +-
+ .../webkit/Source/JavaScriptCore/wtf/Atomics.h     |  25 ++-
+ .../webkit/Source/JavaScriptCore/wtf/DateMath.cpp  |   4 +-
+ .../Source/JavaScriptCore/wtf/DecimalNumber.h      |   6 +-
+ .../webkit/Source/JavaScriptCore/wtf/HashSet.h     |  50 +++++-
+ .../webkit/Source/JavaScriptCore/wtf/MathExtras.h  |   4 +-
+ .../webkit/Source/JavaScriptCore/wtf/NullPtr.h     |   2 +-
+ .../webkit/Source/JavaScriptCore/wtf/Platform.h    |   3 +
+ .../JavaScriptCore/wtf/RefCountedLeakCounter.h     |   2 +-
+ .../JavaScriptCore/wtf/ThreadSafeRefCounted.h      |   4 +-
+ .../webkit/Source/JavaScriptCore/wtf/Threading.h   |   2 +
+ .../webkit/Source/JavaScriptCore/wtf/dtoa.cpp      |   6 +-
+ .../Source/JavaScriptCore/wtf/text/StringImpl.h    |   1 +
+ .../WebCore/bindings/js/JSDataViewCustom.cpp       |   2 +-
+ .../bindings/js/JSHTMLOptionsCollectionCustom.cpp  |   2 +-
+ .../WebCore/bindings/js/JSWebKitPointCustom.cpp    |   4 +-
+ src/qt/src/3rdparty/webkit/Source/WebCore/config.h |   4 +
+ .../webkit/Source/WebCore/css/WebKitCSSMatrix.cpp  |  32 ++--
+ .../Source/WebCore/html/HTMLMediaElement.cpp       |   4 +-
+ .../WebCore/html/canvas/IntegralTypedArrayBase.h   |   2 +-
+ .../WebCore/html/canvas/WebGLRenderingContext.cpp  |  16 +-
+ .../webkit/Source/WebCore/page/DOMWindow.cpp       |   8 +-
+ .../webkit/Source/WebCore/page/WindowFeatures.cpp  |   2 +-
+ .../platform/DefaultLocalizationStrategy.cpp       |   4 +
+ .../webkit/Source/WebCore/platform/Timer.cpp       | 183 ++++++++++++---------
+ .../webkit/Source/WebCore/platform/Timer.h         |   4 +-
+ .../WebCore/platform/audio/AudioResampler.cpp      |   2 +-
+ .../Source/WebCore/platform/audio/Reverb.cpp       |   2 +-
+ .../WebCore/platform/graphics/MediaPlayer.cpp      |   3 -
+ .../platform/graphics/gpu/LoopBlinnMathUtils.cpp   |   4 +-
+ .../platform/network/qt/QNetworkReplyHandler.cpp   |  16 +-
+ .../platform/qt/PlatformKeyboardEventQt.cpp        |   2 +-
+ .../WebCore/webaudio/AudioBufferSourceNode.cpp     |   2 +-
+ .../Source/WebCore/webaudio/AudioPannerNode.cpp    |   2 +-
+ .../webkit/Source/WebCore/webaudio/AudioParam.cpp  |   2 +-
+ .../webkit/Source/WebCore/xml/XPathFunctions.cpp   |   6 +-
+ .../webkit/Source/WebCore/xml/XPathValue.cpp       |   4 +-
+ src/qt/src/3rdparty/webkit/Source/WebKit.pri       |   4 +
+ .../Source/WebKit/qt/Api/qgraphicswebview.cpp      |   4 +-
+ .../WebKit/qt/WebCoreSupport/InspectorServerQt.cpp |   2 +-
+ .../NotificationPresenterClientQt.cpp              |   8 +-
+ .../src/corelib/animation/qpropertyanimation.cpp   |   7 +-
+ src/qt/src/corelib/io/qsettings.cpp                |   9 +-
+ src/qt/src/corelib/tools/qiterator.h               |   5 +-
+ src/qt/src/network/kernel/qhostinfo_unix.cpp       |   2 +
+ src/qt/src/tools/moc/main.cpp                      |   2 +
+ 72 files changed, 640 insertions(+), 228 deletions(-)
+ create mode 100644 src/qt/mkspecs/common/solaris.conf
+ create mode 100644 src/qt/mkspecs/solaris-g++-64/qmake.conf
+ create mode 100644 src/qt/mkspecs/solaris-g++-64/qplatformdefs.h
+ create mode 100644 src/qt/mkspecs/solaris-g++/qmake.conf
+ create mode 100644 src/qt/mkspecs/solaris-g++/qplatformdefs.h
+
+diff --git a/build.sh b/build.sh
+index 188f4e7..50430fd 100755
+--- a/build.sh
++++ b/build.sh
+@@ -21,6 +21,16 @@ elif [[ $OSTYPE = darwin* ]]; then
+    COMPILE_JOBS=4
+ elif [[ $OSTYPE == freebsd* ]]; then
+    COMPILE_JOBS=`sysctl -n hw.ncpu`
++elif [[ $OSTYPE == solaris* ]]; then
++  COMPILE_JOBS=`psrinfo -v | grep on-line | wc -l`
++  PATH=/usr/gnu/bin:$PATH
++  QT_CFG="-D USE_SYSTEM_MALLOC=1 -no-javascript-jit $QT_CFG"
++
++  if [[ "`uname -v`" == omnios* ]]; then
++    QT_CFG="-platform solaris-g++ -I/opt/omni/include/ -I/opt/omni/include/freetype2/ -L/opt/omni/lib -R/opt/omni/lib $QT_CFG"
++    PATH=$PATH:/opt/gcc-4.7.2/bin
++  fi
++  export PATH
+ else
+    CPU_CORES=`grep -c ^processor /proc/cpuinfo`
+    if [[ "$CPU_CORES" -gt 1 ]]; then
+@@ -37,7 +47,7 @@ until [ -z "$1" ]; do
+     case $1 in
+         "--qt-config")
+             shift
+-            QT_CFG=" $1"
++            QT_CFG=" $1 $QT_CFG"
+             shift;;
+         "--qmake-args")
+             shift
+diff --git a/src/mongoose/mongoose.pri b/src/mongoose/mongoose.pri
+index 5fb16f9..a4496d5 100644
+--- a/src/mongoose/mongoose.pri
++++ b/src/mongoose/mongoose.pri
+@@ -1,6 +1,7 @@
+ VPATH += $$PWD
+ INCLUDEPATH += $$PWD
+ 
++QMAKE_CFLAGS += -std=c99
+ SOURCES += mongoose.c
+ HEADERS += mongoose.h
+ linux*:LIBS += -ldl
+diff --git a/src/phantomjs.pro b/src/phantomjs.pro
+index 0c8e773..eeda0ae 100644
+--- a/src/phantomjs.pro
++++ b/src/phantomjs.pro
+@@ -115,6 +115,16 @@ mac {
+ #    CONFIG += x86 ppc
+ }
+ 
++solaris* {
++    LIBS += -lsocket -lnsl
++    QMAKE_LFLAGS += '-R/opt/omni/lib -Lqt/plugins/codecs'
++    QTPLUGIN += \
++        qcncodecs \
++        qjpcodecs \
++        qkrcodecs \
++        qtwcodecs
++}
++
+ win32-msvc* {
+     LIBS += -lCrypt32
+     INCLUDEPATH += breakpad/src
+diff --git a/src/qt/mkspecs/common/solaris.conf b/src/qt/mkspecs/common/solaris.conf
+new file mode 100644
+index 0000000..d60533e
+--- /dev/null
++++ b/src/qt/mkspecs/common/solaris.conf
+@@ -0,0 +1,67 @@
++#
++# qmake configuration for common linux
++#
++
++QMAKE_CFLAGS_THREAD	+= -D_REENTRANT
++QMAKE_CXXFLAGS_THREAD	+= $$QMAKE_CFLAGS_THREAD
++
++QMAKE_INCDIR          =
++QMAKE_LIBDIR          =
++QMAKE_INCDIR_X11      = /usr/X11R6/include
++QMAKE_LIBDIR_X11      = /usr/X11R6/lib
++QMAKE_INCDIR_QT       = $$[QT_INSTALL_HEADERS]
++QMAKE_LIBDIR_QT       = $$[QT_INSTALL_LIBS]
++QMAKE_INCDIR_OPENGL   = /usr/X11R6/include
++QMAKE_LIBDIR_OPENGL   = /usr/X11R6/lib
++QMAKE_INCDIR_OPENGL_ES1 = $$QMAKE_INCDIR_OPENGL
++QMAKE_LIBDIR_OPENGL_ES1 = $$QMAKE_LIBDIR_OPENGL
++QMAKE_INCDIR_OPENGL_ES2 = $$QMAKE_INCDIR_OPENGL
++QMAKE_LIBDIR_OPENGL_ES2 = $$QMAKE_LIBDIR_OPENGL
++QMAKE_INCDIR_EGL      = 
++QMAKE_LIBDIR_EGL      =
++QMAKE_INCDIR_OPENVG   = 
++QMAKE_LIBDIR_OPENVG   =
++
++QMAKE_LIBS            =
++QMAKE_LIBS_DYNLOAD    = -ldl
++QMAKE_LIBS_X11        = -lXext -lX11 -lm
++QMAKE_LIBS_X11SM      = -lSM -lICE
++QMAKE_LIBS_NIS        = -lnsl
++QMAKE_LIBS_EGL        = -lEGL
++QMAKE_LIBS_OPENGL     = -lGL
++QMAKE_LIBS_OPENGL_QT  = -lGL
++QMAKE_LIBS_OPENGL_ES1 = -lGLES_CM
++QMAKE_LIBS_OPENGL_ES2 = -lGLESv2
++QMAKE_LIBS_OPENVG     = -lOpenVG
++QMAKE_LIBS_THREAD     = -lpthread
++
++QMAKE_CFLAGS_WAYLAND =
++QMAKE_INCDIR_WAYLAND =
++QMAKE_LIBS_WAYLAND =
++QMAKE_LIBDIR_WAYLAND =
++QMAKE_DEFINES_WAYLAND =
++
++QMAKE_MOC             = $$[QT_INSTALL_BINS]/moc
++QMAKE_UIC             = $$[QT_INSTALL_BINS]/uic
++
++QMAKE_AR              = ar cqs
++QMAKE_OBJCOPY         = objcopy
++QMAKE_RANLIB          =
++
++QMAKE_TAR             = tar -cf
++QMAKE_GZIP            = gzip -9f
++
++QMAKE_COPY            = cp -f
++QMAKE_COPY_FILE       = $(COPY)
++QMAKE_COPY_DIR        = $(COPY) -r
++QMAKE_MOVE            = mv -f
++QMAKE_DEL_FILE        = rm -f
++QMAKE_DEL_DIR         = rmdir
++QMAKE_STRIP           = strip
++QMAKE_STRIPFLAGS_LIB += --strip-unneeded
++QMAKE_CHK_DIR_EXISTS  = test -d
++QMAKE_MKDIR           = mkdir -p
++QMAKE_INSTALL_FILE    = install -m 644 -p
++QMAKE_INSTALL_PROGRAM = install -m 755 -p
++
++include(unix.conf)
+diff --git a/src/qt/mkspecs/features/default_post.prf b/src/qt/mkspecs/features/default_post.prf
+index 3f93220..06af314 100644
+--- a/src/qt/mkspecs/features/default_post.prf
++++ b/src/qt/mkspecs/features/default_post.prf
+@@ -12,7 +12,6 @@ QT_BREAKPAD_ROOT_PATH = $$(QT_BREAKPAD_ROOT_PATH)
+ 
+ CONFIG(debug, debug|release):load(debug)
+ else:load(release)
+-debug_and_release:load(debug_and_release)
+ incredibuild_xge {
+     CONFIG -= incredibuild_xge
+     CONFIG = incredibuild_xge $$CONFIG
+diff --git a/src/qt/mkspecs/solaris-g++-64/qmake.conf b/src/qt/mkspecs/solaris-g++-64/qmake.conf
+new file mode 100644
+index 0000000..d6cca50
+--- /dev/null
++++ b/src/qt/mkspecs/solaris-g++-64/qmake.conf
+@@ -0,0 +1,26 @@
++#
++# qmake configuration for linux-g++
++#
++# Written for GNU/Linux platforms that have both lib and lib64 directories,
++# like the AMD Opteron.
++#
++
++MAKEFILE_GENERATOR	= UNIX
++TARGET_PLATFORM		= unix
++TEMPLATE		= app
++CONFIG			+= qt warn_on release incremental link_prl gdb_dwarf_index
++QT			+= core gui
++QMAKE_INCREMENTAL_STYLE = sublib
++
++QMAKE_CFLAGS		= -m64
++QMAKE_LFLAGS		= -m64 -R/opt/omni/lib/amd64
++
++include(../common/solaris.conf)
++include(../common/gcc-base-unix.conf)
++include(../common/g++-base.conf)
++
++
++QMAKE_LIBDIR_X11      = /usr/X11R6/lib/64
++QMAKE_LIBDIR_OPENGL   = /usr/X11R6/lib/64
++
++load(qt_config)
+diff --git a/src/qt/mkspecs/solaris-g++-64/qplatformdefs.h b/src/qt/mkspecs/solaris-g++-64/qplatformdefs.h
+new file mode 100644
+index 0000000..0d7adf6
+--- /dev/null
++++ b/src/qt/mkspecs/solaris-g++-64/qplatformdefs.h
+@@ -0,0 +1,42 @@
++/****************************************************************************
++**
++** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
++** Contact: http://www.qt-project.org/legal
++**
++** This file is part of the qmake spec of the Qt Toolkit.
++**
++** $QT_BEGIN_LICENSE:LGPL$
++** Commercial License Usage
++** Licensees holding valid commercial Qt licenses may use this file in
++** accordance with the commercial license agreement provided with the
++** Software or, alternatively, in accordance with the terms contained in
++** a written agreement between you and Digia.  For licensing terms and
++** conditions see http://qt.digia.com/licensing.  For further information
++** use the contact form at http://qt.digia.com/contact-us.
++**
++** GNU Lesser General Public License Usage
++** Alternatively, this file may be used under the terms of the GNU Lesser
++** General Public License version 2.1 as published by the Free Software
++** Foundation and appearing in the file LICENSE.LGPL included in the
++** packaging of this file.  Please review the following information to
++** ensure the GNU Lesser General Public License version 2.1 requirements
++** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
++**
++** In addition, as a special exception, Digia gives you certain additional
++** rights.  These rights are described in the Digia Qt LGPL Exception
++** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
++**
++** GNU General Public License Usage
++** Alternatively, this file may be used under the terms of the GNU
++** General Public License version 3.0 as published by the Free Software
++** Foundation and appearing in the file LICENSE.GPL included in the
++** packaging of this file.  Please review the following information to
++** ensure the GNU General Public License version 3.0 requirements will be
++** met: http://www.gnu.org/copyleft/gpl.html.
++**
++**
++** $QT_END_LICENSE$
++**
++****************************************************************************/
++
++#include "../solaris-g++/qplatformdefs.h"
+diff --git a/src/qt/mkspecs/solaris-g++/qmake.conf b/src/qt/mkspecs/solaris-g++/qmake.conf
+new file mode 100644
+index 0000000..e0d5740
+--- /dev/null
++++ b/src/qt/mkspecs/solaris-g++/qmake.conf
+@@ -0,0 +1,16 @@
++#
++# qmake configuration for linux-g++
++#
++
++MAKEFILE_GENERATOR	= UNIX
++TARGET_PLATFORM		= unix
++TEMPLATE		= app
++CONFIG			+= qt warn_on release incremental link_prl gdb_dwarf_index
++QT			+= core gui
++QMAKE_INCREMENTAL_STYLE = sublib
++QMAKE_LFLAGS		+= -R/opt/omni/lib
++
++include(../common/solaris.conf)
++include(../common/gcc-base-unix.conf)
++include(../common/g++-base.conf)
++load(qt_config)
+diff --git a/src/qt/mkspecs/solaris-g++/qplatformdefs.h b/src/qt/mkspecs/solaris-g++/qplatformdefs.h
+new file mode 100644
+index 0000000..1cb527f
+--- /dev/null
++++ b/src/qt/mkspecs/solaris-g++/qplatformdefs.h
+@@ -0,0 +1,95 @@
++/****************************************************************************
++**
++** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
++** Contact: http://www.qt-project.org/legal
++**
++** This file is part of the qmake spec of the Qt Toolkit.
++**
++** $QT_BEGIN_LICENSE:LGPL$
++** Commercial License Usage
++** Licensees holding valid commercial Qt licenses may use this file in
++** accordance with the commercial license agreement provided with the
++** Software or, alternatively, in accordance with the terms contained in
++** a written agreement between you and Digia.  For licensing terms and
++** conditions see http://qt.digia.com/licensing.  For further information
++** use the contact form at http://qt.digia.com/contact-us.
++**
++** GNU Lesser General Public License Usage
++** Alternatively, this file may be used under the terms of the GNU Lesser
++** General Public License version 2.1 as published by the Free Software
++** Foundation and appearing in the file LICENSE.LGPL included in the
++** packaging of this file.  Please review the following information to
++** ensure the GNU Lesser General Public License version 2.1 requirements
++** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
++**
++** In addition, as a special exception, Digia gives you certain additional
++** rights.  These rights are described in the Digia Qt LGPL Exception
++** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
++**
++** GNU General Public License Usage
++** Alternatively, this file may be used under the terms of the GNU
++** General Public License version 3.0 as published by the Free Software
++** Foundation and appearing in the file LICENSE.GPL included in the
++** packaging of this file.  Please review the following information to
++** ensure the GNU General Public License version 3.0 requirements will be
++** met: http://www.gnu.org/copyleft/gpl.html.
++**
++**
++** $QT_END_LICENSE$
++**
++****************************************************************************/
++
++#ifndef QPLATFORMDEFS_H
++#define QPLATFORMDEFS_H
++
++// Get Qt defines/settings
++
++#include "qglobal.h"
++
++// Set any POSIX/XOPEN defines at the top of this file to turn on specific APIs
++
++// 1) need to reset default environment if _BSD_SOURCE is defined
++// 2) need to specify POSIX thread interfaces explicitly in glibc 2.0
++// 3) it seems older glibc need this to include the X/Open stuff
++#ifndef _GNU_SOURCE
++#  define _GNU_SOURCE
++#endif
++
++#include <unistd.h>
++
++
++// We are hot - unistd.h should have turned on the specific APIs we requested
++
++#include <pthread.h>
++#include <dirent.h>
++#include <fcntl.h>
++#include <sys/filio.h>
++#include <grp.h>
++#include <pwd.h>
++#include <signal.h>
++
++#include <sys/types.h>
++#include <sys/ioctl.h>
++#include <sys/ipc.h>
++#include <sys/time.h>
++#include <sys/shm.h>
++#include <sys/socket.h>
++#include <sys/stat.h>
++#include <sys/wait.h>
++#include <netinet/in.h>
++#ifndef QT_NO_IPV6IFNAME
++#include <net/if.h>
++#endif
++
++#define QT_USE_XOPEN_LFS_EXTENSIONS
++#include "../common/posix/qplatformdefs.h"
++
++#undef QT_SOCKLEN_T
++#define QT_SOCKLEN_T            socklen_t
++
++#if defined(_XOPEN_SOURCE) && (_XOPEN_SOURCE >= 500)
++#define QT_SNPRINTF		::snprintf
++#define QT_VSNPRINTF		::vsnprintf
++#endif
++
++#endif // QPLATFORMDEFS_H
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/API/JSValueRef.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/API/JSValueRef.cpp
+index e2626be..e3c857e 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/API/JSValueRef.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/API/JSValueRef.cpp
+@@ -216,7 +216,7 @@ JSValueRef JSValueMakeNumber(JSContextRef ctx, double value)
+     // Our JSValue representation relies on a standard bit pattern for NaN. NaNs
+     // generated internally to JavaScriptCore naturally have that representation,
+     // but an external NaN might not.
+-    if (isnan(value))
++    if (std::isnan(value))
+         value = NaN;
+ 
+     return toRef(exec, jsNumber(value));
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp
+index 1c126de..365d082 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp
+@@ -1106,7 +1106,7 @@ RegisterID* BytecodeGenerator::emitLoad(RegisterID* dst, double number)
+     // FIXME: Our hash tables won't hold infinity, so we make a new JSValue each time.
+     // Later we can do the extra work to handle that like the other cases.  They also don't
+     // work correctly with NaN as a key.
+-    if (isnan(number) || number == HashTraits<double>::emptyValue() || HashTraits<double>::isDeletedValue(number))
++    if (std::isnan(number) || number == HashTraits<double>::emptyValue() || HashTraits<double>::isDeletedValue(number))
+         return emitLoad(dst, jsNumber(number));
+     JSValue& valueInMap = m_numberMap.add(number, JSValue()).first->second;
+     if (!valueInMap)
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MachineStackMarker.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MachineStackMarker.cpp
+index 01d77d6..8d7f186 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MachineStackMarker.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MachineStackMarker.cpp
+@@ -20,6 +20,9 @@
+  */
+ 
+ #include "config.h"
++#if OS(SOLARIS)
++#undef _FILE_OFFSET_BITS
++#endif
+ #include "MachineStackMarker.h"
+ 
+ #include "ConservativeRoots.h"
+@@ -64,6 +67,10 @@
+ #include <unistd.h>
+ 
+ #if OS(SOLARIS)
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <procfs.h>
+ #include <thread.h>
+ #else
+ #include <pthread.h>
+@@ -341,6 +348,7 @@ typedef pthread_attr_t PlatformThreadRegisters;
+ #error Need a thread register struct for this platform
+ #endif
+ 
++#if !OS(SOLARIS)
+ static size_t getPlatformThreadRegisters(const PlatformThread& platformThread, PlatformThreadRegisters& regs)
+ {
+ #if OS(DARWIN)
+@@ -382,6 +390,7 @@ static size_t getPlatformThreadRegisters(const PlatformThread& platformThread, P
+ #if HAVE(PTHREAD_NP_H) || OS(NETBSD)
+     // e.g. on FreeBSD 5.4, neundorf@kde.org
+     pthread_attr_get_np(platformThread, &regs);
++#elif OS(SOLARIS)
+ #else
+     // FIXME: this function is non-portable; other POSIX systems may have different np alternatives
+     pthread_getattr_np(platformThread, &regs);
+@@ -391,6 +400,7 @@ static size_t getPlatformThreadRegisters(const PlatformThread& platformThread, P
+ #error Need a way to get thread registers on this platform
+ #endif
+ }
++#endif
+ 
+ static inline void* otherThreadStackPointer(const PlatformThreadRegisters& regs)
+ {
+@@ -441,6 +451,7 @@ static inline void* otherThreadStackPointer(const PlatformThreadRegisters& regs)
+ #endif
+ }
+ 
++#if !OS(SOLARIS)
+ static void freePlatformThreadRegisters(PlatformThreadRegisters& regs)
+ {
+ #if USE(PTHREADS) && !OS(WINDOWS) && !OS(DARWIN)
+@@ -449,24 +460,40 @@ static void freePlatformThreadRegisters(PlatformThreadRegisters& regs)
+     UNUSED_PARAM(regs);
+ #endif
+ }
++#endif
+ 
+ void MachineThreads::gatherFromOtherThread(ConservativeRoots& conservativeRoots, Thread* thread)
+ {
+     suspendThread(thread->platformThread);
+ 
++#if OS(SOLARIS)
++    struct lwpstatus lwp;
++    char procfile[64];
++    int fd;
++    snprintf(procfile, 64, "/proc/self/lwp/%u/lwpstatus", thread->platformThread);
++    fd = open(procfile, O_RDONLY, 0);
++    if (fd == -1) {
++        fprintf(stderr, "%s: %s\n", procfile, strerror(errno));
++        abort();
++    }	
++    pread(fd, &lwp, sizeof(lwp), 0);
++    close(fd);
++    void* stackPointer = (void*)lwp.pr_reg[REG_SP];
++#else
+     PlatformThreadRegisters regs;
+     size_t regSize = getPlatformThreadRegisters(thread->platformThread, regs);
+ 
+     conservativeRoots.add(static_cast<void*>(&regs), static_cast<void*>(reinterpret_cast<char*>(&regs) + regSize));
+ 
+     void* stackPointer = otherThreadStackPointer(regs);
++
++    freePlatformThreadRegisters(regs);
++#endif
+     void* stackBase = thread->stackBase;
+     swapIfBackwards(stackPointer, stackBase);
+     conservativeRoots.add(stackPointer, stackBase);
+ 
+     resumeThread(thread->platformThread);
+-
+-    freePlatformThreadRegisters(regs);
+ }
+ 
+ #endif
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MarkedSpace.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MarkedSpace.cpp
+index d9a1e42..f9ce1b0 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MarkedSpace.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MarkedSpace.cpp
+@@ -124,8 +124,8 @@ void MarkedSpace::sweep()
+ size_t MarkedSpace::objectCount() const
+ {
+     size_t result = 0;
+-    BlockIterator end = m_blocks.end();
+-    for (BlockIterator it = m_blocks.begin(); it != end; ++it)
++    ConstBlockIterator end = m_blocks.end();
++    for (ConstBlockIterator it = m_blocks.begin(); it != end; ++it)
+         result += (*it)->markCount();
+     return result;
+ }
+@@ -133,8 +133,8 @@ size_t MarkedSpace::objectCount() const
+ size_t MarkedSpace::size() const
+ {
+     size_t result = 0;
+-    BlockIterator end = m_blocks.end();
+-    for (BlockIterator it = m_blocks.begin(); it != end; ++it)
++    ConstBlockIterator end = m_blocks.end();
++    for (ConstBlockIterator it = m_blocks.begin(); it != end; ++it)
+         result += (*it)->size();
+     return result;
+ }
+@@ -142,8 +142,8 @@ size_t MarkedSpace::size() const
+ size_t MarkedSpace::capacity() const
+ {
+     size_t result = 0;
+-    BlockIterator end = m_blocks.end();
+-    for (BlockIterator it = m_blocks.begin(); it != end; ++it)
++    ConstBlockIterator end = m_blocks.end();
++    for (ConstBlockIterator it = m_blocks.begin(); it != end; ++it)
+         result += (*it)->capacity();
+     return result;
+ }
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MarkedSpace.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MarkedSpace.h
+index a49e5f0..36bb18b 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MarkedSpace.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/heap/MarkedSpace.h
+@@ -92,6 +92,7 @@ namespace JSC {
+         static const size_t impreciseCount = impreciseCutoff / impreciseStep - 1;
+ 
+         typedef HashSet<MarkedBlock*>::iterator BlockIterator;
++        typedef HashSet<MarkedBlock*>::const_iterator ConstBlockIterator;
+ 
+         struct SizeClass {
+             SizeClass();
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/jit/JITStubs.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/jit/JITStubs.cpp
+index e2f13e7..80c90a4 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/jit/JITStubs.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/jit/JITStubs.cpp
+@@ -79,7 +79,7 @@ namespace JSC {
+ #define THUMB_FUNC_PARAM(name)
+ #endif
+ 
+-#if (OS(LINUX) || OS(FREEBSD)) && CPU(X86_64)
++#if (OS(LINUX) || OS(FREEBSD) || OS(NETBSD) || OS(SOLARIS)) && CPU(X86_64) || (OS(SOLARIS) && CPU(X86))
+ #define SYMBOL_STRING_RELOCATION(name) #name "@plt"
+ #elif OS(DARWIN) || (CPU(X86_64) && COMPILER(MINGW) && !GCC_VERSION_AT_LEAST(4, 5, 0))
+ #define SYMBOL_STRING_RELOCATION(name) "_" #name
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/parser/JSParser.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/parser/JSParser.cpp
+index 5f6d8cf..0d1ed98 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/parser/JSParser.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/parser/JSParser.cpp
+@@ -453,8 +453,8 @@ private:
+         
+         void copyCapturedVariablesToVector(const IdentifierSet& capturedVariables, Vector<RefPtr<StringImpl> >& vector)
+         {
+-            IdentifierSet::iterator end = capturedVariables.end();
+-            for (IdentifierSet::iterator it = capturedVariables.begin(); it != end; ++it) {
++            IdentifierSet::const_iterator end = capturedVariables.end();
++            for (IdentifierSet::const_iterator it = capturedVariables.begin(); it != end; ++it) {
+                 if (m_declaredVariables.contains(*it))
+                     continue;
+                 vector.append(*it);
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DateConstructor.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DateConstructor.cpp
+index a021cf8..856363c 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DateConstructor.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DateConstructor.cpp
+@@ -98,13 +98,13 @@ JSObject* constructDate(ExecState* exec, JSGlobalObject* globalObject, const Arg
+             args.at(5).toNumber(exec), 
+             args.at(6).toNumber(exec)
+         };
+-        if (isnan(doubleArguments[0])
+-                || isnan(doubleArguments[1])
+-                || (numArgs >= 3 && isnan(doubleArguments[2]))
+-                || (numArgs >= 4 && isnan(doubleArguments[3]))
+-                || (numArgs >= 5 && isnan(doubleArguments[4]))
+-                || (numArgs >= 6 && isnan(doubleArguments[5]))
+-                || (numArgs >= 7 && isnan(doubleArguments[6])))
++        if (std::isnan(doubleArguments[0])
++                || std::isnan(doubleArguments[1])
++                || (numArgs >= 3 && std::isnan(doubleArguments[2]))
++                || (numArgs >= 4 && std::isnan(doubleArguments[3]))
++                || (numArgs >= 5 && std::isnan(doubleArguments[4]))
++                || (numArgs >= 6 && std::isnan(doubleArguments[5]))
++                || (numArgs >= 7 && std::isnan(doubleArguments[6])))
+             value = NaN;
+         else {
+             GregorianDateTime t;
+@@ -178,13 +178,13 @@ static EncodedJSValue JSC_HOST_CALL dateUTC(ExecState* exec)
+         exec->argument(6).toNumber(exec)
+     };
+     int n = exec->argumentCount();
+-    if (isnan(doubleArguments[0])
+-            || isnan(doubleArguments[1])
+-            || (n >= 3 && isnan(doubleArguments[2]))
+-            || (n >= 4 && isnan(doubleArguments[3]))
+-            || (n >= 5 && isnan(doubleArguments[4]))
+-            || (n >= 6 && isnan(doubleArguments[5]))
+-            || (n >= 7 && isnan(doubleArguments[6])))
++    if (std::isnan(doubleArguments[0])
++            || std::isnan(doubleArguments[1])
++            || (n >= 3 && std::isnan(doubleArguments[2]))
++            || (n >= 4 && std::isnan(doubleArguments[3]))
++            || (n >= 5 && std::isnan(doubleArguments[4]))
++            || (n >= 6 && std::isnan(doubleArguments[5]))
++            || (n >= 7 && std::isnan(doubleArguments[6])))
+         return JSValue::encode(jsNaN());
+ 
+     GregorianDateTime t;
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DateInstance.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DateInstance.cpp
+index d8ca072..b8df6f6 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DateInstance.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DateInstance.cpp
+@@ -51,7 +51,7 @@ DateInstance::DateInstance(ExecState* exec, Structure* structure, double time)
+ const GregorianDateTime* DateInstance::calculateGregorianDateTime(ExecState* exec) const
+ {
+     double milli = internalNumber();
+-    if (isnan(milli))
++    if (std::isnan(milli))
+         return 0;
+ 
+     if (!m_data)
+@@ -67,7 +67,7 @@ const GregorianDateTime* DateInstance::calculateGregorianDateTime(ExecState* exe
+ const GregorianDateTime* DateInstance::calculateGregorianDateTimeUTC(ExecState* exec) const
+ {
+     double milli = internalNumber();
+-    if (isnan(milli))
++    if (std::isnan(milli))
+         return 0;
+ 
+     if (!m_data)
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DatePrototype.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DatePrototype.cpp
+index 444fa98..cec40cc 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DatePrototype.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/DatePrototype.cpp
+@@ -799,7 +799,7 @@ EncodedJSValue JSC_HOST_CALL dateProtoFuncGetMilliSeconds(ExecState* exec)
+ 
+     DateInstance* thisDateObj = asDateInstance(thisValue); 
+     double milli = thisDateObj->internalNumber();
+-    if (isnan(milli))
++    if (std::isnan(milli))
+         return JSValue::encode(jsNaN());
+ 
+     double secs = floor(milli / msPerSecond);
+@@ -815,7 +815,7 @@ EncodedJSValue JSC_HOST_CALL dateProtoFuncGetUTCMilliseconds(ExecState* exec)
+ 
+     DateInstance* thisDateObj = asDateInstance(thisValue); 
+     double milli = thisDateObj->internalNumber();
+-    if (isnan(milli))
++    if (std::isnan(milli))
+         return JSValue::encode(jsNaN());
+ 
+     double secs = floor(milli / msPerSecond);
+@@ -860,7 +860,7 @@ static EncodedJSValue setNewValueFromTimeArgs(ExecState* exec, int numArgsToUse,
+     DateInstance* thisDateObj = asDateInstance(thisValue);
+     double milli = thisDateObj->internalNumber();
+     
+-    if (!exec->argumentCount() || isnan(milli)) {
++    if (!exec->argumentCount() || std::isnan(milli)) {
+         JSValue result = jsNaN();
+         thisDateObj->setInternalValue(exec->globalData(), result);
+         return JSValue::encode(result);
+@@ -905,7 +905,7 @@ static EncodedJSValue setNewValueFromDateArgs(ExecState* exec, int numArgsToUse,
+     double ms = 0; 
+ 
+     GregorianDateTime gregorianDateTime; 
+-    if (numArgsToUse == 3 && isnan(milli)) 
++    if (numArgsToUse == 3 && std::isnan(milli)) 
+         msToGregorianDateTime(exec, 0, true, gregorianDateTime); 
+     else { 
+         ms = milli - floor(milli / msPerSecond) * msPerSecond; 
+@@ -1029,7 +1029,7 @@ EncodedJSValue JSC_HOST_CALL dateProtoFuncSetYear(ExecState* exec)
+     double ms = 0;
+ 
+     GregorianDateTime gregorianDateTime;
+-    if (isnan(milli))
++    if (std::isnan(milli))
+         // Based on ECMA 262 B.2.5 (setYear)
+         // the time must be reset to +0 if it is NaN. 
+         msToGregorianDateTime(exec, 0, true, gregorianDateTime);
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/Error.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/Error.cpp
+index 47d88e0..418cbe0 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/Error.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/Error.cpp
+@@ -148,7 +148,9 @@ JSObject* addErrorInfo(ExecState* exec, JSObject* error, int line, const SourceC
+     stackString.append(error->toString(exec));
+ 
+     bool functionKnown;
++#if ENABLE(JIT)
+     ReturnAddressPtr pc;
++#endif
+ 
+     while (!frame->hasHostCallFrameFlag()) {
+         CodeBlock* codeBlock = frame->codeBlock();
+@@ -186,9 +188,11 @@ JSObject* addErrorInfo(ExecState* exec, JSObject* error, int line, const SourceC
+         stackString.append(sourceURL);
+         stackString.append(":");
+ 
++#if ENABLE(JIT)
+         if (frame != exec) {
+             line = codeBlock->lineNumberForBytecodeOffset(codeBlock->bytecodeOffset(pc));
+         }
++#endif
+ 
+         arrayItem->putWithAttributes(
+             globalData, Identifier(globalData, linePropertyName),
+@@ -203,7 +207,9 @@ JSObject* addErrorInfo(ExecState* exec, JSObject* error, int line, const SourceC
+ 
+         stackArray->push(exec, JSValue(arrayItem));
+ 
++#if ENABLE(JIT)
+         pc = frame->returnPC();
++#endif
+         frame = frame->callerFrame();
+     }
+ 
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSDateMath.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSDateMath.cpp
+index 410a89d..d05a739 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSDateMath.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSDateMath.cpp
+@@ -198,7 +198,7 @@ double parseDateFromNullTerminatedCharacters(ExecState* exec, const char* dateSt
+     bool haveTZ;
+     int offset;
+     double ms = WTF::parseDateFromNullTerminatedCharacters(dateString, haveTZ, offset);
+-    if (isnan(ms))
++    if (std::isnan(ms))
+         return std::numeric_limits<double>::quiet_NaN();
+ 
+     // fall back to local timezone
+@@ -216,7 +216,7 @@ double parseDate(ExecState* exec, const UString& date)
+     if (date == exec->globalData().cachedDateString)
+         return exec->globalData().cachedDateStringValue;
+     double value = parseES5DateFromNullTerminatedCharacters(date.utf8().data());
+-    if (isnan(value))
++    if (std::isnan(value))
+         value = parseDateFromNullTerminatedCharacters(exec, date.utf8().data());
+     exec->globalData().cachedDateString = date;
+     exec->globalData().cachedDateStringValue = value;
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSGlobalObjectFunctions.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSGlobalObjectFunctions.cpp
+index f0da773..9651888 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSGlobalObjectFunctions.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSGlobalObjectFunctions.cpp
+@@ -472,7 +472,7 @@ EncodedJSValue JSC_HOST_CALL globalFuncParseInt(ExecState* exec)
+         double d = value.asDouble();
+         if (isfinite(d))
+             return JSValue::encode(jsNumber((d > 0) ? floor(d) : ceil(d)));
+-        if (isnan(d) || isinf(d))
++        if (std::isnan(d) || isinf(d))
+             return JSValue::encode(jsNaN());
+         return JSValue::encode(jsNumber(0));
+     }
+@@ -487,13 +487,13 @@ EncodedJSValue JSC_HOST_CALL globalFuncParseFloat(ExecState* exec)
+ 
+ EncodedJSValue JSC_HOST_CALL globalFuncIsNaN(ExecState* exec)
+ {
+-    return JSValue::encode(jsBoolean(isnan(exec->argument(0).toNumber(exec))));
++    return JSValue::encode(jsBoolean(std::isnan(exec->argument(0).toNumber(exec))));
+ }
+ 
+ EncodedJSValue JSC_HOST_CALL globalFuncIsFinite(ExecState* exec)
+ {
+     double n = exec->argument(0).toNumber(exec);
+-    return JSValue::encode(jsBoolean(!isnan(n) && !isinf(n)));
++    return JSValue::encode(jsBoolean(!std::isnan(n) && !isinf(n)));
+ }
+ 
+ EncodedJSValue JSC_HOST_CALL globalFuncDecodeURI(ExecState* exec)
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSValue.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSValue.cpp
+index d3ee89e..aa0c332 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSValue.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSValue.cpp
+@@ -44,7 +44,7 @@ double JSValue::toInteger(ExecState* exec) const
+     if (isInt32())
+         return asInt32();
+     double d = toNumber(exec);
+-    return isnan(d) ? 0.0 : trunc(d);
++    return std::isnan(d) ? 0.0 : trunc(d);
+ }
+ 
+ double JSValue::toIntegerPreserveNaN(ExecState* exec) const
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSValueInlineMethods.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSValueInlineMethods.h
+index b4f6f80..3734634 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSValueInlineMethods.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/JSValueInlineMethods.h
+@@ -227,7 +227,7 @@ namespace JSC {
+             u.asBits.tag = CellTag;
+         else
+             u.asBits.tag = EmptyValueTag;
+-        u.asBits.payload = reinterpret_cast<int32_t>(ptr);
++        u.asBits.payload = reinterpret_cast<intptr_t>(ptr);
+ #if ENABLE(JSC_ZOMBIES)
+         ASSERT(!isZombie());
+ #endif
+@@ -239,7 +239,7 @@ namespace JSC {
+             u.asBits.tag = CellTag;
+         else
+             u.asBits.tag = EmptyValueTag;
+-        u.asBits.payload = reinterpret_cast<int32_t>(const_cast<JSCell*>(ptr));
++        u.asBits.payload = reinterpret_cast<intptr_t>(const_cast<JSCell*>(ptr));
+ #if ENABLE(JSC_ZOMBIES)
+         ASSERT(!isZombie());
+ #endif
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/MathObject.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/MathObject.cpp
+index 52bd76a..3858e38 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/MathObject.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/MathObject.cpp
+@@ -173,7 +173,7 @@ EncodedJSValue JSC_HOST_CALL mathProtoFuncMax(ExecState* exec)
+     double result = -Inf;
+     for (unsigned k = 0; k < argsCount; ++k) {
+         double val = exec->argument(k).toNumber(exec);
+-        if (isnan(val)) {
++        if (std::isnan(val)) {
+             result = NaN;
+             break;
+         }
+@@ -189,7 +189,7 @@ EncodedJSValue JSC_HOST_CALL mathProtoFuncMin(ExecState* exec)
+     double result = +Inf;
+     for (unsigned k = 0; k < argsCount; ++k) {
+         double val = exec->argument(k).toNumber(exec);
+-        if (isnan(val)) {
++        if (std::isnan(val)) {
+             result = NaN;
+             break;
+         }
+@@ -206,7 +206,7 @@ EncodedJSValue JSC_HOST_CALL mathProtoFuncPow(ExecState* exec)
+     double arg = exec->argument(0).toNumber(exec);
+     double arg2 = exec->argument(1).toNumber(exec);
+ 
+-    if (isnan(arg2))
++    if (std::isnan(arg2))
+         return JSValue::encode(jsNaN());
+     if (isinf(arg2) && fabs(arg) == 1)
+         return JSValue::encode(jsNaN());
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/NumberPrototype.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/NumberPrototype.cpp
+index 24532dd..765d156 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/NumberPrototype.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/NumberPrototype.cpp
+@@ -110,7 +110,7 @@ EncodedJSValue JSC_HOST_CALL numberProtoFuncToExponential(ExecState* exec)
+         return throwVMError(exec, createRangeError(exec, "toExponential() argument must be between 0 and 20"));
+ 
+     // Handle NaN and Infinity.
+-    if (isnan(x) || isinf(x))
++    if (std::isnan(x) || isinf(x))
+         return JSValue::encode(jsString(exec, UString::number(x)));
+ 
+     // Round if the argument is not undefined, always format as exponential.
+@@ -149,7 +149,7 @@ EncodedJSValue JSC_HOST_CALL numberProtoFuncToFixed(ExecState* exec)
+ 
+     // The check above will return false for NaN or Infinity, these will be
+     // handled by numberToString.
+-    ASSERT(!isnan(x) && !isinf(x));
++    ASSERT(!std::isnan(x) && !isinf(x));
+ 
+     // Convert to decimal with rounding, and format as decimal.
+     NumberToStringBuffer buffer;
+@@ -184,7 +184,7 @@ EncodedJSValue JSC_HOST_CALL numberProtoFuncToPrecision(ExecState* exec)
+         return JSValue::encode(jsString(exec, UString::number(x)));
+ 
+     // Handle NaN and Infinity.
+-    if (isnan(x) || isinf(x))
++    if (std::isnan(x) || isinf(x))
+         return JSValue::encode(jsString(exec, UString::number(x)));
+ 
+     // Convert to decimal with rounding.
+@@ -241,7 +241,7 @@ EncodedJSValue JSC_HOST_CALL numberProtoFuncToString(ExecState* exec)
+     char s[2048 + 3];
+     const char* lastCharInString = s + sizeof(s) - 1;
+     double x = v.uncheckedGetNumber();
+-    if (isnan(x) || isinf(x))
++    if (std::isnan(x) || isinf(x))
+         return JSValue::encode(jsString(exec, UString::number(x)));
+ 
+     bool isNegative = x < 0.0;
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/StringPrototype.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/StringPrototype.cpp
+index 4299344..1a4045d 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/StringPrototype.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/runtime/StringPrototype.cpp
+@@ -585,7 +585,7 @@ EncodedJSValue JSC_HOST_CALL stringProtoFuncLastIndexOf(ExecState* exec)
+         dpos = len;
+ #if OS(SYMBIAN)
+     // Work around for broken NaN compare operator
+-    else if (isnan(dpos))
++    else if (std::isnan(dpos))
+         dpos = len;
+ #endif
+ 
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Atomics.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Atomics.h
+index bce5fba..0448370 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Atomics.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Atomics.h
+@@ -61,7 +61,9 @@
+ 
+ #include "Platform.h"
+ 
+-#if OS(WINDOWS)
++#if __cplusplus >= 201103L
++#include <atomic>
++#elif OS(WINDOWS)
+ #include <windows.h>
+ #elif OS(DARWIN)
+ #include <libkern/OSAtomic.h>
+@@ -70,7 +72,9 @@
+ #elif OS(QNX)
+ #include <atomic.h>
+ #elif COMPILER(GCC) && !OS(SYMBIAN)
+-#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 2))
++#include <ciso646>
++#ifdef _LIBCPP_VERSION
++#elif (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 2))
+ #include <ext/atomicity.h>
+ #else
+ #include <bits/atomicity.h>
+@@ -79,7 +83,11 @@
+ 
+ namespace WTF {
+ 
+-#if OS(WINDOWS)
++#if __cplusplus >= 201103L
++#define WTF_USE_LOCKFREE_THREADSAFEREFCOUNTED 1
++inline int atomicIncrement(std::atomic<int> * addend) { return *addend++; }
++inline int atomicDecrement(std::atomic<int> * addend) { return *addend--; }
++#elif OS(WINDOWS)
+ #define WTF_USE_LOCKFREE_THREADSAFEREFCOUNTED 1
+ 
+ #if COMPILER(MINGW) || COMPILER(MSVC7_OR_LOWER) || OS(WINCE)
+@@ -109,14 +117,25 @@ inline int atomicDecrement(int volatile* addend) { return (int) atomic_sub_value
+ #elif COMPILER(GCC) && !CPU(SPARC64) && !OS(SYMBIAN) // sizeof(_Atomic_word) != sizeof(int) on sparc64 gcc
+ #define WTF_USE_LOCKFREE_THREADSAFEREFCOUNTED 1
+ 
++#ifdef _LIBCPP_VERSION
++inline int atomicIncrement(int volatile* addend) { return __sync_fetch_and_add(addend, 1) + 1; }
++inline int atomicDecrement(int volatile* addend) { return __sync_fetch_and_add(addend, -1) - 1; }
++#else
+ inline int atomicIncrement(int volatile* addend) { return __gnu_cxx::__exchange_and_add(addend, 1) + 1; }
+ inline int atomicDecrement(int volatile* addend) { return __gnu_cxx::__exchange_and_add(addend, -1) - 1; }
++#endif
+ 
+ #endif
+ 
++#if __cplusplus >= 201103L
++typedef std::atomic<int> atomic_int;
++#else
++typedef int volatile atomic_int;
++#endif
+ } // namespace WTF
+ 
+ #if USE(LOCKFREE_THREADSAFEREFCOUNTED)
++using WTF::atomic_int;
+ using WTF::atomicDecrement;
+ using WTF::atomicIncrement;
+ #endif
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/DateMath.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/DateMath.cpp
+index a4a7791..3dc235f 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/DateMath.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/DateMath.cpp
+@@ -1044,7 +1044,7 @@ double parseDateFromNullTerminatedCharacters(const char* dateString)
+     bool haveTZ;
+     int offset;
+     double ms = parseDateFromNullTerminatedCharacters(dateString, haveTZ, offset);
+-    if (isnan(ms))
++    if (std::isnan(ms))
+         return NaN;
+ 
+     // fall back to local timezone
+@@ -1138,7 +1138,7 @@ static double getDSTOffset(ExecState* exec, double ms, double utcOffset)
+ double getUTCOffset(ExecState* exec)
+ {
+     double utcOffset = exec->globalData().cachedUTCOffset;
+-    if (!isnan(utcOffset))
++    if (!std::isnan(utcOffset))
+         return utcOffset;
+     exec->globalData().cachedUTCOffset = calculateUTCOffset();
+     return exec->globalData().cachedUTCOffset;
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/DecimalNumber.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/DecimalNumber.h
+index c42f00b..b21d4e2 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/DecimalNumber.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/DecimalNumber.h
+@@ -40,7 +40,7 @@ class DecimalNumber {
+ public:
+     DecimalNumber(double d)
+     {
+-        ASSERT(!isnan(d) && !isinf(d));
++        ASSERT(!std::isnan(d) && !isinf(d));
+         dtoa(m_significand, d, m_sign, m_exponent, m_precision);
+ 
+         ASSERT(m_precision);
+@@ -54,7 +54,7 @@ public:
+ 
+     DecimalNumber(double d, RoundingSignificantFiguresType, unsigned significantFigures)
+     {
+-        ASSERT(!isnan(d) && !isinf(d));
++        ASSERT(!std::isnan(d) && !isinf(d));
+         dtoaRoundSF(m_significand, d, significantFigures, m_sign, m_exponent, m_precision);
+ 
+         ASSERT(significantFigures && significantFigures <= sizeof(DtoaBuffer));
+@@ -68,7 +68,7 @@ public:
+ 
+     DecimalNumber(double d, RoundingDecimalPlacesType, unsigned decimalPlaces)
+     {
+-        ASSERT(!isnan(d) && !isinf(d));
++        ASSERT(!std::isnan(d) && !isinf(d));
+         dtoaRoundDP(m_significand, d, decimalPlaces, m_sign, m_exponent, m_precision);
+ 
+         unsigned significantFigures = 1 + m_exponent + decimalPlaces;
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/HashSet.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/HashSet.h
+index 82245f3..003ef6f 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/HashSet.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/HashSet.h
+@@ -49,7 +49,7 @@ namespace WTF {
+             HashFunctions, ValueTraits, ValueTraits> HashTableType;
+ 
+     public:
+-        typedef HashTableConstIteratorAdapter<HashTableType, ValueType> iterator;
++        typedef HashTableIteratorAdapter<HashTableType, ValueType> iterator;
+         typedef HashTableConstIteratorAdapter<HashTableType, ValueType> const_iterator;
+ 
+         void swap(HashSet&);
+@@ -58,10 +58,14 @@ namespace WTF {
+         int capacity() const;
+         bool isEmpty() const;
+ 
+-        iterator begin() const;
+-        iterator end() const;
++        iterator begin();
++        iterator end();
+ 
+-        iterator find(const ValueType&) const;
++        const_iterator begin() const;
++        const_iterator end() const;
++
++        iterator find(const ValueType&);
++        const_iterator find(const ValueType&) const;
+         bool contains(const ValueType&) const;
+ 
+         // An alternate version of find() that finds the object by hashing and comparing
+@@ -69,7 +73,8 @@ namespace WTF {
+         // must have the following function members:
+         //   static unsigned hash(const T&);
+         //   static bool equal(const ValueType&, const T&);
+-        template<typename T, typename HashTranslator> iterator find(const T&) const;
++        template<typename T, typename HashTranslator> iterator find(const T&);
++        template<typename T, typename HashTranslator> const_iterator find(const T&) const;
+         template<typename T, typename HashTranslator> bool contains(const T&) const;
+ 
+         // The return value is a pair of an interator to the new value's location, 
+@@ -134,19 +139,37 @@ namespace WTF {
+     }
+ 
+     template<typename T, typename U, typename V>
+-    inline typename HashSet<T, U, V>::iterator HashSet<T, U, V>::begin() const
++    inline typename HashSet<T, U, V>::iterator HashSet<T, U, V>::begin()
+     {
+         return m_impl.begin(); 
+     }
+ 
+     template<typename T, typename U, typename V>
+-    inline typename HashSet<T, U, V>::iterator HashSet<T, U, V>::end() const
++    inline typename HashSet<T, U, V>::const_iterator HashSet<T, U, V>::begin() const
++    {
++        return m_impl.begin(); 
++    }
++
++    template<typename T, typename U, typename V>
++    inline typename HashSet<T, U, V>::iterator HashSet<T, U, V>::end()
+     {
+         return m_impl.end(); 
+     }
+ 
+     template<typename T, typename U, typename V>
+-    inline typename HashSet<T, U, V>::iterator HashSet<T, U, V>::find(const ValueType& value) const
++    inline typename HashSet<T, U, V>::const_iterator HashSet<T, U, V>::end() const
++    {
++        return m_impl.end(); 
++    }
++
++    template<typename T, typename U, typename V>
++    inline typename HashSet<T, U, V>::iterator HashSet<T, U, V>::find(const ValueType& value)
++    {
++        return m_impl.find(value); 
++    }
++
++    template<typename T, typename U, typename V>
++    inline typename HashSet<T, U, V>::const_iterator HashSet<T, U, V>::find(const ValueType& value) const
+     {
+         return m_impl.find(value); 
+     }
+@@ -160,10 +183,21 @@ namespace WTF {
+     template<typename Value, typename HashFunctions, typename Traits>
+     template<typename T, typename HashTranslator>
+     typename HashSet<Value, HashFunctions, Traits>::iterator
++    inline HashSet<Value, HashFunctions, Traits>::find(const T& value)
++    {
++        typedef HashSetTranslatorAdapter<ValueType, ValueTraits, T, HashTranslator> Adapter;
++        return m_impl.template find<T, Adapter>(value);
++        
++    }
++
++    template<typename Value, typename HashFunctions, typename Traits>
++    template<typename T, typename HashTranslator>
++    typename HashSet<Value, HashFunctions, Traits>::const_iterator
+     inline HashSet<Value, HashFunctions, Traits>::find(const T& value) const
+     {
+         typedef HashSetTranslatorAdapter<ValueType, ValueTraits, T, HashTranslator> Adapter;
+         return m_impl.template find<T, Adapter>(value);
++        
+     }
+ 
+     template<typename Value, typename HashFunctions, typename Traits>
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/MathExtras.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/MathExtras.h
+index b66c6f5..f860cfc 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/MathExtras.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/MathExtras.h
+@@ -142,7 +142,7 @@ inline long long abs(long long num) { return _abs64(num); }
+ #endif
+ 
+ inline bool isinf(double num) { return !_finite(num) && !_isnan(num); }
+-inline bool isnan(double num) { return !!_isnan(num); }
++inline bool std::isnan(double num) { return !!_isnan(num); }
+ inline bool signbit(double num) { return _copysign(1.0, num) < 0; }
+ 
+ inline double nextafter(double x, double y) { return _nextafter(x, y); }
+@@ -252,7 +252,7 @@ inline int clampToInteger(unsigned value)
+     return static_cast<int>(std::min(value, static_cast<unsigned>(std::numeric_limits<int>::max())));
+ }
+ 
+-#if !COMPILER(MSVC) && !(COMPILER(RVCT) && PLATFORM(BREWMP)) && !OS(SOLARIS) && !OS(SYMBIAN)
++#if !COMPILER(MSVC) && !(COMPILER(RVCT) && PLATFORM(BREWMP)) && !(OS(SOLARIS) && COMPILER(GCC) && (GCC_VERSION < 40600)) && !OS(SYMBIAN)
+ using std::isfinite;
+ using std::isinf;
+ using std::isnan;
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/NullPtr.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/NullPtr.h
+index 9c4319d..742405a 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/NullPtr.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/NullPtr.h
+@@ -35,7 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+     #define __has_feature(feature) 0
+ #endif
+ 
+-#if __has_feature(cxx_nullptr) || (GCC_VERSION_AT_LEAST(4, 6, 0) && defined(__GXX_EXPERIMENTAL_CXX0X__)) || (defined(_MSC_VER) && _MSC_VER >= 1600 && !COMPILER(INTEL))
++#if __has_feature(cxx_nullptr) || (GCC_VERSION_AT_LEAST(4, 6, 0) && defined(__GXX_EXPERIMENTAL_CXX0X__)) || (defined(_MSC_VER) && _MSC_VER >= 1600 && !COMPILER(INTEL)) || defined(_LIBCPP_VERSION)
+ 
+ #define HAVE_NULLPTR 1
+ 
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h
+index a7d5a2f..a3c0b2c 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h
+@@ -1227,4 +1227,7 @@
+ #define WTF_USE_UNIX_DOMAIN_SOCKETS 1
+ #endif
+ 
++#if OS(SOLARIS)
++#define USE_SYSTEM_MALLOC 1
++#endif
+ #endif /* WTF_Platform_h */
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/RefCountedLeakCounter.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/RefCountedLeakCounter.h
+index 57cc283..13f5a7a 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/RefCountedLeakCounter.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/RefCountedLeakCounter.h
+@@ -38,7 +38,7 @@ namespace WTF {
+ 
+ #ifndef NDEBUG
+     private:
+-        volatile int m_count;
++        atomic_int m_count;
+         const char* m_description;
+ #endif
+     };
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/ThreadSafeRefCounted.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/ThreadSafeRefCounted.h
+index ca11db3..c065298 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/ThreadSafeRefCounted.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/ThreadSafeRefCounted.h
+@@ -96,7 +96,7 @@ public:
+ #if !USE(LOCKFREE_THREADSAFEREFCOUNTED)
+         MutexLocker locker(m_mutex);
+ #endif
+-        return static_cast<int const volatile &>(m_refCount);
++        return m_refCount;
+     }
+ 
+ protected:
+@@ -126,7 +126,7 @@ private:
+     template<class T>
+     friend class CrossThreadRefCounted;
+ 
+-    int m_refCount;
++    atomic_int m_refCount;
+ #if !USE(LOCKFREE_THREADSAFEREFCOUNTED)
+     mutable Mutex m_mutex;
+ #endif
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Threading.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Threading.h
+index b6f8c24..0256bc4 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Threading.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Threading.h
+@@ -113,6 +113,8 @@ using WTF::createThread;
+ using WTF::currentThread;
+ using WTF::detachThread;
+ using WTF::waitForThreadCompletion;
++#if !OS(SOLARIS)
+ using WTF::yield;
++#endif
+ 
+ #endif // Threading_h
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/dtoa.cpp b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/dtoa.cpp
+index b162543..800a0a7 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/dtoa.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/dtoa.cpp
+@@ -1317,7 +1317,7 @@ void dtoa(DtoaBuffer result, double dd, int ndigits, bool& signOut, int& exponen
+     // roundingNone only allowed (only sensible?) with leftright set.
+     ASSERT(!roundingNone || leftright);
+ 
+-    ASSERT(!isnan(dd) && !isinf(dd));
++    ASSERT(!std::isnan(dd) && !isinf(dd));
+ 
+     int bbits, b2, b5, be, dig, i, ieps, ilim = 0, ilim0, ilim1 = 0,
+         j, j1, k, k0, k_check, m2, m5, s2, s5,
+@@ -1811,8 +1811,8 @@ static ALWAYS_INLINE void copyAsciiToUTF16(UChar* next, const char* src, unsigne
+ unsigned numberToString(double d, NumberToStringBuffer buffer)
+ {
+     // Handle NaN and Infinity.
+-    if (isnan(d) || isinf(d)) {
+-        if (isnan(d)) {
++    if (std::isnan(d) || isinf(d)) {
++        if (std::isnan(d)) {
+             copyAsciiToUTF16(buffer, "NaN", 3);
+             return 3;
+         }
+diff --git a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/StringImpl.h b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/StringImpl.h
+index b0ec163..4c1c541 100644
+--- a/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/StringImpl.h
++++ b/src/qt/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/StringImpl.h
+@@ -24,6 +24,7 @@
+ #define StringImpl_h
+ 
+ #include <limits.h>
++#include <unistd.h>
+ #include <wtf/ASCIICType.h>
+ #include <wtf/CrossThreadRefCounted.h>
+ #include <wtf/Forward.h>
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSDataViewCustom.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSDataViewCustom.cpp
+index 48d56d8..c49baf4 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSDataViewCustom.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSDataViewCustom.cpp
+@@ -89,7 +89,7 @@ static JSValue getDataViewMember(ExecState* exec, DataView* imp, DataViewAccessT
+     case AccessDataViewMemberAsFloat32:
+     case AccessDataViewMemberAsFloat64: {
+         double value = (type == AccessDataViewMemberAsFloat32) ? imp->getFloat32(byteOffset, littleEndian, ec) : imp->getFloat64(byteOffset, littleEndian, ec);
+-        result = isnan(value) ? JSValue(nonInlineNaN()) : jsNumber(value);
++        result = std::isnan(value) ? JSValue(nonInlineNaN()) : jsNumber(value);
+         break;
+     } default:
+         ASSERT_NOT_REACHED();
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSHTMLOptionsCollectionCustom.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSHTMLOptionsCollectionCustom.cpp
+index d169bc4..d356fb9 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSHTMLOptionsCollectionCustom.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSHTMLOptionsCollectionCustom.cpp
+@@ -47,7 +47,7 @@ void JSHTMLOptionsCollection::setLength(ExecState* exec, JSValue value)
+     ExceptionCode ec = 0;
+     unsigned newLength = 0;
+     double lengthValue = value.toNumber(exec);
+-    if (!isnan(lengthValue) && !isinf(lengthValue)) {
++    if (!std::isnan(lengthValue) && !isinf(lengthValue)) {
+         if (lengthValue < 0.0)
+             ec = INDEX_SIZE_ERR;
+         else if (lengthValue > static_cast<double>(UINT_MAX))
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSWebKitPointCustom.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSWebKitPointCustom.cpp
+index e1b20ce..734242e 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSWebKitPointCustom.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/bindings/js/JSWebKitPointCustom.cpp
+@@ -41,9 +41,9 @@ EncodedJSValue JSC_HOST_CALL JSWebKitPointConstructor::constructJSWebKitPoint(Ex
+     if (exec->argumentCount() >= 2) {
+         x = static_cast<float>(exec->argument(0).toNumber(exec));
+         y = static_cast<float>(exec->argument(1).toNumber(exec));
+-        if (isnan(x))
++        if (std::isnan(x))
+             x = 0;
+-        if (isnan(y))
++        if (std::isnan(y))
+             y = 0;
+     }
+     return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), WebKitPoint::create(x, y))));
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/config.h b/src/qt/src/3rdparty/webkit/Source/WebCore/config.h
+index a7ddcee..1f775d5 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/config.h
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/config.h
+@@ -53,6 +53,10 @@
+ 
+ #else /* !USE(EXPORT_MACROS) */
+ 
++#if OS(SOLARIS)
++#define USE_SYSTEM_MALLOC 1
++#endif
++
+ #if !PLATFORM(CHROMIUM) && OS(WINDOWS) && !defined(BUILDING_WX__) && !COMPILER(GCC)
+ #if defined(BUILDING_JavaScriptCore) || defined(BUILDING_WTF)
+ #define JS_EXPORTDATA __declspec(dllexport)
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/css/WebKitCSSMatrix.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/css/WebKitCSSMatrix.cpp
+index 26fe286..776366b 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/css/WebKitCSSMatrix.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/css/WebKitCSSMatrix.cpp
+@@ -105,53 +105,53 @@ PassRefPtr<WebKitCSSMatrix> WebKitCSSMatrix::inverse(ExceptionCode& ec) const
+ 
+ PassRefPtr<WebKitCSSMatrix> WebKitCSSMatrix::translate(double x, double y, double z) const
+ {
+-    if (isnan(x))
++    if (std::isnan(x))
+         x = 0;
+-    if (isnan(y))
++    if (std::isnan(y))
+         y = 0;
+-    if (isnan(z))
++    if (std::isnan(z))
+         z = 0;
+     return WebKitCSSMatrix::create(TransformationMatrix(m_matrix).translate3d(x, y, z));
+ }
+ 
+ PassRefPtr<WebKitCSSMatrix> WebKitCSSMatrix::scale(double scaleX, double scaleY, double scaleZ) const
+ {
+-    if (isnan(scaleX))
++    if (std::isnan(scaleX))
+         scaleX = 1;
+-    if (isnan(scaleY))
++    if (std::isnan(scaleY))
+         scaleY = scaleX;
+-    if (isnan(scaleZ))
++    if (std::isnan(scaleZ))
+         scaleZ = 1;
+     return WebKitCSSMatrix::create(TransformationMatrix(m_matrix).scale3d(scaleX, scaleY, scaleZ));
+ }
+ 
+ PassRefPtr<WebKitCSSMatrix> WebKitCSSMatrix::rotate(double rotX, double rotY, double rotZ) const
+ {
+-    if (isnan(rotX))
++    if (std::isnan(rotX))
+         rotX = 0;
+         
+-    if (isnan(rotY) && isnan(rotZ)) {
++    if (std::isnan(rotY) && std::isnan(rotZ)) {
+         rotZ = rotX;
+         rotX = 0;
+         rotY = 0;
+     }
+ 
+-    if (isnan(rotY))
++    if (std::isnan(rotY))
+         rotY = 0;
+-    if (isnan(rotZ))
++    if (std::isnan(rotZ))
+         rotZ = 0;
+     return WebKitCSSMatrix::create(TransformationMatrix(m_matrix).rotate3d(rotX, rotY, rotZ));
+ }
+ 
+ PassRefPtr<WebKitCSSMatrix> WebKitCSSMatrix::rotateAxisAngle(double x, double y, double z, double angle) const
+ {
+-    if (isnan(x))
++    if (std::isnan(x))
+         x = 0;
+-    if (isnan(y))
++    if (std::isnan(y))
+         y = 0;
+-    if (isnan(z))
++    if (std::isnan(z))
+         z = 0;
+-    if (isnan(angle))
++    if (std::isnan(angle))
+         angle = 0;
+     if (x == 0 && y == 0 && z == 0)
+         z = 1;
+@@ -160,14 +160,14 @@ PassRefPtr<WebKitCSSMatrix> WebKitCSSMatrix::rotateAxisAngle(double x, double y,
+ 
+ PassRefPtr<WebKitCSSMatrix> WebKitCSSMatrix::skewX(double angle) const
+ {
+-    if (isnan(angle))
++    if (std::isnan(angle))
+         angle = 0;
+     return WebKitCSSMatrix::create(TransformationMatrix(m_matrix).skewX(angle));
+ }
+ 
+ PassRefPtr<WebKitCSSMatrix> WebKitCSSMatrix::skewY(double angle) const
+ {
+-    if (isnan(angle))
++    if (std::isnan(angle))
+         angle = 0;
+     return WebKitCSSMatrix::create(TransformationMatrix(m_matrix).skewY(angle));
+ }
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/html/HTMLMediaElement.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/html/HTMLMediaElement.cpp
+index bc46eba..e4d74bb 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/html/HTMLMediaElement.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/html/HTMLMediaElement.cpp
+@@ -1891,7 +1891,7 @@ void HTMLMediaElement::mediaPlayerTimeChanged(MediaPlayer*)
+ 
+     float now = currentTime();
+     float dur = duration();
+-    if (!isnan(dur) && dur && now >= dur) {
++    if (!std::isnan(dur) && dur && now >= dur) {
+         if (loop()) {
+             ExceptionCode ignoredException;
+             m_sentEndEvent = false;
+@@ -2097,7 +2097,7 @@ bool HTMLMediaElement::couldPlayIfEnoughData() const
+ bool HTMLMediaElement::endedPlayback() const
+ {
+     float dur = duration();
+-    if (!m_player || isnan(dur))
++    if (!m_player || std::isnan(dur))
+         return false;
+ 
+     // 4.8.10.8 Playing the media resource
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/html/canvas/IntegralTypedArrayBase.h b/src/qt/src/3rdparty/webkit/Source/WebCore/html/canvas/IntegralTypedArrayBase.h
+index 0b26844..7f534cd 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/html/canvas/IntegralTypedArrayBase.h
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/html/canvas/IntegralTypedArrayBase.h
+@@ -43,7 +43,7 @@ class IntegralTypedArrayBase : public TypedArrayBase<T> {
+     {
+         if (index >= TypedArrayBase<T>::m_length)
+             return;
+-        if (isnan(value)) // Clamp NaN to 0
++        if (std::isnan(value)) // Clamp NaN to 0
+             value = 0;
+         // The double cast is necessary to get the correct wrapping
+         // for out-of-range values with Int32Array and Uint32Array.
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/html/canvas/WebGLRenderingContext.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/html/canvas/WebGLRenderingContext.cpp
+index 60c39ad..b072662 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/html/canvas/WebGLRenderingContext.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/html/canvas/WebGLRenderingContext.cpp
+@@ -982,13 +982,13 @@ void WebGLRenderingContext::clearColor(GC3Dfloat r, GC3Dfloat g, GC3Dfloat b, GC
+ {
+     if (isContextLost())
+         return;
+-    if (isnan(r))
++    if (std::isnan(r))
+         r = 0;
+-    if (isnan(g))
++    if (std::isnan(g))
+         g = 0;
+-    if (isnan(b))
++    if (std::isnan(b))
+         b = 0;
+-    if (isnan(a))
++    if (std::isnan(a))
+         a = 1;
+     m_clearColor[0] = r;
+     m_clearColor[1] = g;
+@@ -3870,13 +3870,13 @@ void WebGLRenderingContext::viewport(GC3Dint x, GC3Dint y, GC3Dsizei width, GC3D
+ {
+     if (isContextLost())
+         return;
+-    if (isnan(x))
++    if (std::isnan(x))
+         x = 0;
+-    if (isnan(y))
++    if (std::isnan(y))
+         y = 0;
+-    if (isnan(width))
++    if (std::isnan(width))
+         width = 100;
+-    if (isnan(height))
++    if (std::isnan(height))
+         height = 100;
+     if (!validateSize(width, height))
+         return;
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/page/DOMWindow.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/page/DOMWindow.cpp
+index a86c1af..ba482bf 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/page/DOMWindow.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/page/DOMWindow.cpp
+@@ -333,13 +333,13 @@ void DOMWindow::adjustWindowRect(const FloatRect& screen, FloatRect& window, con
+     ASSERT(isfinite(window.height()));
+     
+     // Update window values if new requested values are not NaN.
+-    if (!isnan(pendingChanges.x()))
++    if (!std::isnan(pendingChanges.x()))
+         window.setX(pendingChanges.x());
+-    if (!isnan(pendingChanges.y()))
++    if (!std::isnan(pendingChanges.y()))
+         window.setY(pendingChanges.y());
+-    if (!isnan(pendingChanges.width()))
++    if (!std::isnan(pendingChanges.width()))
+         window.setWidth(pendingChanges.width());
+-    if (!isnan(pendingChanges.height()))
++    if (!std::isnan(pendingChanges.height()))
+         window.setHeight(pendingChanges.height());
+     
+     // Resize the window to between 100 and the screen width and height.
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/page/WindowFeatures.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/page/WindowFeatures.cpp
+index 7564152..cea8c99 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/page/WindowFeatures.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/page/WindowFeatures.cpp
+@@ -225,7 +225,7 @@ float WindowFeatures::floatFeature(const DialogFeaturesMap& features, const char
+     // return the number 0 and false for ok. But "0q" should yield the minimum rather than the default.
+     bool ok;
+     double parsedNumber = it->second.toDouble(&ok);
+-    if ((parsedNumber == 0 && !ok) || isnan(parsedNumber))
++    if ((parsedNumber == 0 && !ok) || std::isnan(parsedNumber))
+         return defaultValue;
+     if (parsedNumber < min || max <= min)
+         return min;
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/DefaultLocalizationStrategy.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/DefaultLocalizationStrategy.cpp
+index 4c11f29..a52b6d9 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/DefaultLocalizationStrategy.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/DefaultLocalizationStrategy.cpp
+@@ -59,7 +59,11 @@ static String formatLocalizedString(String format, ...)
+     return result.get();
+ #elif PLATFORM(QT)
+     va_list arguments;
++#ifdef __clang__
++    va_start(arguments, format.charactersWithNullTermination());
++#else
+     va_start(arguments, format);
++#endif
+     QString result;
+     result.vsprintf(format.latin1().data(), arguments);
+     va_end(arguments);
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/Timer.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/Timer.cpp
+index 3f4e334..3c28fcd 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/Timer.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/Timer.cpp
+@@ -41,6 +41,8 @@ using namespace std;
+ 
+ namespace WebCore {
+ 
++class TimerHeapReference;
++
+ // Timers are stored in a heap data structure, used to implement a priority queue.
+ // This allows us to efficiently determine which timer needs to fire the soonest.
+ // Then we set a single shared system timer to fire at that time.
+@@ -53,110 +55,138 @@ static Vector<TimerBase*>& timerHeap()
+     return threadGlobalData().threadTimers().timerHeap();
+ }
+ 
+-// Class to represent elements in the heap when calling the standard library heap algorithms.
+-// Maintains the m_heapIndex value in the timers themselves, which allows us to do efficient
+-// modification of the heap.
+-class TimerHeapElement {
+-public:
+-    explicit TimerHeapElement(int i)
+-        : m_index(i)
+-        , m_timer(timerHeap()[m_index])
+-    { 
+-        checkConsistency(); 
+-    }
+-
+-    TimerHeapElement(const TimerHeapElement&);
+-    TimerHeapElement& operator=(const TimerHeapElement&);
+-
+-    TimerBase* timer() const { return m_timer; }
+-
+-    void checkConsistency() const
+-    {
+-        ASSERT(m_index >= 0);
+-        ASSERT(m_index < static_cast<int>(timerHeap().size()));
+-    }
++// ----------------
+ 
++class TimerHeapPointer {
++public:
++    TimerHeapPointer(TimerBase** pointer) : m_pointer(pointer) { }
++    TimerHeapReference operator*() const;
++    TimerBase* operator->() const { return *m_pointer; }
+ private:
+-    TimerHeapElement();
++    TimerBase** m_pointer;
++};
+ 
+-    int m_index;
+-    TimerBase* m_timer;
++class TimerHeapReference {
++public:
++    TimerHeapReference(TimerBase*& reference) : m_reference(reference) { }
++    operator TimerBase*() const { return m_reference; }
++    TimerHeapPointer operator&() const { return &m_reference; }
++    TimerHeapReference& operator=(TimerBase*);
++    TimerHeapReference& operator=(TimerHeapReference);
++private:
++    TimerBase*& m_reference;
+ };
+ 
+-inline TimerHeapElement::TimerHeapElement(const TimerHeapElement& o)
+-    : m_index(-1), m_timer(o.timer())
++inline TimerHeapReference TimerHeapPointer::operator*() const
+ {
++    return *m_pointer;
+ }
+ 
+-inline TimerHeapElement& TimerHeapElement::operator=(const TimerHeapElement& o)
++inline TimerHeapReference& TimerHeapReference::operator=(TimerBase* timer)
+ {
+-    TimerBase* t = o.timer();
+-    m_timer = t;
+-    if (m_index != -1) {
+-        checkConsistency();
+-        timerHeap()[m_index] = t;
+-        t->m_heapIndex = m_index;
+-    }
++    m_reference = timer;
++    Vector<TimerBase*>& heap = timerHeap();
++    if (&m_reference >= heap.data() && &m_reference < heap.data() + heap.size())
++        timer->m_heapIndex = &m_reference - heap.data();
+     return *this;
+ }
+ 
+-inline bool operator<(const TimerHeapElement& a, const TimerHeapElement& b)
++inline TimerHeapReference& TimerHeapReference::operator=(TimerHeapReference b)
+ {
+-    // The comparisons below are "backwards" because the heap puts the largest 
+-    // element first and we want the lowest time to be the first one in the heap.
+-    double aFireTime = a.timer()->m_nextFireTime;
+-    double bFireTime = b.timer()->m_nextFireTime;
+-    if (bFireTime != aFireTime)
+-        return bFireTime < aFireTime;
+-    
+-    // We need to look at the difference of the insertion orders instead of comparing the two 
+-    // outright in case of overflow. 
+-    unsigned difference = a.timer()->m_heapInsertionOrder - b.timer()->m_heapInsertionOrder;
+-    return difference < UINT_MAX / 2;
++    TimerBase* timer = b;
++    return *this = timer;
++}
++
++inline void swap(TimerHeapReference a, TimerHeapReference b)
++{
++    TimerBase* timerA = a;
++    TimerBase* timerB = b;
++
++    // Invoke the assignment operator, since that takes care of updating m_heapIndex.
++    a = timerB;
++    b = timerA;
+ }
+ 
+ // ----------------
+ 
+ // Class to represent iterators in the heap when calling the standard library heap algorithms.
+-// Returns TimerHeapElement for elements in the heap rather than the TimerBase pointers themselves.
+-class TimerHeapIterator : public iterator<random_access_iterator_tag, TimerHeapElement, int> {
++// Uses a custom pointer and reference type that update indices for pointers in the heap.
++class TimerHeapIterator : public iterator<random_access_iterator_tag, TimerBase*, ptrdiff_t, TimerHeapPointer, TimerHeapReference> {
+ public:
+-    TimerHeapIterator() : m_index(-1) { }
+-    TimerHeapIterator(int i) : m_index(i) { checkConsistency(); }
+-
+-    TimerHeapIterator& operator++() { checkConsistency(); ++m_index; checkConsistency(); return *this; }
+-    TimerHeapIterator operator++(int) { checkConsistency(); checkConsistency(1); return m_index++; }
++    explicit TimerHeapIterator(TimerBase** pointer) : m_pointer(pointer) { checkConsistency(); }
+ 
+-    TimerHeapIterator& operator--() { checkConsistency(); --m_index; checkConsistency(); return *this; }
+-    TimerHeapIterator operator--(int) { checkConsistency(); checkConsistency(-1); return m_index--; }
++    TimerHeapIterator& operator++() { checkConsistency(); ++m_pointer; checkConsistency(); return *this; }
++    TimerHeapIterator operator++(int) { checkConsistency(1); return TimerHeapIterator(m_pointer++); }
+ 
+-    TimerHeapIterator& operator+=(int i) { checkConsistency(); m_index += i; checkConsistency(); return *this; }
+-    TimerHeapIterator& operator-=(int i) { checkConsistency(); m_index -= i; checkConsistency(); return *this; }
++    TimerHeapIterator& operator--() { checkConsistency(); --m_pointer; checkConsistency(); return *this; }
++    TimerHeapIterator operator--(int) { checkConsistency(-1); return TimerHeapIterator(m_pointer--); }
+ 
+-    TimerHeapElement operator*() const { return TimerHeapElement(m_index); }
+-    TimerHeapElement operator[](int i) const { return TimerHeapElement(m_index + i); }
++    TimerHeapIterator& operator+=(ptrdiff_t i) { checkConsistency(); m_pointer += i; checkConsistency(); return *this; }
++    TimerHeapIterator& operator-=(ptrdiff_t i) { checkConsistency(); m_pointer -= i; checkConsistency(); return *this; }
+ 
+-    int index() const { return m_index; }
++    TimerHeapReference operator*() const { return TimerHeapReference(*m_pointer); }
++    TimerHeapReference operator[](ptrdiff_t i) const { return TimerHeapReference(m_pointer[i]); }
++    TimerBase* operator->() const { return *m_pointer; }
+ 
+-    void checkConsistency(int offset = 0) const
++private:
++    void checkConsistency(ptrdiff_t offset = 0) const
+     {
+-        ASSERT_UNUSED(offset, m_index + offset >= 0);
+-        ASSERT_UNUSED(offset, m_index + offset <= static_cast<int>(timerHeap().size()));
++        ASSERT(m_pointer >= timerHeap().data());
++        ASSERT(m_pointer <= timerHeap().data() + timerHeap().size());
++        ASSERT_UNUSED(offset, m_pointer + offset >= timerHeap().data());
++        ASSERT_UNUSED(offset, m_pointer + offset <= timerHeap().data() + timerHeap().size());
+     }
+ 
+-private:
+-    int m_index;
++    friend bool operator==(TimerHeapIterator, TimerHeapIterator);
++    friend bool operator!=(TimerHeapIterator, TimerHeapIterator);
++    friend bool operator<(TimerHeapIterator, TimerHeapIterator);
++    friend bool operator>(TimerHeapIterator, TimerHeapIterator);
++    friend bool operator<=(TimerHeapIterator, TimerHeapIterator);
++    friend bool operator>=(TimerHeapIterator, TimerHeapIterator);
++    
++    friend TimerHeapIterator operator+(TimerHeapIterator, size_t);
++    friend TimerHeapIterator operator+(size_t, TimerHeapIterator);
++    
++    friend TimerHeapIterator operator-(TimerHeapIterator, size_t);
++    friend ptrdiff_t operator-(TimerHeapIterator, TimerHeapIterator);
++
++    TimerBase** m_pointer;
+ };
+ 
+-inline bool operator==(TimerHeapIterator a, TimerHeapIterator b) { return a.index() == b.index(); }
+-inline bool operator!=(TimerHeapIterator a, TimerHeapIterator b) { return a.index() != b.index(); }
+-inline bool operator<(TimerHeapIterator a, TimerHeapIterator b) { return a.index() < b.index(); }
++inline bool operator==(TimerHeapIterator a, TimerHeapIterator b) { return a.m_pointer == b.m_pointer; }
++inline bool operator!=(TimerHeapIterator a, TimerHeapIterator b) { return a.m_pointer != b.m_pointer; }
++inline bool operator<(TimerHeapIterator a, TimerHeapIterator b) { return a.m_pointer < b.m_pointer; }
++inline bool operator>(TimerHeapIterator a, TimerHeapIterator b) { return a.m_pointer > b.m_pointer; }
++inline bool operator<=(TimerHeapIterator a, TimerHeapIterator b) { return a.m_pointer <= b.m_pointer; }
++inline bool operator>=(TimerHeapIterator a, TimerHeapIterator b) { return a.m_pointer >= b.m_pointer; }
++
++inline TimerHeapIterator operator+(TimerHeapIterator a, size_t b) { return TimerHeapIterator(a.m_pointer + b); }
++inline TimerHeapIterator operator+(size_t a, TimerHeapIterator b) { return TimerHeapIterator(a + b.m_pointer); }
+ 
+-inline TimerHeapIterator operator+(TimerHeapIterator a, int b) { return a.index() + b; }
+-inline TimerHeapIterator operator+(int a, TimerHeapIterator b) { return a + b.index(); }
++inline TimerHeapIterator operator-(TimerHeapIterator a, size_t b) { return TimerHeapIterator(a.m_pointer - b); }
++inline ptrdiff_t operator-(TimerHeapIterator a, TimerHeapIterator b) { return a.m_pointer - b.m_pointer; }
+ 
+-inline TimerHeapIterator operator-(TimerHeapIterator a, int b) { return a.index() - b; }
+-inline int operator-(TimerHeapIterator a, TimerHeapIterator b) { return a.index() - b.index(); }
++// ----------------
++
++class TimerHeapLessThanFunction {
++public:
++    bool operator()(TimerBase*, TimerBase*) const;
++};
++
++inline bool TimerHeapLessThanFunction::operator()(TimerBase* a, TimerBase* b) const
++{
++    // The comparisons below are "backwards" because the heap puts the largest 
++    // element first and we want the lowest time to be the first one in the heap.
++    double aFireTime = a->m_nextFireTime;
++    double bFireTime = b->m_nextFireTime;
++    if (bFireTime != aFireTime)
++        return bFireTime < aFireTime;
++    
++    // We need to look at the difference of the insertion orders instead of comparing the two 
++    // outright in case of overflow. 
++    unsigned difference = a->m_heapInsertionOrder - b->m_heapInsertionOrder;
++    return difference < numeric_limits<unsigned>::max() / 2;
++}
+ 
+ // ----------------
+ 
+@@ -225,7 +255,8 @@ void TimerBase::heapDecreaseKey()
+ {
+     ASSERT(m_nextFireTime != 0);
+     checkHeapIndex();
+-    push_heap(TimerHeapIterator(0), TimerHeapIterator(m_heapIndex + 1));
++    TimerBase** heapData = timerHeap().data();
++    push_heap(TimerHeapIterator(heapData), TimerHeapIterator(heapData + m_heapIndex + 1), TimerHeapLessThanFunction());
+     checkHeapIndex();
+ }
+ 
+@@ -274,7 +305,9 @@ void TimerBase::heapPopMin()
+ {
+     ASSERT(this == timerHeap().first());
+     checkHeapIndex();
+-    pop_heap(TimerHeapIterator(0), TimerHeapIterator(timerHeap().size()));
++    Vector<TimerBase*>& heap = timerHeap();
++    TimerBase** heapData = heap.data();
++    pop_heap(TimerHeapIterator(heapData), TimerHeapIterator(heapData + heap.size()), TimerHeapLessThanFunction());
+     checkHeapIndex();
+     ASSERT(this == timerHeap().last());
+ }
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/Timer.h b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/Timer.h
+index 3138345..637bbc0 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/Timer.h
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/Timer.h
+@@ -84,9 +84,9 @@ private:
+     ThreadIdentifier m_thread;
+ #endif
+ 
+-    friend class TimerHeapElement;
+     friend class ThreadTimers;
+-    friend bool operator<(const TimerHeapElement&, const TimerHeapElement&);
++    friend class TimerHeapLessThanFunction;
++    friend class TimerHeapReference;
+ };
+ 
+ template <typename TimerFiredClass> class Timer : public TimerBase {
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/audio/AudioResampler.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/audio/AudioResampler.cpp
+index ba5b58e..3e5288a 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/audio/AudioResampler.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/audio/AudioResampler.cpp
+@@ -110,7 +110,7 @@ void AudioResampler::process(AudioSourceProvider* provider, AudioBus* destinatio
+ 
+ void AudioResampler::setRate(double rate)
+ {
+-    if (isnan(rate) || isinf(rate) || rate <= 0.0)
++    if (std::isnan(rate) || isinf(rate) || rate <= 0.0)
+         return;
+     
+     m_rate = min(AudioResampler::MaxRate, rate);
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/audio/Reverb.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/audio/Reverb.cpp
+index e59ff46..4a3f74d 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/audio/Reverb.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/audio/Reverb.cpp
+@@ -73,7 +73,7 @@ static double calculateNormalizationScale(AudioBus* response)
+     power = sqrt(power / (numberOfChannels * length));
+ 
+     // Protect against accidental overload
+-    if (isinf(power) || isnan(power) || power < MinPower)
++    if (isinf(power) || std::isnan(power) || power < MinPower)
+         power = MinPower;
+ 
+     double scale = 1.0 / power;
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/graphics/MediaPlayer.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/graphics/MediaPlayer.cpp
+index f66b60a..a1d3242 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/graphics/MediaPlayer.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/graphics/MediaPlayer.cpp
+@@ -192,9 +192,6 @@ static Vector<MediaPlayerFactory*>& installedMediaEngines()
+             MediaPlayerPrivateAVFoundationObjC::registerMediaEngine(addMediaEngine);
+ #endif
+ 
+-#if !PLATFORM(GTK) && !PLATFORM(EFL) && !(PLATFORM(QT) && USE(GSTREAMER))
+-        PlatformMediaEngineClassName::registerMediaEngine(addMediaEngine);
+-#endif
+     }
+ 
+     return installedEngines;
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/graphics/gpu/LoopBlinnMathUtils.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/graphics/gpu/LoopBlinnMathUtils.cpp
+index b228cbf..a31a70f 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/graphics/gpu/LoopBlinnMathUtils.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/graphics/gpu/LoopBlinnMathUtils.cpp
+@@ -336,7 +336,7 @@ bool safeUnitDivide(float numerator, float denominator, float& ratio)
+     if (!numerator || !denominator || numerator >= denominator)
+         return false;
+     float r = numerator / denominator;
+-    if (isnan(r))
++    if (std::isnan(r))
+         return false;
+     ASSERT(r >= 0 && r < 1);
+     if (!r) // catch underflow if numerator <<<< denominator
+@@ -359,7 +359,7 @@ int findUnitQuadRoots(float a, float b, float c, float roots[2])
+         return safeUnitDivide(-c, b, roots[0]) ? 1 : 0;
+ 
+     float discriminant = b*b - 4*a*c;
+-    if (discriminant < 0 || isnan(discriminant)) // complex roots
++    if (discriminant < 0 || std::isnan(discriminant)) // complex roots
+         return 0;
+     discriminant = sqrtf(discriminant);
+ 
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/network/qt/QNetworkReplyHandler.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/network/qt/QNetworkReplyHandler.cpp
+index 865bd91..8a3b7d1 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/network/qt/QNetworkReplyHandler.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/network/qt/QNetworkReplyHandler.cpp
+@@ -235,7 +235,7 @@ QNetworkReply* QNetworkReplyWrapper::release()
+     resetConnections();
+     QNetworkReply* reply = m_reply;
+     m_reply = 0;
+-    m_sniffer = 0;
++    m_sniffer = nullptr;
+ 
+     reply->setParent(0);
+     return reply;
+@@ -300,7 +300,7 @@ void QNetworkReplyWrapper::receiveSniffedMIMEType()
+     Q_ASSERT(m_sniffer);
+ 
+     m_sniffedMIMEType = m_sniffer->mimeType();
+-    m_sniffer = 0;
++    m_sniffer = nullptr;
+ 
+     emitMetaDataChanged();
+ }
+@@ -417,7 +417,7 @@ QNetworkReply* QNetworkReplyHandler::release()
+         return 0;
+ 
+     QNetworkReply* reply = m_replyWrapper->release();
+-    m_replyWrapper = 0;
++    m_replyWrapper = nullptr;
+     return reply;
+ }
+ 
+@@ -440,12 +440,12 @@ void QNetworkReplyHandler::finish()
+ 
+     ResourceHandleClient* client = m_resourceHandle->client();
+     if (!client) {
+-        m_replyWrapper = 0;
++        m_replyWrapper = nullptr;
+         return;
+     }
+ 
+     if (m_replyWrapper->wasRedirected()) {
+-        m_replyWrapper = 0;
++        m_replyWrapper = nullptr;
+         m_queue.push(&QNetworkReplyHandler::start);
+         return;
+     }
+@@ -465,7 +465,7 @@ void QNetworkReplyHandler::finish()
+         }
+     }
+ 
+-    m_replyWrapper = 0;
++    m_replyWrapper = nullptr;
+ }
+ 
+ void QNetworkReplyHandler::sendResponseIfNeeded()
+@@ -539,7 +539,7 @@ void QNetworkReplyHandler::redirect(ResourceResponse& response, const QUrl& redi
+                             newUrl.toString(),
+                             QCoreApplication::translate("QWebPage", "Redirection limit reached"));
+         client->didFail(m_resourceHandle, error);
+-        m_replyWrapper = 0;
++        m_replyWrapper = nullptr;
+         return;
+     }
+ 
+@@ -666,7 +666,7 @@ void QNetworkReplyHandler::start()
+     if (!reply)
+         return;
+ 
+-    m_replyWrapper = new QNetworkReplyWrapper(&m_queue, reply, m_resourceHandle->shouldContentSniff() && d->m_context->mimeSniffingEnabled(), this);
++    m_replyWrapper = adoptPtr(new QNetworkReplyWrapper(&m_queue, reply, m_resourceHandle->shouldContentSniff() && d->m_context->mimeSniffingEnabled(), this));
+ 
+     if (m_loadType == SynchronousLoad) {
+         m_replyWrapper->synchronousLoad();
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/qt/PlatformKeyboardEventQt.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/qt/PlatformKeyboardEventQt.cpp
+index 15b9a4a..2d7d05d 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/platform/qt/PlatformKeyboardEventQt.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/platform/qt/PlatformKeyboardEventQt.cpp
+@@ -133,7 +133,7 @@ String keyIdentifierForQtKeyCode(int keyCode)
+     case Qt::Key_Backtab:
+         return "U+0009";
+     default:
+-        return String::format("U+%04X", toupper(keyCode));
++        return String::format("U+%04X", toupper((unsigned char)keyCode));
+     }
+ }
+ 
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioBufferSourceNode.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioBufferSourceNode.cpp
+index 05abed8..5521cbc 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioBufferSourceNode.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioBufferSourceNode.cpp
+@@ -442,7 +442,7 @@ double AudioBufferSourceNode::totalPitchRate()
+     totalRate = max(0.0, totalRate);
+     totalRate = min(AudioResampler::MaxRate, totalRate);
+     
+-    bool isTotalRateValid = !isnan(totalRate) && !isinf(totalRate);
++    bool isTotalRateValid = !std::isnan(totalRate) && !isinf(totalRate);
+     ASSERT(isTotalRateValid);
+     if (!isTotalRateValid)
+         totalRate = 1.0;
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioPannerNode.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioPannerNode.cpp
+index 5c94763..78b8ecd 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioPannerNode.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioPannerNode.cpp
+@@ -42,7 +42,7 @@ namespace WebCore {
+ 
+ static void fixNANs(double &x)
+ {
+-    if (isnan(x) || isinf(x))
++    if (std::isnan(x) || isinf(x))
+         x = 0.0;
+ }
+ 
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioParam.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioParam.cpp
+index dcf918f..4aa63c2 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioParam.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/webaudio/AudioParam.cpp
+@@ -40,7 +40,7 @@ void AudioParam::setValue(float value)
+ {
+     // Check against JavaScript giving us bogus floating-point values.
+     // Don't ASSERT, since this can happen if somebody writes bad JS.
+-    if (!isnan(value) && !isinf(value))
++    if (!std::isnan(value) && !isinf(value))
+         m_value = value;
+ }
+ 
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/xml/XPathFunctions.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/xml/XPathFunctions.cpp
+index 1807172..06c6b93 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/xml/XPathFunctions.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/xml/XPathFunctions.cpp
+@@ -507,14 +507,14 @@ Value FunSubstring::evaluate() const
+ {
+     String s = arg(0)->evaluate().toString();
+     double doublePos = arg(1)->evaluate().toNumber();
+-    if (isnan(doublePos))
++    if (std::isnan(doublePos))
+         return "";
+     long pos = static_cast<long>(FunRound::round(doublePos));
+     bool haveLength = argCount() == 3;
+     long len = -1;
+     if (haveLength) {
+         double doubleLen = arg(2)->evaluate().toNumber();
+-        if (isnan(doubleLen))
++        if (std::isnan(doubleLen))
+             return "";
+         len = static_cast<long>(FunRound::round(doubleLen));
+     }
+@@ -664,7 +664,7 @@ Value FunCeiling::evaluate() const
+ 
+ double FunRound::round(double val)
+ {
+-    if (!isnan(val) && !isinf(val)) {
++    if (!std::isnan(val) && !isinf(val)) {
+         if (signbit(val) && val >= -0.5)
+             val *= 0; // negative zero
+         else
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebCore/xml/XPathValue.cpp b/src/qt/src/3rdparty/webkit/Source/WebCore/xml/XPathValue.cpp
+index 29e211e..5b7c518 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebCore/xml/XPathValue.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebCore/xml/XPathValue.cpp
+@@ -76,7 +76,7 @@ bool Value::toBoolean() const
+         case BooleanValue:
+             return m_bool;
+         case NumberValue:
+-            return m_number != 0 && !isnan(m_number);
++            return m_number != 0 && !std::isnan(m_number);
+         case StringValue:
+             return !m_data->m_string.isEmpty();
+     }
+@@ -125,7 +125,7 @@ String Value::toString() const
+         case StringValue:
+             return m_data->m_string;
+         case NumberValue:
+-            if (isnan(m_number))
++            if (std::isnan(m_number))
+                 return "NaN";
+             if (m_number == 0)
+                 return "0";
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebKit.pri b/src/qt/src/3rdparty/webkit/Source/WebKit.pri
+index 8e6a68c..db8e65b 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebKit.pri
++++ b/src/qt/src/3rdparty/webkit/Source/WebKit.pri
+@@ -143,6 +143,10 @@ valgrind {
+     JAVASCRIPTCORE_JIT = no
+ }
+ 
++solaris {
++    DEFINES += USE_SYSTEM_MALLOC=1
++}
++
+ # Disable dependency to a specific version of a Qt package for non-production builds
+ symbian:!CONFIG(production):default_deployment.pkg_prerules -= pkg_depends_qt
+ 
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebKit/qt/Api/qgraphicswebview.cpp b/src/qt/src/3rdparty/webkit/Source/WebKit/qt/Api/qgraphicswebview.cpp
+index b7b28bc..788f100 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebKit/qt/Api/qgraphicswebview.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebKit/qt/Api/qgraphicswebview.cpp
+@@ -471,7 +471,7 @@ void QGraphicsWebViewPrivate::detachCurrentPage()
+         return;
+ 
+     page->d->view.clear();
+-    page->d->client = 0;
++    page->d->client = nullptr;
+ 
+     // if the page was created by us, we own it and need to
+     // destroy it as well.
+@@ -504,7 +504,7 @@ void QGraphicsWebView::setPage(QWebPage* page)
+     if (!d->page)
+         return;
+ 
+-    d->page->d->client = new PageClientQGraphicsWidget(this, page); // set the page client
++    d->page->d->client = adoptPtr(new PageClientQGraphicsWidget(this, page)); // set the page client
+ 
+     if (d->overlay())
+         d->overlay()->prepareGraphicsItemGeometryChange();
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebKit/qt/WebCoreSupport/InspectorServerQt.cpp b/src/qt/src/3rdparty/webkit/Source/WebKit/qt/WebCoreSupport/InspectorServerQt.cpp
+index c5e5bd5..386c024 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebKit/qt/WebCoreSupport/InspectorServerQt.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebKit/qt/WebCoreSupport/InspectorServerQt.cpp
+@@ -289,7 +289,7 @@ int InspectorServerRequestHandlerQt::webSocketSend(const char* data, size_t leng
+     m_tcpConnection->putChar(0x81);
+     if (length <= 125)
+         m_tcpConnection->putChar(static_cast<uint8_t>(length));
+-    else if (length <= pow(2,16)) {
++    else if (length <= pow(2.0,16)) {
+         m_tcpConnection->putChar(126);
+         quint16 length16 = qToBigEndian<quint16>(static_cast<quint16>(length));
+         m_tcpConnection->write(reinterpret_cast<char*>(&length16), 2);
+diff --git a/src/qt/src/3rdparty/webkit/Source/WebKit/qt/WebCoreSupport/NotificationPresenterClientQt.cpp b/src/qt/src/3rdparty/webkit/Source/WebKit/qt/WebCoreSupport/NotificationPresenterClientQt.cpp
+index b2b8132..ec7abae 100644
+--- a/src/qt/src/3rdparty/webkit/Source/WebKit/qt/WebCoreSupport/NotificationPresenterClientQt.cpp
++++ b/src/qt/src/3rdparty/webkit/Source/WebKit/qt/WebCoreSupport/NotificationPresenterClientQt.cpp
+@@ -73,9 +73,9 @@ NotificationWrapper::NotificationWrapper()
+ #if ENABLE(NOTIFICATIONS)
+ 
+ #ifndef QT_NO_SYSTEMTRAYICON
+-    m_notificationIcon = 0;
++    m_notificationIcon = nullptr;
+ #endif
+-    m_presenter = 0;
++    m_presenter = nullptr;
+ #endif
+ }
+ 
+@@ -211,9 +211,9 @@ void NotificationPresenterClientQt::displayNotification(Notification* notificati
+         QPixmap pixmap;
+         if (bytes.length() && pixmap.loadFromData(bytes)) {
+             QIcon icon(pixmap);
+-            wrapper->m_notificationIcon = new QSystemTrayIcon(icon);
++            wrapper->m_notificationIcon = adoptPtr(new QSystemTrayIcon(icon));
+         } else
+-            wrapper->m_notificationIcon = new QSystemTrayIcon();
++            wrapper->m_notificationIcon = adoptPtr(new QSystemTrayIcon());
+ #endif
+     }
+ 
+diff --git a/src/qt/src/corelib/animation/qpropertyanimation.cpp b/src/qt/src/corelib/animation/qpropertyanimation.cpp
+index 2a01b32..088e0d7 100644
+--- a/src/qt/src/corelib/animation/qpropertyanimation.cpp
++++ b/src/qt/src/corelib/animation/qpropertyanimation.cpp
+@@ -135,8 +135,11 @@ void QPropertyAnimationPrivate::updateProperty(const QVariant &newValue)
+ 
+     if (newValue.userType() == propertyType) {
+         //no conversion is needed, we directly call the QMetaObject::metacall
+-        void *data = const_cast<void*>(newValue.constData());
+-        QMetaObject::metacall(targetValue, QMetaObject::WriteProperty, propertyIndex, &data);
++        //check QMetaProperty::write for an explanation of these
++        int status = -1;
++        int flags = 0;
++        void *argv[] = { const_cast<void *>(newValue.constData()), const_cast<QVariant *>(&newValue), &status, &flags };
++        QMetaObject::metacall(targetValue, QMetaObject::WriteProperty, propertyIndex, argv);
+     } else {
+         targetValue->setProperty(propertyName.constData(), newValue);
+     }
+diff --git a/src/qt/src/corelib/io/qsettings.cpp b/src/qt/src/corelib/io/qsettings.cpp
+index ffeb664..e556b45 100644
+--- a/src/qt/src/corelib/io/qsettings.cpp
++++ b/src/qt/src/corelib/io/qsettings.cpp
+@@ -141,9 +141,16 @@ QT_END_INCLUDE_NAMESPACE
+ 
+ Q_AUTOTEST_EXPORT_HELPER bool qIsLikelyToBeNfs(int handle)
+ {
++#ifdef QT_STATVFS
++    struct statvfs buf;
++    if (fstatvfs(handle, &buf) != 0)
++        return false;
++#else
+     struct statfs buf;
+     if (fstatfs(handle, &buf) != 0)
+         return false;
++#endif
++
+     return qt_isEvilFsTypeName(buf.f_fstypename);
+ }
+ 
+@@ -177,7 +184,7 @@ Q_AUTOTEST_EXPORT_HELPER bool qIsLikelyToBeNfs(int handle)
+ 
+ #elif defined(Q_OS_SOLARIS) || defined(Q_OS_IRIX) || defined(Q_OS_AIX) || defined(Q_OS_HPUX) \
+       || defined(Q_OS_OSF) || defined(Q_OS_QNX) || defined(Q_OS_SCO) \
+-      || defined(Q_OS_UNIXWARE) || defined(Q_OS_RELIANT) || defined(Q_OS_NETBSD)
++      || defined(Q_OS_UNIXWARE) || defined(Q_OS_RELIANT)
+ QT_BEGIN_INCLUDE_NAMESPACE
+ # include <sys/statvfs.h>
+ QT_END_INCLUDE_NAMESPACE
+diff --git a/src/qt/src/corelib/tools/qiterator.h b/src/qt/src/corelib/tools/qiterator.h
+index 9f19e0e..1a7b4e6 100644
+--- a/src/qt/src/corelib/tools/qiterator.h
++++ b/src/qt/src/corelib/tools/qiterator.h
+@@ -47,10 +47,7 @@
+ QT_BEGIN_HEADER
+ 
+ #ifdef QT_NO_STL
+-namespace std {
+-    struct bidirectional_iterator_tag;
+-    struct random_access_iterator_tag;
+-}
++#include <iterator>
+ #endif
+ 
+ QT_BEGIN_NAMESPACE
+diff --git a/src/qt/src/network/kernel/qhostinfo_unix.cpp b/src/qt/src/network/kernel/qhostinfo_unix.cpp
+index 6909340..c38bf11 100644
+--- a/src/qt/src/network/kernel/qhostinfo_unix.cpp
++++ b/src/qt/src/network/kernel/qhostinfo_unix.cpp
+@@ -118,6 +118,8 @@ static void resolveLibrary()
+         if (!local_res_nclose)
+             local_res_ninit = 0;
+     }
++    if (local_res_ninit)
++        local_res_init = 0;
+ #endif
+ }
+ 
+diff --git a/src/qt/src/tools/moc/main.cpp b/src/qt/src/tools/moc/main.cpp
+index 33344fc..b6bf421 100644
+--- a/src/qt/src/tools/moc/main.cpp
++++ b/src/qt/src/tools/moc/main.cpp
+@@ -187,6 +187,8 @@ int runMoc(int _argc, char **_argv)
+     Moc moc;
+     pp.macros["Q_MOC_RUN"];
+     pp.macros["__cplusplus"];
++    // rh#756395, https://bugreports.qt-project.org/browse/QTBUG-22829
++    pp.macros["BOOST_TT_HAS_OPERATOR_HPP_INCLUDED"];
+     QByteArray filename;
+     QByteArray output;
+     FILE *in = 0;
+-- 
+1.8.1.3
+

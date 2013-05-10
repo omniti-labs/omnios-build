@@ -1,0 +1,41 @@
+From 8a2433963b7fc2e57b7a2a66988f4b5403cb588e Mon Sep 17 00:00:00 2001
+From: Theo Schlossnagle <jesus@omniti.com>
+Date: Fri, 10 May 2013 16:16:39 +0000
+Subject: [PATCH 2/2] force build plugins for phantomjs
+
+---
+ src/qt/preconfig.sh            | 5 +----
+ src/qt/src/plugins/plugins.pro | 4 ++++
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/src/qt/preconfig.sh b/src/qt/preconfig.sh
+index 7cfafa0..c46fe82 100755
+--- a/src/qt/preconfig.sh
++++ b/src/qt/preconfig.sh
+@@ -108,3 +108,5 @@
+
+ ./configure -prefix $PWD $QT_CFG
+ make -j$COMPILE_JOBS
++
++(cd src/plugins && make -j$COMPILE_JOBS)
+diff --git a/src/qt/src/plugins/plugins.pro b/src/qt/src/plugins/plugins.pro
+index 94ce675..c443f82 100644
+--- a/src/qt/src/plugins/plugins.pro
++++ b/src/qt/src/plugins/plugins.pro
+@@ -1,5 +1,8 @@
+ TEMPLATE = subdirs
+ 
++solaris* {
++	SUBDIRS *= codecs
++} else {
+ SUBDIRS	*= sqldrivers script bearer
+ unix:!symbian {
+         contains(QT_CONFIG,iconv)|contains(QT_CONFIG,gnu-libiconv)|contains(QT_CONFIG,sun-libiconv):SUBDIRS *= codecs
+@@ -14,3 +17,4 @@ embedded:SUBDIRS *=  gfxdrivers decorations mousedrivers kbddrivers
+ contains(QT_CONFIG, phonon): SUBDIRS *= phonon
+ qpa:SUBDIRS += platforms
+ contains(QT_CONFIG, declarative): SUBDIRS *= qmltooling
++}
+-- 
+1.8.1.3
+

@@ -1,0 +1,12 @@
+diff --git a/src/qt/preconfig.sh b/src/qt/preconfig.sh
+--- a/build.sh
++++ b/build.sh
+@@ -24,7 +24,7 @@
+ elif [[ $OSTYPE == solaris* ]]; then
+   COMPILE_JOBS=`psrinfo -v | grep on-line | wc -l`
+   PATH=/usr/gnu/bin:$PATH
+-  QT_CFG="-D USE_SYSTEM_MALLOC=1 -no-javascript-jit $QT_CFG"
++  QT_CFG="-D USE_SYSTEM_MALLOC=1 $QT_CFG"
+ 
+   if [[ "`uname -v`" == omnios* ]]; then
+     QT_CFG="-platform solaris-g++ -I/opt/omni/include/ -I/opt/omni/include/freetype2/ -L/opt/omni/lib -R/opt/omni/lib $QT_CFG"
