@@ -44,8 +44,9 @@ process_opts() {
     BUILDARCH=both
     OLDBUILDARCH=
     BATCH=
+    AUTOINSTALL=
     DEPVER=
-    while getopts "bpf:ha:d:" opt; do
+    while getopts "bipf:ha:d:" opt; do
         case $opt in
             h)
                 show_usage
@@ -60,6 +61,9 @@ process_opts() {
                 ;;
             b)
                 BATCH=1 # Batch mode - exit on error
+                ;;
+            i)
+                AUTOINSTALL=1
                 ;;
             f)
                 FLAVOR=$OPTARG
@@ -90,6 +94,7 @@ process_opts() {
 show_usage() {
     echo "Usage: $0 [-b] [-p] [-f FLAVOR] [-h] [-a 32|64|both] [-d DEPVER]"
     echo "  -b        : batch mode (exit on errors without asking)"
+    echo "  -i        : autoinstall mode (install build deps)"
     echo "  -p        : output all commands to the screen as well as log file"
     echo "  -f FLAVOR : build a specific package flavor"
     echo "  -h        : print this help text"
@@ -122,19 +127,46 @@ logerr() {
         exit 1
     fi
 }
-ask_to_continue() {
+ask_to_continue_() {
+    MSG=$2
+    STR=$3
+    RE=$4
     # Ask the user if they want to continue or quit in the event of an error
-    echo -n "${1}Do you wish to continue anyway? (y/n) "
+    echo -n "${1}${MSG} ($STR) "
     read
-    while [[ ! "$REPLY" =~ [yYnN] ]]; do
-        echo -n "continue? (y/n) "
+    while [[ ! "$REPLY" =~ $RE ]]; do
+        echo -n "continue? ($STR) "
         read
     done
+}
+ask_to_continue() {
+    ask_to_continue_ "${1}" "Do you wish to continue anyway?" "y/n" "[yYnN]"
     if [[ "$REPLY" == "n" || "$REPLY" == "N" ]]; then
         logmsg "===== Build aborted ====="
         exit 1
     fi
     logmsg "===== User elected to continue after prompt. ====="
+}
+
+ask_to_install() {
+    PKG=$1
+    MSG=$2
+    if [[ -n "$AUTOINSTALL" ]]; then
+        logmsg "Auto-installing $PKG..."
+        logcmd sudo pkg install $PKG || logerr "pkg install $PKG failed"
+        return
+    fi
+    if [[ -n "$BATCH" ]]; then
+        logmsg "===== Build aborted ====="
+        exit 1
+    fi
+    ask_to_continue_ "$MSG " "Install/Abort?" "i/a" "[iIaA]"
+    if [[ "$REPLY" == "i" || "$REPLY" == "I" ]]; then
+        logcmd sudo pkg install $PKG || logerr "pkg install failed"
+    else
+        logmsg "===== Build aborted ====="
+        exit 1
+    fi
 }
 
 #############################################################################
@@ -192,7 +224,14 @@ BasicRequirements(){
         logmsg "To fix this run:"
         logmsg " "
         logmsg "  sudo pkg install$needed"
-        logerr
+        if [[ -n "$BATCH" ]]; then
+            logmsg "===== Build aborted ====="
+            exit 1
+        fi
+        echo
+        for PKG in "$needed"; do
+           ask_to_install $PKG "--- Build-time dependency $PKG not found"
+        done
     fi
 }
 BasicRequirements
@@ -307,7 +346,7 @@ verify_depends() {
     done
     for i in $BUILD_DEPENDS_IPS; do
         pkg info $i > /dev/null 2<&1 ||
-            logerr "--- Build-time dependency $i not found"
+            ask_to_install "$i" "--- Build-time dependency $i not found"
     done
 }
 
