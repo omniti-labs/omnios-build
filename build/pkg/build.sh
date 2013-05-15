@@ -77,7 +77,7 @@ clone_source(){
     logcmd mkdir -p $TMPDIR/$BUILDDIR
     pushd $TMPDIR/$BUILDDIR > /dev/null 
     if [[ ! -d pkg ]]; then
-        logcmd $GIT clone -b omni anon@src.omniti.com:~omnios/core/pkg
+        logcmd $GIT clone -b omnios git://github.com/postwait/pkg5.git pkg
     fi
     pushd pkg > /dev/null || logerr "no source"
     logcmd $GIT pull || logerr "failed to pull"
