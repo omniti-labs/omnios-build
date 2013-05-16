@@ -68,7 +68,7 @@
 			<method_credential
 			    user='root'
 			    group='root'
-			    privileges='basic,!file_link_any,!proc_info,!proc_session,net_privaddr,proc_lock_memory,sys_time'
+			    privileges='basic,!file_link_any,!proc_info,!proc_session,net_privaddr,proc_lock_memory,proc_priocntl,sys_time'
 			/>
 		</method_context>
 	</exec_method>
