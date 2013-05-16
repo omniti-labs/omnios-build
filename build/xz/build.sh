@@ -10,6 +10,8 @@ PKG=compress/xz
 SUMMARY="XZ Utils - general-purpose data compression software"
 DESC="$SUMMARY"
 
+BUILD_DEPENDS_IPS="autoconf"
+
 save_function configure32 configure32_orig
 save_function configure64 configure64_orig
 
