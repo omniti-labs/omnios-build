@@ -1,6 +1,11 @@
 #!/usr/bin/bash
 
 NOBANNER=1
+batch_flag=""
+if [ "${BATCH}" = 1 ]; then
+    echo "Enabling batch mode."
+    batch_flag="-b"
+fi
 . ../lib/functions.sh
 
 [ "${1}" == "licenses" ] && AUDIT_LICENSE=1
@@ -150,7 +155,6 @@ case "$1" in
 			build $tgt
 		done
 	else
-		batch_flag=""
 		for tgt in $tobuild; do
 			build $tgt
 		done
