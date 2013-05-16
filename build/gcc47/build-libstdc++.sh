@@ -37,7 +37,14 @@ DESC="$SUMMARY"
 PATH=/opt/gcc-${VER}/bin:$PATH
 export LD_LIBRARY_PATH=/opt/gcc-${VER}/lib
 
-BUILD_DEPENDS_IPS="gcc47 gcc46 gcc44"
+BUILD_DEPENDS_IPS="gcc47 gcc44"
+if [ -f /usr/lib/libstdc++.so.6.0.16 ]; then
+    GCC46_LOC=/usr/lib
+else
+    GCC46_LOC=/opt/gcc-4.6.3/lib
+    BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS gcc46"
+fi
+
 DEPENDS_IPS="system/library/gcc-4-runtime"
 NO_PARALLEL_MAKE=1
 
@@ -60,12 +67,12 @@ mkdir -p $DESTDIR/usr/lib/amd64
 
 LIB=libstdc++.so
 cp /opt/gcc-4.4.4/lib/$LIB.6.0.13 $DESTDIR/usr/lib/$LIB.6.0.13
-cp /opt/gcc-4.6.3/lib/$LIB.6.0.16 $DESTDIR/usr/lib/$LIB.6.0.16
+cp ${GCC46_LOC}/$LIB.6.0.16 $DESTDIR/usr/lib/$LIB.6.0.16
 cp /opt/gcc-${VER}/lib/$LIB.6.0.17 $DESTDIR/usr/lib/$LIB.6.0.17
 ln -s /usr/lib/$LIB.6.0.17 $DESTDIR/usr/lib/$LIB.6
 ln -s /usr/lib/$LIB.6.0.17 $DESTDIR/usr/lib/$LIB
 cp /opt/gcc-4.4.4/lib/amd64/$LIB.6.0.13 $DESTDIR/usr/lib/amd64/$LIB.6.0.13
-cp /opt/gcc-4.6.3/lib/amd64/$LIB.6.0.16 $DESTDIR/usr/lib/amd64/$LIB.6.0.16
+cp ${GCC46_LOC}/amd64/$LIB.6.0.16 $DESTDIR/usr/lib/amd64/$LIB.6.0.16
 cp /opt/gcc-${VER}/lib/amd64/$LIB.6.0.17 $DESTDIR/usr/lib/amd64/$LIB.6.0.17
 ln -s /usr/lib/amd64/$LIB.6.0.17 $DESTDIR/usr/lib/amd64/$LIB.6
 ln -s /usr/lib/amd64/$LIB.6.0.17 $DESTDIR/usr/lib/amd64/$LIB
