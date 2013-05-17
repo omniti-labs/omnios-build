@@ -34,6 +34,7 @@ SUMMARY="libtool - GNU libtool utility"
 DESC="GNU libtool - library support utility ($VER)"
 
 DEPENDS_IPS="system/library system/library/gcc-4-runtime"
+BUILD_DEPENDS_IPS="autoconf automake"
 
 # The "binaries" here are just shell scripts so arch doesn't matter
 # The includes also are not arch-dependent
@@ -42,10 +43,17 @@ reset_configure_opts
 LIBTOOL_NOSTDLIB=libtool
 LIBTOOL_NOSTDLIB_EXTRAS=-lc
 
+bootstrap() {
+  pushd $TMPDIR/$BUILDDIR >/dev/null || logerr "bootstrapping pushd failed"
+  logcmd ./bootstrap || logerr "bootstrap failed"
+  popd >/dev/null
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
+bootstrap
 build
 make_isa_stub
 
