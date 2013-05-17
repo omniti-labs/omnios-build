@@ -229,8 +229,8 @@ BasicRequirements(){
             exit 1
         fi
         echo
-        for PKG in "$needed"; do
-           ask_to_install $PKG "--- Build-time dependency $PKG not found"
+        for i in "$needed"; do
+           ask_to_install $i "--- Build-time dependency $i not found"
         done
     fi
 }
