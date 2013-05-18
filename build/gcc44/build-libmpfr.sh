@@ -40,6 +40,8 @@ DEPENDS_IPS="developer/gcc44/libgmp-gcc44"
 # This stuff is in its own domain
 PKGPREFIX=""
 
+PATH=/usr/gnu/bin:/opt/gcc-4.4.4/bin:$PATH
+export PATH
 BUILDARCH=32
 GCCVER=4.4.4
 PREFIX=/opt/gcc-${GCCVER}

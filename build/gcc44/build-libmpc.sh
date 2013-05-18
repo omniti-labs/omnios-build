@@ -27,6 +27,9 @@
 # Load support functions
 . ../../lib/functions.sh
 
+PATH=/usr/gnu/bin:/opt/gcc-4.4.4/bin:$PATH
+export PATH
+
 PROG=mpc
 VER=0.8.2
 VERHUMAN=$VER

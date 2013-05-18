@@ -38,7 +38,7 @@ DESC="GCC with the patches from Codesourcery/Sun Microsystems used in the 3.4.3 
 BUILDDIR=${PROG}-il-4_4_4
 
 export LD_LIBRARY_PATH=/opt/gcc-${VER}/lib
-PATH=/usr/perl5/5.14.2/bin:$PATH
+PATH=/usr/perl5/5.16.1/bin:$PATH
 export PATH
 
 DEPENDS_IPS="developer/gcc44/libgmp-gcc44 developer/gcc44/libmpfr-gcc44 developer/gcc44/libmpc-gcc44

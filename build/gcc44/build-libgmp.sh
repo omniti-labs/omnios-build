@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 GCCVER=4.4.4
-PATH=/opt/gcc-${GCCVER}/bin:$PATH
+PATH=/usr/gnu/bin:/opt/gcc-${GCCVER}/bin:$PATH
 export LD_LIBRARY_PATH=/opt/gcc-${GCCVER}/lib
 
 PROG=gmp
@@ -40,7 +40,6 @@ DESC="$SUMMARY"
 
 # This stuff is in its own domain
 PKGPREFIX=""
-
 BUILDARCH=32
 PREFIX=/opt/gcc-${GCCVER}
 CC=gcc
