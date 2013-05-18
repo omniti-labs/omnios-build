@@ -13,7 +13,7 @@ depend fmri=compress/p7zip@9.20.1,5.11-@PVER@ type=require
 depend fmri=compress/unzip@6.0,5.11-@PVER@ type=require
 depend fmri=compress/xz@5.0.4,5.11-@PVER@ type=require
 depend fmri=compress/zip@3.0,5.11-@PVER@ type=require
-depend fmri=crypto/ca-certificates@0.5.11,5.11-@PVER@ type=require
+depend fmri=web/ca-bundle@5.11,5.11-@PVER@ type=require
 depend fmri=database/sqlite-3@3.7.14.1,5.11-@PVER@ type=require
 depend fmri=developer/debug/mdb@0.5.11,5.11-@PVER@ type=require
 depend fmri=developer/linker@0.5.11,5.11-@PVER@ type=require
