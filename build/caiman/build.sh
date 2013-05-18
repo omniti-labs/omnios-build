@@ -81,7 +81,7 @@ sunstudio_location() {
 
 clone_source(){
     logmsg "Creating build dir $TMPDIR/$BUILDDIR"
-    logcmd mkdir $TMPDIR/$BUILDDIR
+    logcmd mkdir -p $TMPDIR/$BUILDDIR || logerr "Failed to create build directory"
     logmsg "Entering $TMPDIR/$BUILDDIR"
     pushd $TMPDIR/$BUILDDIR > /dev/null 
     if [[ -d caiman ]]; then
