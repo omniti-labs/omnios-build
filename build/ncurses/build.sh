@@ -36,8 +36,8 @@ DESC="$SUMMARY"
 
 DEPENDS_IPS="shell/bash system/library"
 
-CFLAGS="-DBSD_COMP -fPIC -std=c99"
-CXXFLAGS="-fPIC"
+CPPFLAGS='-std=c99'
+CFLAGS="-std=c99"
 LD=/usr/ccs/bin/ld
 export LD
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --libdir=/usr/gnu/lib"
