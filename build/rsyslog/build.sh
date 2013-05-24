@@ -54,12 +54,22 @@ export LIBESTR_CFLAGS LIBESTR_LIBS \
        JSON_C_CFLAGS JSON_C_LIBS \
        LIBUUID_CFLAGS LIBUUID_LIBS
 
+CONFIGURE_OPTS="--enable-imfile --enable-imsolaris"
+
+copy_manifest() {
+    # SMF manifest
+    logmsg "--- Copying SMF manifest"
+    logcmd mkdir -p ${DESTDIR}/lib/svc/manifest/system
+    logcmd cp $SRCDIR/files/rsyslogd.xml ${DESTDIR}/lib/svc/manifest/system
+}
+
 init
 download_source $PROG $PROG ${VER}-v7-devel
 patch_source
 prep_build
 build
 make_isa_stub
+copy_manifest
 VER=${VER}.${VERDEV}
 make_package
 clean_up
