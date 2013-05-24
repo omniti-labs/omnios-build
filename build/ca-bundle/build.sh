@@ -33,7 +33,7 @@ VERHUMAN=$VER   # Human-readable version
 NSSVER=3.14.3   # Keep this in sync with the version of system/library/mozilla-nss
 PKG=web/ca-bundle  # Package name (without prefix)
 SUMMARY="$PROG - Bundle of SSL Root CA certificates"
-DESC="SSL Root CA certificates extracted from mozilla-nss $NSSVER source"
+DESC="SSL Root CA and OmniTI certificates extracted from mozilla-nss $NSSVER source"
 
 BUILDARCH=32
 
@@ -52,6 +52,8 @@ build_pem() {
     logerr "--- Failed to copy certdata.txt file"
   logcmd $SRCDIR/mk-ca-bundle.pl -n cacert.pem || \
     logerr "--- Failed to convert certdata.txt into PEM format"
+  (echo && cat $SRCDIR/files/OmniTI_CA.pem) >> cacert.pem
+  [[ $? == 0 ]] || logerr "--- Failed to append the OmniTI CA"
   logcmd cp $TMPDIR/nss-$NSSVER/mozilla/security/nss/COPYING license || \
     logerr "--- Failed to copy license file"
   popd > /dev/null
