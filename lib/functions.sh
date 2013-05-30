@@ -582,8 +582,19 @@ make_package() {
     echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
     echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
     echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
+    if [[ -f $SRCDIR/local.mog ]]; then
+        LOCAL_MOG_FILE=$SRCDIR/local.mog
+    fi
+    logmsg "--- Applying transforms"
+    $PKGMOGRIFY $P5M_INT $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_INT2
+    logmsg "--- Resolving dependencies"
+    (
+        set -e
+        $PKGDEPEND generate -md $DESTDIR $P5M_INT2 > $P5M_INT3
+        $PKGDEPEND resolve -m $P5M_INT3
+    ) || logerr "--- Dependency resolution failed"
     if [[ -n "$DEPENDS_IPS" ]]; then
-        logmsg "------ Adding dependencies"
+        logmsg "--- Adding manual dependencies"
         for i in $DEPENDS_IPS; do
             # IPS dependencies have multiple types, of which we care about four:
             #    require, optional, incorporate, exclude
@@ -605,21 +616,32 @@ make_package() {
                     i=${i:1}
                     ;;
             esac
-            echo "depend type=$DEPTYPE fmri=${i}" >> $MY_MOG_FILE
+            case $i in
+                *@*)
+                    depname=${i%@*}
+                    explicit_ver=true
+                    ;;
+                *)
+                    depname=$i
+                    explicit_ver=false
+                    ;;
+            esac
+            # ugly grep, but pkgmogrify doesn't seem to provide any way to add
+            # actions while avoiding duplicates (except maybe by running it
+            # twice, using drop transform on the first run)
+            if grep -q "^depend .*fmri=[^ ]*$depname" "${P5M_INT3}.res"; then
+                autoresolved=true
+            else
+                autoresolved=false
+            fi
+            if $autoresolved && $explicit_ver && [ "$DEPTYPE" = "require" ]; then
+                echo "<transform depend fmri=(.+/)?$depname -> set fmri $i>" >> $MY_MOG_FILE
+            else
+                echo "depend type=$DEPTYPE fmri=$i" >> $MY_MOG_FILE
+            fi
         done
     fi
-    if [[ -f $SRCDIR/local.mog ]]; then
-        LOCAL_MOG_FILE=$SRCDIR/local.mog
-    fi
-    logmsg "--- Applying transforms"
-    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_INT2
-    logmsg "--- Resolving dependencies"
-    (
-        set -e
-        $PKGDEPEND generate -md $DESTDIR $P5M_INT2 > $P5M_INT3
-        $PKGDEPEND resolve -m $P5M_INT3
-        mv ${P5M_INT3}.res $P5M_FINAL 
-    ) || logerr "--- Dependency resolution failed"
+    $PKGMOGRIFY "${P5M_INT3}.res" "$MY_MOG_FILE" | $PKGFMT -u > $P5M_FINAL
     logmsg "--- Publishing package"
     if [[ -z $BATCH ]]; then
         logmsg "Intentional pause: Last chance to sanity-check before publication!"
