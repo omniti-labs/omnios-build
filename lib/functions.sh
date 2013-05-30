@@ -596,6 +596,7 @@ make_package() {
     ) || logerr "--- Dependency resolution failed"
     if [[ -n "$DEPENDS_IPS" ]]; then
         logmsg "--- Adding manual dependencies"
+        echo > "$MANUAL_DEPS"
         for i in $DEPENDS_IPS; do
             # IPS dependencies have multiple types, of which we care about four:
             #    require, optional, incorporate, exclude
