@@ -724,8 +724,10 @@ make_package() {
             else
                 autoresolved=false
             fi
-            if $autoresolved && $explicit_ver && [ "$DEPTYPE" = "require" ]; then
-                echo "<transform depend fmri=(.+/)?$depname -> set fmri $i>" >> $MANUAL_DEPS
+            if $autoresolved && [ "$DEPTYPE" = "require" ]; then
+                if $explicit_ver; then
+                    echo "<transform depend fmri=(.+/)?$depname -> set fmri $i>" >> $MANUAL_DEPS
+                fi
             else
                 echo "depend type=$DEPTYPE fmri=$i" >> $MANUAL_DEPS
             fi
