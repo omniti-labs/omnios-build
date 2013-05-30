@@ -551,6 +551,7 @@ make_package() {
     P5M_INT2=$TMPDIR/${PKGE}.p5m.int.2
     P5M_INT3=$TMPDIR/${PKGE}.p5m.int.3
     P5M_FINAL=$TMPDIR/${PKGE}.p5m
+    MANUAL_DEPS=$TMPDIR/${PKGE}.deps.mog
     GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
     MY_MOG_FILE=$TMPDIR/${PKGE}.mog
 
@@ -586,7 +587,7 @@ make_package() {
         LOCAL_MOG_FILE=$SRCDIR/local.mog
     fi
     logmsg "--- Applying transforms"
-    $PKGMOGRIFY $P5M_INT $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_INT2
+    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_INT2
     logmsg "--- Resolving dependencies"
     (
         set -e
@@ -635,13 +636,13 @@ make_package() {
                 autoresolved=false
             fi
             if $autoresolved && $explicit_ver && [ "$DEPTYPE" = "require" ]; then
-                echo "<transform depend fmri=(.+/)?$depname -> set fmri $i>" >> $MY_MOG_FILE
+                echo "<transform depend fmri=(.+/)?$depname -> set fmri $i>" >> $MANUAL_DEPS
             else
-                echo "depend type=$DEPTYPE fmri=$i" >> $MY_MOG_FILE
+                echo "depend type=$DEPTYPE fmri=$i" >> $MANUAL_DEPS
             fi
         done
     fi
-    $PKGMOGRIFY "${P5M_INT3}.res" "$MY_MOG_FILE" | $PKGFMT -u > $P5M_FINAL
+    $PKGMOGRIFY "${P5M_INT3}.res" "$MANUAL_DEPS" | $PKGFMT -u > $P5M_FINAL
     logmsg "--- Publishing package"
     if [[ -z $BATCH ]]; then
         logmsg "Intentional pause: Last chance to sanity-check before publication!"
@@ -1066,7 +1067,7 @@ clean_up() {
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove temporary install directory"
         logmsg "--- Cleaning up temporary manifest and transform files"
-        logcmd rm -f $P5M_INT $P5M_INT2 $P5M_INT3 $P5M_FINAL $MY_MOG_FILE || \
+        logcmd rm -f $P5M_INT $P5M_INT2 $P5M_INT3 $P5M_FINAL $MY_MOG_FILE $MANUAL_DEPS || \
             logerr "Failed to remove temporary manifest and transform files"
         logmsg "Done."
     fi
