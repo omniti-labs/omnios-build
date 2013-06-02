@@ -48,8 +48,8 @@ else
 		# to run.  If one is not detected, then disable the service
 		# and exit.
 
-		if [ ! -c /dev/bmc ]; then
-			echo "$0:  No BMC device found: disabling."
+		if [ ! -c /dev/ipmi0 ]; then
+			echo "$0:  No IPMI device found: disabling."
 			/usr/sbin/svcadm disable $SMF_FMRI
 			exit $SMF_EXIT_OK
 		fi
