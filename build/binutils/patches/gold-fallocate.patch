@@ -1,0 +1,11 @@
+--- binutils-2.23.2/gold/output.cc	Tue Jun  4 01:14:25 2013
++++ binutils-2.23.2/gold/output.cc	Tue Jun  4 01:16:35 2013
+@@ -127,7 +127,7 @@
+ static int
+ gold_fallocate(int o, off_t offset, off_t len)
+ {
+-#ifdef HAVE_POSIX_FALLOCATE
++#if defined(HAVE_POSIX_FALLOCATE) && !defined(__sun__)
+   if (parameters->options().posix_fallocate())
+     return ::posix_fallocate(o, offset, len);
+ #endif // defined(HAVE_POSIX_FALLOCATE)
