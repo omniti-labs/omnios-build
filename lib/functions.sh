@@ -555,6 +555,7 @@ extract_archive() {
 make_package() {
     logmsg "Making package"
     PKGSEND=/usr/bin/pkgsend
+    PKGDEPEND=/usr/bin/pkgdepend
     PKGMOGRIFY=/usr/bin/pkgmogrify
     PKGFMT=/usr/bin/pkgfmt
     P5M_INT=$TMPDIR/${PKGE}.p5m.int
@@ -615,7 +616,13 @@ make_package() {
         LOCAL_MOG_FILE=$SRCDIR/local.mog
     fi
     logmsg "--- Applying transforms"
-    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
+    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* > $P5M_INT.stage1
+    if [[ -n "$AUTO_DEPENDS" ]]; then
+        $PKGDEPEND generate -d $DESTDIR $P5M_INT.stage1 > $P5M_INT.dep
+        $PKGDEPEND resolve $P5M_INT.dep
+        cat $P5M_INT.dep.res >> $P5M_INT.stage1
+    fi
+    $PKGFMT -u < $P5M_INT.stage1 > $P5M_FINAL
     logmsg "--- Publishing package"
     if [[ -z "$BATCH" ]]; then
         ask_to_continue "Last chance to sanity-check before publication! "
