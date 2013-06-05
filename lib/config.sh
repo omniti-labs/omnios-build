@@ -28,7 +28,8 @@
 #############################################################################
 
 # Default branch
-PVER=0.151004
+RELVER=$(/usr/bin/gawk '$1 == "OmniOS" {sub(/r/,""); print $3 }' /etc/release)
+PVER=0.$RELVER
 
 # Which server to fetch files from
 MIRROR=mirrors.omniti.com
