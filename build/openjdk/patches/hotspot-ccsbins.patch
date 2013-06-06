@@ -1,0 +1,21 @@
+diff -r af383e67806b make/solaris/makefiles/sparcWorks.make
+--- hotspot/make/solaris/makefiles/sparcWorks.make	Wed May 22 16:01:50 2013 -0700
++++ hotspot/make/solaris/makefiles/sparcWorks.make	Tue May 28 21:19:23 2013 +0000
+@@ -30,13 +30,13 @@
+ 
+   # Note that this 'as' is an older version of the Sun Studio 'fbe', and will
+   #   use the older style options. The 'fbe' options will match 'cc' and 'CC'.
+-  AS	= /usr/ccs/bin/as
++  AS	= $(UTILS_CCS_BIN_PATH)as
+ 
+-  NM    = /usr/ccs/bin/nm
++  NM    = $(UTILS_CCS_BIN_PATH)nm
+   NAWK  = /bin/nawk
+ 
+-  MCS	= /usr/ccs/bin/mcs
+-  STRIP	= /usr/ccs/bin/strip
++  MCS	= $(UTILS_CCS_BIN_PATH)mcs
++  STRIP	= $(UTILS_CCS_BIN_PATH)strip
+ endif
+ 
+ REORDER_FLAG = -xF

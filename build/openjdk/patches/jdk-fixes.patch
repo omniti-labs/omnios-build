@@ -1,0 +1,224 @@
+diff --git a/make/common/shared/Defs-solaris.gmk b/make/common/shared/Defs-solaris.gmk
+--- jdk/make/common/shared/Defs-solaris.gmk
++++ jdk/make/common/shared/Defs-solaris.gmk
+@@ -134,6 +134,13 @@
+   GCC_COMPILER_PATH = $(JDK_DEVTOOLS_DIR)/$(ARCH_FAMILY)/gnucc/bin/
+ endif
+ 
++# OPENWIN_HOME: path to where the X11 environment is installed.
++#  NOTE: Must end with / so that it could be empty, allowing PATH usage.
++ifneq ($(ALT_OPENWIN_HOME),)
++  OPENWIN_HOME :=$(call PrefixPath,$(ALT_OPENWIN_HOME))
++else
++  OPENWIN_HOME  =/usr/X11R6/
++endif
+ 
+ # Always build headless on Solaris
+ BUILD_HEADLESS = true
+diff --git a/make/sun/awt/Makefile b/make/sun/awt/Makefile
+--- jdk/make/sun/awt/Makefile
++++ jdk/make/sun/awt/Makefile
+@@ -549,6 +549,7 @@
+ 	    -I$(SHARE_SRC)/native/$(PKGDIR)/../dc/path \
+             -I$(PLATFORM_SRC)/native/$(PKGDIR)/../jdga \
+             -I$(PLATFORM_SRC)/native/$(PKGDIR) \
++            -I$(ALT_OPENWIN_HOME)/include \
+ 	    $(EVENT_MODEL)
+ 
+ ifeq ($(PLATFORM), linux)
+diff --git a/make/sun/awt/mawt.gmk b/make/sun/awt/mawt.gmk
+--- jdk/make/sun/awt/mawt.gmk
++++ jdk/make/sun/awt/mawt.gmk
+@@ -240,13 +240,14 @@
+                         $(wildcard /usr/include/X11/extensions))
+ endif
+ 
+-ifeq ($(PLATFORM), macosx))
++ifeq ($(PLATFORM), macosx)
+   CPPFLAGS += -I$(OPENWIN_HOME)/include/X11/extensions \
+               -I$(OPENWIN_HOME)/include 
+ endif
+ 
+ ifeq ($(PLATFORM), solaris)
+-  CPPFLAGS += -I$(OPENWIN_HOME)/include/X11/extensions
++  CPPFLAGS += -I$(OPENWIN_HOME)/include/X11/extensions \
++              -I$(ALT_OPENWIN_HOME)/include 
+ endif
+ 
+ ifeq ($(PLATFORM), macosx)
+diff --git a/make/sun/font/Makefile b/make/sun/font/Makefile
+--- jdk/make/sun/font/Makefile
++++ jdk/make/sun/font/Makefile
+@@ -189,6 +189,7 @@
+ else
+ ifeq ($(PLATFORM), solaris)
+   # Note that on Solaris, fontmanager is built against the headless library.
++  CFLAGS       += -I$(ALT_OPENWIN_HOME)/include
+   LDFLAGS      += -L$(LIBDIR)/$(LIBARCH)/headless
+   OTHER_LDLIBS += -lawt -L$(LIBDIR)/$(LIBARCH)/xawt -lmawt -lc $(LIBM) $(LIBCXX)
+ else # PLATFORM is linux
+diff --git a/make/sun/jawt/Makefile b/make/sun/jawt/Makefile
+--- jdk/make/sun/jawt/Makefile
++++ jdk/make/sun/jawt/Makefile
+@@ -118,7 +118,8 @@
+   ifndef BUILD_HEADLESS_ONLY
+     OTHER_LDLIBS = -L$(LIBDIR)/$(LIBARCH) -L$(OPENWIN_LIB) -L$(LIBDIR)/$(LIBARCH)/xawt -lmawt -L/usr/openwin/sfw/lib$(ISA_DIR) -lXrender
+   else
+-    OTHER_LDLIBS = -L$(LIBDIR)/$(LIBARCH) -L$(OPENWIN_LIB) -L$(LIBDIR)/$(LIBARCH)/headless -lmawt -L/usr/openwin/sfw/lib$(ISA_DIR) -lXrender
++    OTHER_LDLIBS = -L$(LIBDIR)/$(LIBARCH) -lawt -L$(LIBDIR)/$(LIBARCH)/headless -lmawt
++    CFLAGS += -DHEADLESS
+   endif
+ endif # PLATFORM
+ 
+diff --git a/src/share/native/sun/java2d/cmm/lcms/cmsopt.c b/src/share/native/sun/java2d/cmm/lcms/cmsopt.c
+--- jdk/src/share/native/sun/java2d/cmm/lcms/cmsopt.c
++++ jdk/src/share/native/sun/java2d/cmm/lcms/cmsopt.c
+@@ -1535,8 +1535,8 @@
+         _cmsStageToneCurvesData* mpeC1 = (_cmsStageToneCurvesData*) cmsStageData(Curve1);
+         _cmsStageToneCurvesData* mpeC2 = (_cmsStageToneCurvesData*) cmsStageData(Curve2);
+ 
+-        // In this particular optimization, caché does not help as it takes more time to deal with
+-        // the caché that with the pixel handling
++        // In this particular optimization, cache does not help as it takes more time to deal with
++        // the cache that with the pixel handling
+         *dwFlags |= cmsFLAGS_NOCACHE;
+ 
+         // Setup the optimizarion routines
+diff --git a/src/share/native/sun/java2d/cmm/lcms/cmstypes.c b/src/share/native/sun/java2d/cmm/lcms/cmstypes.c
+--- jdk/src/share/native/sun/java2d/cmm/lcms/cmstypes.c
++++ jdk/src/share/native/sun/java2d/cmm/lcms/cmstypes.c
+@@ -961,7 +961,7 @@
+     len = cmsMLUgetASCII(mlu, cmsNoLanguage, cmsNoCountry, NULL, 0);
+ 
+     // From ICC3.4: It has been found that textDescriptionType can contain misaligned data
+-    //(see clause 4.1 for the definition of “aligned”). Because the Unicode language
++    //(see clause 4.1 for the definition of aligned). Because the Unicode language
+     // code and Unicode count immediately follow the ASCII description, their
+     // alignment is not correct if the ASCII count is not a multiple of four. The
+     // ScriptCode code is misaligned when the ASCII count is odd. Profile reading and
+@@ -2946,10 +2946,10 @@
+ //The namedColor2Type is a count value and array of structures that provide color
+ //coordinates for 7-bit ASCII color names. For each named color, a PCS and optional
+ //device representation of the color are given. Both representations are 16-bit values.
+-//The device representation corresponds to the header’s “color space of data” field.
+-//This representation should be consistent with the “number of device components”
++//The device representation corresponds to the headers color space of data field.
++//This representation should be consistent with the number of device components
+ //field in the namedColor2Type. If this field is 0, device coordinates are not provided.
+-//The PCS representation corresponds to the header’s PCS field. The PCS representation
++//The PCS representation corresponds to the headers PCS field. The PCS representation
+ //is always provided. Color names are fixed-length, 32-byte fields including null
+ //termination. In order to maintain maximum portability, it is strongly recommended
+ //that special characters of the 7-bit ASCII set not be used.
+@@ -3665,7 +3665,7 @@
+ // ********************************************************************************
+ //
+ //This type represents a set of viewing condition parameters including:
+-//CIE ’absolute’ illuminant white point tristimulus values and CIE ’absolute’
++//CIE absolute illuminant white point tristimulus values and CIE absolute
+ //surround tristimulus values.
+ 
+ static
+@@ -3752,7 +3752,7 @@
+ }
+ 
+ // Each curve is stored in one or more curve segments, with break-points specified between curve segments.
+-// The first curve segment always starts at –Infinity, and the last curve segment always ends at +Infinity. The
++// The first curve segment always starts at Infinity, and the last curve segment always ends at +Infinity. The
+ // first and last curve segments shall be specified in terms of a formula, whereas the other segments shall be
+ // specified either in terms of a formula, or by a sampled curve.
+ 
+@@ -4027,7 +4027,7 @@
+ // The matrix is organized as an array of PxQ+Q elements, where P is the number of input channels to the
+ // matrix, and Q is the number of output channels. The matrix elements are each float32Numbers. The array
+ // is organized as follows:
+-// array = [e11, e12, …, e1P, e21, e22, …, e2P, …, eQ1, eQ2, …, eQP, e1, e2, …, eQ]
++// array = [e11, e12, , e1P, e21, e22, , e2P, , eQ1, eQ2, , eQP, e1, e2, , eQ]
+ 
+ static
+ void *Type_MPEmatrix_Read(struct _cms_typehandler_struct* self, cmsIOHANDLER* io, cmsUInt32Number* nItems, cmsUInt32Number SizeOfTag)
+@@ -4519,10 +4519,10 @@
+             // Y = cX + f             | X < d
+ 
+             // vcgt formula is:
+-            // Y = (Max – Min) * (X ^ Gamma) + Min
++            // Y = (Max  Min) * (X ^ Gamma) + Min
+ 
+             // So, the translation is
+-            // a = (Max – Min) ^ ( 1 / Gamma)
++            // a = (Max  Min) ^ ( 1 / Gamma)
+             // e = Min
+             // b=c=d=f=0
+ 
+diff --git a/src/share/native/sun/java2d/cmm/lcms/cmsxform.c b/src/share/native/sun/java2d/cmm/lcms/cmsxform.c
+--- jdk/src/share/native/sun/java2d/cmm/lcms/cmsxform.c
++++ jdk/src/share/native/sun/java2d/cmm/lcms/cmsxform.c
+@@ -189,7 +189,7 @@
+ 
+ // 16 bit precision -----------------------------------------------------------------------------------------------------------
+ 
+-// Null transformation, only applies formatters. No caché
++// Null transformation, only applies formatters. No cache
+ static
+ void NullXFORM(_cmsTRANSFORM* p,
+                const void* in,
+@@ -256,7 +256,7 @@
+         p ->Lut ->Eval16Fn(wIn, wOut, p -> Lut->Data);
+ }
+ 
+-// Gamut check, No caché, 16 bits.
++// Gamut check, No cache, 16 bits.
+ static
+ void PrecalculatedXFORMGamutCheck(_cmsTRANSFORM* p,
+                                   const void* in,
+@@ -280,7 +280,7 @@
+ }
+ 
+ 
+-// No gamut check, Caché, 16 bits,
++// No gamut check, Cache, 16 bits,
+ static
+ void CachedXFORM(_cmsTRANSFORM* p,
+                  const void* in,
+@@ -406,7 +406,7 @@
+             return NULL;
+         }
+ 
+-        // Float transforms don't use caché, always are non-NULL
++        // Float transforms don't use cache, always are non-NULL
+         p ->xform = FloatXFORM;
+     }
+     else {
+@@ -429,16 +429,16 @@
+             if (dwFlags & cmsFLAGS_NOCACHE) {
+ 
+                 if (dwFlags & cmsFLAGS_GAMUTCHECK)
+-                    p ->xform = PrecalculatedXFORMGamutCheck;  // Gamut check, no caché
++                    p ->xform = PrecalculatedXFORMGamutCheck;  // Gamut check, no cache
+                 else
+-                    p ->xform = PrecalculatedXFORM;  // No caché, no gamut check
++                    p ->xform = PrecalculatedXFORM;  // No cache, no gamut check
+             }
+             else {
+ 
+                 if (dwFlags & cmsFLAGS_GAMUTCHECK)
+-                    p ->xform = CachedXFORMGamutCheck;    // Gamut check, caché
++                    p ->xform = CachedXFORMGamutCheck;    // Gamut check, cache
+                 else
+-                    p ->xform = CachedXFORM;  // No gamut check, caché
++                    p ->xform = CachedXFORM;  // No gamut check, cache
+ 
+             }
+         }
+diff --git a/src/solaris/native/sun/awt/jawt.c b/src/solaris/native/sun/awt/jawt.c
+--- jdk/src/solaris/native/sun/awt/jawt.c
++++ jdk/src/solaris/native/sun/awt/jawt.c
+@@ -33,7 +33,7 @@
+  */
+ JNIEXPORT jboolean JNICALL JAWT_GetAWT(JNIEnv* env, JAWT* awt)
+ {
+-#if defined(JAVASE_EMBEDDED) && defined(HEADLESS)
++#if defined(JAVASE_EMBEDDED) || defined(HEADLESS)
+     /* there are no AWT libs available at all */
+     return JNI_FALSE;
+ #else
