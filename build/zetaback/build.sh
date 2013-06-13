@@ -35,8 +35,8 @@ PKG=omniti/backup/zetaback            # Package name (e.g. library/foo)
 SUMMARY="$PROG"      # One-liner, must be filled in
 DESC="$SUMMARY ($VER) - Lets you backup allz your ZFS's"         # Longer description, must be filled in
 
-BUILD_DEPENDS_IPS="developer/build/gnu-make runtime/perl-5142"
-DEPENDS_IPS="runtime/perl-5142"
+BUILD_DEPENDS_IPS="developer/build/gnu-make runtime/perl"
+DEPENDS_IPS="runtime/perl"
 
 # We changed the prefix - need to regenerate the CONFIGURE_OPTS
 CONFIGURE_OPTS_32="--prefix=$PREFIX"
