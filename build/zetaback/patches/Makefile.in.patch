@@ -5,7 +5,7 @@
  zfs=@ZFS@
  perl=@PERL@
 -pod2man=@POD2MAN@
-+pod2man=/usr/perl5/5.14.2/bin/pod2man
++pod2man=/usr/perl5/5.16.1/bin/pod2man
  
  all:
  	sed -e "s#/usr/bin/perl#$(perl)#;" -e "s#__PREFIX__#$(prefix)#;" \
