@@ -8,7 +8,7 @@ LOGSTASH_HOME=/opt/logstash
 LOGSTASH_JAR=logstash.jar
 
 LOGSTASH_CONFIG=logstash.conf
-LOGSTASH_ARGS="agent -f $LOGSTASH_HOME/$LOGSTASH_CONFIG -- -b elasticsearch:///?local"
+LOGSTASH_ARGS="agent -f $LOGSTASH_HOME/$LOGSTASH_CONFIG"
 
 JAVA_HOME=
 export JAVA_HOME
