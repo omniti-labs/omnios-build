@@ -42,6 +42,7 @@ DEPENDS_IPS="omniti/runtime/ruby-19 omniti/library/ruby/bundler omniti/system/el
 # no nonstandard deps
 
 build() {
+    export MAKE=gmake
     export GEM_PATH=/opt/omni/lib/ruby/gems/1.9:/opt/omni/lib/ruby/gems/1.9.1:${DESTDIR}/opt/kibana/bundle
     export GEM_HOME=/opt/kibana/bundle
     logcmd mkdir -p $DESTDIR/opt/kibana/bundle || logerr "mkdir failed"

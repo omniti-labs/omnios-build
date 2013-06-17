@@ -64,6 +64,7 @@ highline-1.6.11
 uuidtools-2.1.2
 ffi-1.0.11"
 
+export MAKE=gmake
 GEM_BIN=/opt/omni/bin/gem
 RUBY_VER=1.9
 

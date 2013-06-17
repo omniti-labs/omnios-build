@@ -1,0 +1,12 @@
+diff -ur ruby-1.9.3-p429.pristine/lib/rubygems/ext/builder.rb ruby-1.9.3-p429/lib/rubygems/ext/builder.rb
+--- ruby-1.9.3-p429.pristine/lib/rubygems/ext/builder.rb	2011-07-27 02:04:03.000000000 +0000
++++ ruby-1.9.3-p429/lib/rubygems/ext/builder.rb	2013-06-17 23:17:34.772410359 +0000
+@@ -24,7 +24,7 @@
+ 
+     # try to find make program from Ruby configure arguments first
+     RbConfig::CONFIG['configure_args'] =~ /with-make-prog\=(\w+)/
+-    make_program = $1 || ENV['make']
++    make_program = ENV['MAKE'] || ENV['make'] || $1
+     unless make_program then
+       make_program = (/mswin/ =~ RUBY_PLATFORM) ? 'nmake' : 'make'
+     end
