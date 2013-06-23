@@ -1,6 +1,6 @@
---- llvm-3.2.src.orig/tools/clang/lib/Driver/Tools.cpp	2012-11-21 08:56:23.000000000 +0100
-+++ llvm-3.2.src/tools/clang/lib/Driver/Tools.cpp	2013-03-09 21:27:01.087438984 +0100
-@@ -4880,27 +4880,9 @@ void solaris::Link::ConstructJob(Compila
+--- llvm-3.3.src.orig/tools/clang/lib/Driver/Tools.cpp	2013-05-30 20:01:30.000000000 +0200
++++ llvm-3.3.src/tools/clang/lib/Driver/Tools.cpp	2013-06-23 15:02:08.270840914 +0200
+@@ -4851,27 +4851,9 @@ void solaris::Link::ConstructJob(Compila
                                    const InputInfoList &Inputs,
                                    const ArgList &Args,
                                    const char *LinkingOutput) const {
@@ -25,22 +25,21 @@
 -  }
 -
    ArgStringList CmdArgs;
-+  const toolchains::Solaris& ToolChain = 
++  const toolchains::Solaris& ToolChain =
 +    static_cast<const toolchains::Solaris&>(getToolChain());
  
    // Demangle C++ names in errors
    CmdArgs.push_back("-C");
-@@ -4920,7 +4902,8 @@ void solaris::Link::ConstructJob(Compila
+@@ -4891,7 +4873,7 @@ void solaris::Link::ConstructJob(Compila
        CmdArgs.push_back("-shared");
      } else {
        CmdArgs.push_back("--dynamic-linker");
 -      CmdArgs.push_back(Args.MakeArgString(LibPath + "ld.so.1"));
-+      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("ld.so.1")));
++      CmdArgs.push_back(Args.MakeArgString(ToolChain.GetFilePath("ld.so.1")));
      }
    }
  
-@@ -4934,32 +4917,52 @@ void solaris::Link::ConstructJob(Compila
+@@ -4905,32 +4887,37 @@ void solaris::Link::ConstructJob(Compila
    if (!Args.hasArg(options::OPT_nostdlib) &&
        !Args.hasArg(options::OPT_nostartfiles)) {
      if (!Args.hasArg(options::OPT_shared)) {
@@ -48,24 +47,21 @@
 -      CmdArgs.push_back(Args.MakeArgString(LibPath + "crti.o"));
 -      CmdArgs.push_back(Args.MakeArgString(LibPath + "values-Xa.o"));
 -      CmdArgs.push_back(Args.MakeArgString(GCCLibPath + "crtbegin.o"));
++      CmdArgs.push_back(Args.MakeArgString(ToolChain.GetFilePath("crt1.o")));
++      CmdArgs.push_back(Args.MakeArgString(ToolChain.GetFilePath("crti.o")));
 +      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("crt1.o")));
++                                        ToolChain.GetFilePath("values-Xa.o")));
 +      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("crti.o")));
-+      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("values-Xa.o")));
-+      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("crtbegin.o")));
++                                        ToolChain.GetFilePath("crtbegin.o")));
      } else {
 -      CmdArgs.push_back(Args.MakeArgString(LibPath + "crti.o"));
 -      CmdArgs.push_back(Args.MakeArgString(LibPath + "values-Xa.o"));
 -      CmdArgs.push_back(Args.MakeArgString(GCCLibPath + "crtbegin.o"));
++      CmdArgs.push_back(Args.MakeArgString(ToolChain.GetFilePath("crti.o")));
 +      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("crti.o")));
++                                        ToolChain.GetFilePath("values-Xa.o")));
 +      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("values-Xa.o")));
-+      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("crtbegin.o")));
++                                        ToolChain.GetFilePath("crtbegin.o")));
      }
 -    if (getToolChain().getDriver().CCCIsCXX)
 -      CmdArgs.push_back(Args.MakeArgString(LibPath + "cxa_finalize.o"));
@@ -73,9 +69,8 @@
  
 -  CmdArgs.push_back(Args.MakeArgString("-L" + GCCLibPath));
 +  const ToolChain::path_list Paths = ToolChain.getFilePaths();
-+
 +  for (ToolChain::path_list::const_iterator i = Paths.begin(), e = Paths.end();
-+       i != e; ++i)
++        i != e; ++i)
 +    CmdArgs.push_back(Args.MakeArgString(StringRef("-L") + *i));
  
    Args.AddAllArgs(CmdArgs, options::OPT_L);
@@ -95,23 +90,22 @@
      CmdArgs.push_back("-lgcc_s");
      if (!Args.hasArg(options::OPT_shared)) {
        CmdArgs.push_back("-lgcc");
-@@ -4970,14 +4973,16 @@ void solaris::Link::ConstructJob(Compila
+@@ -4941,14 +4928,14 @@ void solaris::Link::ConstructJob(Compila
  
    if (!Args.hasArg(options::OPT_nostdlib) &&
        !Args.hasArg(options::OPT_nostartfiles)) {
 -    CmdArgs.push_back(Args.MakeArgString(GCCLibPath + "crtend.o"));
-+      CmdArgs.push_back(Args.MakeArgString(
-+                                ToolChain.GetFilePath("crtend.o")));
++    CmdArgs.push_back(Args.MakeArgString(ToolChain.GetFilePath("crtend.o")));
    }
 -  CmdArgs.push_back(Args.MakeArgString(LibPath + "crtn.o"));
-+  CmdArgs.push_back(Args.MakeArgString(
-+                            ToolChain.GetFilePath("crtn.o")));
++  CmdArgs.push_back(Args.MakeArgString(ToolChain.GetFilePath("crtn.o")));
  
 -  addProfileRT(getToolChain(), Args, CmdArgs, getToolChain().getTriple());
-+  addProfileRT(ToolChain, Args, CmdArgs, ToolChain.getTriple());
++  addProfileRT(getToolChain(), Args, CmdArgs, ToolChain.getTriple());
  
    const char *Exec =
 -    Args.MakeArgString(getToolChain().GetProgramPath("ld"));
 +    Args.MakeArgString(ToolChain.GetProgramPath("ld"));
    C.addCommand(new Command(JA, *this, Exec, CmdArgs));
  }
+ 

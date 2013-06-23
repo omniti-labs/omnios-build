@@ -1,27 +1,27 @@
-diff -rupN llvm-3.2.src.orig/tools/clang/lib/Frontend/InitHeaderSearch.cpp llvm-3.2.src/tools/clang/lib/Frontend/InitHeaderSearch.cpp
---- llvm-3.2.src.orig/tools/clang/lib/Frontend/InitHeaderSearch.cpp	2012-10-24 18:19:39.000000000 +0200
-+++ llvm-3.2.src/tools/clang/lib/Frontend/InitHeaderSearch.cpp	2013-03-10 13:15:55.996040432 +0100
-@@ -325,7 +325,9 @@ void InitHeaderSearch::AddDefaultCInclud
+--- llvm-3.3.src.orig/tools/clang/lib/Frontend/InitHeaderSearch.cpp	2013-04-30 03:21:43.000000000 +0200
++++ llvm-3.3.src/tools/clang/lib/Frontend/InitHeaderSearch.cpp	2013-06-23 14:54:11.555352740 +0200
+@@ -328,7 +328,9 @@ void InitHeaderSearch::AddDefaultCInclud
  #endif
      }
      break;
 -      
 +  case llvm::Triple::Solaris:
-+    AddPath("/opt/gcc-4.6.3/include", System, true, false, false);
-+    break;
++      AddPath("/opt/gcc-4.7.2/include", System, true);
++      break;
    default:
      break;
    }
-@@ -431,9 +433,9 @@ AddDefaultCPlusPlusIncludePaths(const ll
+@@ -434,8 +436,11 @@ AddDefaultCPlusPlusIncludePaths(const ll
                                  "", "", "", triple);
      break;
    case llvm::Triple::Solaris:
 -    AddGnuCPlusPlusIncludePaths("/usr/gcc/4.5/include/c++/4.5.2/",
 -                                "i386-pc-solaris2.11", "", "", triple);
--    // Solaris - Fall though..
-+    AddGnuCPlusPlusIncludePaths("/opt/gcc-4.6.3/include/c++/4.6.3/",
++    AddGnuCPlusPlusIncludePaths("/opt/gcc-4.7.2/include/c++/4.7.2",
++                                "include", "", "amd64", triple);
++    AddGnuCPlusPlusIncludePaths("/opt/gcc-4.7.2/include/c++/4.7.2",
 +                                "i386-pc-solaris2.11", "", "amd64", triple);
 +    break;
+     // Solaris - Fall though..
    case llvm::Triple::AuroraUX:
      // AuroraUX
-     AddGnuCPlusPlusIncludePaths("/opt/gcc4/include/c++/4.2.4",

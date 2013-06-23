@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=llvm       # App name
-VER=3.2         # App version
+VER=3.3         # App version
 VERHUMAN=$VER   # Human-readable version
 BUILDDIR="$PROG-$VER.src"
 #PVER=          # Branch (set in config.sh, override here if needed)
@@ -62,7 +62,14 @@ make_install64() {
 }
 
 init
-download_source $PROG $PROG $VER
+# download the source files from http://llvm.org/releases/download.html#3.3
+# llvm-3.3.src.tar.gz
+download_source "" $PROG "$VER.src"
+# cfe-3.3.src.tar.gz - (cfe being clang now)
+BUILDDIR="cfe-$VER.src" download_source "" "cfe" "$VER.src"
+# move the clang source into the llvm source
+mv $TMPDIR/cfe-$VER.src "$TMPDIR/$BUILDDIR/tools/clang"
+
 patch_source
 prep_build
 build
