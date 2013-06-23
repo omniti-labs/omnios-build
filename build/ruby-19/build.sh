@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ruby           # App name
-VER=1.9.3-p125      # App version
+VER=1.9.3-p429      # App version
 VERHUMAN=$VER       # Human-readable version
 #PVER=              # Branch (set in config.sh, override here if needed)
 PKG=omniti/runtime/ruby-19   # Package name (e.g. library/foo)
@@ -59,7 +59,8 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
 
 export CLFAGS="-I/usr/include/openssl"
 export EXTLIBS=-lm
-export CPPFLAGS="-I/usr/include/libelf -I/usr/include -I/usr/lib/libffi-3.0.10/include"
+export CPPFLAGS="-std=c99 -I/usr/include/libelf -I/usr/include -I/usr/lib/libffi-3.0.10/include"
+export MAKE=gmake # ffi won't build without this
 
 init
 download_source $PROG $PROG $VER
