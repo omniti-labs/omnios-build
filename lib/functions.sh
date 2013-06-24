@@ -621,6 +621,9 @@ make_package() {
         $PKGDEPEND generate -d $DESTDIR $P5M_INT.stage1 > $P5M_INT.dep
         $PKGDEPEND resolve $P5M_INT.dep
         cat $P5M_INT.dep.res >> $P5M_INT.stage1
+        # Incorporate on entire so that a newer build for an earlier release 
+        # won't install on a later release.
+        echo "depend fmri=pkg:/entire@11-$PVER type=incorporate" >> $P5M_INT.stage1
     fi
     $PKGFMT -u < $P5M_INT.stage1 > $P5M_FINAL
     logmsg "--- Publishing package"
