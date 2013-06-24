@@ -35,7 +35,6 @@ SUMMARY="$PROG - measuring buffer"
 DESC="mbuffer is a tool for buffering data streams"
 
 BUILDARCH=64
-AUTO_DEPENDS=1
 
 init
 download_source $PROG $PROG $VER
