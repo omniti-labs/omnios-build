@@ -1,5 +1,13 @@
 --- llvm-3.3.src.orig/tools/clang/lib/Driver/Tools.cpp	2013-05-30 20:01:30.000000000 +0200
 +++ llvm-3.3.src/tools/clang/lib/Driver/Tools.cpp	2013-06-23 15:02:08.270840914 +0200
+@@ -2999,6 +2999,7 @@ void Clang::ConstructJob(Compilation &C,
+                     options::OPT_fno_use_cxa_atexit,
+                    getToolChain().getTriple().getOS() != llvm::Triple::Cygwin &&
+                   getToolChain().getTriple().getOS() != llvm::Triple::MinGW32 &&
++                  getToolChain().getTriple().getOS() != llvm::Triple::Solaris &&
+               getToolChain().getTriple().getArch() != llvm::Triple::hexagon) ||
+       KernelOrKext)
+     CmdArgs.push_back("-fno-use-cxa-atexit");
 @@ -4851,27 +4851,9 @@ void solaris::Link::ConstructJob(Compila
                                    const InputInfoList &Inputs,
                                    const ArgList &Args,
