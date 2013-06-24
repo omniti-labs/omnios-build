@@ -617,7 +617,7 @@ make_package() {
     fi
     logmsg "--- Applying transforms"
     $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* > $P5M_INT.stage1
-    if [[ -n "$AUTO_DEPENDS" ]]; then
+    if [[ -z "$NO_AUTO_DEPENDS" ]]; then
         $PKGDEPEND generate -d $DESTDIR $P5M_INT.stage1 > $P5M_INT.dep
         $PKGDEPEND resolve $P5M_INT.dep
         cat $P5M_INT.dep.res >> $P5M_INT.stage1
