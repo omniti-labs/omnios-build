@@ -302,8 +302,6 @@ verify_depends() {
                 continue
                 ;;
         esac
-        pkg info $i > /dev/null 2<&1 ||
-            logerr "--- Package dependency $i not found"
     done
     for i in $BUILD_DEPENDS_IPS; do
         pkg info $i > /dev/null 2<&1 ||
