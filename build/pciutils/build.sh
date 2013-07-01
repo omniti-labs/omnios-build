@@ -51,7 +51,7 @@ make_prog() {
         libtool_nostdlib $LIBTOOL_NOSTDLIB $LIBTOOL_NOSTDLIB_EXTRAS
     fi
     logmsg "--- make"
-    logcmd $MAKE $MAKE_JOBS OPT="-O2 -DBYTE_ORDER=1234 -DLITTLE_ENDIAN=1234" || \
+    logcmd $MAKE $MAKE_JOBS PREFIX=$PREFIX OPT="-O2 -DBYTE_ORDER=1234 -DLITTLE_ENDIAN=1234" || \
         logerr "--- Make failed"
 }
 
