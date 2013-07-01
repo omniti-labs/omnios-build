@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pciutils
-VER=3.1.10
+VER=3.2.0
 VERHUMAN=$VER
 PKG=system/pciutils
 SUMMARY="Programs (lspci, setpci) for inspecting and manipulating configuration of PCI devices"
@@ -39,6 +39,8 @@ DEPENDS_IPS="system/pciutils/pci.ids@2.2"
 BUILDARCH=32
 NO_PARALLEL_MAKE=1
 CFLAGS="-DBYTE_ORDER=1234"
+
+export PATH=/usr/gnu/bin:$PATH
 
 configure32() {
     export CC CFLAGS CFLAGS32 PREFIX
