@@ -43,6 +43,7 @@ MIB_MODULES="host disman/event-mib ucd-snmp/diskio udp-mib tcp-mib if-mib"
 
 LDFLAGS32="-Wl,-zignore $LDFLAGS32 -L/lib"
 LDFLAGS64="-Wl,-zignore $LDFLAGS64 -L/lib/$ISAPART64"
+LNETSNMPLIBS="-lsocket -lnsl"
 
 # We want dual-arch libs but only care about 32-bit binaries
 # We will elide 64-bit binaries with pkgmogrify (local.mog)
@@ -73,6 +74,7 @@ configure32() {
     CXXFLAGS="$CXXFLAGS $CXXFLAGS32" \
     CPPFLAGS="$CPPFLAGS $CPPFLAGS32" \
     LDFLAGS="$LDFLAGS $LDFLAGS32" \
+    LNETSNMPLIBS="$LNETSNMPLIBS" \
     CC=$CC CXX=$CXX \
     logcmd $CONFIGURE_CMD $CONFIGURE_OPTS_32 \
     $CONFIGURE_OPTS --with-sys-contact="root@localhost" \
@@ -88,6 +90,7 @@ configure64() {
     CXXFLAGS="$CXXFLAGS $CXXFLAGS64" \
     CPPFLAGS="$CPPFLAGS $CPPFLAGS64" \
     LDFLAGS="$LDFLAGS $LDFLAGS64" \
+    LNETSNMPLIBS="$LNETSNMPLIBS" \
     CC=$CC CXX=$CXX \
     logcmd $CONFIGURE_CMD $CONFIGURE_OPTS_64 \
     $CONFIGURE_OPTS --with-sys-contact="root@localhost" \
