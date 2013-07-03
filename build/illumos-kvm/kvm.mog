@@ -20,11 +20,12 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2013 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 <transform file path=kernel.*kvm$ -> set mode 0755>
 <transform file path=usr/lib/mdb/.*.so$ -> set mode 0755>
 <transform file path=usr/lib/devfsadm/.*.so$ -> set mode 0755>
+driver name=kvm
 license COPYING.linux license=GPLv2
 license OPENSOLARIS.LICENSE license=CDDL
