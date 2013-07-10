@@ -28,7 +28,8 @@
 #############################################################################
 
 # Default branch
-PVER=0.151002
+RELVER=151006
+PVER=0.$RELVER
 
 # Which server to fetch files from
 MIRROR=mirrors.omniti.com
@@ -58,11 +59,11 @@ NOSCRIPTSTUB=
 #############################################################################
 
 # Perl versions we currently build against
-PERLVERLIST="5.14.2"
+PERLVERLIST="5.16.1"
 
 # Full paths to bins
-PERL32=/usr/perl5/5.14.2/bin/$ISAPART/perl
-PERL64=/usr/perl5/5.14.2/bin/$ISAPART64/perl
+PERL32=/usr/perl5/5.16.1/bin/$ISAPART/perl
+PERL64=/usr/perl5/5.16.1/bin/$ISAPART64/perl
 
 # Default Makefile.PL options
 PERL_MAKEFILE_OPTS="INSTALLSITEBIN=$PREFIX/bin/_ARCHBIN_ \
@@ -96,6 +97,7 @@ TAR=tar
 GZIP=gzip
 BUNZIP2=bunzip2
 XZCAT=xzcat
+UNZIP=unzip
 AWK=gawk
 
 # Figure out number of logical CPUs for use with parallel gmake jobs (-j)
@@ -125,8 +127,8 @@ ISAPART=i386
 ISAPART64=amd64
 
 # For OmniOS we (almost) always want GCC
-CC=/opt/gcc-4.6.3/bin/gcc
-CXX=/opt/gcc-4.6.3/bin/g++
+CC=gcc
+CXX=g++
 
 # CFLAGS applies to both builds, 32/64 only gets applied to the respective
 # build

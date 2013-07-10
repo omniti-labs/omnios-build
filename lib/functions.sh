@@ -44,8 +44,9 @@ process_opts() {
     BUILDARCH=both
     OLDBUILDARCH=
     BATCH=
+    AUTOINSTALL=
     DEPVER=
-    while getopts "bpf:ha:d:" opt; do
+    while getopts "bipf:ha:d:" opt; do
         case $opt in
             h)
                 show_usage
@@ -60,6 +61,9 @@ process_opts() {
                 ;;
             b)
                 BATCH=1 # Batch mode - exit on error
+                ;;
+            i)
+                AUTOINSTALL=1
                 ;;
             f)
                 FLAVOR=$OPTARG
@@ -90,6 +94,7 @@ process_opts() {
 show_usage() {
     echo "Usage: $0 [-b] [-p] [-f FLAVOR] [-h] [-a 32|64|both] [-d DEPVER]"
     echo "  -b        : batch mode (exit on errors without asking)"
+    echo "  -i        : autoinstall mode (install build deps)"
     echo "  -p        : output all commands to the screen as well as log file"
     echo "  -f FLAVOR : build a specific package flavor"
     echo "  -h        : print this help text"
@@ -122,19 +127,46 @@ logerr() {
         exit 1
     fi
 }
-ask_to_continue() {
-    # Ask the user if they want to continue or quit
-    echo -n "${1}Do you wish to continue anyway? (y/n) "
+ask_to_continue_() {
+    MSG=$2
+    STR=$3
+    RE=$4
+    # Ask the user if they want to continue or quit in the event of an error
+    echo -n "${1}${MSG} ($STR) "
     read
-    while [[ ! "$REPLY" =~ [yYnN] ]]; do
-        echo -n "continue? (y/n) "
+    while [[ ! "$REPLY" =~ $RE ]]; do
+        echo -n "continue? ($STR) "
         read
     done
+}
+ask_to_continue() {
+    ask_to_continue_ "${1}" "Do you wish to continue anyway?" "y/n" "[yYnN]"
     if [[ "$REPLY" == "n" || "$REPLY" == "N" ]]; then
         logmsg "===== Build aborted ====="
         exit 1
     fi
     logmsg "===== User elected to continue after prompt. ====="
+}
+
+ask_to_install() {
+    PKG=$1
+    MSG=$2
+    if [[ -n "$AUTOINSTALL" ]]; then
+        logmsg "Auto-installing $PKG..."
+        logcmd sudo pkg install $PKG || logerr "pkg install $PKG failed"
+        return
+    fi
+    if [[ -n "$BATCH" ]]; then
+        logmsg "===== Build aborted ====="
+        exit 1
+    fi
+    ask_to_continue_ "$MSG " "Install/Abort?" "i/a" "[iIaA]"
+    if [[ "$REPLY" == "i" || "$REPLY" == "I" ]]; then
+        logcmd sudo pkg install $PKG || logerr "pkg install failed"
+    else
+        logmsg "===== Build aborted ====="
+        exit 1
+    fi
 }
 
 #############################################################################
@@ -156,7 +188,7 @@ url_encode() {
 LANG=C
 export LANG
 # Set the path - This can be overriden/extended in the build script
-PATH="/opt/gcc-4.6.3/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
+PATH="/opt/gcc-4.7.2/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
 export PATH
 # The dir where this file is located - used for sourcing further files
 MYDIR=$PWD/`dirname $BASH_SOURCE[0]`
@@ -178,17 +210,61 @@ if [[ -f $LOGFILE ]]; then
 fi
 process_opts $@
 
+BasicRequirements(){
+    local needed=""
+    [[ -x /opt/gcc-4.7.2/bin/gcc ]] || needed+=" developer/gcc48"
+    [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
+    [[ -x /usr/bin/ld ]] || needed+=" developer/linker"
+    [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
+    [[ -x /usr/bin/gmake ]] || needed+=" developer/build/gnu-make"
+    [[ -f /usr/include/sys/types.h ]] || needed+=" system/header"
+    [[ -f /usr/include/math.h ]] || needed+=" system/library/math/header-math"
+    if [[ -n "$needed" ]]; then
+        logmsg "You appear to be missing some basic build requirements."
+        logmsg "To fix this run:"
+        logmsg " "
+        logmsg "  sudo pkg install$needed"
+        if [[ -n "$BATCH" ]]; then
+            logmsg "===== Build aborted ====="
+            exit 1
+        fi
+        echo
+        for i in "$needed"; do
+           ask_to_install $i "--- Build-time dependency $i not found"
+        done
+    fi
+}
+BasicRequirements
+
 #############################################################################
 # Running as root is not safe
 #############################################################################
 if [[ "$UID" = "0" ]]; then
-    logerr "--- You cannot run this as root"
+    if [[ -n "$ROOT_OK" ]]; then
+        logmsg "--- Running as root, but ROOT_OK is set; continuing"
+    else
+        logerr "--- You cannot run this as root"
+    fi
 fi
 
 #############################################################################
 # Print startup message
 #############################################################################
 [[ -z "$NOBANNER" ]] && logmsg "===== Build started at `date` ====="
+
+
+#############################################################################
+# Libtool -nostdlib hacking
+# libtool doesn't put -nostdlib in the shared archive creation command
+# we need it sometimes.
+#############################################################################
+libtool_nostdlib() {
+    FILE=$1
+    EXTRAS=$2
+    logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib '"$EXTRAS"'#g;' $FILE ||
+        logerr "--- Patching libtool:$FILE for -nostdlib support failed"
+}
+
 #############################################################################
 # Initialization function
 #############################################################################
@@ -231,6 +307,15 @@ init() {
         BUILDDIR=$PROG-$VER
     fi
 
+    RPATH=`echo $PKGSRVR | sed -e 's/^file:\/*/\//'`
+    if [[ "$RPATH" != "$PKGSRVR" ]]; then
+        if [[ ! -d $RPATH ]]; then
+            pkgrepo create $RPATH || \
+                logerr "Could not local repo"
+            pkgrepo add-publisher -s $RPATH $PKGPUBLISHER || \
+                logerr "Could not set publisher on repo"
+        fi
+    fi
     pkgrepo get -s $PKGSRVR > /dev/null 2>&1 || \
         logerr "The PKGSRVR ($PKGSRVR) isn't available. All is doomed."
     verify_depends
@@ -241,8 +326,18 @@ init() {
 #############################################################################
 verify_depends() {
     logmsg "Verifying dependencies"
-    [[ -z "$DEPENDS_IPS" ]] && DEPENDS_IPS=$DEPENDS
-    for i in $DEPENDS_IPS; do
+    # Support old-style runtime deps
+    if [[ -n "$DEPENDS_IPS" && -n "$RUN_DEPENDS_IPS" ]]; then
+        # Either old way or new, not both.
+        logerr "DEPENDS_IPS is deprecated. Please list all runtime dependencies in RUN_DEPENDS_IPS."
+    elif [[ -n "$DEPENDS_IPS" && -z "$RUN_DEPENDS_IPS" ]]; then
+        RUN_DEPENDS_IPS=$DEPENDS_IPS
+    fi
+    # If only DEPENDS_IPS is used, assume the deps are build-time as well
+    if [[ -z "$BUILD_DEPENDS_IPS" && -n "$DEPENDS_IPS" ]]; then
+        BUILD_DEPENDS_IPS=$DEPENDS_IPS
+    fi
+    for i in $BUILD_DEPENDS_IPS; do
         # Trim indicators to get the true name (see make_package for details)
         case ${i:0:1} in
             \=|\?)
@@ -252,16 +347,11 @@ verify_depends() {
                 # If it's an exclude, we should error if it's installed rather than missing
                 i=${i:1}
                 pkg info $i > /dev/null 2<&1 &&
-                    logerr "--- Excluded dependency $i cannot be installed with this package."
-                continue
+                    logerr "--- $i cannot be installed while building this package."
                 ;;
         esac
         pkg info $i > /dev/null 2<&1 ||
-            logerr "--- Package dependency $i not found"
-    done
-    for i in $BUILD_DEPENDS_IPS; do
-        pkg info $i > /dev/null 2<&1 ||
-            logerr "--- Build-time dependency $i not found"
+            ask_to_install "$i" "--- Build-time dependency $i not found"
     done
 }
 
@@ -418,6 +508,7 @@ download_source() {
             $WGET -a $LOGFILE $URLPREFIX.tgz || \
             $WGET -a $LOGFILE $URLPREFIX.tbz || \
             $WGET -a $LOGFILE $URLPREFIX.tar || \
+            $WGET -a $LOGFILE $URLPREFIX.zip || \
             logerr "--- Failed to download file"
         find_archive $ARCHIVEPREFIX FILENAME
         if [[ "$FILENAME" == "" ]]; then
@@ -444,7 +535,7 @@ download_source() {
 # Example: find_archive myprog-1.2.3 FILENAME
 #   Stores myprog-1.2.3.tar.gz in $FILENAME
 find_archive() {
-    FILES=`ls $1.{tar.bz2,tar.gz,tar.xz,tgz,tbz,tar} 2>/dev/null`
+    FILES=`ls $1.{tar.bz2,tar.gz,tar.xz,tgz,tbz,tar,zip} 2>/dev/null`
     FILES=${FILES%% *} # Take only the first filename returned
     # This dereferences the second parameter passed
     eval "$2=\"$FILES\""
@@ -460,6 +551,8 @@ extract_archive() {
         $XZCAT $1 | $TAR xvf -
     elif [[ ${1: -4} == ".tar" ]]; then
         $TAR xvf $1
+    elif [[ ${1: -4} == ".zip" ]]; then
+        $UNZIP $1
     else
         return 1
     fi
@@ -530,9 +623,9 @@ make_package() {
     echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
     echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
     echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
-    if [[ -n "$DEPENDS_IPS" ]]; then
+    if [[ -n "$RUN_DEPENDS_IPS" ]]; then
         logmsg "------ Adding dependencies"
-        for i in $DEPENDS_IPS; do
+        for i in $RUN_DEPENDS_IPS; do
             # IPS dependencies have multiple types, of which we care about four:
             #    require, optional, incorporate, exclude
             # For backward compatibility, assume no indicator means type=require
@@ -562,11 +655,18 @@ make_package() {
     logmsg "--- Applying transforms"
     $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
     logmsg "--- Publishing package"
-    if [[ -z "$BATCH" ]]; then
-        ask_to_continue "Last chance to sanity-check before publication! "
+    if [[ -z $BATCH ]]; then
+        logmsg "Intentional pause: Last chance to sanity-check before publication!"
+        ask_to_continue
     fi
-    logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR -d $TMPDIR/$BUILDDIR \
-        -d $SRCDIR $P5M_FINAL || logerr "------ Failed to publish package"
+    if [[ -n "$DESTDIR" ]]; then
+        logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR -d $TMPDIR/$BUILDDIR \
+            -d $SRCDIR $P5M_FINAL || logerr "------ Failed to publish package"
+    else
+        # If we're a metapackage (no DESTDIR) then there are no directories to check
+        logcmd $PKGSEND -s $PKGSRVR publish $P5M_FINAL || \
+            logerr "------ Failed to publish package"
+    fi
     logmsg "--- Published $FMRI" 
 }
 
@@ -661,6 +761,9 @@ configure64() {
 
 make_prog() {
     [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
+    if [[ -n $LIBTOOL_NOSTDLIB ]]; then
+        libtool_nostdlib $LIBTOOL_NOSTDLIB $LIBTOOL_NOSTDLIB_EXTRAS
+    fi
     logmsg "--- make"
     logcmd $MAKE $MAKE_JOBS || \
         logerr "--- Make failed"
