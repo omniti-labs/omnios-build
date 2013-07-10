@@ -35,7 +35,8 @@ PKG=cat/pkg     # Package name (without prefix)
 SUMMARY=""      # Change this
 DESC=""         # Change this
 
-DEPENDS_IPS="runtime/python-26"
+BUILD_DEPENDS_IPS=
+RUN_DEPENDS_IPS="runtime/python-26"
 
 init
 download_source $PROG $PROG $VER

@@ -35,6 +35,9 @@ PKG=            # Package name (e.g. library/foo)
 SUMMARY=""      # One-liner, must be filled in
 DESC=""         # Longer description, must be filled in
 
+BUILD_DEPENDS_IPS=
+RUN_DEPENDS_IPS=
+
 init
 download_source $PROG $PROG $VER
 patch_source
