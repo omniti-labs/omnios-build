@@ -54,7 +54,6 @@ CONFIGURE_OPTS_32="--prefix=/usr
     --without-sntp
     --without-lineeditlibs
     --with-openssl-libdir=/lib
-    --disable-getifaddrs
 "
 
 overlay_root() {
