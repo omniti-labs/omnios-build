@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libxml2        # App name
-VER=2.9.0           # App version
+VER=2.9.1           # App version
 PKG=library/libxml2 # Package name (without prefix)
 SUMMARY="$PROG - XML C parser and toolkit"
 DESC="$SUMMARY"
@@ -37,12 +37,13 @@ DEPENDS_IPS="compress/xz@5.0 system/library/gcc-4-runtime library/zlib@1.2.7"
 BUILD_DEPENDS_IPS="$DEPENDS_IPS"
 
 fix_python_install() {
-    logcmd mkdir -p $DESTDIR/usr/lib/python2.6/vendor-packages/64 || logerr "failed mkdir"
+    logcmd mkdir -p $DESTDIR/usr/lib/python2.6/vendor-packages
     logcmd mv $DESTDIR/usr/lib/python2.6/site-packages/* $DESTDIR/usr/lib/python2.6/vendor-packages/ || logerr "failed relocating python install"
-    logcmd mv $DESTDIR/usr/lib/amd64/python2.6/site-packages/lib* $DESTDIR/usr/lib/python2.6/vendor-packages/64/ || logerr "failed relocating amd64 python install"
+    logcmd rm -f $DESTDIR/usr/lib/python2.6/vendor-packages/64/drv_libxml2.py
     logcmd rm -rf $DESTDIR/usr/lib/python2.6/site-packages || logerr "failed removing bad python install"
-    logcmd rm -rf $DESTDIR/usr/lib/amd64/python2.6/site-packages || logerr "failed removing bad amd64 python install"
+    logcmd rm -rf $DESTDIR/usr/include/amd64 || logerr "failed removing bad includes install"
 }
+
 install_license(){
     logcmd cp $TMPDIR/$BUILDDIR/COPYING $DESTDIR/license
 }
@@ -57,6 +58,22 @@ make_prog32() {
     logcmd perl -pi -e 's#(\$CC.*\$compiler_flags)#$1 -nostdlib#g;' libtool ||
         logerr "libtool patch failed"
     logcmd gmake || logerr "Make failed"
+}
+
+make_install64() {
+    logmsg "--- make install"
+    logcmd perl -pi -e 's#(\/site-packages)#$1\/64#g;' python/.libs/libxml2mod.la ||
+        logerr "libtool libxml2mod.la patch failed"
+    logcmd perl -pi -e 's#(\/site-packages)#$1\/64#g;' python/libxml2mod.la ||
+        logerr "libtool libxml2mod.la patch failed"
+
+    logcmd perl -pi -e 's#(\/site-packages)#$1\/64#g;' python/.libs/libxml2mod.lai ||
+        logerr "libtool libxml2mod.la patch failed"
+
+    logcmd $MAKE DESTDIR=${DESTDIR} \
+        PYTHON_SITE_PACKAGES=/usr/lib/python2.6/site-packages/64 \
+        install || \
+        logerr "--- Make install failed"
 }
 
 init
