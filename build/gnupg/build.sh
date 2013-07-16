@@ -28,14 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=gnupg
-VER=1.4.12
+VER=1.4.13
 VERHUMAN=$VER
 PKG=omniti/security/gnupg
 SUMMARY="The GNU Privacy Guard"
 DESC="The GNU project's complete and free implementation of the OpenPGP standard as defined by RFC4880."
 
 BUILD_DEPENDS_IPS="web/curl library/readline"
-DEPENDS_IPS="web/curl library/readline"
 
 BUILDARCH=32
 
