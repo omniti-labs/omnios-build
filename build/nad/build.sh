@@ -52,8 +52,14 @@ configure64() {
     true
 }
 
+make_install() {
+    logmsg "--- make install-illumos"
+    logcmd $MAKE DESTDIR=${DESTDIR} install-illumos || \
+        logerr "--- Make install-illumos failed"
+}
+
 init
-download_git git://github.com/omniti-labs/nad.git $PROG-$VER
+download_git git://github.com/circonus-labs/nad.git $PROG-$VER
 VERHUMAN="(checkout as of $REVDATE)"
 patch_source
 prep_build
