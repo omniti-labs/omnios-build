@@ -1,0 +1,11 @@
+--- iftop-1.0pre2/ui.c.orig
++++ iftop-1.0pre2/ui.c
+@@ -6,7 +6,7 @@
+ #include <sys/types.h>
+ 
+ #include <ctype.h>
+-#include <curses.h>
++#include <ncurses/curses.h>
+ #include <errno.h>
+ #include <string.h>
+ #include <math.h>

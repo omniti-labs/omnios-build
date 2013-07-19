@@ -1,0 +1,9 @@
+--- iftop-1.0pre2/dlcommon.h.orig
++++ iftop-1.0pre2/dlcommon.h
+@@ -32,6 +32,5 @@
+ /*
+  * externs go here
+  */
+-extern	void	sigalrm();
+ 
+ #endif /* !DLCOMMON_H */
