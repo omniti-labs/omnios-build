@@ -35,9 +35,11 @@ VERHUMAN=$VER   # Human-readable version
 PKG=omniti/system/management/chef       # Package name (without prefix)
 SUMMARY="$PROG" # A short summary of what the app is, starting with its name
 DESC="$SUMMARY ($VER)" # Longer description
+PATH=/usr/gnu/bin:$PATH
+export PATH
 
 BUILDARCH=32
-DEPENDS_IPS="omniti/runtime/ruby-19"
+DEPENDS_IPS="omniti/runtime/ruby-19 =library/libffi@3.0.11 library/libffi"
 BUILD_DEPENDS_IPS="gnu-coreutils gnu-findutils omniti/runtime/ruby-19"
 
 # we Fetch all of these direclty from rubygens.org. you can chnage that in the files/gemrc.
