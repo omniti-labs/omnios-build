@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=vippy
-VER=0.0.1
+VER=0.0.4
 PKG=omniti/runtime/nodejs/node-$PROG
 SUMMARY="VIP management (juggler of IPs)"
 DESC="$SUMMARY"
@@ -44,6 +44,16 @@ export PATH
 init
 prep_build
 build_npm
+logcmd mkdir -p $DESTDIR/opt/omni/bin || logerr "mkdir bin failed"
+logcmd mkdir -p $DESTDIR/opt/omni/sbin || logerr "mkdir sbin failed"
+logcmd ln -s ../lib/node/.bin/vippyctl $DESTDIR/opt/omni/bin/vippyctl \
+	|| logerr "Failed to link vippyctl"
+logcmd ln -s ../lib/node/.bin/vippyd $DESTDIR/opt/omni/sbin/vippyd \
+	|| logerr "Failed to link vippyd"
+logcmd mkdir -p $DESTDIR/lib/svc/manifest/network \
+	|| logerr "Failed to mkdir for SMF manifest"
+logcmd cp $SRCDIR/files/vippy.xml $DESTDIR/lib/svc/manifest/network/vippy.xml \
+	|| logerr "Failed to place SMF manifest"
 make_package
 clean_up
 
