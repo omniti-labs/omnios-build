@@ -5,6 +5,7 @@
 
 PROG=trafficserver
 VER=3.3.4-dev
+VERHUMAN=$VER
 PKG=omniti/server/trafficserver-dev
 SUMMARY="Apache Traffic Server - HTTP cache"
 DESC="$SUMMARY"
@@ -61,6 +62,6 @@ patch_source
 prep_build
 build
 move_etc
-VER=3.3.4
+VER=${VER/-dev/}
 make_package
 clean_up
