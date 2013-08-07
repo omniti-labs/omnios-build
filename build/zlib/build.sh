@@ -18,7 +18,7 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
     --libdir=$PREFIX/lib"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
-    --includedir=$PREFIX/include/$ISAPART64
+    --includedir=$PREFIX/include
     --libdir=$PREFIX/lib/$ISAPART64"
 
 install_license(){

@@ -61,9 +61,9 @@ configure32() {
 configure64() {
     DBUS_LIBS=-ldbus-1
     export DBUS_LIBS
-    DBUS_CFLAGS="-I/usr/include/amd64/dbus-1.0 -I/usr/lib/amd64/dbus-1.0/include"
+    DBUS_CFLAGS="-I/usr/include/dbus-1.0 -I/usr/lib/amd64/dbus-1.0/include"
     export DBUS_CFLAGS
-    DBUS_GLIB_CFLAGS="-I/usr/include/amd64/glib-2.0 -I/usr/lib/amd64/glib-2.0/include"
+    DBUS_GLIB_CFLAGS="-I/usr/include/glib-2.0 -I/usr/lib/amd64/glib-2.0/include"
     export DBUS_GLIB_CFLAGS
     DBUS_GLIB_LIBS="-lglib-2.0 -lgobject-2.0 -lgio-2.0"
     export DBUS_GLIB_LIBS
