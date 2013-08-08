@@ -52,6 +52,7 @@ preprep_build() {
   done
   logcmd libtoolize -f || logerr "libtoolize failed"
   logcmd aclocal || logerr "aclocal failed"
+  logcmd automake --add-missing || logerr "automake --add-missing failed"
   logcmd automake src/tspi/Makefile || logerr "automake failed"
   logcmd autoreconf -vi 2>&1 > /dev/null
   logcmd autoreconf -vi || logerr "autoreconf failed"
