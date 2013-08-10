@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=docutils
-VER=0.10
+VER=0.11
 VERHUMAN=$VER
 PKG=omniti/library/python-2/docutils
 SUMMARY="Python text processing system"
