@@ -35,8 +35,8 @@ PKG=omniti/logging/rsyslog
 SUMMARY="The enhanced syslogd for Linux and Unix"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="developer/parser/bison omniti/library/python-2/docutils library/security/openssl omniti/security/libguardtime omniti/security/guardtime omniti/library/libee omniti/library/libestr omniti/library/json-c omniti/library/uuid"
-DEPENDS_IPS="library/security/openssl omniti/security/libguardtime omniti/security/guardtime omniti/library/libee omniti/library/libestr omniti/library/json-c omniti/library/uuid"
+BUILD_DEPENDS_IPS="developer/parser/bison omniti/library/python-2/docutils library/security/openssl omniti/security/libguardtime omniti/security/guardtime omniti/library/libee omniti/library/libestr omniti/library/json-c omniti/library/uuid omniti/security/libgcrypt"
+DEPENDS_IPS="library/security/openssl omniti/security/libguardtime omniti/security/guardtime omniti/library/libee omniti/library/libestr omniti/library/json-c omniti/library/uuid omniti/security/libgcrypt"
 
 CFLAGS="-I/opt/omni/include"
 CFLAGS64="-I/usr/include/amd64 -I/opt/omni/include/amd64 $CFLAGS64"
