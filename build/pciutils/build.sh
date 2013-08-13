@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pciutils
-VER=3.1.10
+VER=3.2.0
 VERHUMAN=$VER
 PKG=system/pciutils
 SUMMARY="Programs (lspci, setpci) for inspecting and manipulating configuration of PCI devices"
@@ -38,10 +38,27 @@ DEPENDS_IPS="system/pciutils/pci.ids@2.2"
 
 BUILDARCH=32
 NO_PARALLEL_MAKE=1
-CFLAGS="-DBYTE_ORDER=1234"
+
+export PATH=/usr/gnu/bin:$PATH
 
 configure32() {
-    export CC CFLAGS CFLAGS32 PREFIX
+    export CC PREFIX
+}
+
+make_prog() {
+    [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
+    if [[ -n $LIBTOOL_NOSTDLIB ]]; then
+        libtool_nostdlib $LIBTOOL_NOSTDLIB $LIBTOOL_NOSTDLIB_EXTRAS
+    fi
+    logmsg "--- make"
+    logcmd $MAKE $MAKE_JOBS PREFIX=$PREFIX OPT="-O2 -DBYTE_ORDER=1234 -DLITTLE_ENDIAN=1234" || \
+        logerr "--- Make failed"
+}
+
+make_install() {
+    logmsg "--- make install"
+    logcmd $MAKE DESTDIR=${DESTDIR} PREFIX=$PREFIX install || \
+        logerr "--- Make install failed"
 }
 
 init

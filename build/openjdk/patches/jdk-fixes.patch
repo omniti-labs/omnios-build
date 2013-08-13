@@ -150,66 +150,6 @@ diff --git a/src/share/native/sun/java2d/cmm/lcms/cmstypes.c b/src/share/native/
              // e = Min
              // b=c=d=f=0
  
-diff --git a/src/share/native/sun/java2d/cmm/lcms/cmsxform.c b/src/share/native/sun/java2d/cmm/lcms/cmsxform.c
---- jdk/src/share/native/sun/java2d/cmm/lcms/cmsxform.c
-+++ jdk/src/share/native/sun/java2d/cmm/lcms/cmsxform.c
-@@ -189,7 +189,7 @@
- 
- // 16 bit precision -----------------------------------------------------------------------------------------------------------
- 
--// Null transformation, only applies formatters. No caché
-+// Null transformation, only applies formatters. No cache
- static
- void NullXFORM(_cmsTRANSFORM* p,
-                const void* in,
-@@ -256,7 +256,7 @@
-         p ->Lut ->Eval16Fn(wIn, wOut, p -> Lut->Data);
- }
- 
--// Gamut check, No caché, 16 bits.
-+// Gamut check, No cache, 16 bits.
- static
- void PrecalculatedXFORMGamutCheck(_cmsTRANSFORM* p,
-                                   const void* in,
-@@ -280,7 +280,7 @@
- }
- 
- 
--// No gamut check, Caché, 16 bits,
-+// No gamut check, Cache, 16 bits,
- static
- void CachedXFORM(_cmsTRANSFORM* p,
-                  const void* in,
-@@ -406,7 +406,7 @@
-             return NULL;
-         }
- 
--        // Float transforms don't use caché, always are non-NULL
-+        // Float transforms don't use cache, always are non-NULL
-         p ->xform = FloatXFORM;
-     }
-     else {
-@@ -429,16 +429,16 @@
-             if (dwFlags & cmsFLAGS_NOCACHE) {
- 
-                 if (dwFlags & cmsFLAGS_GAMUTCHECK)
--                    p ->xform = PrecalculatedXFORMGamutCheck;  // Gamut check, no caché
-+                    p ->xform = PrecalculatedXFORMGamutCheck;  // Gamut check, no cache
-                 else
--                    p ->xform = PrecalculatedXFORM;  // No caché, no gamut check
-+                    p ->xform = PrecalculatedXFORM;  // No cache, no gamut check
-             }
-             else {
- 
-                 if (dwFlags & cmsFLAGS_GAMUTCHECK)
--                    p ->xform = CachedXFORMGamutCheck;    // Gamut check, caché
-+                    p ->xform = CachedXFORMGamutCheck;    // Gamut check, cache
-                 else
--                    p ->xform = CachedXFORM;  // No gamut check, caché
-+                    p ->xform = CachedXFORM;  // No gamut check, cache
- 
-             }
-         }
 diff --git a/src/solaris/native/sun/awt/jawt.c b/src/solaris/native/sun/awt/jawt.c
 --- jdk/src/solaris/native/sun/awt/jawt.c
 +++ jdk/src/solaris/native/sun/awt/jawt.c
@@ -222,3 +162,63 @@ diff --git a/src/solaris/native/sun/awt/jawt.c b/src/solaris/native/sun/awt/jawt
      /* there are no AWT libs available at all */
      return JNI_FALSE;
  #else
+diff --git a/src/share/native/sun/java2d/cmm/lcms/cmsxform.c b/src/share/native/sun/java2d/cmm/lcms/cmsxform.c
+--- jdk/src/share/native/sun/java2d/cmm/lcms/cmsxform.c
++++ jdk/src/share/native/sun/java2d/cmm/lcms/cmsxform.c
+@@ -204,7 +204,7 @@
+ 
+ // 16 bit precision -----------------------------------------------------------------------------------------------------------
+ 
+-// Null transformation, only applies formatters. No caché
++// Null transformation, only applies formatters. No cache
+ static
+ void NullXFORM(_cmsTRANSFORM* p,
+                const void* in,
+@@ -272,7 +272,7 @@
+         p ->Lut ->Eval16Fn(wIn, wOut, p -> Lut->Data);
+ }
+ 
+-// Gamut check, No caché, 16 bits.
++// Gamut check, No cache, 16 bits.
+ static
+ void PrecalculatedXFORMGamutCheck(_cmsTRANSFORM* p,
+                                   const void* in,
+@@ -296,7 +296,7 @@
+ }
+ 
+ 
+-// No gamut check, Caché, 16 bits,
++// No gamut check, Cache, 16 bits,
+ static
+ void CachedXFORM(_cmsTRANSFORM* p,
+                  const void* in,
+@@ -521,7 +521,7 @@
+             return NULL;
+         }
+ 
+-        // Float transforms don't use caché, always are non-NULL
++        // Float transforms don't use cache, always are non-NULL
+         p ->xform = FloatXFORM;
+     }
+     else {
+@@ -558,16 +558,16 @@
+             if (*dwFlags & cmsFLAGS_NOCACHE) {
+ 
+                 if (*dwFlags & cmsFLAGS_GAMUTCHECK)
+-                    p ->xform = PrecalculatedXFORMGamutCheck;  // Gamut check, no caché
++                    p ->xform = PrecalculatedXFORMGamutCheck;  // Gamut check, no cache
+                 else
+-                    p ->xform = PrecalculatedXFORM;  // No caché, no gamut check
++                    p ->xform = PrecalculatedXFORM;  // No cache, no gamut check
+             }
+             else {
+ 
+                 if (*dwFlags & cmsFLAGS_GAMUTCHECK)
+-                    p ->xform = CachedXFORMGamutCheck;    // Gamut check, caché
++                    p ->xform = CachedXFORMGamutCheck;    // Gamut check, cache
+                 else
+-                    p ->xform = CachedXFORM;  // No gamut check, caché
++                    p ->xform = CachedXFORM;  // No gamut check, cache
+ 
+             }
+         }

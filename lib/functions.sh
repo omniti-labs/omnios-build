@@ -326,8 +326,18 @@ init() {
 #############################################################################
 verify_depends() {
     logmsg "Verifying dependencies"
-    [[ -z "$DEPENDS_IPS" ]] && DEPENDS_IPS=$DEPENDS
-    for i in $DEPENDS_IPS; do
+    # Support old-style runtime deps
+    if [[ -n "$DEPENDS_IPS" && -n "$RUN_DEPENDS_IPS" ]]; then
+        # Either old way or new, not both.
+        logerr "DEPENDS_IPS is deprecated. Please list all runtime dependencies in RUN_DEPENDS_IPS."
+    elif [[ -n "$DEPENDS_IPS" && -z "$RUN_DEPENDS_IPS" ]]; then
+        RUN_DEPENDS_IPS=$DEPENDS_IPS
+    fi
+    # If only DEPENDS_IPS is used, assume the deps are build-time as well
+    if [[ -z "$BUILD_DEPENDS_IPS" && -n "$DEPENDS_IPS" ]]; then
+        BUILD_DEPENDS_IPS=$DEPENDS_IPS
+    fi
+    for i in $BUILD_DEPENDS_IPS; do
         # Trim indicators to get the true name (see make_package for details)
         case ${i:0:1} in
             \=|\?)
@@ -337,14 +347,9 @@ verify_depends() {
                 # If it's an exclude, we should error if it's installed rather than missing
                 i=${i:1}
                 pkg info $i > /dev/null 2<&1 &&
-                    logerr "--- Excluded dependency $i cannot be installed with this package."
-                continue
+                    logerr "--- $i cannot be installed while building this package."
                 ;;
         esac
-        pkg info $i > /dev/null 2<&1 ||
-            logerr "--- Package dependency $i not found"
-    done
-    for i in $BUILD_DEPENDS_IPS; do
         pkg info $i > /dev/null 2<&1 ||
             ask_to_install "$i" "--- Build-time dependency $i not found"
     done
@@ -618,9 +623,9 @@ make_package() {
     echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
     echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
     echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
-    if [[ -n "$DEPENDS_IPS" ]]; then
+    if [[ -n "$RUN_DEPENDS_IPS" ]]; then
         logmsg "------ Adding dependencies"
-        for i in $DEPENDS_IPS; do
+        for i in $RUN_DEPENDS_IPS; do
             # IPS dependencies have multiple types, of which we care about four:
             #    require, optional, incorporate, exclude
             # For backward compatibility, assume no indicator means type=require

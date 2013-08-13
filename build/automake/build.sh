@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=automake
-VER=1.12
+VER=1.14
 VERHUMAN=$VER
 PKG=developer/build/automake
 SUMMARY="GNU Automake $VER"

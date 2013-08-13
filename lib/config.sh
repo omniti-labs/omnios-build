@@ -178,7 +178,7 @@ reset_configure_opts() {
 
     CONFIGURE_OPTS_64="--prefix=$PREFIX
         --sysconfdir=$SYSCONFDIR
-        --includedir=$PREFIX/include/$ISAPART64
+        --includedir=$PREFIX/include
         --bindir=$PREFIX/bin/$ISAPART64
         --sbindir=$PREFIX/sbin/$ISAPART64
         --libdir=$PREFIX/lib/$ISAPART64
