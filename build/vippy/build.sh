@@ -28,8 +28,8 @@
 . ../../lib/functions.sh
 
 PROG=vippy
-VER=0.0.1
-PKG=omniti/runtime/nodejs/node-$PROG
+VER=0.0.4
+PKG=omniti/runtime/nodejs/$PROG
 SUMMARY="VIP management (juggler of IPs)"
 DESC="$SUMMARY"
 
@@ -41,9 +41,17 @@ BUILDARCH=64
 PATH=/usr/gnu/bin:$PATH
 export PATH
 
+copy_manifest() {
+    # SMF manifest
+    logmsg "--- Copying SMF manifest"
+    logcmd mkdir -p ${DESTDIR}/lib/svc/manifest/network
+    logcmd cp $SRCDIR/files/vippy.xml ${DESTDIR}/lib/svc/manifest/network
+}
+
 init
 prep_build
 build_npm
+copy_manifest
 make_package
 clean_up
 
