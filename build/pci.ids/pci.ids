@@ -1,8 +1,8 @@
 #
 #	List of PCI ID's
 #
-#	Version: 2013.07.26
-#	Date:    2013-07-26 03:15:02
+#	Version: 2013.08.09
+#	Date:    2013-08-09 03:15:02
 #
 #	Maintained by Martin Mares <mj@ucw.cz> and other volunteers from the
 #	PCI ID Project at http://pci-ids.ucw.cz/.
@@ -636,7 +636,7 @@
 	4154  RV350 GL [FireGL T2]
 	4155  RV350 [Radeon 9600]
 	4157  RV350 GL [FireGL T2]
-	4158  68800AX [Mach32]
+	4158  68800AX [Graphics Ultra Pro PCI]
 	4164  R300 [Radeon 9500 PRO] (Secondary)
 	4165  R300 [Radeon 9700 PRO] (Secondary)
 	4166  R300 [Radeon 9700 PRO] (Secondary)
@@ -931,7 +931,7 @@
 	4753  Rage XC
 		1002 4753  Rage XC
 	4754  3D Rage II/II+ PCI [Mach64 GT]
-	4755  3D Rage II+ PCI [Mach64 GTB]
+	4755  Mach64 GTB [3D Rage II+ DVD]
 	4756  3D Rage IIC PCI [Mach64 GT IIC]
 		1002 4756  Rage IIC
 	4757  3D Rage IIC AGP
@@ -3440,7 +3440,7 @@
 		1014 035d  PCIe3 1.8GB Cache RAID SAS Adapter Quad-port 6GB (57C8)
 		1014 035e  PCIe2 3.6GB Cache 6Gb SAS RAID Adapter Quad-port (57CE)
 		1014 03fb  PCIe3 28GB Cache RAID SAS Enclosure 6Gb x 16 (57D5)
-	04aa  Flash Adapter 900GB Full Height
+	04aa  Flash Adapter 90 (PCIe2 0.9TB)
 	3022  QLA3022 Network Adapter
 	4022  QLA3022 Network Adapter
 	ffff  MPIC-2 interrupt controller
@@ -8328,6 +8328,45 @@
 	0a76  GT218 [ION 2]
 	0a78  GT218GL [Quadro FX 380 LP]
 	0a7a  GT218M [GeForce 315M]
+		104d 907e  GeForce 315M
+		1179 fc50  GeForce 315M
+		1179 fc61  GeForce 315M
+		1179 fc71  GeForce 315M
+		1179 fc90  GeForce 315M
+		1179 fcc0  GeForce 315M
+		1179 fcd0  GeForce 315M
+		1179 fce2  GeForce 315M
+		1179 fcf2  GeForce 315M
+		1179 fd16  GeForce 315M
+		1179 fd40  GeForce 315M
+		1179 fd50  GeForce 315M
+		1179 fd52  GeForce 315M
+		1179 fd61  GeForce 315M
+		1179 fd71  GeForce 315M
+		1179 fd92  GeForce 315M
+		1179 fd96  GeForce 315M
+		1179 fdd0  GeForce 315M
+		1179 fdd2  GeForce 315M
+		1179 fdfe  GeForce 315M
+		144d c0a2  GeForce 315M
+		144d c0b2  GeForce 315M
+		144d c581  GeForce 315M
+		144d c587  GeForce 315M
+		144d c588  GeForce 315M
+		144d c597  GeForce 315M
+		144d c606  GeForce 315M
+		1462 aa51  GeForce 405
+		1462 aa58  GeForce 405
+		1462 ac71  GeForce 405
+		1462 ac81  GeForce 315M
+		1462 ac82  GeForce 405
+		1462 ae33  GeForce 405
+		17aa 3950  GeForce 405M
+		17aa 397d  GeForce 405M
+		1b0a 2091  GeForce 315M
+		1bfd 0003  GeForce 405
+		1bfd 8006  GeForce 405
+		1bfd 8007  GeForce 315M
 	0a7b  GT218 [GeForce 505]
 	0a7c  GT218GLM [Quadro FX 380M]
 	0a80  MCP79 Host Bridge
@@ -8754,6 +8793,7 @@
 		1462 10e9  GeForce GT 720M
 		1462 aa33  GeForce 720M
 		1462 aaa2  GeForce GT 720M
+		1462 ae71  GeForce GT 720M
 		152d 0926  GeForce 620M
 		152d 0982  GeForce GT 630M
 		152d 0983  GeForce GT 630M
@@ -8802,6 +8842,7 @@
 		10de 101d  GRID K200
 	118f  GK104GL [Tesla K10]
 	119d  GK104M [GeForce GTX 775M]
+	119e  GK104M [GeForce GTX 780M]
 	119f  GK104M [GeForce GTX 780M]
 	11a0  GK104M [GeForce GTX 680M]
 	11a1  GK104M [GeForce GTX 670MX]
@@ -8832,6 +8873,7 @@
 		10de 1030  GeForce GTX 650 Ti OEM
 	11c4  GK106 [GeForce GTX 645 OEM]
 	11c6  GK106 [GeForce GTX 650 Ti]
+	11c8  GK106 [GeForce GTX 650 OEM]
 	11e0  GK106M [GeForce GTX 770M]
 	11e1  GK106M [GeForce GTX 765M]
 	11e2  GK106M [GeForce GTX 765M]
@@ -8862,7 +8904,16 @@
 		1043 212a  GeForce GT 635M
 		1043 212b  GeForce GT 635M
 		1043 212c  GeForce GT 635M
-	1248  GF116M [GeForce GT 555M]
+		152d 0930  GeForce GT 635M
+	1248  GF116M [GeForce GT 555M/635M]
+		152d 0930  GeForce GT 635M
+		17c0 10e7  GeForce GT 555M
+		17c0 10e8  GeForce GT 555M
+		17c0 10ea  GeForce GT 555M
+		1854 0890  GeForce GT 555M
+		1854 0891  GeForce GT 555M
+		1854 1795  GeForce GT 555M
+		1854 1796  GeForce GT 555M
 	1249  GF116 [GeForce GTS 450 Rev. 3]
 	124b  GF116 [GeForce GT 640 OEM]
 	124d  GF116M [GeForce GT 555M/635M]
@@ -8881,6 +8932,7 @@
 	1294  GK208M [GeForce GT 740M]
 	1295  GK208M [GeForce 710M]
 	12a0  GK208
+	12b9  GK208GLM [Quadro K610M]
 	12ba  GK208GLM [Quadro K510M]
 10df  Emulex Corporation
 	0720  OneConnect NIC (Skyhawk)
@@ -10506,6 +10558,8 @@
 		1137 0048  VIC M81KR Mezzanine FCoE HBA
 		1137 004f  VIC 1280 Mezzanine FCoE HBA
 	004e  VIC 82 PCIe Upstream Port
+	0084  VIC 1240 MLOM FCoE HBA
+	0085  VIC 1225 PCIe FCOE HBA
 	00cf  VIC Userspace NIC
 1138  Ziatech Corporation
 	8905  8905 [STD 32 Bridge]
@@ -12119,6 +12173,7 @@
 	0510  SM501 VoyagerGX Rev. B
 	0710  SM710 LynxEM
 	0712  SM712 LynxEM+
+	0718  SM718 LynxSE+
 	0720  SM720 Lynx3DM
 	0730  SM731 Cougar3DR
 	0810  SM810 LynxE
@@ -15621,6 +15676,7 @@
 	0620  FarSync T2U (2 port X.21/V.35/V.24)
 	0640  FarSync T4U (4 port X.21/V.35/V.24)
 	1610  FarSync TE1 (T1,E1)
+	1612  FarSync TE1 PCI Express (T1,E1)
 	2610  FarSync DSL-S1 (SHDSL)
 	3640  FarSync T4E (4-port X.21/V.35/V.24)
 	4620  FarSync T2Ue PCI Express (2-port X.21/V.35/V.24)
@@ -15657,18 +15713,20 @@
 		103c 1743  HP 81B 8Gbps single port FC HBA
 		1657 0014  415/815 4Gbps/8Gbps single port PCIe FC HBA
 	0021  804 8Gbps FC HBA for HP Bladesystem c-class
-	0022  1867/1860: 16Gbps/10Gbps Fabric Adapter
+# AnyIO Adapter
+	0022  1860 16Gbps/10Gbps Fabric Adapter
 		1657 0022  10Gbps CNA - FCOE
 		1657 0023  10Gbps CNA - LL
 		1657 0024  16Gbps FC HBA
 # Mezz card for IBM
-	0023  1869 16Gbps FC HBA
+	0023  1867/1869 16Gbps FC HBA
 # Same Device_ID used for 410 (1port) and 420 (2 port) HBAs.
 	0646  400 4Gbps PCIe FC HBA
 165a  Epix Inc
 	c100  PIXCI(R) CL1 Camera Link Video Capture Board [custom QL5232]
 	d200  PIXCI(R) D2X Digital Video Capture Board [custom QL5232]
 	d300  PIXCI(R) D3X Digital Video Capture Board [custom QL5232]
+	eb01  PIXCI(R) EB1 PCI Camera Link Video Capture Board
 165d  Hsing Tech. Enterprise Co., Ltd.
 165f  Linux Media Labs, LLC
 	1020  LMLM4 MPEG-4 encoder
@@ -23002,7 +23060,7 @@
 	8d66  Wellsburg sSATA Controller [RAID mode]
 	8d68  Wellsburg sSATA Controller [IDE mode]
 	8d6e  Wellsburg sSATA Controller [RAID mode]
-	8d7c  Wellsburg EPSS
+	8d7c  Wellsburg SPSR
 	8d7d  Wellsburg MS SMBus 0
 	8d7e  Wellsburg MS SMBus 1
 	8d7f  Wellsburg MS SMBus 2
