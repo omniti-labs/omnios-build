@@ -63,5 +63,7 @@ prep_build
 build
 move_etc
 VER=${VER/-dev/}
+logcmd mkdir -p /lib/svc/manifest/network
+logcmd cp $SRCDIR/files/trafficserver.xml ${DESTDIR}/lib/svc/manifest/network/trafficserver.xml
 make_package
 clean_up
