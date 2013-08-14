@@ -27,35 +27,36 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=vippy
-VER=0.0.4
-PKG=omniti/runtime/nodejs/$PROG
-SUMMARY="VIP management (juggler of IPs)"
+PROG=docutils
+VER=0.11
+VERHUMAN=$VER
+PKG=omniti/library/python-2/docutils
+SUMMARY="Python text processing system"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="omniti/runtime/nodejs"
-DEPENDS_IPS="omniti/runtime/nodejs"
+BUILD_DEPENDS_IPS="omniti/runtime/python-26"
+DEPENDS_IPS="omniti/runtime/python-26"
 
 BUILDARCH=64
+PYTHON=/opt/python26/bin/python
+LDFLAGS64="-L$PYTHONLIB -R$PYTHONLIB -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
+PATH=/opt/omni/bin:/opt/python26/bin:$PATH
 
-PATH=/usr/gnu/bin:$PATH
-export PATH
+link_bins() {
+    logmsg "--- Symlinking binaries"
+    pushd ${DESTDIR}/opt/python26/bin
+    for BIN in `ls *.py` ; do
+        NEWBIN=$(basename $BIN | cut -d. -f1)
+        logcmd ln -sf $BIN $NEWBIN
+    done
+    popd
+}
 
 init
+download_source $PROG $PROG $VER
+patch_source
 prep_build
-build_npm
-logcmd mkdir -p $DESTDIR/opt/omni/bin || logerr "mkdir bin failed"
-logcmd mkdir -p $DESTDIR/opt/omni/sbin || logerr "mkdir sbin failed"
-logcmd ln -s ../lib/node/.bin/vippyctl $DESTDIR/opt/omni/bin/vippyctl \
-	|| logerr "Failed to link vippyctl"
-logcmd ln -s ../lib/node/.bin/vippyd $DESTDIR/opt/omni/sbin/vippyd \
-	|| logerr "Failed to link vippyd"
-logcmd mkdir -p $DESTDIR/lib/svc/manifest/network \
-	|| logerr "Failed to mkdir for SMF manifest"
-logcmd cp $SRCDIR/files/vippy.xml $DESTDIR/lib/svc/manifest/network/vippy.xml \
-	|| logerr "Failed to place SMF manifest"
+python_build
+link_bins
 make_package
 clean_up
-
-# Vim hints
-# vim:ts=4:sw=4:et:

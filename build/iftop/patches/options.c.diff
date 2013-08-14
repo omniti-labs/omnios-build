@@ -1,0 +1,10 @@
+--- iftop-1.0pre2/options.c.orig
++++ iftop-1.0pre2/options.c
+@@ -15,6 +15,7 @@
+ 
+ #include <sys/ioctl.h>
+ #include <sys/socket.h>
++#include <sys/sockio.h>
+ #include <netinet/in.h>
+ #include <arpa/inet.h>
+ #include <net/if.h>

@@ -1,0 +1,12 @@
+diff --git a/lib/kibana-app.rb b/lib/kibana-app.rb
+index 1ceefc2..a5b783c 100644
+--- a/lib/kibana-app.rb
++++ b/lib/kibana-app.rb
+@@ -328,6 +328,7 @@ class KibanaApp < Sinatra::Base
+   end
+
+   get '/js/timezone.js' do
++    headers "Content-Type" => "text/javascript"
+     erb :timezone
+   end
+ end

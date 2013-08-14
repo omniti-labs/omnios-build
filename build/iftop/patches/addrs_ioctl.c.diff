@@ -1,0 +1,22 @@
+--- iftop-1.0pre2/addrs_ioctl.c.orig
++++ iftop-1.0pre2/addrs_ioctl.c
+@@ -18,8 +18,7 @@
+ #include <net/if.h>
+ #include <netinet/in.h>
+ 
+-#if defined __FreeBSD__ || defined __OpenBSD__ || defined __APPLE__ \
+-      || ( defined __GNUC__ && ! defined __linux__ )
++#if defined __FreeBSD__ || defined __OpenBSD__ || defined __APPLE__
+ #include <sys/param.h>
+ #include <sys/sysctl.h>
+ #include <net/if_dl.h>
+@@ -80,8 +79,7 @@
+     got_hw_addr = 1;
+   }
+ #else
+-#if defined __FreeBSD__ || defined __OpenBSD__ || defined __APPLE__ \
+-      || ( defined __GNUC__ && ! defined __linux__ )
++#if defined __FreeBSD__ || defined __OpenBSD__ || defined __APPLE__
+   {
+     int sysctlparam[6] = {CTL_NET, PF_ROUTE, 0, 0, NET_RT_IFLIST, 0};
+     size_t needed = 0;

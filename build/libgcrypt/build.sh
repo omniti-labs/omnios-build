@@ -21,39 +21,33 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2013 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=vippy
-VER=0.0.4
-PKG=omniti/runtime/nodejs/$PROG
-SUMMARY="VIP management (juggler of IPs)"
+PROG=libgcrypt
+VER=1.5.3
+VERHUMAN=$VER
+PKG=omniti/security/libgcrypt
+SUMMARY="libgcrypt - cryptographic library"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="omniti/runtime/nodejs"
-DEPENDS_IPS="omniti/runtime/nodejs"
+BUILD_DEPENDS_IPS="omniti/security/libgpg-error"
+DEPENDS_IPS="omniti/security/libgpg-error system/library system/library/gcc-4-runtime"
 
-BUILDARCH=64
+LDFLAGS="-L/opt/omni/lib -R/opt/omni/lib"
+LDFLAGS64="-L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
 
-PATH=/usr/gnu/bin:$PATH
-export PATH
+CONFIGURE_OPTS="--disable-static"
 
 init
+download_source $PROG $PROG $VER
+patch_source
 prep_build
-build_npm
-logcmd mkdir -p $DESTDIR/opt/omni/bin || logerr "mkdir bin failed"
-logcmd mkdir -p $DESTDIR/opt/omni/sbin || logerr "mkdir sbin failed"
-logcmd ln -s ../lib/node/.bin/vippyctl $DESTDIR/opt/omni/bin/vippyctl \
-	|| logerr "Failed to link vippyctl"
-logcmd ln -s ../lib/node/.bin/vippyd $DESTDIR/opt/omni/sbin/vippyd \
-	|| logerr "Failed to link vippyd"
-logcmd mkdir -p $DESTDIR/lib/svc/manifest/network \
-	|| logerr "Failed to mkdir for SMF manifest"
-logcmd cp $SRCDIR/files/vippy.xml $DESTDIR/lib/svc/manifest/network/vippy.xml \
-	|| logerr "Failed to place SMF manifest"
+build
+make_isa_stub
 make_package
 clean_up
 

@@ -27,33 +27,21 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=vippy
-VER=0.0.4
-PKG=omniti/runtime/nodejs/$PROG
-SUMMARY="VIP management (juggler of IPs)"
-DESC="$SUMMARY"
-
-BUILD_DEPENDS_IPS="omniti/runtime/nodejs"
-DEPENDS_IPS="omniti/runtime/nodejs"
+PROG=mbuffer
+VER=20130220
+VERHUMAN=$VER
+PKG=omniti/system/mbuffer
+SUMMARY="$PROG - measuring buffer"
+DESC="mbuffer is a tool for buffering data streams"
 
 BUILDARCH=64
 
-PATH=/usr/gnu/bin:$PATH
-export PATH
-
 init
+download_source $PROG $PROG $VER
+patch_source
 prep_build
-build_npm
-logcmd mkdir -p $DESTDIR/opt/omni/bin || logerr "mkdir bin failed"
-logcmd mkdir -p $DESTDIR/opt/omni/sbin || logerr "mkdir sbin failed"
-logcmd ln -s ../lib/node/.bin/vippyctl $DESTDIR/opt/omni/bin/vippyctl \
-	|| logerr "Failed to link vippyctl"
-logcmd ln -s ../lib/node/.bin/vippyd $DESTDIR/opt/omni/sbin/vippyd \
-	|| logerr "Failed to link vippyd"
-logcmd mkdir -p $DESTDIR/lib/svc/manifest/network \
-	|| logerr "Failed to mkdir for SMF manifest"
-logcmd cp $SRCDIR/files/vippy.xml $DESTDIR/lib/svc/manifest/network/vippy.xml \
-	|| logerr "Failed to place SMF manifest"
+build
+make_isa_stub
 make_package
 clean_up
 

@@ -27,10 +27,14 @@
 # Load support functions
 . ../../lib/functions.sh
 
+# Node.js needs objdump to be GNU binutils
+PATH=$PATH:/usr/gnu/i386-pc-solaris2.11/bin
+export PATH
+
 PROG=node
-VER=0.8.23
+VER=0.10.15
 GITREPO=https://github.com/joyent/node.git
-GITHASH=c67f8d0500fe15637a623eb759d2ad7eb9fb3b0b
+GITHASH=2426d65af860bda7be9f0832a99601cc43c6cf63
 VERHUMAN=$VER
 PKG=omniti/runtime/nodejs
 SUMMARY="evented I/O for v8 javascript"

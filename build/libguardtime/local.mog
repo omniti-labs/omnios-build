@@ -1,0 +1,3 @@
+license opt/omni/share/doc/libgt/license.txt license=Apache2
+license opt/omni/share/doc/libgt/license.curl.txt license=BSD
+license opt/omni/share/doc/libgt/license.openssl.txt license=BSD
