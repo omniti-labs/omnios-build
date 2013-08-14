@@ -1,2 +1,4 @@
 <transform file path=license$ -> drop>
 license license=CDDL path=license
+license license=SUNWlibms.copyright path=SUNWlibms.copyright
+license license=SUNWlibmsr.copyright path=SUNWlibmsr.copyright

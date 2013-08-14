@@ -48,10 +48,14 @@ build() {
     logcmd make -f Makefile-os STUDIOBIN=/opt/sunstudio12.1/bin BUILDNAME=omni-os STATDIR=$TMPDIR/$BUILDDIR/scratch DESTDIR=$DESTDIR ||
         logerr "make/install failed"
     popd > /dev/null
+    install -m 0555 files/lib-libmtsk.so.1 $DESTDIR/lib/libmtsk.so.1
+    install -m 0555 files/lib-libmtsk_db.so.1 $DESTDIR/lib/libmtsk_db.so.1
+    install -m 0555 files/lib-amd64-libmtsk.so.1 $DESTDIR/lib/amd64/libmtsk.so.1
+    install -m 0555 files/lib-amd64-libmtsk_db.so.1 $DESTDIR/lib/amd64/libmtsk_db.so.1
 }
 links() {
     logmsg "--- Setting up symlinks"
-    logcmd chmod 0755 $DESTDUR/usr
+    logcmd chmod 0755 $DESTDIR/usr
     logcmd mkdir -m 0755 $DESTDIR/usr/lib
     logcmd mkdir -m 0755 $DESTDIR/usr/lib/amd64
     logcmd ln -s ../../lib/libm.so.2 $DESTDIR/usr/lib/libm.so
