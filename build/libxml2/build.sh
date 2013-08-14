@@ -36,6 +36,14 @@ DESC="$SUMMARY"
 DEPENDS_IPS="compress/xz@5.0 system/library/gcc-4-runtime library/zlib@1.2.7"
 BUILD_DEPENDS_IPS="$DEPENDS_IPS"
 
+CONFIGURE_OPTS_64="--prefix=$PREFIX
+    --sysconfdir=$SYSCONFDIR
+    --includedir=$PREFIX/include
+    --bindir=$PREFIX/bin/$ISAPART64
+    --sbindir=$PREFIX/sbin/$ISAPART64
+    --libdir=$PREFIX/lib/$ISAPART64
+    --libexecdir=$PREFIX/libexec/$ISAPART64"
+
 fix_python_install() {
     logcmd mkdir -p $DESTDIR/usr/lib/python2.6/vendor-packages
     logcmd mv $DESTDIR/usr/lib/python2.6/site-packages/* $DESTDIR/usr/lib/python2.6/vendor-packages/ || logerr "failed relocating python install"
