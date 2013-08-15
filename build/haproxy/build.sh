@@ -68,6 +68,8 @@ patch_source
 prep_build
 build
 make_isa_stub
+logcmd mkdir -p ${DESTDIR}/lib/svc/manifest/network
+logcmd cp $SRCDIR/files/haproxy.xml ${DESTDIR}/lib/svc/manifest/network/haproxy.xml
 make_package
 clean_up
 
