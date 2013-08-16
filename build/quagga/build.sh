@@ -30,7 +30,7 @@
 PROG=quagga
 VER=0.99.22.3
 VERHUMAN=$VER
-PKG=networking/quagga
+PKG=omniti/network/quagga
 SUMMARY="quagga software routing suite"
 DESC="Quagga is a routing software suite, providing implementations of OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4"
 BUILD_DEPENDS_IPS="developer/lexer/flex developer/parser/bison developer/gcc44/libmpfr-gcc44 text/texinfo"
