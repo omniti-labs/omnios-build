@@ -30,12 +30,13 @@
 PROG=logstash   # App name
 VER=1.1.12      # App version
 VERHUMAN=$VER   # Human-readable version
-#PVER=          # Branch (set in config.sh, override here if needed)
-PKG=network/logstash # Package name (e.g. library/foo)
+PKG=omniti/network/logstash # Package name (e.g. library/foo)
 SUMMARY="Logstash log management tool"      # One-liner, must be filled in
 DESC="logstash is a tool for managing events and logs. You can use it to collect logs, parse them, and store them for later use (like, for searching)"
 JARFILE=$PROG-$VER-flatjar.jar
 PREFIX=/opt/logstash # Custom prefix
+
+NO_AUTO_DEPENDS=true
 
 # We only need to download a single file and not extract anything
 download_source() {

@@ -30,12 +30,11 @@
 PROG=tcpdump    # App name
 VER=4.3.0       # App version
 VERHUMAN=$VER   # Human-readable version
-#PVER=          # Branch (set in config.sh, override here if needed)
-PKG=service/network/tcpdump # Package name (e.g. library/foo)
+PKG=omniti/network/tcpdump # Package name (e.g. library/foo)
 SUMMARY="tcpdump is a powerful command-line packet analyzer"      # One-liner, must be filled in
 DESC="$SUMMARY"         # Longer description, must be filled in
 
-DEPENDS_IPS="system/library/pcap@1.3.0"
+BUILD_DEPENDS_IPS="system/library/pcap@1.3.0"
 
 init
 download_source $PROG $PROG $VER

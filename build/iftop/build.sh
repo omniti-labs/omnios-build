@@ -31,8 +31,7 @@ PROG=iftop      # App name
 VERHUMAN=1.0pre2 # Human-readable version
 VER=${VERHUMAN/pre/.} # App version
 BUILDDIR=$PROG-$VERHUMAN
-#PVER=          # Branch (set in config.sh, override here if needed)
-PKG=network/iftop # Package name (e.g. library/foo)
+PKG=omniti/network/iftop # Package name (e.g. library/foo)
 SUMMARY="display bandwidth usage on an interface"
 DESC="$SUMMARY"   # Longer description, must be filled in
 
