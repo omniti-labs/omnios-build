@@ -223,6 +223,13 @@ fi
 init() {
     # Print out current settings
     logmsg "Package name: $PKG"
+
+    # In the ms.omniti.com repo, we want all pkg FMRIs to start with "omniti/"
+    FMRI_PREFIX=${PKG:0:7}
+    if [[ ! $FMRI_PREFIX = "omniti/" ]]; then
+        logerr "Package name should begin with \"omniti/\". Please change the value of PKG in the build script."
+    fi
+
     # Selected flavor
     if [[ -z "$FLAVOR" ]]; then
         logmsg "Selected flavor: None (use -f to specify a flavor)"
