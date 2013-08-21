@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2013 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -33,7 +33,7 @@ VERHUMAN=$VER   # Human-readable version
 NSSVER=3.14.3   # Keep this in sync with the version of system/library/mozilla-nss
 PKG=web/ca-bundle  # Package name (without prefix)
 SUMMARY="$PROG - Bundle of SSL Root CA certificates"
-DESC="SSL Root CA and OmniTI certificates extracted from mozilla-nss $NSSVER source"
+DESC="SSL Root CA certificates extracted from mozilla-nss $NSSVER source, plus OmniTI CA cert."
 
 BUILDARCH=32
 
@@ -52,8 +52,6 @@ build_pem() {
     logerr "--- Failed to copy certdata.txt file"
   logcmd $SRCDIR/mk-ca-bundle.pl -n cacert.pem || \
     logerr "--- Failed to convert certdata.txt into PEM format"
-  (echo && cat $SRCDIR/files/OmniTI_CA.pem) >> cacert.pem
-  [[ $? == 0 ]] || logerr "--- Failed to append the OmniTI CA"
   logcmd cp $TMPDIR/nss-$NSSVER/mozilla/security/nss/COPYING license || \
     logerr "--- Failed to copy license file"
   popd > /dev/null
@@ -82,9 +80,24 @@ install_pem() {
   popd > /dev/null
 }
 
+# Install the OmniTI CA cert separately, to be used by pkg(1)
+install_omniti_cacert() {
+  logmsg "Installing OmniTI CA cert for pkg(1) use"
+  local cert="$SRCDIR/files/OmniTI_CA.pem"
+  local subj_hash=`openssl x509 -hash -noout -in $cert`.0
+  logcmd mkdir -p $DESTDIR/etc/ssl/pkg
+  logcmd cp -p $cert $DESTDIR/etc/ssl/pkg/ || \
+    logerr "--- Failed to copy CA cert"
+  pushd $DESTDIR/etc/ssl/pkg/ > /dev/null
+  logcmd ln -s OmniTI_CA.pem $subj_hash || \
+    logerr "--- Failed to create subject hash link"
+  popd > /dev/null
+}
+
 init
 prep_build
 build_pem
 install_pem
+install_omniti_cacert
 make_package
 clean_up
