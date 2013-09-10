@@ -1,0 +1,44 @@
+commit 45383890730f421d3be09364287012c59c5102fd
+Author: Theo Schlossnagle <jesus@omniti.com>
+Date:   Thu Sep 5 03:52:37 2013 +0000
+
+    TS-214 use port_send to signal async events (Illumos/Solaris)
+
+diff --git a/iocore/eventsystem/UnixEThread.cc b/iocore/eventsystem/UnixEThread.cc
+index c379229..c0907eb 100644
+--- a/iocore/eventsystem/UnixEThread.cc
++++ b/iocore/eventsystem/UnixEThread.cc
+@@ -78,6 +78,10 @@ EThread::EThread(ThreadType att, int anid)
+   }
+   fcntl(evfd, F_SETFD, FD_CLOEXEC);
+   fcntl(evfd, F_SETFL, O_NONBLOCK);
++#elif TS_USE_PORT
++  /* Solaris ports requires no crutches to do cross thread signaling.
++   * We'll just port_send the event straight over the port.
++   */
+ #else
+   ink_release_assert(pipe(evpipe) >= 0);
+   fcntl(evpipe[0], F_SETFD, FD_CLOEXEC);
+diff --git a/iocore/net/UnixNet.cc b/iocore/net/UnixNet.cc
+index b6e956b..5e72b0c 100644
+--- a/iocore/net/UnixNet.cc
++++ b/iocore/net/UnixNet.cc
+@@ -167,6 +167,8 @@ net_signal_hook_callback(EThread *thread) {
+ #if HAVE_EVENTFD
+   uint64_t counter;
+   ATS_UNUSED_RETURN(read(thread->evfd, &counter, sizeof(uint64_t)));
++#elif TS_USE_PORT
++  /* Nothing to drain or do */
+ #else
+   char dummy[1024];
+   ATS_UNUSED_RETURN(read(thread->evpipe[0], &dummy[0], 1024));
+@@ -178,6 +180,9 @@ net_signal_hook_function(EThread *thread) {
+ #if HAVE_EVENTFD
+   uint64_t counter = 1;
+   ATS_UNUSED_RETURN(write(thread->evfd, &counter, sizeof(uint64_t)));
++#elif TS_USE_PORT
++  PollDescriptor *pd = get_PollDescriptor(thread);
++  ATS_UNUSED_RETURN(port_send(pd->port_fd, 0, thread->ep));
+ #else
+   char dummy = 1;
+   ATS_UNUSED_RETURN(write(thread->evpipe[1], &dummy, 1));
