@@ -1,0 +1,20 @@
+--- mtx-1.3.12/Makefile.in.orig	Wed Sep 18 21:44:27 2013
++++ mtx-1.3.12/Makefile.in	Wed Sep 18 21:45:07 2013
+@@ -109,13 +109,13 @@
+ dbgs: $(DBGS)
+ 
+ install: $(BINS)
+-	$(INSTALL_DIR) $(sbindir)
++	$(INSTALL_DIR) $(DESTDIR)$(sbindir)
+ 	for file in $(BINS); do \
+-	$(INSTALL_BIN) "$$file" $(sbindir) ; \
++	$(INSTALL_BIN) "$$file" $(DESTDIR)$(sbindir) ; \
+ 	done	
+-	$(INSTALL_DIR) $(mandir) $(mandir)/man1
++	$(INSTALL_DIR) $(DESTDIR)$(mandir) $(DESTDIR)$(mandir)/man1
+ 	for file in mtx.1 tapeinfo.1 scsitape.1 scsieject.1 loaderinfo.1 ; do \
+-	$(INSTALL_DOC) "$$file"  $(mandir)/man1 ; \
++	$(INSTALL_DOC) "$$file"  $(DESTDIR)$(mandir)/man1 ; \
+ 	done
+ 
+ clean:
