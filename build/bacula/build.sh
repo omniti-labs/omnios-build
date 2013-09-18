@@ -31,7 +31,7 @@ PROG=bacula     # App name
 VER=5.2.6       # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
-PKG=network/bacula # Package name (e.g. library/foo)
+PKG=omniti/network/bacula # Package name (e.g. library/foo)
 SUMMARY="Bacula - open source network backup solution"
 DESC="Bacula is a set of Open Source, computer programs that permit you (or the system administrator) to manage backup, recovery, and verification of computer data across a network of computers of different kinds. Bacula is relatively easy to use and efficient, while offering many advanced storage management features that make it easy to find and recover lost or damaged files. In technical terms, it is an Open Source, network based backup program."         # Longer description, must be filled in
 

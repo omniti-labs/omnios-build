@@ -1,0 +1,36 @@
+From c58c840672963b91c1f772cf1a3ed9246f088589 Mon Sep 17 00:00:00 2001
+From: Theo Schlossnagle <jesus@omniti.com>
+Date: Mon, 16 Sep 2013 14:51:46 +0000
+Subject: [PATCH 1/2] TS-2211 SSL client connections hang and a aborted due to
+ inactivity.
+
+Part one... it is possible (at least in SSL) to have a very large todo
+and not have been signalled while still having no read buffer (in the
+case of tunnelling).  At the end of this logic, we should always mark
+our write disabled if we're out of read buffer.
+---
+ iocore/net/UnixNetVConnection.cc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/iocore/net/UnixNetVConnection.cc b/iocore/net/UnixNetVConnection.cc
+index 30c6842..86889ae 100644
+--- a/iocore/net/UnixNetVConnection.cc
++++ b/iocore/net/UnixNetVConnection.cc
+@@ -487,10 +487,10 @@ write_to_net_io(NetHandler *nh, UnixNetVConnection *vc, EThread *thread)
+         write_reschedule(nh, vc);
+         return;
+       }
+-      if (s->vio.ntodo() <= 0 || !buf.reader()->read_avail()) {
+-        write_disable(nh, vc);
+-        return;
+-      }
++    }
++    if (!buf.reader()->read_avail()) {
++      write_disable(nh, vc);
++      return;
+     }
+ 
+     write_reschedule(nh, vc);
+-- 
+1.8.1.3
+
