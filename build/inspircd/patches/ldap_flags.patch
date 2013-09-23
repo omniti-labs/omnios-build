@@ -1,0 +1,24 @@
+--- inspircd-2.0.14/src/modules/extra/m_ldapauth.cpp.orig	Mon Sep 23 20:49:58 2013
++++ inspircd-2.0.14/src/modules/extra/m_ldapauth.cpp	Mon Sep 23 20:52:32 2013
+@@ -36,7 +36,8 @@
+ #endif
+ 
+ /* $ModDesc: Allow/Deny connections based upon answer from LDAP server */
+-/* $LinkerFlags: -lldap */
++/* $CompileFlags: -I/opt/omni/include */
++/* $LinkerFlags: -L/opt/omni/lib/amd64 -R/opt/omni/lib/amd64 -lldap */
+ 
+ struct RAIILDAPString
+ {
+--- inspircd-2.0.14/src/modules/extra/m_ldapoper.cpp.orig	Mon Sep 23 20:50:07 2013
++++ inspircd-2.0.14/src/modules/extra/m_ldapoper.cpp	Mon Sep 23 20:53:19 2013
+@@ -33,7 +33,8 @@
+ #endif
+ 
+ /* $ModDesc: Adds the ability to authenticate opers via LDAP */
+-/* $LinkerFlags: -lldap */
++/* $CompileFlags: -I/opt/omni/include */
++/* $LinkerFlags: -L/opt/omni/lib/amd64 -R/opt/omni/lib/amd64 -lldap */
+ 
+ // Duplicated code, also found in cmd_oper and m_sqloper
+ static bool OneOfMatches(const char* host, const char* ip, const std::string& hostlist)

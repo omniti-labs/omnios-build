@@ -1,0 +1,10 @@
+--- inspircd-2.0.14/make/template/main.mk.orig	Mon Sep 23 16:15:25 2013
++++ inspircd-2.0.14/make/template/main.mk	Mon Sep 23 16:15:34 2013
+@@ -68,7 +68,6 @@
+ @ENDIF
+ @IFEQ $(SYSTEM) solaris
+   LDLIBS += -lsocket -lnsl -lrt -lresolv
+-  INSTALL = ginstall
+ @ENDIF
+ @IFEQ $(SYSTEM) sunos
+   LDLIBS += -lsocket -lnsl -lrt -lresolv

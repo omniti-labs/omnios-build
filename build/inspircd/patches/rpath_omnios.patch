@@ -1,0 +1,11 @@
+--- inspircd-2.0.14/make/utilities.pm.orig	Mon Sep 23 20:26:57 2013
++++ inspircd-2.0.14/make/utilities.pm	Mon Sep 23 20:27:02 2013
+@@ -86,7 +86,7 @@
+ 			print "Adding extra library path to \e[1;32m$module\e[0m ... \e[1;32m$libpath\e[0m\n";
+ 			$already_added{$libpath} = 1;
+ 		}
+-		$output .= "-Wl,--rpath -Wl,$libpath -L$libpath " unless defined $main::opt_disablerpath;
++		$output .= "-Wl,-rpath -Wl,$libpath -L$libpath " unless defined $main::opt_disablerpath;
+ 		$data =~ s/-L(\S+)//;
+ 	}
+ 	return $output;

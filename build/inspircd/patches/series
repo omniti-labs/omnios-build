@@ -1,0 +1,4 @@
+omnios-ginstall.patch
+cxxflags.patch
+rpath_omnios.patch
+ldap_flags.patch

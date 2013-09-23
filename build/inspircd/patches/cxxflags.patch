@@ -1,0 +1,11 @@
+--- inspircd-2.0.14/make/template/main.mk.orig	Mon Sep 23 19:55:43 2013
++++ inspircd-2.0.14/make/template/main.mk	Mon Sep 23 19:56:26 2013
+@@ -34,7 +34,7 @@
+ SYSTEM = @SYSTEM@
+ BUILDPATH = @BUILD_DIR@
+ SOCKETENGINE = @SOCKETENGINE@
+-CXXFLAGS = -pipe -fPIC -DPIC
++CXXFLAGS += -pipe -fPIC -DPIC
+ LDLIBS = -pthread -lstdc++
+ LDFLAGS = 
+ CORELDFLAGS = -rdynamic -L. $(LDFLAGS)
