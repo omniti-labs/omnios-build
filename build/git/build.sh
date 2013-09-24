@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=git
-VER=1.8.2.2
+VER=1.8.4
 PKG=developer/versioning/git
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
@@ -37,8 +37,10 @@ BUILD_DEPENDS_IPS="compatibility/ucb developer/build/autoconf"
 
 DEPENDS_IPS="runtime/python-26 \
              web/curl \
-             library/security/openssl@1.0.1
+             library/security/openssl@1.0.1 \
              library/zlib"
+
+TAR=gtar
 
 # For inet_ntop which isn't detected properly in the configure script
 LDFLAGS="-lnsl"
