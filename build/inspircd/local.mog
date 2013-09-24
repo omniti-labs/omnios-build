@@ -1,0 +1,4 @@
+group groupname=irc
+user ftpuser=false gcos-field="IRC User" group=irc password=NP username=irc
+<transform dir path=opt/inspircd/logs -> set owner irc>
+<transform dir path=opt/inspircd/data -> set owner irc>
