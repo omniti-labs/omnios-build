@@ -6,7 +6,7 @@
  /* $ModDesc: Allow/Deny connections based upon answer from LDAP server */
 -/* $LinkerFlags: -lldap */
 +/* $CompileFlags: -I/opt/omni/include */
-+/* $LinkerFlags: -L/opt/omni/lib/amd64 -R/opt/omni/lib/amd64 -lldap */
++/* $LinkerFlags: -L/opt/omni/lib -R/opt/omni/lib -lldap */
  
  struct RAIILDAPString
  {
@@ -18,7 +18,7 @@
  /* $ModDesc: Adds the ability to authenticate opers via LDAP */
 -/* $LinkerFlags: -lldap */
 +/* $CompileFlags: -I/opt/omni/include */
-+/* $LinkerFlags: -L/opt/omni/lib/amd64 -R/opt/omni/lib/amd64 -lldap */
++/* $LinkerFlags: -L/opt/omni/lib -R/opt/omni/lib -lldap */
  
  // Duplicated code, also found in cmd_oper and m_sqloper
  static bool OneOfMatches(const char* host, const char* ip, const std::string& hostlist)
