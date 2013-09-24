@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=gawk
-VER=4.0.1
+VER=4.1.0
 VERHUMAN=$VER
 PKG=text/gawk
 SUMMARY="gawk - GNU implementation of awk"
@@ -37,14 +37,26 @@ DESC="$SUMMARY"
 BUILDARCH=32
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin"
 
+# as of 4.1, gawk now supports arbitrary precision numbers.
+# build in MPFR/GMP support rather than dynamically linking it.
+save_function configure32 configure32_orig
+configure32() {
+    configure32_orig
+
+    logmsg "Patching Makefile to make mpfr/gmp static"
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    logcmd gsed -i -e 's#-lmpfr -lgmp#/opt/gcc-4.8.1/lib/libmpfr.a /opt/gcc-4.8.1/lib/libgmp.a#' Makefile
+    popd > /dev/null
+}
+
 gnu_cleanup() {
     logmsg "Cleaning up install root"
     logcmd mkdir -p $DESTDIR/usr/gnu/bin
     logcmd mkdir -p $DESTDIR/usr/gnu/share/man/man1
     logcmd ln -s ../../bin/gawk $DESTDIR/usr/gnu/bin/awk
     logcmd ln -s ../../../../share/man/man1/gawk.1 $DESTDIR/usr/gnu/share/man/man1/awk.1
-    logcmd rm $DESTDIR/usr/bin/{awk,gawk-4.0.0,pgawk-4.0.0}
-    logcmd rm -rf $DESTDIR/usr/libexec
+    logcmd rm -f $DESTDIR/usr/bin/awk || logerr "--- Unable to clean up $DESTDIR/usr/bin"
+    logcmd rm -rf $DESTDIR/usr/libexec || logerr "--- unable to clean up libexec dir"
 }
 init
 download_source $PROG $PROG $VER

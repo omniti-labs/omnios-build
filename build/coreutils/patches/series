@@ -1,6 +1,5 @@
-install.1.patch
-manpages.patch
+install.c.patch
+man-sections.patch
 mountlist.c.patch
-uptime.1.patch
 who.c.patch
 Makefile.in.patch

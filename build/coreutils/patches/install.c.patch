@@ -1,0 +1,13 @@
+--- coreutils-8.21/src/install.c.orig	2013-02-07 09:37:05.000000000 +0000
++++ coreutils-8.21/src/install.c	2013-09-23 16:24:18.730351203 +0000
+@@ -602,8 +602,8 @@
+ \n\
+ This install program copies files (often just compiled) into destination\n\
+ locations you choose.  If you want to download and install a ready-to-use\n\
+-package on a GNU/Linux system, you should instead be using a package manager\n\
+-like yum(1) or apt-get(1).\n\
++package on an OmniOS system, you should instead be using a package manager\n\
++like pkg(1).\n\
+ \n\
+ In the first three forms, copy SOURCE to DEST or multiple SOURCE(s) to\n\
+ the existing DIRECTORY, while setting permission modes and owner/group.\n\

@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=bison
-VER=2.6.4
+VER=2.7.1
 VERHUMAN=$VER
 PKG=developer/parser/bison
 SUMMARY="Bison is a general-purpose parser generator"
