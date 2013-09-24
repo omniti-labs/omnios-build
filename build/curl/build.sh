@@ -37,6 +37,8 @@ DEPENDS_IPS="web/ca-bundle library/security/openssl@1.0.1 library/zlib
     library/libidn"
 
 CONFIGURE_OPTS="--enable-thread --with-ca-bundle=/etc/ssl/cacert.pem"
+# curl actually has arch-dependent headers. Boo.
+CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --includedir=$PREFIX/include/amd64"
 
 LIBTOOL_NOSTDLIB=libtool
 
