@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=m4
-VER=1.4.16
+VER=1.4.17
 PKG=developer/macro/gnu-m4
 SUMMARY="GNU m4"
 DESC="GNU m4 - A macro processor (gm4)"

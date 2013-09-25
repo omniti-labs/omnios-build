@@ -29,7 +29,10 @@
 
 # First we build the kernel module
 PROG=illumos-kvm
-VER=1.0.5
+# This is pretty meaningless, and should be "0.5.11" but we messed that up
+# by starting with "1.0.x" so this'll do.  There should be no need to change
+# this going forward.
+VER=1.0.5.11
 # Default to building tip, but if needed, specify the desired commit here
 COMMIT=
 SRC_REPO=https://github.com/joyent/illumos-kvm.git

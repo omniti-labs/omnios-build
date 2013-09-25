@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=iso-codes
-VER=3.39
+VER=3.46
 VERHUMAN=$VER
 PKG=data/iso-codes
 SUMMARY="ISO code lists and translations"

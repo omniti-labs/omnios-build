@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=groff       # App name
-VER=1.21         # App version
+VER=1.22.2       # App version
 PKG=text/groff    # Package name (without prefix)
 SUMMARY="$PROG - GNU Troff typesetting package"
 DESC="$SUMMARY"
