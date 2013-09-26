@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=sed
-VER=4.2.1
+VER=4.2.2
 PKG=text/gnu-sed
 SUMMARY="gsed - GNU implementation of sed, the Unix stream editor"
 DESC="$SUMMARY"

@@ -31,7 +31,7 @@ CC=gcc
 CXX=g++
 
 PROG=Python
-VER=2.6.7
+VER=2.6.8
 PKG=runtime/python-26
 SUMMARY="$PROG"
 DESC="$SUMMARY"
@@ -46,8 +46,8 @@ CFLAGS="$CFLAGS -std=c99"
 LDFLAGS32="-L/usr/gnu/lib -R/usr/gnu/lib"
 LDFLAGS64="-L/usr/gnu/lib/amd64 -R/usr/gnu/lib/amd64"
 CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses -D_LARGEFILE64_SOURCE"
-CPPFLAGS32="-I/usr/lib/libffi-3.0.10/include"
-CPPFLAGS64="-I/usr/lib/amd64/libffi-3.0.10/include"
+CPPFLAGS32="-I/usr/lib/libffi-3.0.11/include"
+CPPFLAGS64="-I/usr/lib/amd64/libffi-3.0.11/include"
 CONFIGURE_OPTS="--enable-shared
 	--with-system-ffi
 	ac_cv_opt_olimit_ok=no

@@ -1,0 +1,12 @@
+--- pv-1.4.12/autoconf/header.in.orig	2013-07-31 19:39:15.000000000 +0000
++++ pv-1.4.12/autoconf/header.in	2013-09-26 21:12:55.695760554 +0000
+@@ -70,9 +70,6 @@
+ #   define stat64 stat
+ #   define fstat64 fstat
+ #  endif
+-# else
+-#  define stat64 stat
+-#  define fstat64 fstat
+ # endif
+ # define open64 open
+ # define lseek64 lseek
