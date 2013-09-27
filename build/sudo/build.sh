@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=sudo
-VER=1.8.6p7
+VER=1.8.7
 VERHUMAN=$VER
 PKG=security/sudo
 SUMMARY="$PROG - authority delegation tool"
