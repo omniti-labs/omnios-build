@@ -27,8 +27,14 @@
 # Load support functions
 . ../../lib/functions.sh
 
+# Patches are obtained from ftp://ftp.vim.org/pub/vim/patches/7.4/
+# To update, append each patch to patches/all-patches and set the
+# PATCHLEVEL variable below to match the number of the most recent
+# patch, removing any zero padding.
+
 PROG=vim
-VER=7.3
+VER=7.4
+PATCHLEVEL=45
 PKG=editor/vim
 SUMMARY="Vi IMproved"
 DESC="$SUMMARY version $VER"
@@ -61,6 +67,7 @@ prep_build
 build
 link_vi
 make_isa_stub
+VER=${VER}.${PATCHLEVEL}
 make_package
 clean_up
 
