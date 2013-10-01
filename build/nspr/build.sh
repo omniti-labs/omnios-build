@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=nspr
-VER=4.9.3
+VER=4.10
 VERHUMAN=$VER
 PKG=$PROG ##IGNORE##
 SUMMARY="Netscape Portable Runtime"      # You should change this
@@ -67,7 +67,7 @@ make_prog64() {
 
 init
 download_source $PROG $PROG $VER
-BUILDDIR=$PROG-$VER/mozilla/nsprpub
+BUILDDIR=$PROG-$VER/nspr
 patch_source
 prep_build
 build

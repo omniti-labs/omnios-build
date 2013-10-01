@@ -1,0 +1,18 @@
+driftfile /var/lib/ntp/ntp.drift 
+
+
+restrict default ignore # Deny everyone by default
+restrict 127.0.0.1      # Allow localhost full access
+restrict ::1            # Same
+
+# Allow these servers to view the time
+# Uncomment and change the network address as appropriate
+#restrict 10.9.8.0 mask 255.255.255.0  kod  nomodify notrap nopeer
+
+# Server selection
+# See http://support.ntp.org/bin/view/Servers/WebHome for more information
+# You will probably want to change these.
+server 0.pool.ntp.org
+server 1.pool.ntp.org
+server 2.pool.ntp.org
+server 3.pool.ntp.org
