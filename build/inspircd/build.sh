@@ -36,7 +36,7 @@ SUMMARY="IRC Daemon"      # One-liner, must be filled in
 DESC="InspIRCd is a modular Internet Relay Chat (IRC) server written in C++ for Linux, BSD, Windows and Mac OS X systems which was created from scratch to be stable, modern and lightweight."         # Longer description, must be filled in
 
 TAR=gtar
-DEPENDS_IPS="library/gnutls system/library/security/libgcrypt omniti/network/openldap-client"
+DEPENDS_IPS="library/gnutls system/library/security/libgcrypt database/sqlite-3 library/security/openssl omniti/network/openldap-client"
 BUILD_DEPENDS_IPS="archiver/gnu-tar omniti/library/pkgconf $DEPENDS_IPS"
 
 PREFIX="/opt/$PROG"
@@ -51,9 +51,10 @@ BUILDARCH=32
 EXTRA_MODULES="
     m_ldapauth.cpp
     m_ldapoper.cpp
+    m_sqlite3.cpp
 "
 
-CONFIGURE_OPTS="--enable-gnutls"
+CONFIGURE_OPTS="--enable-gnutls --enable-openssl --disable-ports"
 CONFIGURE_OPTS_32="--prefix=$PREFIX
     --binary-dir=$PREFIX/bin/$ISAPART"
 

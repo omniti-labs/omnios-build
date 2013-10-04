@@ -35,9 +35,23 @@ PKG=omniti/network/bacula # Package name (e.g. library/foo)
 SUMMARY="Bacula - open source network backup solution"
 DESC="Bacula is a set of Open Source, computer programs that permit you (or the system administrator) to manage backup, recovery, and verification of computer data across a network of computers of different kinds. Bacula is relatively easy to use and efficient, while offering many advanced storage management features that make it easy to find and recover lost or damaged files. In technical terms, it is an Open Source, network based backup program."         # Longer description, must be filled in
 
+PREFIX=/opt/bacula
+reset_configure_opts
+
 DEPENDS="database/sqlite-3"
 
 CONFIGURE_OPTS="--with-sqlite3"
+
+copy_manifest() {
+    # SMF manifest
+    logmsg "--- Copying SMF manifest"
+    logcmd mkdir -p ${DESTDIR}/lib/svc/manifest/network
+    logcmd cp $SRCDIR/files/bacula-dir.xml ${DESTDIR}/lib/svc/manifest/network
+    logcmd cp $SRCDIR/files/bacula-sd.xml ${DESTDIR}/lib/svc/manifest/network
+    logcmd cp $SRCDIR/files/bacula-fd.xml ${DESTDIR}/lib/svc/manifest/network
+}
+
+
 
 init
 download_source $PROG $PROG $VER
@@ -45,6 +59,7 @@ patch_source
 prep_build
 build
 make_isa_stub
+copy_manifest
 make_package
 clean_up
 
