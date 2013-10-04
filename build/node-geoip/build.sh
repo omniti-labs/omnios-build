@@ -33,7 +33,7 @@ PKG=omniti/runtime/nodejs/node-geoip
 SUMMARY="Naive wrapper around libGeoIP for use with node.js"
 DESC="$SUMMARY"
 
-REPOS=http://github.com/postwait/node-geoip
+REPOS=https://github.com/postwait/node-geoip
 GIT=/usr/bin/git
 
 BUILDARCH=64
@@ -52,7 +52,7 @@ download_git() {
         logcmd rm -rf $BUILDDIR
     fi
     logmsg "Checking code out from git repo"
-    logcmd $GIT clone $REPOS.git $BUILDDIR
+    logcmd $GIT clone $REPOS $BUILDDIR
     pushd $BUILDDIR > /dev/null
     REV=`$GIT log -1  --format=format:%at`
     REVDATE=`echo $REV | gawk '{ print strftime("%c %Z",$1) }'`
@@ -69,9 +69,8 @@ configure64() {
 
 make_prog() {
     logmsg "--- make node-geoip"
-    CXX="g++ -m64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64" \
-    CXXFLAGS="-DICONV_SRC_CONST=const -I/opt/omni/include" \
-    logcmd /opt/omni/bin/node-waf configure build || \
+    MAKE=gmake \
+    logcmd /opt/omni/bin/npm install . || \
         logerr "------ make failed"
 }
 
