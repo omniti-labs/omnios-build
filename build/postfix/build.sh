@@ -45,11 +45,25 @@ configure64() {
     logmsg "--- Skipping configure - not required"
 }
 
+make_clean() {
+    logmsg "--- make (dist)clean"
+    logcmd $MAKE distclean || \
+    logcmd $MAKE clean || \
+        logmsg "--- *** WARNING *** make (dist)clean Failed"
+    logcmd $MAKE makefiles CCARGS="-DNO_NIS"
+}
+
+# Overriding this because "install" for postfix is interactive
+make_install() {
+    logmsg "--- make install"
+    logcmd /bin/sh postfix-install -non-interactive install_root=${DESTDIR} || \
+        logerr "--- Make install failed"
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
-logcmd $MAKE makefiles CCARGS="-DNO_NIS"
 build
 make_isa_stub
 make_package
