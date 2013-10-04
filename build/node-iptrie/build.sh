@@ -41,8 +41,8 @@ BUILDARCH=64
 PATH=/opt/omni/bin:$PATH
 export PATH
 
-BUILD_DEPENDS_IPS="developer/versioning/git omniti/runtime/nodejs"
-DEPENDS_IPS="omniti/runtime/nodejs"
+BUILD_DEPENDS_IPS="developer/versioning/git omniti/runtime/nodejs@0.10"
+DEPENDS_IPS="omniti/runtime/nodejs@0.10"
 
 download_git() {
     pushd $TMPDIR > /dev/null
