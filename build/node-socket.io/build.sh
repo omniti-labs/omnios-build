@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=socket.io
-VER=0.9.5
+VER=0.9.14
 PKG=omniti/runtime/nodejs/node-$PROG
 SUMMARY="Realtime application framework for Node.JS"
 DESC="Socket.IO is a Node.JS project that makes WebSockets and realtime possible in all browsers. It also enhances WebSockets by providing built-in multiplexing, horizontal scalability, automatic JSON encoding/decoding, and more."
