@@ -28,12 +28,12 @@
 . ../../lib/functions.sh
 
 PROG=node-protobuf
-VER=2.4.0.1
+VER=2.4.1.0.8.7
 PKG=omniti/runtime/nodejs/node-protobuf
 SUMMARY="Protocol Buffers for Node.JS"
 DESC="$SUMMARY"
 
-REPOS=https://github.com/stoke/protobuf.git
+REPOS=https://github.com/chrisdew/protobuf.git
 REV=
 GIT=/usr/bin/git
 
@@ -68,35 +68,30 @@ download_git() {
     fi
     REV=`$GIT log -1  --format=format:%at`
     REVDATE=`echo $REV | gawk '{ print strftime("%c %Z",$1) }'`
-    VER=0.1.$REV
-    VERHUMAN="checkout from $REVDATE"
+    #VER=0.1.$REV
+    VERHUMAN="checkout from $REV"
     popd > /dev/null
     popd > /dev/null
 }
 
 configure64() {
-    logmsg "--- configure (64-bit)"
-    PROTOBUF=/opt/omni LIBDIR=/opt/omni/lib/node \
-    NODE_PATH=/opt/omni/lib/node \
-    CXX="g++ -m64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/node" \
-    CXXFLAGS="-DICONV_SRC_CONST=const -I/opt/omni/include -I/opt/omni/include/node/uv-private -fpermissive" \
-    logcmd /opt/omni/bin/node-waf configure || \
-        logerr "--- waf configure failed"
+    logmsg "--- configure"
 }
 
 make_prog() {
     logmsg "--- make"
-    logcmd /opt/omni/bin/node-waf build || \
-        logerr "--- waf build failed"
+    MAKE=gmake \
+    logcmd /opt/omni/bin/npm install . || \
+        logerr "--- npm build failed"
 }
 
 make_install() {
     logmsg "--- make install"
     logcmd install -d ${DESTDIR}${PREFIX}/lib/node/ || \
          logerr "--- Failed to make install directory."
-    DESTDIR=${DESTDIR} logcmd /opt/omni/bin/node-waf install || \
-        logerr "--- waf install failed"
-    chmod 555 ${DESTDIR}${PREFIX}/lib/node/protobuf_for_node.node
+    logcmd install -m 0555 build/Release/protobuf_for_node.node \
+        ${DESTDIR}${PREFIX}/lib/node/protobuf_for_node.node || \
+         logerr "--- Failed to install module."
 }
 
 init
