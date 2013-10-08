@@ -41,7 +41,7 @@
 <transform dir path=usr/share/locale$ -> set group other>
 
 # drop GNU info dir files
-<transform file path=share/info/dir$ -> drop>
+<transform file path=.*/share/info/dir$ -> drop>
 
 # Libtool archives can suck it
 <transform file path=.*/lib/.*\.la$ -> drop>
