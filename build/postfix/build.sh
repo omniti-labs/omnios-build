@@ -60,11 +60,20 @@ make_install() {
         logerr "--- Make install failed"
 }
 
+service_configs() {
+    logmsg "Installing SMF Manifest"
+    logcmd mkdir -p $DESTDIR/lib/svc/manifest/network/
+    logcmd cp $SRCDIR/files/postfix.xml \
+        $DESTDIR/lib/svc/manifest/network/postfix.xml ||
+        logerr "Failed to install SMF manifest"
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
+service_configs
 make_isa_stub
 make_package
 clean_up
