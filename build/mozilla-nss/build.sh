@@ -31,12 +31,14 @@ PROG=nss
 VER=3.14.3
 VERHUMAN=$VER
 PKG=$PROG ##IGNORE##
-SUMMARY="Netscape Portable Runtime"
+SUMMARY="Not the real summary"
 DESC="$SUMMARY"
 
 CONFIGURE_OPTS="--includedir=/usr/include/mps"
 CONFIGURE_OPTS_32="--libdir=/usr/lib/mps"
 CONFIGURE_OPTS_64="--libdir=/usr/lib/mps/$ISAPART64"
+
+MAKE_OPTS="BUILD_OPT=1"
 
 TGT_LIBS="libfreebl3.so libnss3.so
 	libnssckbi.so libnssdbm3.so
@@ -58,27 +60,27 @@ realize_links() {
 configure32() {
     logmsg "Building nsinstall and dbm"
     pushd $TMPDIR/$BUILDDIR/mozilla/security/coreconf/nsinstall > /dev/null
-    logcmd gmake clean || logerr "Can't make clean"
-    logcmd gmake || logerr "Can't build nsinstall"
+    logcmd gmake $MAKE_OPTS clean || logerr "Can't make clean"
+    logcmd gmake $MAKE_OPTS || logerr "Can't build nsinstall"
     popd > /dev/null
     pushd $TMPDIR/$BUILDDIR/mozilla/security/dbm/ > /dev/null
-    logcmd gmake clean || logerr "Can't make clean"
-    logcmd gmake || logerr "Can't build dbm"
+    logcmd gmake $MAKE_OPTS clean || logerr "Can't make clean"
+    logcmd gmake $MAKE_OPTS || logerr "Can't build dbm"
     popd > /dev/null
 }
 make_prog32() {
     logmsg "Making libraries (32)"
     pushd $TMPDIR/$BUILDDIR/mozilla/security/nss > /dev/null
-    logcmd gmake clean || logerr "Can't make clean"
-    logcmd gmake || logerr "build failed"
-    logcmd gmake FREEBL_CHILD_BUILD=1 || logerr "build failed"
-    logcmd gmake export || logerr "build failed"
+    logcmd gmake $MAKE_OPTS clean || logerr "Can't make clean"
+    logcmd gmake $MAKE_OPTS || logerr "build failed"
+    logcmd gmake $MAKE_OPTS FREEBL_CHILD_BUILD=1 || logerr "build failed"
+    logcmd gmake $MAKE_OPTS export || logerr "build failed"
     popd > /dev/null
 }
 make_install32() {
     logmsg "Installing libraries (32)"
     pushd $TMPDIR/$BUILDDIR/mozilla/security/nss > /dev/null
-    logcmd gmake install FREEBL_CHILD_BUILD=1 SOURCE_LIB_DIR=$DESTDIR/usr/lib/mps || logerr "install failed"
+    logcmd gmake install $MAKE_OPTS FREEBL_CHILD_BUILD=1 SOURCE_LIB_DIR=$DESTDIR/usr/lib/mps || logerr "install failed"
     logmsg "Installing headers"
     logcmd mkdir -p $DESTDIR/usr/include/mps
     logcmd cp $TMPDIR/$BUILDDIR/mozilla/dist/public/nss/* $DESTDIR/usr/include/mps/
@@ -90,27 +92,27 @@ make_install32() {
 configure64() {
     logmsg "Building nsinstall and dbm"
     pushd $TMPDIR/$BUILDDIR/mozilla/security/coreconf/nsinstall > /dev/null
-    logcmd gmake clean || logerr "Can't clean install"
-    logcmd gmake USE_64=1 || logerr "Can't build nsinstall"
+    logcmd gmake $MAKE_OPTS clean || logerr "Can't clean install"
+    logcmd gmake $MAKE_OPTS USE_64=1 || logerr "Can't build nsinstall"
     popd > /dev/null
     pushd $TMPDIR/$BUILDDIR/mozilla/security/dbm/ > /dev/null
-    logcmd gmake clean || logerr "Can't make clean "
-    logcmd gmake USE_64=1 || logerr "Can't build dbm"
+    logcmd gmake $MAKE_OPTS clean || logerr "Can't make clean "
+    logcmd gmake $MAKE_OPTS USE_64=1 || logerr "Can't build dbm"
     popd > /dev/null
 }
 make_prog64() {
     logmsg "Making libraries (64)"
     pushd $TMPDIR/$BUILDDIR/mozilla/security/nss > /dev/null
-    logcmd gmake clean || logerr "Can't make clean"
-    logcmd gmake USE_64=1 || logerr "build failed"
-    logcmd gmake USE_64=1 FREEBL_CHILD_BUILD=1 || logerr "build failed"
-    logcmd gmake USE_64=1 export || logerr "build failed"
+    logcmd gmake $MAKE_OPTS clean || logerr "Can't make clean"
+    logcmd gmake $MAKE_OPTS USE_64=1 || logerr "build failed"
+    logcmd gmake $MAKE_OPTS USE_64=1 FREEBL_CHILD_BUILD=1 || logerr "build failed"
+    logcmd gmake $MAKE_OPTS USE_64=1 export || logerr "build failed"
     popd > /dev/null
 }
 make_install64() {
     logmsg "Installing libraries (64)"
     pushd $TMPDIR/$BUILDDIR/mozilla/security/nss > /dev/null
-    logcmd gmake USE_64=1 FREEBL_CHILD_BUILD=1 install SOURCE_LIB_DIR=$DESTDIR/usr/lib/mps/amd64 || logerr "install failed"
+    logcmd gmake $MAKE_OPTS USE_64=1 FREEBL_CHILD_BUILD=1 install SOURCE_LIB_DIR=$DESTDIR/usr/lib/mps/amd64 || logerr "install failed"
     popd > /dev/null
     realize_links /usr/lib/mps/amd64
 }
@@ -138,14 +140,14 @@ secv1_links
 make_isa_stub
 
 PKG=system/library/mozilla-nss/header-nss
-SUMMARY="Netscape Portable Runtime Headers"
+SUMMARY="Network Security Services Headers"
 DESC="$SUMMARY"
 make_package header-nss.mog
 
 DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library
 	library/nspr database/sqlite-3"
 PKG=system/library/mozilla-nss
-SUMMARY="Netscape Portable Runtime"
+SUMMARY="Network Security Services Libraries"
 DESC="$SUMMARY"
 make_package nss.mog
 clean_up

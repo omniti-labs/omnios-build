@@ -30,14 +30,12 @@
 PROG=cabundle   # App name
 VER=5.11        # App version
 VERHUMAN=$VER   # Human-readable version
-NSSVER=3.14.3   # Keep this in sync with the version of system/library/mozilla-nss
+NSSVER=3.15.1   # Keep this in sync with the version of system/library/mozilla-nss
 PKG=web/ca-bundle  # Package name (without prefix)
 SUMMARY="$PROG - Bundle of SSL Root CA certificates"
 DESC="SSL Root CA certificates extracted from mozilla-nss $NSSVER source, plus OmniTI CA cert."
 
 BUILDARCH=32
-
-DEPENDS_IPS="=system/library/mozilla-nss@$NSSVER"
 
 build_pem() {
   logmsg "Extracting certdata.txt from nss-$NSSVER source"
@@ -48,11 +46,11 @@ build_pem() {
   BUILDDIR=$BUILDDIR_ORIG
   logcmd mkdir -p $TMPDIR/$BUILDDIR
   pushd $TMPDIR/$BUILDDIR > /dev/null
-  logcmd cp $TMPDIR/nss-$NSSVER/mozilla/security/nss/lib/ckfw/builtins/certdata.txt . || \
+  logcmd cp $TMPDIR/nss-$NSSVER/nss/lib/ckfw/builtins/certdata.txt . || \
     logerr "--- Failed to copy certdata.txt file"
   logcmd $SRCDIR/mk-ca-bundle.pl -n cacert.pem || \
     logerr "--- Failed to convert certdata.txt into PEM format"
-  logcmd cp $TMPDIR/nss-$NSSVER/mozilla/security/nss/COPYING license || \
+  logcmd cp $TMPDIR/nss-$NSSVER/nss/COPYING license || \
     logerr "--- Failed to copy license file"
   popd > /dev/null
 }
