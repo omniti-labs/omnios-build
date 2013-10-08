@@ -348,6 +348,7 @@ verify_depends() {
                 i=${i:1}
                 pkg info $i > /dev/null 2<&1 &&
                     logerr "--- $i cannot be installed while building this package."
+                continue
                 ;;
         esac
         pkg info $i > /dev/null 2<&1 ||
