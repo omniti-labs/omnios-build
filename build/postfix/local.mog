@@ -1,0 +1,5 @@
+group groupname=postdrop
+user ftpuser=false gcos-field="Postfix" group=postdrop password=NP username: postfix
+<transform dir path=var/lib/postfix -> set owner postfix>
+<transform dir path=var/spool/postfix -> set owner postfix>
+<transform dir path=usr/libexec/postfix/pickup -> set owner postfix>
