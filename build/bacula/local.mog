@@ -1,3 +1,6 @@
 <transform dir path=tmp -> drop>
+<transform file path=opt/bacula/etc/.*\.new$ -> drop>
+<transform file path=opt/bacula/etc/.*\.old$ -> drop>
+<transform file path=.*.conf$ -> edit path opt/bacula/etc opt/bacula/etc/examples>
 group groupname=bacula
 user ftpuser=false gcos-field="Bacula User" group=bacula password=NP username=bacula
