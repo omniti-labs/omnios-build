@@ -11,7 +11,7 @@ DESC="$SUMMARY"
 
 make_prog() {
     logcmd pushd lib/uuid > /dev/null || logerr "pushd failed"
-    logcmd gmake
+    logcmd gmake ELF_OTHER_LIBS=-lsocket
     logcmd popd
 }
 make_install() {
