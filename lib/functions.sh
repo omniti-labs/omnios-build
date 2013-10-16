@@ -112,6 +112,7 @@ logcmd() {
     else
         echo Running: "$@" | tee $LOGFILE
         "$@" | tee $LOGFILE 2>&1
+        return ${PIPESTATUS[0]}
     fi
 }
 logmsg() {
