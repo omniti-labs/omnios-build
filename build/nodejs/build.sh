@@ -32,9 +32,9 @@ PATH=$PATH:/usr/gnu/i386-pc-solaris2.11/bin
 export PATH
 
 PROG=node
-VER=0.10.15
+VER=0.10.21
 GITREPO=https://github.com/joyent/node.git
-GITHASH=2426d65af860bda7be9f0832a99601cc43c6cf63
+GITHASH=e2da042844a830fafb8031f6c477eb4f96195210
 VERHUMAN=$VER
 PKG=omniti/runtime/nodejs
 SUMMARY="evented I/O for v8 javascript"
