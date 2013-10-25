@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=mimeo
-VER=0.12.1
+VER=1.0.1
 VERHUMAN=$VER
 PGVER=931
 PKG=omniti/database/postgresql-${PGVER}/mimeo

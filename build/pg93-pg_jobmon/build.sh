@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pg_jobmon
-VER=1.0.2
+VER=1.1.3
 VERHUMAN=$VER
 PGVER=931
 PKG=omniti/database/postgresql-${PGVER}/pg_jobmon
