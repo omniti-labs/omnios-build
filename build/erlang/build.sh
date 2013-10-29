@@ -34,10 +34,10 @@ PROG=erlang
 OTPVER=R15B01
 #REPO=git://github.com/slfritchie/otp.git
 VER=15.0.1
-VERHUMAN=$VER
+VERHUMAN=$OTPVER
 PKG=omniti/runtime/erlang
 SUMMARY="Erlang OTP Platform"
-DESC="$SUMMARY ($OTPVER)"
+DESC="$SUMMARY ($VERHUMAN)"
 
 TAR=gtar
 BUILDDIR=otp_src_$OTPVER
