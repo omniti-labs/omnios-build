@@ -57,7 +57,7 @@ make_prog() {
     make_in $CONTRIBDIR
 }
 
-make_ins3all() {
+make_install() {
     logmsg "--- make install"
     make_install_in $CONTRIBDIR
 }
