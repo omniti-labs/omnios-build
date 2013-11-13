@@ -53,7 +53,7 @@ init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
-bootstrap
+#bootstrap
 build
 make_isa_stub
 

@@ -81,7 +81,6 @@ depend fmri=driver/network/vr@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/xge@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/yge@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/pcmcia@0.5.11,5.11-@PVER@ type=require
-depend fmri=driver/serial/pcser@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/serial/usbftdi@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/serial/usbsacm@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/serial/usbser@0.5.11,5.11-@PVER@ type=require
@@ -105,7 +104,6 @@ depend fmri=driver/storage/mega_sas@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/mpt_sas@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/mr_sas@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/nv_sata@0.5.11,5.11-@PVER@ type=require
-depend fmri=driver/storage/pcata@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/pmcs@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/sbp2@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/scsa1394@0.5.11,5.11-@PVER@ type=require

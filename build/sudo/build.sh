@@ -34,10 +34,12 @@ PKG=security/sudo
 SUMMARY="$PROG - authority delegation tool"
 DESC="$SUMMARY"
 
-LIBS="-lssp_nonshared"
+#LIBS="-lssp_nonshared"
+LIBS=""
 export LIBS
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --sbindir=/usr/sbin --libexecdir=/usr/lib/sudo"
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --libexecdir=/usr/lib/sudo/amd64"
+CFLAGS="$CFLAGS -fno-stack-protector"
 CONFIGURE_OPTS="
     --with-ldap
     --with-project

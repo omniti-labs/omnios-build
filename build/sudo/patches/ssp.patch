@@ -1,0 +1,25 @@
+diff -bur sudo-1.8.7.clean/configure sudo-1.8.7/configure
+--- sudo-1.8.7.clean/configure	2013-06-04 09:53:13.000000000 +0000
++++ sudo-1.8.7/configure	2013-11-12 21:51:24.599624559 +0000
+@@ -21252,8 +21252,8 @@
+ $as_echo "$ax_cv_check_ldflags___fstack_protector_all" >&6; }
+ if test x"$ax_cv_check_ldflags___fstack_protector_all" = xyes; then :
+ 
+-		SSP_CFLAGS="-fstack-protector-all"
+-		SSP_LDFLAGS="-Wc,-fstack-protector-all"
++		SSP_CFLAGS="-lintl"
++		SSP_LDFLAGS="-lintl"
+ 
+ else
+   :
+@@ -21328,8 +21328,8 @@
+ $as_echo "$ax_cv_check_ldflags___fstack_protector" >&6; }
+ if test x"$ax_cv_check_ldflags___fstack_protector" = xyes; then :
+ 
+-		    SSP_CFLAGS="-fstack-protector"
+-		    SSP_LDFLAGS="-Wc,-fstack-protector"
++		    SSP_CFLAGS="-lintl"
++		    SSP_LDFLAGS="-lintl"
+ 
+ else
+   :

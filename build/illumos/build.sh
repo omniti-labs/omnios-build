@@ -51,13 +51,13 @@ USE_SYSTEM_SSL_HEADERS="TRUE"
 
 PKGPREFIX=""
 PREFIX=""
-TMPDIR=/code	# This directory must be writable as your non-root user
+TMPDIR=/code/cnehren	# This directory must be writable as your non-root user
 BUILDDIR=$PROG-$VER
 CODEMGR_WS=$TMPDIR/$BUILDDIR/illumos-omnios
 
 #Since these variables are used in a sed statment make sure to escape properly
 ILLUMOS_NO="NIGHTLY\_OPTIONS=\'\-nDCmpr\'"
-ILLUMOS_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/illumos\-omnios"
+ILLUMOS_CODEMGR_WS="CODEMGR\_WS=\/code\/cnehren\/$BUILDDIR\/illumos\-omnios"
 #ILLUMOS_CLONE_WS="CLONE\_WS=\'ssh:\/\/anonhg@hg.illumos.org\/illumos\-gate\'"
 ILLUMOS_CLONE_WS="CLONE\_WS=\'anon@src.omniti.com:~omnios\/core\/illumos\-omnios\'"
 
