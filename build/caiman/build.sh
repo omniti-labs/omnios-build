@@ -54,6 +54,8 @@ PREFIX=""
 TMPDIR=/code
 BUILDDIR=$PROG-$VER
 CODEMGR_WS=$TMPDIR/$BUILDDIR/caiman
+ON_CLOSED_BINS="$CODEMGR_WS/closed"
+export ON_CLOSED_BINS
 
 CAIMAN_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/caiman"
 CAIMAN_PKG_REDIST="PKGPUBLISHER_REDIST=omnios; export PKGPUBLISHER_REDIST;"
@@ -110,6 +112,20 @@ modify_build_script() {
 
 }
 
+closed_bins() {
+    logmsg "Entering $CODEMGR_WS"
+    pushd $CODEMGR_WS > /dev/null
+    logmsg "Getting Closed Source Bins..."
+    for bin in on-closed-bins.i386.tar.bz2 on-closed-bins-nd.i386.tar.bz2 ; do
+        if [[ ! -f $bin ]]; then
+            logcmd curl -s -O http://mirrors.omniti.com/illumos-gate/$bin
+        fi
+        logcmd tar xvpf $bin
+    done
+    logmsg "Leaving $CODEMGR_WS"
+    popd > /dev/null
+}
+
 build_pkgs() {
     logmsg "Entering $CODEMGR_WS"
     pushd $CODEMGR_WS > /dev/null
@@ -133,6 +149,7 @@ prep_build
 sunstudio_location
 clone_source
 modify_build_script
+closed_bins
 build_pkgs
 push_pkgs
 clean_up
