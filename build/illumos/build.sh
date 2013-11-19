@@ -95,7 +95,7 @@ clone_source(){
         logmsg "OMNI Illumos Source in place. Using existing workspace."
     else
         logmsg "Cloning OMNI Illumos Source..."
-        logcmd  $GIT clone anon@src.omniti.com:~omnios/core/illumos-omnios || \
+        logcmd  $GIT clone -b r$RELVER anon@src.omniti.com:~omnios/core/illumos-omnios || \
             logerr "--- Failed to clone source"
     fi
     pushd illumos-omnios 
