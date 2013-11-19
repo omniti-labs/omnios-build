@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 PROG=trafficserver
-VER=4.0.1
+VER=4.0.2
 PKG=omniti/server/trafficserver
 SUMMARY="Apache Traffic Server - HTTP cache"
 DESC="$SUMMARY"
@@ -36,7 +36,8 @@ CONFIGURE_OPTS_64="--prefix=$PREFIX
         --sbindir=$PREFIX/sbin
         --libdir=$PREFIX/lib
         --libexecdir=$PREFIX/libexec
-	--mandir=$PREFIX/share/man"
+	--mandir=$PREFIX/share/man
+        --enable-experimental-plugins"
 
 move_etc() {
     # Move etc to one side so that package reinstalls don't break things
