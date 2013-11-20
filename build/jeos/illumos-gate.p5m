@@ -211,12 +211,10 @@ depend fmri=SUNWpacket@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpapi@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWparted@1.8.8,5.11-0.133 type=incorporate
 depend fmri=SUNWpc@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWpcan@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpcelx@0.5.11,5.11-0.132 type=incorporate
 depend fmri=SUNWpcmci@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpcmcu@0.5.11,5.11-0.130 type=incorporate
 depend fmri=SUNWpcmem@0.5.11,5.11-0.130 type=incorporate
-depend fmri=SUNWpcwl@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpd@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpicl@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpiclh@0.5.11,5.11-0.133 type=incorporate
@@ -466,9 +464,7 @@ depend fmri=driver/network/nge@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/ntxn@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/nxge@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/ofk@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=driver/network/pcan@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/pcn@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=driver/network/pcwl@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/platform@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/qlc/qlc-mdb@0.5.11,5.11-0.134 type=incorporate
 depend fmri=driver/network/qlc@0.5.11,5.11-@PVER@ type=incorporate
