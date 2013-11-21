@@ -34,7 +34,7 @@ PKG=developer/gnu-binutils
 SUMMARY="$PROG -  a collection of binary tools"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="gcc47"
+BUILD_DEPENDS_IPS="gcc48"
 [[ "$BUILDARCH" == "both" ]] && BUILDARCH=32
 
 CONFIGURE_OPTS="--enable-gold=yes --exec-prefix=/usr/gnu --program-prefix=g"
