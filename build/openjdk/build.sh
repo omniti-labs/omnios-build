@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=openjdk
-VER=1.7.0
+VER=0.5.11
 UPDATE=21
 BUILD=30
 VERHUMAN="jdk7u${UPDATE}-b${BUILD}"
@@ -281,7 +281,7 @@ make_install_j2sdk
 
 # Build up a full VER for the package with all the numeric components
 # The update number doesn't appear to zero-pad, but the build does
-VER=${VER}.${UPDATE}.${BUILD#0}
+#VER=${VER}.${UPDATE}.${BUILD#0}
 
 PKG=runtime/java
 SUMMARY="Open-source implementation of the seventh edition of the Java SE Platform"
