@@ -1,0 +1,19 @@
+--- a/bin/pkgtree
++++ b/bin/pkgtree
+@@ -146,7 +146,6 @@ delete $args{debug};
+ delete $args{'cache-file'};
+ delete $args{'force-cache'};
+ delete $args{'no-cache'};
+-delete $args{'no-pager'};
+ delete $args{'no-colour'};
+ 
+ my @output;
+@@ -171,7 +170,7 @@ if ($op eq 'depends') {
+ # If STDOUT is connected to a terminal and --no-pager was not specified
+ # then send the result to the pager
+ #
+-if (-t STDOUT and !$args{'--no-pager'}) {
++if (-t STDOUT and !$args{'no-pager'}) {
+     my $pager = $ENV{PAGER} || 'less';
+ 
+     #
