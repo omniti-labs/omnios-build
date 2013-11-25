@@ -154,7 +154,7 @@ ask_to_install() {
     MSG=$2
     if [[ -n "$AUTOINSTALL" ]]; then
         logmsg "Auto-installing $PKG..."
-        logcmd sudo pkg install $PKG || logerr "pkg install $PKG failed"
+        logcmd $SUDO pkg install $PKG || logerr "pkg install $PKG failed"
         return
     fi
     if [[ -n "$BATCH" ]]; then
@@ -163,7 +163,7 @@ ask_to_install() {
     fi
     ask_to_continue_ "$MSG " "Install/Abort?" "i/a" "[iIaA]"
     if [[ "$REPLY" == "i" || "$REPLY" == "I" ]]; then
-        logcmd sudo pkg install $PKG || logerr "pkg install failed"
+        logcmd $SUDO pkg install $PKG || logerr "pkg install failed"
     else
         logmsg "===== Build aborted ====="
         exit 1
@@ -224,7 +224,7 @@ BasicRequirements(){
         logmsg "You appear to be missing some basic build requirements."
         logmsg "To fix this run:"
         logmsg " "
-        logmsg "  sudo pkg install$needed"
+        logmsg "  $SUDO pkg install$needed"
         if [[ -n "$BATCH" ]]; then
             logmsg "===== Build aborted ====="
             exit 1
