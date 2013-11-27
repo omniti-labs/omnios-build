@@ -101,3 +101,10 @@
 # If you ship an SMF manifest, it should be imported upon pkg install
 <transform file path=(var|lib)/svc/manifest/.*\.xml -> \
     add restart_fmri svc:/system/manifest-import:default>
+
+# .pyc files are problematic because they change
+<transform file path=usr/lib/python2.6/.*\.pyc -> drop>
+
+# Anything in var/run can be dropped since it's a memory filesystem
+<transform file path=var/run -> drop>
+<transform dir path=var/run -> drop>
