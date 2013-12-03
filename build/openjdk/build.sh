@@ -185,8 +185,14 @@ make_install_j2re() {
     logcmd mkdir -p $J2RE_INSTALLTMP/usr/share/man/ja_JP.PCK/man1
     logcmd mkdir -p $J2RE_INSTALLTMP/usr/share/man/ja_JP.UTF-8/man1
 
-    # copy in our JRE files
+    # we end up with no jre/ directory in the j2re-image
+    # directory, which is comibusted. fix that so packages
+    # expecting things in a jre/ directory find them there.
     pushd $TMPDIR/$BUILDDIR/build/solaris-i586/j2re-image > /dev/null
+    logcmd mkdir -p jre
+    logcmd mv bin lib jre
+
+    # copy in our JRE files
     tar cf - . | (cd $JAVA_INSTALL_ROOT && tar xvf -)
     popd > /dev/null
 
@@ -301,7 +307,7 @@ DESTDIR=$J2SDK_INSTALLTMP
 make_package
 
 # Clean up our mess
-clean_up
+#clean_up
 
 # Vim hints
 # vim:ts=4:sw=4:et:
