@@ -61,7 +61,7 @@ CDDL HEADER END
 	    restart_on='none'
 	    type='service'>
 	    <service_fmri
-		value='svc:/system/system-log:default'/>
+		value='svc:/system/system-log'/>
 	</dependency>
 
 	<!--
