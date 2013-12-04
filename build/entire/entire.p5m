@@ -4,6 +4,8 @@ set name=pkg.summary value="Incorporation to constrain core system packages to s
 set name=pkg.description value="This package constrains core system package versions to the same build and provides a minimal set of additional packages."
 depend fmri=incorporation/jeos/illumos-gate@11,5.11-@PVER@ type=incorporate
 depend fmri=incorporation/jeos/illumos-gate type=require
+depend fmri=incorporation/jeos/omnios-userland@11,5.11-@PVER@ type=incorporate
+depend fmri=incorporation/jeos/omnios-userland type=require
 depend fmri=SUNWcs@0.5.11,5.11-@PVER@ type=require
 depend fmri=SUNWcsd@0.5.11,5.11-@PVER@ type=require
 depend fmri=compatibility/ucb@0.5.11,5.11-@PVER@ type=require
@@ -262,7 +264,8 @@ depend fmri=network/telnet@0.5.11,5.11-@PVER@ type=require
 depend fmri=package/pkg@0.5.11,5.11-@PVER@ type=require
 depend fmri=release/name@0.5.11,5.11-@PVER@ type=require
 depend fmri=release/notices@0.5.11,5.11-@PVER@ type=require
-depend fmri=runtime/perl@5.16.1,5.11-0.151006 type=require
+depend fmri=runtime/perl@5.16.1,5.11-@PVER@ type=require
+depend fmri=runtime/perl/manual@5.16.1,5.11-@PVER@ type=require
 depend fmri=runtime/perl/module/sun-solaris@0.5.11,5.11-@PVER@ type=require
 depend fmri=runtime/python-26@2.6.7,5.11-@PVER@ type=require
 depend fmri=security/sudo@1.8.6.3,5.11-@PVER@ type=require
