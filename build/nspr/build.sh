@@ -79,7 +79,7 @@ SUMMARY="Netscape Portable Runtime Headers"
 DESC="$SUMMARY"
 make_package header-nspr.mog
 
-DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library"
+RUN_DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library"
 PKG=library/nspr
 SUMMARY="Netscape Portable Runtime"
 DESC="$SUMMARY"

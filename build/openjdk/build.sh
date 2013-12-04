@@ -46,6 +46,7 @@ DESTDIR=
 DATETIME=`TZ=UTC /usr/bin/date +"%Y%m%dT%H%M%SZ"`
 
 BUILD_DEPENDS_IPS="developer/sunstudio12.1 system/header/header-audio developer/versioning/mercurial runtime/java omniti/developer/build/ant omniti/library/freetype2"
+RUN_DEPENDS_IPS="system/library shell/bash system/library/c++/sunpro library/unixodbc system/library/math"
 
 REPO="http://hg.openjdk.java.net/jdk7u/jdk7u"
 PATH=/opt/sunstudio12.1/bin:/opt/omni/bin:${PATH}
@@ -186,11 +187,15 @@ make_install_j2re() {
     logcmd mkdir -p $J2RE_INSTALLTMP/usr/share/man/ja_JP.UTF-8/man1
 
     # we end up with no jre/ directory in the j2re-image
-    # directory, which is comibusted. fix that so packages
+    # directory, which is comically busted. fix that so packages
     # expecting things in a jre/ directory find them there.
     pushd $TMPDIR/$BUILDDIR/build/solaris-i586/j2re-image > /dev/null
     logcmd mkdir -p jre
     logcmd mv bin lib jre
+
+    # and make sure that there are files in the bin/ directory
+    logcmd mkdir bin
+    logcmd cp jre/bin/* bin/
 
     # copy in our JRE files
     tar cf - . | (cd $JAVA_INSTALL_ROOT && tar xvf -)
@@ -198,7 +203,7 @@ make_install_j2re() {
 
     # set up /usr/java symlink
     pushd $J2RE_INSTALLTMP/usr >/dev/null
-    logcmd ln -s ./java jdk
+    logcmd ln -s ./java jre
     popd > /dev/null
 
     # set up java symlinks into /usr/bin
@@ -300,14 +305,14 @@ make_package
 PKG=developer/java/jdk
 SUMMARY="Open-source implementation of the seventh edition of the Java SDK"
 DESC="$SUMMARY"
-DEPENDS_IPS=runtime/java
+RUN_DEPENDS_IPS=runtime/java
 DESTDIR=$J2SDK_INSTALLTMP
 
 # Assemble the developer/java/jdk package
 make_package
 
 # Clean up our mess
-#clean_up
+clean_up
 
 # Vim hints
 # vim:ts=4:sw=4:et:

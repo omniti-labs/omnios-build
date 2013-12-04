@@ -175,19 +175,20 @@ build_mogs
 PKG=runtime/perl
 SUMMARY="Perl $VER Programming Language"
 DESC="$SUMMARY"
-DEPENDS_IPS="system/library/g++-4-runtime system/library/math system/library"
+BUILD_DEPENDS_IPS="system/library/g++-4-runtime system/library/math system/library"
+RUN_DEPENDS_IPS="system/library/math system/library"
 make_package $TMPDIR/perl.mog
 
 PKG=runtime/perl/manual
 SUMMARY="Perl $VER Programming Language Docs"
 DESC="$SUMMARY"
-DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
+RUN_DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-docs.mog
 
 PKG=runtime/perl-64
 SUMMARY="Perl $VER Programming Language (64-bit)"
 DESC="$SUMMARY"
-DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
+RUN_DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-64.mog
 
 clean_up

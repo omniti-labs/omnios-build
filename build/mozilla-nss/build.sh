@@ -144,7 +144,7 @@ SUMMARY="Network Security Services Headers"
 DESC="$SUMMARY"
 make_package header-nss.mog
 
-DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library
+RUN_DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library
 	library/nspr database/sqlite-3"
 PKG=system/library/mozilla-nss
 SUMMARY="Network Security Services Libraries"
