@@ -73,11 +73,12 @@ crib_headers(){
 }
 
 clone_source(){
-    logmsg "pkg -> $TMPDIR/$BUILDDIR/pkg"
+    PKG_BRANCH="r151006"
+    logmsg "pkg -> $TMPDIR/$BUILDDIR/pkg (branch: $PKG_BRANCH)"
     logcmd mkdir -p $TMPDIR/$BUILDDIR
     pushd $TMPDIR/$BUILDDIR > /dev/null 
     if [[ ! -d pkg ]]; then
-        logcmd $GIT clone src@src.omniti.com:~omnios/core/pkg
+        logcmd $GIT clone -b $PKG_BRANCH src@src.omniti.com:~omnios/core/pkg
     fi
     pushd pkg > /dev/null || logerr "no source"
     logcmd $GIT pull || logerr "failed to pull"
