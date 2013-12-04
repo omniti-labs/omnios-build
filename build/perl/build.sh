@@ -182,13 +182,13 @@ make_package $TMPDIR/perl.mog
 PKG=runtime/perl/manual
 SUMMARY="Perl $VER Programming Language Docs"
 DESC="$SUMMARY"
-RUN_DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
+RUN_DEPENDS_IPS="runtime/perl@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-docs.mog
 
 PKG=runtime/perl-64
 SUMMARY="Perl $VER Programming Language (64-bit)"
 DESC="$SUMMARY"
-RUN_DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
+RUN_DEPENDS_IPS="runtime/perl@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-64.mog
 
 clean_up
