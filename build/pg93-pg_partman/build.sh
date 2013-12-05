@@ -30,7 +30,7 @@
 PROG=pg_partman
 VER=1.4.3
 VERHUMAN=$VER
-PGVER=931
+PGVER=932
 PKG=omniti/database/postgresql-${PGVER}/pg_partman
 SUMMARY="$PROG - Partition management extention for PostgreSQL"
 DESC="$SUMMARY"
