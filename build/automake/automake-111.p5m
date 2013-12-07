@@ -1,4 +1,0 @@
-set name=pkg.fmri value=pkg://@PKGPUBLISHER@/developer/build/automake-111@1.11.6,5.11-0.@RELVER@
-set name=pkg.renamed value=true
-set name=variant.opensolaris.zone value=global value=nonglobal
-depend fmri=pkg://@PKGPUBLISHER@/developer/build/automake type=require
