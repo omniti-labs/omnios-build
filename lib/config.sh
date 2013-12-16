@@ -28,7 +28,7 @@
 #############################################################################
 
 # Default branch
-RELVER=151006
+RELVER=151008
 PVER=0.$RELVER
 
 # Which server to fetch files from
