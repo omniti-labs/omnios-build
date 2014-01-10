@@ -53,7 +53,7 @@ DEPENDS_IPS="developer/build/gnu-make developer/dtrace service/network/tftp"
 GIT=/usr/bin/git
 CHECKOUTDIR=$TMPDIR/$BUILDDIR
 IMG_DSET=rpool/kayak_image
-PKGURL=$PKGSRVR
+PKGURL="http://pkg.omniti.com/omnios/release/"
 export PKGURL
 
 clone_source() {
