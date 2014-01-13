@@ -22,7 +22,7 @@ depend fmri=developer/gcc44/libgmp-gcc44@5.0.2,5.11-0.151006 type=incorporate
 depend fmri=developer/gcc44/libmpc-gcc44@0.8.2,5.11-0.151006 type=incorporate
 depend fmri=developer/gcc44/libmpfr-gcc44@3.1.0,5.11-0.151006 type=incorporate
 depend fmri=developer/gcc47@4.7.2,5.11-0.151006 type=incorporate
-depend fmri=developer/gcc47/libgmp-gcc47@5.0.2,5.11-0.151006 type=incorporate
+depend fmri=developer/gcc47/libgmp-gcc47@5.0.5,5.11-0.151006 type=incorporate
 depend fmri=developer/gcc47/libmpc-gcc47@1.0.1,5.11-0.151006 type=incorporate
 depend fmri=developer/gcc47/libmpfr-gcc47@3.1.1,5.11-0.151006 type=incorporate
 depend fmri=developer/gnu-binutils@2.23,5.11-0.151006 type=incorporate
