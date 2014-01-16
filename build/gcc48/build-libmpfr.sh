@@ -43,6 +43,7 @@ GCCVER=4.8.1
 PREFIX=/opt/gcc-${GCCVER}
 CC=gcc
 CONFIGURE_OPTS="--with-gmp=/opt/gcc-${GCCVER}"
+LDFLAGS="-R/opt/gcc-${GCCVER}/lib -L/opt/gcc-${GCCVER}/lib"
 
 make_install32() {
     make_install
