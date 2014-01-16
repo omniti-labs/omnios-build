@@ -41,7 +41,7 @@ BUILDARCH=64
 PATH=/opt/omni/bin:$PATH
 export PATH
 
-BUILD_DEPENDS_IPS="developer/versioning/git omniti/runtime/nodejs@0.10"
+BUILD_DEPENDS_IPS="developer/versioning/git network/rsync omniti/runtime/nodejs@0.10"
 DEPENDS_IPS="omniti/runtime/nodejs@0.10"
 
 download_git() {
@@ -55,9 +55,10 @@ download_git() {
     logcmd $GIT clone $REPOS.git $BUILDDIR
     pushd $BUILDDIR > /dev/null
     REV=`$GIT log -1  --format=format:%at`
+    COMMIT=`$GIT log -1  --format=format:%h`
     REVDATE=`echo $REV | gawk '{ print strftime("%c %Z",$1) }'`
     VER=0.1.$REV
-    VERHUMAN="checkout from $REVDATE"
+    VERHUMAN="${COMMIT:0:7} from $REVDATE"
     logmsg "Installing local node-gyp for build"
     logcmd /opt/omni/bin/npm install node-gyp || \
         logerr "node-gyp install failed"
@@ -84,8 +85,7 @@ make_install() {
     logmsg "--- make install"
     logcmd install -d ${DESTDIR}${PREFIX}/lib/node/ || \
          logerr "--- Failed to make install directory."
-    logcmd cp -R . ${DESTDIR}${PREFIX}/lib/node/iptrie
-    logcmd rm -rf ${DESTDIR}${PREFIX}/lib/node/iptrie/.git
+    logcmd rsync -a --exclude=.git* . ${DESTDIR}${PREFIX}/lib/node/iptrie
 }
 
 init
