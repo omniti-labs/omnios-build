@@ -39,10 +39,10 @@ download_git() {
     $GIT pull
     if [ -n $REV ]; then $GIT checkout $REV; fi
     REV=`$GIT log -1  --format=format:%at`
-    if [[ $VER == "git" ]]; then
-        VER="0.1.$REV"
-    fi
+    COMMIT=`$GIT log -1  --format=format:%h`
+    VER="0.1.$REV"
     REVDATE=`echo $REV | gawk '{ print strftime("%c %Z",$1) }'`
+    VERHUMAN="${COMMIT:0:7} from $REVDATE"
     popd > /dev/null
     popd > /dev/null
 }
@@ -60,7 +60,6 @@ make_install() {
 
 init
 download_git git://github.com/circonus-labs/nad.git $PROG-$VER
-VERHUMAN="(checkout as of $REVDATE)"
 patch_source
 prep_build
 build
