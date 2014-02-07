@@ -23,6 +23,7 @@
 #
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
+# Copyright (c) 2014 by Delphix. All rights reserved.
 #
 
 umask 022
@@ -46,7 +47,8 @@ process_opts() {
     BATCH=
     AUTOINSTALL=
     DEPVER=
-    while getopts "bipf:ha:d:" opt; do
+    SKIP_PKGLINT=
+    while getopts "bipf:ha:d:lr:" opt; do
         case $opt in
             h)
                 show_usage
@@ -55,6 +57,9 @@ process_opts() {
             \?)
                 show_usage
                 exit 2
+                ;;
+            l)
+                SKIP_PKGLINT=1
                 ;;
             p)
                 SCREENOUT=1
@@ -69,6 +74,9 @@ process_opts() {
                 FLAVOR=$OPTARG
                 OLDFLAVOR=$OPTARG # Used to see if the script overrides the
                                    # flavor
+                ;;
+            r)
+                PKGSRVR=$OPTARG
                 ;;
             a)
                 BUILDARCH=$OPTARG
@@ -96,10 +104,12 @@ show_usage() {
     echo "  -b        : batch mode (exit on errors without asking)"
     echo "  -i        : autoinstall mode (install build deps)"
     echo "  -p        : output all commands to the screen as well as log file"
+    echo "  -l        : skip pkglint check"
     echo "  -f FLAVOR : build a specific package flavor"
     echo "  -h        : print this help text"
     echo "  -a ARCH   : build 32/64 bit only, or both (default: both)"
     echo "  -d DEPVER : specify an extra dependency version (no default)"
+    echo "  -r REPO   : specify the IPS repo to use (default: $PKGSRVR)"
 }
 
 #############################################################################
@@ -170,6 +180,13 @@ ask_to_install() {
     fi
 }
 
+ask_to_pkglint() {
+    local MANIFEST=$1
+
+    ask_to_continue_ "" "Do you want to run pkglint at this time?" "y/n" "[yYnN]"
+    [[ "$REPLY" == "y" || "$REPLY" == "Y" ]]
+}
+
 #############################################################################
 # URL encoding for package names, at least
 #############################################################################
@@ -210,6 +227,7 @@ if [[ -f $LOGFILE ]]; then
     mv $LOGFILE $LOGFILE.1
 fi
 process_opts $@
+shift $((OPTIND - 1))
 
 BasicRequirements(){
     local needed=""
@@ -448,6 +466,25 @@ patch_file() {
 }
 
 #############################################################################
+# Attempt to download the given resource to the current directory.
+#############################################################################
+# Parameters
+#   $1 - resource to get
+#
+get_resource() {
+    local RESOURCE=$1
+    case ${MIRROR:0:1} in
+        /)
+            logcmd cp $MIRROR/$RESOURCE .
+            ;;
+        *)
+            URLPREFIX=http://$MIRROR
+            $WGET -a $LOGFILE $URLPREFIX/$RESOURCE
+            ;;
+    esac
+}
+
+#############################################################################
 # Download source tarball if needed and extract it
 #############################################################################
 # Parameters
@@ -503,14 +540,13 @@ download_source() {
         # Try all possible archive names
         logmsg "--- Archive not found."
         logmsg "Downloading archive"
-        URLPREFIX=http://$MIRROR/$DLDIR/$ARCHIVEPREFIX
-        $WGET -a $LOGFILE $URLPREFIX.tar.gz || \
-            $WGET -a $LOGFILE $URLPREFIX.tar.bz2 || \
-            $WGET -a $LOGFILE $URLPREFIX.tar.xz || \
-            $WGET -a $LOGFILE $URLPREFIX.tgz || \
-            $WGET -a $LOGFILE $URLPREFIX.tbz || \
-            $WGET -a $LOGFILE $URLPREFIX.tar || \
-            $WGET -a $LOGFILE $URLPREFIX.zip || \
+        get_resource $DLDIR/$ARCHIVEPREFIX.tar.gz || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tar.bz2 || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tar.xz || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tgz || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tbz || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tar || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.zip || \
             logerr "--- Failed to download file"
         find_archive $ARCHIVEPREFIX FILENAME
         if [[ "$FILENAME" == "" ]]; then
@@ -590,6 +626,7 @@ make_package() {
         DESCSTR="$DESCSTR ($FLAVOR)"
     fi
     PKGSEND=/usr/bin/pkgsend
+    PKGLINT=/usr/bin/pkglint
     PKGMOGRIFY=/usr/bin/pkgmogrify
     PKGFMT=/usr/bin/pkgfmt
     P5M_INT=$TMPDIR/${PKGE}.p5m.int
@@ -656,7 +693,11 @@ make_package() {
     fi
     logmsg "--- Applying transforms"
     $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
-    logmsg "--- Publishing package"
+    if [[ -z $SKIP_PKGLINT ]] && ( [[ -n $BATCH ]] ||  ask_to_pkglint ); then
+        $PKGLINT -c $TMPDIR/lint-cache -r $PKGSRVR $P5M_FINAL || \
+            logerr "----- pkglint failed"
+    fi
+    logmsg "--- Publishing package to $PKGSRVR"
     if [[ -z $BATCH ]]; then
         logmsg "Intentional pause: Last chance to sanity-check before publication!"
         ask_to_continue
