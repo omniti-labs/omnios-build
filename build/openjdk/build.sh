@@ -23,6 +23,7 @@
 #
 # Copyright 2011-2013 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
+# Copyright (c) 2014 by Delphix. All rights reserved.
 #
 # Load support functions
 . ../../lib/functions.sh
@@ -79,7 +80,9 @@ download_hg() {
 install_cups_headers() {
     logmsg "Installing CUPS headers for build"
     pushd $TMPDIR > /dev/null
-    curl -s http://$MIRROR/cups/cups-headers.tar.gz | gzip -dc | tar xf - || \
+    get_resource cups/cups-headers.tar.gz || \
+        logerr "--- Failed to download cups-headers tarball"
+    extract_archive cups-headers.tar.gz || \
         logerr "--- Failed to extract cups-headers tarball"
     popd > /dev/null
 }
@@ -87,7 +90,9 @@ install_cups_headers() {
 install_x11_headers() {
     logmsg "Installing openwin bits for build"
     pushd $TMPDIR > /dev/null
-    curl http://$MIRROR/Xstuff/openwin.tar.gz | gzip -dc | tar xvf - || \
+    get_resource Xstuff/openwin.tar.gz || \
+        logerr "--- Failed to download openwin tarball"
+    extract_archive openwin.tar.gz || \
         logerr "--- Failed to extract openwin tarball"
     popd > /dev/null
 }
