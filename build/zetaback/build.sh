@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=zetaback      # App name
-VER=1.0.6            # App version
+VER=1.0.7            # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=omniti/backup/zetaback            # Package name (e.g. library/foo)
