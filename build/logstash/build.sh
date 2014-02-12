@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=logstash   # App name
-VER=1.1.12      # App version
+VER=1.3.3       # App version
 VERHUMAN=$VER   # Human-readable version
 PKG=omniti/network/logstash # Package name (e.g. library/foo)
 SUMMARY="Logstash log management tool"      # One-liner, must be filled in
