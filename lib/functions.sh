@@ -627,7 +627,9 @@ make_package() {
     if [[ -z "$NO_AUTO_DEPENDS" ]]; then
         $PKGDEPEND generate -d $DESTDIR $P5M_INT.stage1 > $P5M_INT.dep
         $PKGDEPEND resolve $P5M_INT.dep
-        cat $P5M_INT.dep.res >> $P5M_INT.stage1
+        # Strip the OS version, etc from the fmri.
+        sed -E '/^depend fmri/ s/@([^ :,-]*)[^ ]*/@\1/' $P5M_FINAL.dep.res >> \
+            $P5M_INT.stage1
         # Incorporate on entire so that a newer build for an earlier release 
         # won't install on a later release.
         echo "depend fmri=pkg:/entire@11-$PVER type=incorporate" >> $P5M_INT.stage1
