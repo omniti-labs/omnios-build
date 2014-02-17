@@ -52,7 +52,7 @@ USE_SYSTEM_SSL_HEADERS="TRUE"
 PKGPREFIX=""
 PREFIX=""
 TMPDIR=/code	# This directory must be writable as your non-root user
-BUILDDIR=$PROG-$VER
+BUILDDIR=$USER-$PROG-$VER
 CODEMGR_WS=$TMPDIR/$BUILDDIR/illumos-omnios
 
 #Since these variables are used in a sed statment make sure to escape properly
