@@ -44,7 +44,8 @@ PKGPREFIX=""
 [[ "$BUILDARCH" == "both" ]] && BUILDARCH=32
 PREFIX=/opt/gcc-${GCCVER}
 CC=gcc
-CONFIGURE_OPTS="--enable-cxx"
+# '--disable-assembly' fixes http://omnios.omniti.com/ticket.php/83
+CONFIGURE_OPTS="--enable-cxx --disable-assembly"
 CFLAGS="-fexceptions"
 ABI=32
 export ABI
