@@ -28,3 +28,5 @@ Python26-25-closerange.patch -p1
 Python26-26-pybench.patch -p1
 Python26-27-sunos11-awareness.patch -p1
 Python26-28-no-libdl.patch -p1
+Python26-29-ATTRIBUTE_FORMAT_PARSETUPLE.patch -p1
+Python26-30-recvfrom-vuln.patch -p1

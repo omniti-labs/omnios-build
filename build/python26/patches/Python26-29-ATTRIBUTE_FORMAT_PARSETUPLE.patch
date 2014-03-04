@@ -1,0 +1,12 @@
+--- Python-2.6.7/Include/pyport.h	Sun May  9 15:15:40 2010
++++ Python-2.6.7/Include/pyport.h.fixed	Tue Aug 13 18:25:28 2013
+@@ -712,7 +707,8 @@
+ /*
+  * Add PyArg_ParseTuple format where available.
+  */
+-#ifdef HAVE_ATTRIBUTE_FORMAT_PARSETUPLE
++#if HAVE_ATTRIBUTE_FORMAT_PARSETUPLE && (!defined(__GNUC__) || \
++      (__GNUC__ >= 4 && __GNUC_MINOR__ > 7))
+ #define Py_FORMAT_PARSETUPLE(func,p1,p2) __attribute__((format(func,p1,p2)))
+ #else
+ #define Py_FORMAT_PARSETUPLE(func,p1,p2)
