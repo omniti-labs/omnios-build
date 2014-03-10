@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -66,19 +66,10 @@ CONFIGURE_OPTS_32="--prefix=/opt/gcc-${VER}"
 CONFIGURE_OPTS="--host i386-pc-solaris2.11 --build i386-pc-solaris2.11 --target i386-pc-solaris2.11 \
     --with-boot-ldflags=-R/opt/gcc-${VER}/lib \
     --with-gmp=/opt/gcc-${VER} --with-mpfr=/opt/gcc-${VER} --with-mpc=/opt/gcc-${VER} \
-    --enable-languages=c,c++,fortran --enable-ld=no \
+    --enable-languages=c,c++,fortran --without-gnu-ld --with-ld=/bin/ld \
     --with-as=/usr/bin/gas --with-gnu-as --with-build-time-tools=/usr/gnu/i386-pc-solaris2.11/bin"
 LDFLAGS32="-R/opt/gcc-${VER}/lib"
 export LD_OPTIONS="-zignore -zcombreloc -Bdirect -i"
-
-save_function configure32 configure32_orig
-configure32() {
-    logmsg "This is evil... sudo chmod'ing gnu ld"
-    logcmd sudo chmod 644 /usr/gnu/i386-pc-solaris2.11/bin/ld
-    configure32_orig
-    logmsg "This is evil... chmodding gnu ld back"
-    logcmd sudo chmod 755 /usr/gnu/i386-pc-solaris2.11/bin/ld
-}
 
 init
 download_source gcc44 ${PROG}-il-4_4_4
