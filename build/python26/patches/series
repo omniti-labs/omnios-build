@@ -23,7 +23,7 @@ Python26-20-py_db.patch -p1
 #Python26-22-bindir.patch -p1 (this was accepted upstream)
 Python26-23-none-on-connect.patch -p1
 Python26-24-makedev.patch -p1
-Python26-24-symbolic.patch -p1
+#Python26-24-symbolic.patch -p1 (bad patch, so lose it)
 Python26-25-closerange.patch -p1
 Python26-26-pybench.patch -p1
 Python26-27-sunos11-awareness.patch -p1
