@@ -85,7 +85,7 @@ build32() {
         logmsg "--- *** WARNING *** make (dist)clean Failed"
     logmsg "--- configure (32-bit)"
     logcmd $SHELL Configure -Dusethreads -Duseshrplib -Dusemultiplicity -Duselargefiles \
-	-Dusedtrace -Duse64bitint -Dmyhostname="localhost" \
+	-Duse64bitint -Dmyhostname="localhost" \
         -Dcc=gcc -Dld=/usr/ccs/bin/ld -Dccflags="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_TS_ERRNO" \
         -Doptimize="-O3" \
         -Dvendorprefix=${PREFIX} -Dprefix=${PREFIX} \
@@ -126,7 +126,7 @@ build64() {
         logmsg "--- *** WARNING *** make (dist)clean Failed"
     logmsg "--- configure (64-bit)"
     logcmd $SHELL Configure -Dusethreads -Duseshrplib -Dusemultiplicity -Duselargefiles \
-	-Dusedtrace -Duse64bitint -Dmyhostname="localhost" \
+	-Duse64bitint -Dmyhostname="localhost" \
         -Dcc=gcc -Dld=/usr/ccs/bin/ld -Dccflags="-D_LARGEFILE64_SOURCE -m64 -D_TS_ERRNO" \
         -Dlddlflags="-G -64" \
         -Dldflags="" \
