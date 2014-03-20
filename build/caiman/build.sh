@@ -51,11 +51,12 @@ GIT=git
 PKGSERVER=$PKGSRVR
 PKGPREFIX=""
 PREFIX=""
-TMPDIR=/code
 BUILDDIR=$PROG-$VER
 CODEMGR_WS=$TMPDIR/$BUILDDIR/caiman
+ON_CLOSED_BINS="$CODEMGR_WS/closed"
+export ON_CLOSED_BINS
 
-CAIMAN_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/caiman"
+CAIMAN_CODEMGR_SEDSTRING="s/CODEMGR_WS=.*/CODEMGR_WS=`echo $CODEMGR_WS | sed 's/\//\\\\\//g'`/g"
 CAIMAN_PKG_REDIST="PKGPUBLISHER_REDIST=omnios; export PKGPUBLISHER_REDIST;"
 CAIMAN_PKG_BRANCH="PKGVERS_BRANCH=$PVER; export PKGVERS_BRANCH;"
 
@@ -101,8 +102,8 @@ modify_build_script() {
     logmsg "Changing omnios.sh variables to what we want them to be..."
     logcmd cp usr/src/tools/env/omnios.sh . || \
         logerr "Could not copy build environment"
-    logcmd /usr/bin/gsed -i -e 's/^.*export CODEMGR_WS=.*/export '$CAIMAN_CODEMGR_WS'/g;' omnios.sh || \
-        logerr "/usr/bin/gsed failed"
+    logcmd /usr/bin/sed -I -e $CAIMAN_CODEMGR_SEDSTRING omnios.sh || \
+        logerr "/usr/bin/sed failed"
     logcmd `echo $CAIMAN_PKG_REDIST >> omnios.sh`
     logcmd `echo $CAIMAN_PKG_BRANCH >> omnios.sh`
     logmsg "Leaving $CODEMGR_WS"
@@ -110,11 +111,25 @@ modify_build_script() {
 
 }
 
+closed_bins() {
+    logmsg "Entering $CODEMGR_WS"
+    pushd $CODEMGR_WS > /dev/null
+    logmsg "Getting Closed Source Bins..."
+    for bin in on-closed-bins.i386.tar.bz2 on-closed-bins-nd.i386.tar.bz2 ; do
+        if [[ ! -f $bin ]]; then
+            logcmd curl -s -O http://mirrors.omniti.com/illumos-gate/$bin
+        fi
+        logcmd tar xpf $bin
+    done
+    logmsg "Leaving $CODEMGR_WS"
+    popd > /dev/null
+}
+
 build_pkgs() {
     logmsg "Entering $CODEMGR_WS"
     pushd $CODEMGR_WS > /dev/null
     logmsg "Building caiman pkgs..."
-    logcmd /opt/onbld/bin/nightly omnios.sh || logerr "Nighly failed"
+    logcmd /opt/onbld/bin/nightly omnios.sh || logerr "Nightly failed"
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
 }
@@ -133,6 +148,7 @@ prep_build
 sunstudio_location
 clone_source
 modify_build_script
+closed_bins
 build_pkgs
 push_pkgs
 clean_up
