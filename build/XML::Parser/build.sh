@@ -25,7 +25,6 @@ BUILD_DEPENDS_IPS="runtime/perl runtime/perl-64"
 DEPENDS_IPS="library/expat runtime/perl runtime/perl-64"
 
 init
-test_if_core
 download_source CPAN/authors/id/${AUTHORID:0:1}/${AUTHORID:0:2}/${AUTHORID} $PROG $VER
 patch_source
 prep_build
