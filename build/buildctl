@@ -10,7 +10,10 @@ fi
 
 [ "${1}" == "licenses" ] && AUDIT_LICENSE=1
 
+# targets maps any valid package name to its build script.
 declare -A targets
+# fulltargets maps full package names to their build script.
+declare -A fulltargets
 declare -A licenses
 TCNT=0
 for build in */build*.sh
@@ -30,6 +33,15 @@ do
             print -f "."
         else
             targets+=([$PKG]=$build)
+            fulltargets+=([$PKG]=$build)
+            #
+            # Repeatedly strip off leading components to generate all valid
+            # names for this package.
+            #
+            while [[ $PKG =~ '/' ]]; do
+                PKG=${PKG#*/}
+                targets+=([$PKG]=$build)
+            done
         fi
     done
 done
@@ -58,7 +70,7 @@ bail() {
 
 list() {
     PAT=${1-.}
-    for target in "${!targets[@]}"
+    for target in "${!fulltargets[@]}"
     do
         if [[ "$PAT" = "." ]]; then
             echo " * $target"
@@ -106,7 +118,8 @@ build() {
                 rm $SCRIPT.final
             fi
         else
-            PATH=$PATH:. $SCRIPT $batch_flag
+            PATH=$PATH:. $SCRIPT -r $PKGSRVR $batch_flag || \
+                logerr "Unable to run $SCRIPT"
         fi
     popd >/dev/null
 }
