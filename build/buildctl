@@ -164,7 +164,7 @@ case "$1" in
 	tobuild=$*
 	if [ -z "$tobuild" ] || [ "$tobuild" == "all" ]; then
 		batch_flag="-b"
-		for tgt in "${!targets[@]}"; do
+		for tgt in "${!fulltargets[@]}"; do
 			build $tgt
 		done
 	else
