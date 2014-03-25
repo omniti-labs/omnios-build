@@ -1137,5 +1137,34 @@ save_function() {
     eval "$NEWNAME_FUNC"
 }
 
+# Called by builds that need a PREBUILT_ILLUMOS actually finished.
+wait_for_prebuilt() {
+    if [ ! -d ${PREBUILT_ILLUMOS:-/dev/null} ]; then
+	echo "wait_for_prebuilt() called w/o PREBUILT_ILLUMOS. Bailing."
+	clean_up
+	exit 1
+    fi
+
+    # -h means symbolic link. That's what nightly does.
+    if [ ! -h $PREBUILT_ILLUMOS/log/nightly.lock ]; then
+	return
+    fi
+
+    # NOTE -> if the nightly finishes between the above check and now, we
+    # can produce confusing output since nightly_pid will be empty.
+    nightly_pid=`ls -lt $PREBUILT_ILLUMOS/log/nightly.lock | awk -F. '{print $4}'`
+    # Wait for nightly to be finished if it's running.
+    logmsg "Waiting for illumos nightly build $nightly_pid to be finished."
+    pwait $nightly_pid
+    if [ -h $PREBUILT_ILLUMOS/log/nightly.lock ]; then
+        logmsg "Nightly lock present, but build not running.  Bailing."
+        if [[ -z $BATCH ]]; then
+            ask_to_continue
+        fi
+        clean_up
+        exit 1
+    fi
+}
+
 # Vim hints
 # vim:ts=4:sw=4:et:

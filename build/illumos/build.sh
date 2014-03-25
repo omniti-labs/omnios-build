@@ -165,9 +165,11 @@ build_pkgs() {
 push_pkgs() {
     logmsg "Entering $CODEMGR_WS"
     pushd $CODEMGR_WS > /dev/null
-    logmsg "Intentional pause: Last chance to sanity-check before publication!"
     logmsg "Pushing illumos pkgs to $PKGSRVR..."
-    ask_to_continue
+    if [[ -z $BATCH ]]; then
+        logmsg "Intentional pause: Last chance to sanity-check before publication!"
+        ask_to_continue
+    fi
     logcmd pkgrecv -s packages/i386/nightly-nd/repo.redist/ -d $PKGSRVR 'pkg:/*'
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
@@ -175,11 +177,26 @@ push_pkgs() {
 
 init
 prep_build
-sunstudio_location
-clone_source
-modify_build_script
-closed_bins
-build_tools
-build_pkgs
-push_pkgs
+if [ -d ${PREBUILT_ILLUMOS:-/dev/null} ]; then
+    wait_for_prebuilt
+    # Check for existing packages, or for freshly built ones if we pwaited.
+    if [ -d $PREBUILT_ILLUMOS/packages/i386/nightly-nd/repo.redist ]; then
+        logmsg "Using illumos-omnios pre-compiled at $PREBUILT_ILLUMOS"
+        CODEMGR_WS=$PREBUILT_ILLUMOS
+        push_pkgs
+    else
+        logmsg "No $PREBUILT_ILLUMOS/packages/i386/nightly-nd/repo.redist"
+        if [[ -z $BATCH ]]; then
+            ask_to_continue
+        fi
+    fi
+else
+    sunstudio_location
+    clone_source
+    modify_build_script
+    closed_bins
+    build_tools
+    build_pkgs
+    push_pkgs
+fi
 clean_up
