@@ -117,7 +117,7 @@ closed_bins() {
     logmsg "Getting Closed Source Bins..."
     for bin in on-closed-bins.i386.tar.bz2 on-closed-bins-nd.i386.tar.bz2 ; do
         if [[ ! -f $bin ]]; then
-	    get_resource illumos-gate/$bin
+	    get_resource illumos-gate/$bin || logerr "Unable to get $bin"
         fi
         logcmd tar xpf $bin
     done
