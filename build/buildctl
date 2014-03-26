@@ -2,6 +2,7 @@
 
 NOBANNER=1
 batch_flag=""
+lint_flag=""
 if [ "${BATCH}" = 1 ]; then
     echo "Enabling batch mode."
     batch_flag="-b"
@@ -118,7 +119,7 @@ build() {
                 rm $SCRIPT.final
             fi
         else
-            PATH=$PATH:. $SCRIPT -r $PKGSRVR $batch_flag || \
+            PATH=$PATH:. $SCRIPT -r $PKGSRVR $batch_flag $lint_flag || \
                 logerr "Unable to run $SCRIPT"
         fi
     popd >/dev/null
@@ -147,6 +148,18 @@ licenses() {
 
 DEFAULT_PKGSRVR=$PKGSRVR
 DEFAULT_PKGPUBLISHER=$PKGPUBLISHER
+
+# When we get here, honor any -l or -b flags from the buildctl command line,
+# or even the environment.
+
+if [ "${BATCH}" = 1 ]; then
+    logmsg "Enabling batch mode."
+    batch_flag="-b"
+fi
+if [ "${SKIP_PKGLINT}" = 1 ]; then
+    logmsg "Disabling pkglint."
+    lint_flag="-l"
+fi
 
 case "$1" in
     list)
