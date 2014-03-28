@@ -15,6 +15,26 @@ fi
 declare -A targets
 # fulltargets maps full package names to their build script.
 declare -A fulltargets
+
+add_target() {
+	local pkg=$1
+	local build=$2
+	[[ -n ${fulltargets[$pkg]} ]] && \
+	    logerr "Target $pkg specified by ${fulltargets[$pkg]} and $build."
+	fulltargets+=([$pkg]=$build)
+
+	#
+	# Repeatedly strip off leading components to generate all valid
+	# names for this package. If more than one package has the same
+	# abbreviated name, the first one wins.
+	#
+	[[ -n ${targets[$pkg]} ]] || targets+=([$pkg]=$build)
+	while [[ $pkg =~ '/' ]]; do
+		pkg=${pkg#*/}
+		[[ -n ${targets[$pkg]} ]] || targets+=([$pkg]=$build)
+	done
+}
+
 declare -A licenses
 TCNT=0
 for build in */build*.sh
@@ -33,16 +53,7 @@ do
             TCNT=$(($TCNT + 1))
             print -f "."
         else
-            targets+=([$PKG]=$build)
-            fulltargets+=([$PKG]=$build)
-            #
-            # Repeatedly strip off leading components to generate all valid
-            # names for this package.
-            #
-            while [[ $PKG =~ '/' ]]; do
-                PKG=${PKG#*/}
-                targets+=([$PKG]=$build)
-            done
+		add_target $PKG $build
         fi
     done
 done
@@ -52,7 +63,7 @@ for manifest in */*.p5m
 do
     for PKG in $(awk '/^set name=pkg.fmri/ {print $3;}' $manifest | sed -e 's/value=//' -e 's/.*\/\/[^\/]*\///g' -e 's/@.*//')
     do
-        targets+=([$PKG]=$manifest)
+        add_target $PKG $manifest
     done
 done
 
