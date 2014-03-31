@@ -28,6 +28,16 @@
 # We have to build as root to manipulate ZFS datasets
 export ROOT_OK=yes
 
+if [[ "$UID" != 0 && ! -z $KAYAK_SUDO_BUILD ]]; then
+       # Run sudo BEFORE functions.sh eats the parameters.
+       # Installing OmniOS-on-demand should create an entry in /etc/sudoers.d/
+       # to cover running this script under sudo.
+       echo "Running again under sudo, currently UID = $UID, EUID = $EUID."
+       export OLDUSER=`whoami`
+       export KAYAK_SUDO_BUILD
+       exec sudo -n ./build.sh $@
+fi
+
 # Load support functions
 . ../../lib/functions.sh
 
@@ -103,6 +113,12 @@ logmsg "Now building $PKG"
 build_server
 make_package kayak.mog
 clean_up
+# Do extra cleaning up if we got run under sudo from ourselves.
+if [[ -z `echo $RPATH | grep http://` ]]; then
+       OLDUSER=`ls -ltd $RPATH | awk '{print $3}'`
+       logmsg "--- Re-chowning $RPATH to user $OLDUSER"
+       chown -R $OLDUSER $RPATH
+fi
 
 PKG=system/install/kayak-kernel
 SUMMARY="Kayak - network installer (kernel, miniroot and pxegrub)"
@@ -115,6 +131,12 @@ logmsg "Now building $PKG"
 build_miniroot
 make_package
 clean_up
+# Do extra cleaning up if we got run under sudo from ourselves.
+if [[ -z `echo $RPATH | grep http://` ]]; then
+       OLDUSER=`ls -ltd $RPATH | awk '{print $3}'`
+       logmsg "--- Re-chowning $RPATH to user $OLDUSER"
+       chown -R $OLDUSER $RPATH
+fi
 
 # Vim hints
 # vim:ts=4:sw=4:et:
