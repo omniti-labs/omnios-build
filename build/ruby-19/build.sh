@@ -46,7 +46,7 @@ BASE_RUBY=/opt/omni/bin/ruby
 [[ "$BUILDARCH" == "both" ]] && BUILDARCH=32
 NOSCRIPTSTUB=true
 
-CONFIGURE_OPTS="--without-gcc --enable-pthread --enable-shared ac_cv_func_dl_iterate_phdr=no --with-baseruby=$BASE_RUBY --with-opt-dir=/opt/omni --disable-install-doc"
+CONFIGURE_OPTS="--without-gcc --enable-pthread --enable-shared rb_cv_have_signbit=no ac_cv_func_dl_iterate_phdr=no --with-baseruby=$BASE_RUBY --with-opt-dir=/opt/omni --disable-install-doc"
 # We're going to reset bindir/sbindir so we should preserve all the rest
 CONFIGURE_OPTS_32="--prefix=$PREFIX
     --sysconfdir=$SYSCONFDIR
