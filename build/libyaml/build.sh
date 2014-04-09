@@ -29,6 +29,7 @@
 
 PROG=yaml     # App name
 VER=0.1.4            # App version
+DOWNLOADDIR=libyaml	# App directory
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=omniti/library/libyaml            # Package name (e.g. library/foo)
@@ -38,7 +39,7 @@ DESC="$SUMMARY ($VER) - Provides libyaml"         # Longer description, must be 
 CONFIGURE_OPTS="--prefix=$DESTDIR"
 
 init
-download_source $PROG $PROG $VER
+download_source $DOWNLOADDIR $PROG $VER
 patch_source
 prep_build
 build
