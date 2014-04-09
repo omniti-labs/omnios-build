@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=serf
-VER=1.1.0
+VER=1.2.1
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=omniti/library/serf
