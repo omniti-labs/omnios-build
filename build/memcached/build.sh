@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=memcached
-VER=1.4.13
+VER=1.4.17
 VERHUMAN=$VER
 PKG=omniti/server/memcached
 SUMMARY="$PROG - free & open source, high-performance, distributed memory object caching system"
@@ -37,14 +37,13 @@ DESC="$SUMMARY"
 DEPENDS_IPS="omniti/library/libevent =omniti/library/libevent@2.0
              system/library/gcc-4-runtime"
 
-CONFIGURE_OPTS="$CONFIGURE_OPTS --with-libevent=/opt/omni \
-                --enable-dtrace"
+CONFIGURE_OPTS="$CONFIGURE_OPTS --with-libevent=/opt/omni"
 LDFLAGS32="$LDFLAGS32 -L/opt/omni/lib -R/opt/omni/lib"
 LDFLAGS64="$LDFLAGS64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
 
 init
 download_source $PROG $PROG $VER
-patch_source
+#patch_source
 prep_build
 build
 make_isa_stub
