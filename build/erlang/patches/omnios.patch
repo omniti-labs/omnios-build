@@ -1,16 +1,15 @@
 diff --git a/erts/emulator/Makefile.in b/erts/emulator/Makefile.in
-index 55b1f41..8e8a027 100644
---- a/erts/emulator/Makefile.in
-+++ b/erts/emulator/Makefile.in
-@@ -209,7 +209,7 @@ LIB_PREFIX=lib
- LIB_SUFFIX=.a
- endif
+--- a/erts/emulator/Makefile.in	Wed Apr  9 21:29:24 2014
++++ b/erts/emulator/Makefile.in	Wed Apr  9 21:30:29 2014
+@@ -51,7 +51,7 @@
  
+ LDFLAGS=@LDFLAGS@
+ ARFLAGS=rc
 -OMIT_OMIT_FP=no
 +OMIT_OMIT_FP=yes
  
- ifeq (@EMU_LOCK_CHECKING@,yes)
- NO_INLINE_FUNCTIONS=true
+ ifeq ($(TYPE),debug)
+ PURIFY =
 diff --git a/erts/lib_src/Makefile.in b/erts/lib_src/Makefile.in
 index 757b3b2..a456f64 100644
 --- a/erts/lib_src/Makefile.in
