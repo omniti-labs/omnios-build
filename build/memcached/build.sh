@@ -43,7 +43,7 @@ LDFLAGS64="$LDFLAGS64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
 
 init
 download_source $PROG $PROG $VER
-#patch_source
+patch_source
 prep_build
 build
 make_isa_stub
