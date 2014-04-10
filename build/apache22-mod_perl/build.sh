@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=mod_perl
-VER=2.0.7
+VER=2.0.8
 VERHUMAN=$VER
 PKG=omniti/server/apache22/mod_perl
 SUMMARY="$PROG - embedded Perl $DEPVER interpreter for Apache"
