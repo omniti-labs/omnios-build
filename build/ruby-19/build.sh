@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ruby           # App name
-VER=1.9.3-p125      # App version
+VER=1.9.3-p545      # App version
 VERHUMAN=$VER       # Human-readable version
 #PVER=              # Branch (set in config.sh, override here if needed)
 PKG=omniti/runtime/ruby-19   # Package name (e.g. library/foo)
