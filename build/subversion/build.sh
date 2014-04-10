@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=subversion
-VER=1.7.5
+VER=1.8.8
 VERHUMAN=$VER
 PKG=omniti/developer/versioning/subversion
 SUMMARY="$PROG - An Open-Source Revision Control System"
@@ -37,22 +37,20 @@ DESC="$SUMMARY"
 #NEON=neon
 #NVER=0.29.0
 
-DEPENDS_IPS="database/sqlite-3@3.7 library/security/openssl@1.0.1 
+DEPENDS_IPS="database/sqlite-3@3.8 library/security/openssl@1.0.1 
              omniti/library/apr@1.4 omniti/library/apr-util@1.4
              library/expat library/zlib system/library/gcc-4-runtime
              omniti/library/serf"
-BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/swig@1.3 omniti/server/apache22"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/swig omniti/server/apache22"
 
-CFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
-CPPFLAGS32="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
+CFLAGS32="-D__EXTENSIONS__ -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
+CPPFLAGS32="-D__EXTENSIONS__ -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE"
 
 CONFIGURE_OPTS="$CONFIGURE_OPTS
     --sysconfdir=$PREFIX/etc
     --with-pic
     --with-serf=/opt/omni
     --with-openssl
-    --without-perl
-    --without-python
     --without-berkeley-db
     --without-jdk
     --disable-nls"
@@ -62,11 +60,11 @@ CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32
     --with-apr-util=/opt/omni/bin/$ISAPART/apu-1-config"
 
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64
-    --with-swig=/usr/bin/$ISAPART64/swig
+    --with-swig=/opt/omni/bin/$ISAPART64/swig
     --with-apr=/opt/omni/bin/$ISAPART64/apr-1-config
     --with-apr-util=/opt/omni/bin/$ISAPART64/apu-1-config"
 
-CPPFLAGS64="-I/opt/omni/include/amd64"
+CPPFLAGS64="-D__EXTENSIONS__ -I/opt/omni/include/amd64"
 CPPFLAGS="$CPPFLAGS -I/opt/omni/include" 
 
 LDFLAGS32="$LDFLAGS32 \
