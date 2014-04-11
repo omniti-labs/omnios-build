@@ -34,7 +34,7 @@ PKG=omniti/runtime/php-54
 SUMMARY="PHP Server 5.4"
 DESC="PHP is a widely-used general-purpose scripting language that is especially suited for Web development and can be embedded into HTML."
 
-BUILD_DEPENDS_IPS="compress/bzip2 database/sqlite-3 library/libtool/libltdl library/libxml2 library/libxslt system/library/iconv/unicode system/library/iconv/utf-8 system/library/iconv/utf-8/manual system/library/iconv/xsh4/latin web/curl omniti/database/mysql-55/library omniti/library/freetype2 omniti/library/gd  omniti/library/libjpeg omniti/library/libmcrypt omniti/library/libpng omniti/library/libpq5 omniti/library/libssh2 omniti/library/mhash omniti/server/apache22"
+BUILD_DEPENDS_IPS="service/network/smtp/sendmail compress/bzip2 database/sqlite-3 library/libtool/libltdl library/libxml2 library/libxslt system/library/iconv/unicode system/library/iconv/utf-8 system/library/iconv/utf-8/manual system/library/iconv/xsh4/latin web/curl omniti/database/mysql-55/library omniti/library/freetype2 omniti/library/gd  omniti/library/libjpeg omniti/library/libmcrypt omniti/library/libpng omniti/library/libpq5 omniti/library/libssh2 omniti/library/mhash omniti/server/apache22"
 # Mostly auto-generated; these are additional
 DEPENDS_IPS="database/sqlite-3 system/library/iconv/unicode system/library/iconv/utf-8 system/library/iconv/xsh4/latin omniti/library/gd omniti/library/libssh2 omniti/library/mhash"
 
