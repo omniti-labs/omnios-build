@@ -28,16 +28,24 @@
 . ../../lib/functions.sh
 
 PROG=GeoIP
-VER=1.4.8
+VER=1.5.2
 VERHUMAN=$VER
 PKG=omniti/library/geoip
 SUMMARY="MaxMind GeoIP C API"
 DESC="$SUMMARY"
 
+run_bootstrap() {
+    logmsg "Running $PROG bootstrap script"
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    logcmd ./bootstrap || logerr "Failed to run ./bootstrap"
+    popd > /dev/null
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
+run_bootstrap
 build
 make_isa_stub
 make_package
