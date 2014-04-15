@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=rsync
-VER=3.0.9
+VER=3.1.0
 VERHUMAN=$VER
 PKG=network/rsync
 SUMMARY="rsync - faster, flexible replacement for rcp"
