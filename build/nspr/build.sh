@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=nspr
-VER=4.10
+VER=4.10.4
 VERHUMAN=$VER
 PKG=$PROG ##IGNORE##
 SUMMARY="Netscape Portable Runtime"      # You should change this
