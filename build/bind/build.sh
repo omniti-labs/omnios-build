@@ -64,6 +64,7 @@ prep_build
 build
 make_isa_stub
 VER=${VER//-P/.}
+VER=${VER//-W/.}
 make_package
 clean_up
 
