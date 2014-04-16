@@ -1,2 +1,2 @@
 <transform file path=license$ -> drop>
-license license=MIT path=license
+license COPYING license=MIT
