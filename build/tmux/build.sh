@@ -66,6 +66,7 @@ prep_build
 build
 make_isa_stub
 strip_install
+VER=${VER//a/.0}
 make_package
 clean_up
 
