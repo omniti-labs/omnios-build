@@ -41,7 +41,7 @@ if [ -d ${PREBUILT_ILLUMOS:-/dev/null} ]; then
     wait_for_prebuilt
     KERNEL_SOURCE=$PREBUILT_ILLUMOS
 else
-    KERNEL_SOURCE=/code/omnios-$RELVER/illumos-omnios
+    KERNEL_SOURCE=/code/$USER-omnios-$RELVER/illumos-omnios
 fi
 PROTO_AREA=$KERNEL_SOURCE/proto/root_i386
 PATCHDIR=patches.$PROG
