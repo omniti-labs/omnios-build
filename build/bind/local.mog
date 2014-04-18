@@ -38,6 +38,8 @@
 <transform file path=usr/sbin/dnssec-.* -> drop>
 <transform file path=usr/sbin/genrandom -> drop>
 <transform file path=usr/sbin/isc-config.sh -> drop>
+<transform hardlink path=usr/sbin/bind9-config.sh -> drop>
+<transform hardlink path=usr/sbin/bind9-config -> drop>
 <transform file path=usr/sbin/isc-hmac-fixup -> drop>
 <transform hardlink path=usr/sbin/lwresd -> drop>
 <transform file path=usr/sbin/named.* -> drop>
@@ -46,6 +48,8 @@
 <transform file path=usr/sbin/pkcs11.* -> drop>
 <transform file path=usr/share/man/man1/arpaname.1 -> drop>
 <transform file path=usr/share/man/man1/isc-config.sh.1 -> drop>
+<transform hardlink path=usr/share/man/man1/bind9-config.sh.1 -> drop>
+<transform hardlink path=usr/share/man/man1/bind9-config.1 -> drop>
 <transform dir  path=usr/share/man/man3 -> drop>
 <transform file path=usr/share/man/man3/.* -> drop>
 <transform hardlink path=usr/share/man/man3/.* -> drop>
