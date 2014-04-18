@@ -34,6 +34,7 @@ PKG=network/rsync
 SUMMARY="rsync - faster, flexible replacement for rcp"
 DESC="rsync - faster, flexible replacement for rcp"
 
+REMOVE_PREVIOUS=1
 BUILDARCH=32
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --with-included-popt"
 init
