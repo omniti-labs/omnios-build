@@ -515,27 +515,26 @@ download_source() {
         logmsg "Specified target directory $TARGETDIR does not exist.  Creating it now."
         logcmd mkdir -p $TARGETDIR
     fi
+
     pushd $TARGETDIR > /dev/null
     logmsg "Checking for source directory"
     if [ -d $BUILDDIR ]; then
         logmsg "--- Source directory found"
-        if check_for_patches "to see if we need to remove the source dir"; then
+        if [ -n "$REMOVE_PREVIOUS" ]; then
+            logmsg "--- Removing previously extracted source directory (REMOVE_PREVIOUS=$REMOVE_PREVIOUS)"
+            logcmd rm -rf $BUILDDIR || \
+                logerr "Failed to remove source directory"
+        elif check_for_patches "to see if we need to remove the source dir"; then
             logmsg "--- Patches are present, removing source directory"
             logcmd rm -rf $BUILDDIR || \
                 logerr "Failed to remove source directory"
         else
-            logmsg "--- Patches are not present, keeping source directory"
+            logmsg "--- Patches are not present and REMOVE_PREVIOUS is not set, keeping source directory"
             popd > /dev/null
             return
         fi
     else
         logmsg "--- Source directory not found"
-    fi
-
-    if [ -n $REMOVE_PREVIOUS ]; then
-        logmsg "--- Removing previously extracted source directory (REMOVE_PREVIOUS=$REMOVE_PREVIOUS)"
-        logcmd rm -rf $BUILDDIR || \
-            logerr "Failed to remove source directory"
     fi
 
     # If we reach this point, the source directory was either not found, or it
