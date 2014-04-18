@@ -1,2 +1,2 @@
 <transform file path=license$ -> drop>
-license license=zlib path=license
+license license license=zlib
