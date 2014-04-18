@@ -532,6 +532,12 @@ download_source() {
         logmsg "--- Source directory not found"
     fi
 
+    if [ -n $REMOVE_PREVIOUS ]; then
+        logmsg "--- Removing previously extracted source directory (REMOVE_PREVIOUS=$REMOVE_PREVIOUS)"
+        logcmd rm -rf $BUILDDIR || \
+            logerr "Failed to remove source directory"
+    fi
+
     # If we reach this point, the source directory was either not found, or it
     # was removed due to patches being present.
     logmsg "Checking for $PROG source archive"
