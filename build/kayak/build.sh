@@ -41,6 +41,19 @@ fi
 # Load support functions
 . ../../lib/functions.sh
 
+# Set up VERSION now in the environment for Kayak's makefiles if needed.
+# NOTE: This is currently dependent on PREBUILT_ILLUMOS as a way to prevent
+# least-surprise.  We may want to promote this to "do it all the time!"
+if [ -d ${PREBUILT_ILLUMOS:-/dev/null} ]; then
+    logmsg "Using pre-built Illumos at $PREBUILT_ILLUMOS (may need to wait)"
+    wait_for_prebuilt
+    export VERSION=r$RELVER
+    logmsg "Using VERSION=$VERSION"
+else
+    logmsg "Using non-pre-built illumos - unsetting VERSION."
+    unset VERSION
+fi
+
 if [[ "$UID" != "0" ]]; then
     logerr "--- This script needs to be run as root."
 fi
