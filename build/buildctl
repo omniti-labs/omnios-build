@@ -15,6 +15,9 @@ fi
 declare -A targets
 # fulltargets maps full package names to their build script.
 declare -A fulltargets
+# list of packages already built.
+declare -A already_built
+DEPENDENCY_CHECK="n"
 
 add_target() {
 	local pkg=$1
@@ -69,7 +72,8 @@ done
 
 usage() {
     echo $0
-    echo "    list [grep pattern]"
+    echo "    list [grep pattern]  (sorted alphabetically)"
+    echo "    list-build [grep pattern] (sorted in build order)"
     echo "    licenses"
     echo "    build <pkg> | all"
     exit
@@ -92,10 +96,25 @@ list() {
     done | sort
 }
 
+list_build() {
+    PAT=${1-.}
+    for target in "${!fulltargets[@]}"
+    do
+        if [[ "$PAT" = "." ]]; then
+            echo " * $target"
+        elif [[ -n $(echo "$target" | grep "$PAT") ]]; then
+            echo " * $target"
+        fi
+    done
+}
+
 build() {
     if [[ -z "${targets[$1]}" ]]; then
         bail "Unknown package: $1"
     fi
+    if [[ "${already_built[$1]}" = "1" ]]; then
+	logmsg "--- This package was already built."
+    else
     DIR=$(dirname ${targets[$1]})
     pushd $DIR > /dev/null || bail "Cannot chdir to $DIR"
         PKGSRVR=$DEFAULT_PKGSRVR
@@ -105,6 +124,20 @@ build() {
             logmsg "--- Setting new environment"
             . environment
         fi
+	if [[ -f dependencies && $DEPENDENCY_CHECK = "y" ]]; then
+	    for dep in `cat dependencies`
+	    do
+		logmsg "--------- Dependency on $dep"
+		if [[ "${already_built[$dep]}" = "1" ]]; then
+		    logmsg "----------- (already resolved)"
+		else
+		    logmsg "----------- (needs building)"
+		    pushd .. > /dev/null || bail "Cannot pop up"
+		    build $dep
+		    popd > /dev/null
+		fi
+	    done
+	fi
         SCRIPT=$(basename ${targets[$1]})
         if [[ -n $(echo $SCRIPT | grep ".p5m$") ]]; then
             echo "Found a manifest file. Preparing it for publishing."
@@ -133,7 +166,9 @@ build() {
             PATH=$PATH:. $SCRIPT -r $PKGSRVR $batch_flag $lint_flag || \
                 logerr "Unable to run $SCRIPT"
         fi
+        already_built+=([$1]=1)
     popd >/dev/null
+    fi
 }
 
 licenses() {
@@ -178,6 +213,11 @@ case "$1" in
 	exit
 	;;
 
+    list-build)
+	list_build $2
+	exit
+	;;
+
     licenses)
 	licenses
 	exit
@@ -188,6 +228,7 @@ case "$1" in
 	tobuild=$*
 	if [ -z "$tobuild" ] || [ "$tobuild" == "all" ]; then
 		batch_flag="-b"
+		DEPENDENCY_CHECK="y"
 		for tgt in "${!fulltargets[@]}"; do
                         # Uncomment the echo line if you want to see a
                         # one-package-per-line status of what's building in
