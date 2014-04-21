@@ -54,11 +54,25 @@ cleanup_gnuism() {
     done
 }
 
+install_license() {
+    local LICENSE_FILE
+    LICENSE_FILE=$TMPDIR/$BUILDDIR/$1
+
+    if [ -f "$LICENSE_FILE" ]; then
+        logmsg "Using $LICENSE_FILE as package license"
+        logcmd cp $LICENSE_FILE $DESTDIR/license
+    else
+        logerr "-- $LICENSE_FILE not found!"
+        exit 255
+    fi
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
+install_license COPYING
 make_isa_stub
 strip_install
 cleanup_gnuism
