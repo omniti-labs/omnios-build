@@ -253,7 +253,7 @@ depend fmri=locale/zh_sg@0.5.11,5.11-@PVER@ type=require
 depend fmri=locale/zh_tw@0.5.11,5.11-@PVER@ type=require
 depend fmri=naming/ldap@0.5.11,5.11-@PVER@ type=require
 depend fmri=network/bridging@0.5.11,5.11-@PVER@ type=require
-depend fmri=network/dns/bind@9.9.2,5.11-@PVER@ type=require
+depend fmri=network/dns/bind@9.9.5.1,5.11-@PVER@ type=require
 depend fmri=network/ftp@0.5.11,5.11-@PVER@ type=require
 depend fmri=network/ipfilter@0.5.11,5.11-@PVER@ type=require
 depend fmri=network/iscsi/initiator@0.5.11,5.11-@PVER@ type=require
@@ -292,7 +292,7 @@ depend fmri=system/boot/wanboot@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/data/hardware-registry@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/data/keyboard/keytables@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/data/terminfo@0.5.11,5.11-@PVER@ type=require
-depend fmri=system/data/zoneinfo@2014.9,5.11-@PVER@ type=require
+depend fmri=system/data/zoneinfo@2013.9,5.11-@PVER@ type=require
 depend fmri=system/extended-system-utilities@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/file-system/autofs@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/file-system/nfs@0.5.11,5.11-@PVER@ type=require
@@ -359,4 +359,4 @@ depend fmri=text/less@451,5.11-@PVER@ type=require
 depend fmri=text/locale@0.5.11,5.11-@PVER@ type=require
 depend fmri=web/ca-bundle@2.0,5.11-@PVER@ type=require
 depend fmri=web/curl@7.33.0,5.11-@PVER@ type=require
-depend fmri=web/wget@1.14,5.11-@PVER@ type=require
+depend fmri=web/wget@1.15,5.11-@PVER@ type=require
