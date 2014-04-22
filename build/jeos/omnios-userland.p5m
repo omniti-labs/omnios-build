@@ -138,5 +138,5 @@ depend fmri=text/gnu-sed@4.2.2,5.11-@PVER@ type=incorporate
 depend fmri=text/groff@1.22.2,5.11-@PVER@ type=incorporate
 depend fmri=text/less@451,5.11-@PVER@ type=incorporate
 depend fmri=web/ca-bundle@5.11,5.11-@PVER@ type=incorporate
-depend fmri=web/curl@7.36.0,5.11-@PVER@ type=incorporate
+depend fmri=web/curl@7,5.11-@PVER@ type=incorporate
 depend fmri=web/wget@1.15,5.11-@PVER@ type=incorporate
