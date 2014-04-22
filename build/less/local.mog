@@ -1,2 +1,2 @@
-license license=less path=LICENSE
-license license=GPLv3 path=COPYING
+<transform file path=license$ -> drop>
+license license license=GPLv3
