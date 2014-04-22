@@ -26,4 +26,5 @@
 <transform file path=usr/lib/lib.* -> drop>
 <transform dir  path=usr/include$ -> drop>
 <transform file path=usr/include/.* -> drop>
-license license=GPLv3 path=COPYING
+<transform file path=license$ -> drop>
+license license license=GPLv3
