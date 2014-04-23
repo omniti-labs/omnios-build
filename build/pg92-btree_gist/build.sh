@@ -30,7 +30,7 @@
 PROG=postgresql
 VER=9.2.8
 VERHUMAN=$VER
-PKG=omniti/database/postgresql-${VER//./}/btree_gist
+PKG=omniti/database/postgresql-${VER//./}/btreegist
 DOWNLOADDIR=postgres
 MODULE=btree_gist
 CONTRIBDIR=contrib/$MODULE
