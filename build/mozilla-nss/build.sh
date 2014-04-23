@@ -34,6 +34,8 @@ PKG=$PROG ##IGNORE##
 SUMMARY="Not the real summary"
 DESC="$SUMMARY"
 
+BUILD_DEPENDS_IPS="library/nspr/header-nspr"
+
 CONFIGURE_OPTS="--includedir=/usr/include/mps"
 CONFIGURE_OPTS_32="--libdir=/usr/lib/mps"
 CONFIGURE_OPTS_64="--libdir=/usr/lib/mps/$ISAPART64"
