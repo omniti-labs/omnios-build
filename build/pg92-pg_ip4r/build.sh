@@ -30,7 +30,7 @@
 PROG=pg_ip4r
 VER=2.0
 VERHUMAN=$VER
-PGVER=926
+PGVER=928
 PKG=omniti/database/postgresql-${PGVER}/pg_ip4r
 SUMMARY="$PROG - IP address types for PostgreSQL"
 DESC="$SUMMARY"
