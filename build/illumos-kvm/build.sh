@@ -50,7 +50,7 @@ SUMMARY="placeholder; reset below"
 DESC="$SUMMARY"
 
 # These are the dependencies for both the module and the cmds
-BUILD_DEPENDS_IPS="archiver/gnu-tar developer/gcc47 developer/versioning/git file/gnu-coreutils"
+BUILD_DEPENDS_IPS="archiver/gnu-tar developer/gcc44 developer/versioning/git file/gnu-coreutils"
 
 # Only 64-bit matters
 BUILDARCH=64

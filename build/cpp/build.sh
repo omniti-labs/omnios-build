@@ -33,7 +33,7 @@ PKG=developer/macro/cpp
 SUMMARY="The C Pre-Processor (cpp)"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="gcc47 developer/parser/bison"
+BUILD_DEPENDS_IPS="gcc44 developer/parser/bison"
 DEPENDS_IPS="SUNWcs"
 
 CONFIGURE_OPTS=""
