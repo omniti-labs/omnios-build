@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=stunnel
-VER=4.53
+VER=5.01
 VERHUMAN=$VER
 PKG=omniti/network/stunnel
 SUMMARY="stunnel SSL encryption wrapper"
