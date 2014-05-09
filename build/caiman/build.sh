@@ -129,7 +129,8 @@ build_pkgs() {
     logmsg "Entering $CODEMGR_WS"
     pushd $CODEMGR_WS > /dev/null
     logmsg "Building caiman pkgs..."
-    logcmd /opt/onbld/bin/nightly omnios.sh || logerr "Nightly failed"
+    # Use -W to avoid warnings making nightly.sh fail.
+    logcmd /opt/onbld/bin/nightly -W omnios.sh || logerr "Nightly failed"
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
 }
