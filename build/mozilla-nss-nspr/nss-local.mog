@@ -29,4 +29,4 @@
 <transform link path=usr/local.* -> drop>
 <transform file path=license$ -> drop>
 
-license mozilla/security/nss/pkg/solaris/common_files/copyright license="MPL 1.1/GPL 2.0/LGPL 2.1"
+license nss/pkg/solaris/common_files/copyright license="MPL 2.0"

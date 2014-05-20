@@ -23,14 +23,10 @@
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
-<transform dir path=usr/bin.* -> drop>
-<transform dir path=usr/lib$ -> drop>
-<transform dir path=usr/lib/mps$ -> drop>
-<transform dir path=usr/share.* -> drop>
-<transform file path=usr/bin.* -> drop>
-<transform file path=usr/lib/mps* -> drop>
-<transform file path=usr/share.* -> drop>
-<transform link path=usr/bin.* -> drop>
-<transform link path=usr/lib/mps/.* -> drop>
-<transform link path=usr/share.* -> drop>
-<transform file path=usr/lib/pkgconfig/nspr.pc -> set mode 0444>
+<transform file path=.*/lib.*\.a$ -> drop>
+<transform dir path=usr/local.* -> drop>
+<transform file path=usr/local.* -> drop>
+<transform link path=usr/local.* -> drop>
+<transform file path=license$ -> drop>
+
+license nspr/pkg/solaris/common_files/copyright license="MPL 1.1/GPL 2.0/LGPL 2.1"
