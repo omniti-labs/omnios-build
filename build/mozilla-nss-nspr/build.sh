@@ -92,7 +92,7 @@ make_install32() {
     logcmd cp $TMPDIR/$BUILDDIR/dist/public/nss/* $DESTDIR/usr/include/mps/
     logcmd cp $TMPDIR/$BUILDDIR/dist/public/dbm/* $DESTDIR/usr/include/mps/
 
-    # XXX KEBE SAYS save 32-bit NSPR dist off for NSPR build.
+    # Save 32-bit NSPR dist off for NSPR build.
     mkdir /tmp/nspr-save.$$
     for lib in $NSPR_LIBS
     do
