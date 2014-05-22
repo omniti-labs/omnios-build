@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -62,7 +62,7 @@ make_clean() {
     # Assume PWD == top-level with nss & nspr subdirs.
     /bin/rm -rf dist
     cd nss
-    logcmd gmake nss_clean_all || logerr "Can't make clean"
+    logcmd gmake $MAKE_OPTS nss_clean_all || logerr "Can't make clean"
     cd ..
 }
 
