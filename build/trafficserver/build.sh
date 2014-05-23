@@ -47,6 +47,14 @@ move_etc() {
         logerr "Failed to move etc directory aside"
 }
 
+install_manifest() {
+    logmsg "Placing SMF manifest"
+    logcmd mkdir -p $DESTDIR/var/svc/manifest/network/http || \
+        logerr "--- failed to create manifest directory"
+    logcmd cp $SRCDIR/files/trafficserver.xml $DESTDIR/var/svc/manifest/network/http || \
+        logerr "--- failed to install manifest"
+}
+
 make_install() {
     logmsg "--- make install"
     logcmd $MAKE DESTDIR=${DESTDIR} \
@@ -62,5 +70,6 @@ patch_source
 prep_build
 build
 move_etc
+install_manifest
 make_package
 clean_up
