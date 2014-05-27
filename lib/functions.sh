@@ -159,11 +159,26 @@ export LANG
 RELEASE=$(head -1 /etc/release | awk '{ print $3 }')
 # Set the path - This can be overriden/extended in the build script
 PATH="/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
-if [[ ${RELEASE:1} -le 151004 ]]; then
-    PATH="/opt/gcc-4.6.3/bin:$PATH"
-else
-    PATH="/opt/gcc-4.7.2/bin:$PATH"
-fi
+case ${RELEASE:1} in
+    151004)
+        PATH="/opt/gcc-4.6.3/bin:$PATH"
+        GCC_CMD="/opt/gcc-4.6.3/bin/gcc"
+        GCC_PKG="developer/gcc46"
+        ;;
+    151006)
+        PATH="/opt/gcc-4.7.2/bin:$PATH"
+        GCC_CMD="/opt/gcc-4.7.2/bin/gcc"
+        GCC_PKG="developer/gcc47"
+        ;;
+    151008|151010)
+        PATH="/opt/gcc-4.8.1/bin:$PATH"
+        GCC_CMD="/opt/gcc-4.8.1/bin/gcc"
+        GCC_PKG="developer/gcc48"
+        ;;
+    *)
+        logerr "Release $RELEASE not supported for omniti-ms"
+        ;;
+esac
 export PATH
 # The dir where this file is located - used for sourcing further files
 MYDIR=$PWD/`dirname $BASH_SOURCE[0]`
@@ -187,8 +202,7 @@ process_opts $@
 
 BasicRequirements(){
     local needed=""
-    [[ -x /opt/gcc-4.6.3/bin/gcc ]] || if [[ ${RELEASE:1} -le 151004 ]]; then needed+=" developer/gcc46"; fi
-    [[ -x /opt/gcc-4.7.2/bin/gcc ]] || if [[ ${RELEASE:1} -ge 151005 ]]; then needed+=" developer/gcc47"; fi
+    [[ -x $GCC_CMD ]] || needed+=" $GCC_PKG"
     [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
     [[ -x /usr/bin/ld ]] || needed+=" developer/linker"
     [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
