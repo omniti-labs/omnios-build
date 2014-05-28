@@ -1,0 +1,198 @@
+<?xml version='1.0' ?>
+<!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
+<!--
+
+	This file and its contents are supplied under the terms of the
+	Common Development and Distribution License ("CDDL"), version 1.0.
+	You may only use this file in accordance with the terms of version
+	1.0 of the CDDL.
+
+	A full copy of the text of the CDDL should have accompanied this
+	source.  A copy of the CDDL is also available via the Internet at
+	http://www.illumos.org/license/CDDL.
+
+	Copyright 2014 OmniTI Computer Consulting, Inc. All rights reserved.
+
+-->
+
+<!--	XXX KEBE SAYS we need more properties, and we may need a method
+	script to start these running.
+-->
+
+<service_bundle type='manifest' name='isc-dhcp'>
+
+<service name='network/service/dhcp' type='service' version='1'>
+	<dependency name='loopback'  grouping='require_all'
+	restart_on='none' type='service'>
+		<service_fmri value='svc:/network/loopback:default' />
+	</dependency>
+
+	<dependency name='physical'  grouping='require_all'
+	restart_on='none' type='service'>
+		<service_fmri value='svc:/network/physical:default' />
+	</dependency>
+
+	<dependency name='localfs'  grouping='require_all'
+	restart_on='none' type='service'>
+		<service_fmri value='svc:/system/filesystem/local:default' />
+	</dependency>
+
+	<instance name='ipv4' enabled='false'>
+	<exec_method name='start' type='method'
+	exec='/usr/sbin/dhcpd'
+	timeout_seconds='60' />
+	
+	<exec_method name='stop' type='method'
+	exec=':kill'
+	timeout_seconds='60' />
+	
+	<exec_method name='refresh' type='method'
+	exec=':kill -HUP'
+	timeout_seconds='60' />
+
+	<property_group name='general' type='framework'>
+		<propval name='action_authorization' type='astring'
+		value='omnios.smf.manage.dhcp' />
+	</property_group>
+
+	<template>
+		<common_name>
+			<loctext xml:lang='C'>ISC DHCP server</loctext>
+		</common_name>
+
+		<documentation>
+			<manpage title='dhcpd' section='8' />
+			<doc_link name='isc.org' uri='http://isc.org' />
+		</documentation>
+	</template>
+	</instance>
+
+	<instance name='ipv6' enabled='false'>
+	<exec_method name='start' type='method'
+	exec='/usr/sbin/dhcpd -6'
+	timeout_seconds='60' />
+	
+	<exec_method name='stop' type='method'
+	exec=':kill'
+	timeout_seconds='60' />
+	
+	<exec_method name='refresh' type='method'
+	exec=':kill -HUP'
+	timeout_seconds='60' />
+
+	<property_group name='general' type='framework'>
+		<propval name='action_authorization' type='astring'
+		value='omnios.smf.manage.dhcp' />
+	</property_group>
+
+	<template>
+		<common_name>
+			<loctext xml:lang='C'>ISC DHCPv6 server</loctext>
+		</common_name>
+
+		<documentation>
+			<manpage title='dhcpd' section='8' />
+			<doc_link name='isc.org' uri='http://isc.org' />
+		</documentation>
+	</template>
+	</instance>
+
+	<stability value='Evolving' />
+
+</service>
+
+<service name='network/service/dhcrelay' type='service' version='1'>
+	<dependency name='loopback'  grouping='require_all'
+	restart_on='none' type='service'>
+		<service_fmri value='svc:/network/loopback:default' />
+	</dependency>
+
+	<dependency name='physical'  grouping='require_all'
+	restart_on='none' type='service'>
+		<service_fmri value='svc:/network/physical:default' />
+	</dependency>
+
+	<dependency name='localfs'  grouping='require_all'
+	restart_on='none' type='service'>
+		<service_fmri value='svc:/system/filesystem/local:default' />
+	</dependency>
+
+	<instance name='ipv4' enabled='false'>
+	<exec_method name='start' type='method'
+	exec='/usr/sbin/dhcrelay %{server}'
+	timeout_seconds='60' />
+	
+	<exec_method name='stop' type='method'
+	exec=':kill'
+	timeout_seconds='60' />
+	
+	<exec_method name='refresh' type='method'
+	exec=':kill -HUP'
+	timeout_seconds='60' />
+
+	<property_group name='general' type='framework'>
+		<propval name='action_authorization' type='astring'
+		value='omnios.smf.manage.dhcp' />
+	</property_group>
+
+        <property_group name='application' type='application'>
+	  <!-- A space-separated server list is acceptable here for now. -->
+          <propval name='server' type='astring' value='' />
+        </property_group>
+
+	<template>
+		<common_name>
+			<loctext xml:lang='C'>ISC DHCP relay</loctext>
+		</common_name>
+
+		<documentation>
+			<manpage title='dhcrelay' section='8' />
+			<doc_link name='isc.org' uri='http://isc.org' />
+		</documentation>
+	</template>
+	</instance>
+
+	<instance name='ipv6' enabled='false'>
+	<exec_method name='start' type='method'
+	exec='/usr/sbin/dhcrelay -6 -l %{lower} -u %{upper}'
+	timeout_seconds='60' />
+	
+	<exec_method name='stop' type='method'
+	exec=':kill'
+	timeout_seconds='60' />
+	
+	<exec_method name='refresh' type='method'
+	exec=':kill -HUP'
+	timeout_seconds='60' />
+
+	<property_group name='general' type='framework'>
+		<propval name='action_authorization' type='astring'
+		value='omnios.smf.manage.dhcp' />
+	</property_group>
+
+        <property_group name='application' type='application'>
+          <propval name='server' type='astring' value='' />
+	  <!--	For now, just accept one upper and one lower.
+		We'll need to do ranges later.
+	  -->
+          <propval name='upper' type='astring' value='' />
+          <propval name='lower' type='astring' value='' />
+        </property_group>
+
+	<template>
+		<common_name>
+			<loctext xml:lang='C'>ISC DHCPv6 relay</loctext>
+		</common_name>
+
+		<documentation>
+			<manpage title='dhcpd' section='8' />
+			<doc_link name='isc.org' uri='http://isc.org' />
+		</documentation>
+	</template>
+	</instance>
+
+	<stability value='Evolving' />
+
+</service>
+
+</service_bundle>

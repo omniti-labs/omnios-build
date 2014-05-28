@@ -1,0 +1,37 @@
+#
+# This file and its contents are supplied under the terms of the
+# Common Development and Distribution License ("CDDL"), version 1.0.
+# You may only use this file in accordance with the terms of version
+# 1.0 of the CDDL.
+#
+# A full copy of the text of the CDDL should have accompanied this
+# source.  A copy of the CDDL is also available via the Internet at
+# http://www.illumos.org/license/CDDL.
+#
+
+#
+# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
+#
+
+<transform dir	path=etc$ -> edit path etc usr/share/isc-dhcp/examples>
+<transform file	path=etc/.* -> edit path etc usr/share/isc-dhcp/examples>
+<transform dir	path=usr/include -> drop>
+<transform dir	path=usr/include/dhcpctl -> drop>
+<transform file	path=usr/include/dhcpctl/.* -> drop>
+<transform dir	path=usr/include/isc-dhcp -> drop>
+<transform file	path=usr/include/isc-dhcp/.* -> drop>
+<transform dir	path=usr/include/omapip -> drop>
+<transform file	path=usr/include/omapip/.* -> drop>
+<transform dir	path=usr/lib -> drop>
+<transform file	path=usr/lib/.* -> drop>
+<transform file	path=usr/sbin/dhclient -> drop>
+<transform file path=usr/share/man/man8/dhclient.8 -> drop>
+<transform dir	path=usr/share/man/man3 -> drop>
+<transform file	path=usr/share/man/man3/.* -> drop>
+<transform file	path=usr/share/man/man5/dhclient.* -> drop>
+<transform file	path=usr/share/man/man8/dhclient.* -> drop>
+<transform dir	path=var/db -> set group sys>
+<transform file	path=var/db/dhcp.leases -> set preserve true>
+<transform file	path=var/db/dhcp6.leases -> set preserve true>
+
+license LICENSE license=ISC
