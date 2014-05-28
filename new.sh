@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 
@@ -76,8 +76,11 @@ if [[ -d $BUILDDIR/$NAME ]]; then
     exit 1
 fi
 
+year=`date +%Y`
+
 echo "Creating new $TYPE build script under $BUILDDIR/$NAME"
 mkdir $BUILDDIR/$NAME
-cp $SCRIPTDIR/template/${TYPE}-template.sh $BUILDDIR/$NAME/build.sh
+cat $SCRIPTDIR/template/${TYPE}-template.sh | \
+    sed -e "s/@@CYEAR@@/$year/" > $BUILDDIR/$NAME/build.sh
 chmod +x $BUILDDIR/$NAME/build.sh
 mkdir $BUILDDIR/$NAME/patches
