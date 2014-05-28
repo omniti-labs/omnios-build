@@ -28,7 +28,7 @@
 #############################################################################
 
 # Default branch
-RELVER=151006
+RELVER=151008
 PVER=0.$RELVER
 
 # Which server to fetch files from
@@ -99,6 +99,7 @@ BUNZIP2=bunzip2
 XZCAT=xzcat
 UNZIP=unzip
 AWK=gawk
+SUDO=sudo
 
 # Figure out number of logical CPUs for use with parallel gmake jobs (-j)
 # Default to 1.5*nCPUs as we assume the build machine is 100% devoted to

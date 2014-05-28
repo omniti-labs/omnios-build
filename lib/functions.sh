@@ -154,7 +154,7 @@ ask_to_install() {
     MSG=$2
     if [[ -n "$AUTOINSTALL" ]]; then
         logmsg "Auto-installing $PKG..."
-        logcmd sudo pkg install $PKG || logerr "pkg install $PKG failed"
+        logcmd $SUDO pkg install $PKG || logerr "pkg install $PKG failed"
         return
     fi
     if [[ -n "$BATCH" ]]; then
@@ -163,7 +163,7 @@ ask_to_install() {
     fi
     ask_to_continue_ "$MSG " "Install/Abort?" "i/a" "[iIaA]"
     if [[ "$REPLY" == "i" || "$REPLY" == "I" ]]; then
-        logcmd sudo pkg install $PKG || logerr "pkg install failed"
+        logcmd $SUDO pkg install $PKG || logerr "pkg install failed"
     else
         logmsg "===== Build aborted ====="
         exit 1
@@ -189,7 +189,8 @@ url_encode() {
 LANG=C
 export LANG
 # Set the path - This can be overriden/extended in the build script
-PATH="/opt/gcc-4.7.2/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
+#  - gcc will be prepended after loading config.sh for RELVER definition
+PATH="/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
 export PATH
 # The dir where this file is located - used for sourcing further files
 MYDIR=$PWD/`dirname $BASH_SOURCE[0]`
@@ -206,6 +207,36 @@ SRCDIR=$PWD/`dirname $0`
 # Platform information
 SUNOSVER=`uname -r` # e.g. 5.11
 
+#############################################################################
+# release-specific userland GCC path/dependency
+#############################################################################
+case "$RELVER" in
+    151002)
+        GCCPKG="developer/gcc46"
+        GCCPATH="/opt/gcc-4.6.3/bin"
+        ;;
+    151004)
+        GCCPKG="developer/gcc46"
+        GCCPATH="/opt/gcc-4.6.3/bin"
+        ;;
+    151006)
+        GCCPKG="developer/gcc47"
+        GCCPATH="/opt/gcc-4.7.2/bin"
+        ;;
+    151008)
+        GCCPKG="developer/gcc48"
+        GCCPATH="/opt/gcc-4.8.1/bin"
+        ;;
+    *)
+        echo "update lib/functions.sh this for unrecognized release $RELVER"
+        exit 2
+        ;;
+esac
+
+# update PATH with the designated GCC for this release
+PATH="$GCCPATH:$PATH"
+export PATH
+
 if [[ -f $LOGFILE ]]; then
     mv $LOGFILE $LOGFILE.1
 fi
@@ -213,7 +244,7 @@ process_opts $@
 
 BasicRequirements(){
     local needed=""
-    [[ -x /opt/gcc-4.7.2/bin/gcc ]] || needed+=" developer/gcc48"
+    [[ -x $GCCPATH/gcc ]] || needed+=" $GCCPKG"
     [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
     [[ -x /usr/bin/ld ]] || needed+=" developer/linker"
     [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
@@ -224,7 +255,7 @@ BasicRequirements(){
         logmsg "You appear to be missing some basic build requirements."
         logmsg "To fix this run:"
         logmsg " "
-        logmsg "  sudo pkg install$needed"
+        logmsg "  $SUDO pkg install$needed"
         if [[ -n "$BATCH" ]]; then
             logmsg "===== Build aborted ====="
             exit 1
