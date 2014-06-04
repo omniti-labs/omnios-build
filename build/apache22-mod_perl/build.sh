@@ -37,7 +37,7 @@ DESC="$SUMMARY"
 BUILD_DEPENDS_IPS="omniti/library/apr-util omniti/server/apache22 omniti/runtime/perl"
 DEPENDS_IPS="omniti/runtime/perl omniti/library/apr-util"
 
-VERLIST="5.14 5.16"
+VERLIST="5.14 5.16 5.20"
 
 case $DEPVER in
     5.14)
@@ -47,6 +47,10 @@ case $DEPVER in
     5.16)
         DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-516-incorporation"
         BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS omniti/incorporation/perl-516-incorporation"
+        ;;
+    5.20)
+        DEPENDS_IPS="$DEPENDS_IPS omniti/incorporation/perl-520-incorporation"
+        BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS omniti/incorporation/perl-520-incorporation"
         ;;
     "")
         logerr "You must specify a version with -d DEPVER. Valid versions: $VERLIST"
