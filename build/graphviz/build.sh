@@ -28,14 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=graphviz
-VER=2.28.0
+VER=2.38.0
 VERHUMAN=$VER
 PKG=omniti/image/graphviz
 SUMMARY="$PROG - Graph Visualization Software"
 DESC="Graphviz is open source graph visualization software. Graph visualization is a way of representing structural information as diagrams of abstract graphs and networks."
 
-BUILD_DEPENDS_IPS="developer/lexer/flex omniti/developer/swig"
-DEPENDS_IPS="omniti/library/gd =omniti/library/gd@2.0 system/library/gcc-4-runtime"
+BUILD_DEPENDS_IPS="developer/lexer/flex omniti/developer/swig omniti/library/libjpeg omniti/library/libpng"
 
 BUILDARCH=64
 CONFIGURE_OPTS="--enable-perl=no --enable-python=no --enable-tcl=no"
