@@ -108,12 +108,30 @@ list_build() {
     done
 }
 
+built_packages_p5m() {
+    for PKG in $(awk '/^set name=pkg.fmri/ {print $3;}' $1 | sed -e 's/value=//' -e 's/.*\/\/[^\/]*\///g' -e 's/@.*//')
+    do
+	already_built+=([$PKG]=1)
+    done
+}
+
+built_packages_sh() {
+    for PKG in $(grep -v '##IGNORE##' $1 | sed -e 's/^ +//' -e 's/ +#.+//' -e 's/=/ /g' -e 's/^.+make_package/make_package/g' | awk '{if($1=="PKG"){PKG=$2; print $2;} if($1=="make_package"){print PKG"="$2;}}')
+    do
+        if [ -n "`echo ${PKG} | grep '.='`" ] ; then
+	    echo "NOP" >/dev/null
+	else
+	    already_built+=([$PKG]=1)
+	fi
+    done
+}
+
 build() {
     if [[ -z "${targets[$1]}" ]]; then
         bail "Unknown package: $1"
     fi
     if [[ "${already_built[$1]}" = "1" ]]; then
-	logmsg "--- This package was already built."
+	logmsg "--- Package $1 was already built."
     else
     DIR=$(dirname ${targets[$1]})
     pushd $DIR > /dev/null || bail "Cannot chdir to $DIR"
@@ -162,11 +180,12 @@ build() {
                     bail "pkgsend failed"
                 rm $SCRIPT.final
             fi
+            built_packages_p5m $SCRIPT
         else
             PATH=$PATH:. $SCRIPT -r $PKGSRVR $batch_flag $lint_flag || \
                 logerr "Unable to run $SCRIPT"
+            built_packages_sh $SCRIPT
         fi
-        already_built+=([$1]=1)
     popd >/dev/null
     fi
 }
