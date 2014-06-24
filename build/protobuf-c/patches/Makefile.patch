@@ -1,0 +1,11 @@
+--- protobuf-c-master/Makefile.am.orig	Tue Jun 24 19:47:11 2014
++++ protobuf-c-master/Makefile.am	Tue Jun 24 19:47:20 2014
+@@ -189,7 +189,7 @@
+ 
+ install-data-hook:
+ 	$(MKDIR_P) $(DESTDIR)$(includedir)/google/protobuf-c
+-	cd $(DESTDIR)$(includedir)/google/protobuf-c && rm -vf protobuf-c.h
++	cd $(DESTDIR)$(includedir)/google/protobuf-c && rm -f protobuf-c.h
+ 	cd $(DESTDIR)$(includedir)/google/protobuf-c && $(LN_S) ../../protobuf-c/protobuf-c.h protobuf-c.h
+ 
+ #

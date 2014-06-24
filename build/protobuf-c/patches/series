@@ -1,1 +1,1 @@
-omnios.patch -p1
+Makefile.patch
