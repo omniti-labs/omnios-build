@@ -39,7 +39,7 @@
 
 	<instance name='ipv4' enabled='false'>
 	<exec_method name='start' type='method'
-	exec='/usr/sbin/dhcpd'
+	exec='/usr/sbin/dhcpd -q -cf %{config_file} -lf %{lease_file} -p %{port} -s %{address} %{listen_ifnames}'
 	timeout_seconds='60' />
 	
 	<exec_method name='stop' type='method'
@@ -53,6 +53,22 @@
 	<property_group name='general' type='framework'>
 		<propval name='action_authorization' type='astring'
 		value='omnios.smf.manage.dhcp' />
+	</property_group>
+
+        <property_group name='application' type='application'>
+		<propval name='port' type='integer' value='67' />
+		<propval name='address' type='astring'
+		value='255.255.255.255' />
+		<!-- For least-suprise from other ISC DHCP deployments. -->
+		<!-- OI or Oracle Solaris folks know how to fix these. -->
+		<propval name='config_file' type='astring'
+		value='/etc/dhcpd.conf' />
+		<propval name='lease_file' type='astring'
+		value='/var/db/dhcpd.leases' />
+		<!-- Slight incompatibility. Use space-separated ifnames
+		     in one astring instead of an astring_list.
+		-->
+		<propval name='listen_ifnames' type='astring' value='' />
 	</property_group>
 
 	<template>
@@ -69,7 +85,7 @@
 
 	<instance name='ipv6' enabled='false'>
 	<exec_method name='start' type='method'
-	exec='/usr/sbin/dhcpd -6'
+	exec='/usr/sbin/dhcpd -6 -q -cf %{config_file} -lf %{lease_file} -p %{port} %{listen_ifnames}'
 	timeout_seconds='60' />
 	
 	<exec_method name='stop' type='method'
@@ -83,6 +99,18 @@
 	<property_group name='general' type='framework'>
 		<propval name='action_authorization' type='astring'
 		value='omnios.smf.manage.dhcp' />
+	</property_group>
+
+        <property_group name='application' type='application'>
+		<propval name='port' type='integer' value='67' />
+		<!-- Slight incompatibility. Use space-separated ifnames
+		     in one astring instead of an astring_list.
+		-->
+		<propval name='listen_ifnames' type='astring' value="" />
+		<propval name='config_file' type='astring'
+		value='/etc/dhcpd6.conf' />
+		<propval name='lease_file' type='astring'
+		value='/var/db/dhcpd6.leases' />
 	</property_group>
 
 	<template>
@@ -119,7 +147,7 @@
 
 	<instance name='ipv4' enabled='false'>
 	<exec_method name='start' type='method'
-	exec='/usr/sbin/dhcrelay %{server}'
+	exec='/lib/svc/method/dhcrelay -4 %{hop_count} %{append_agent_option} %{listen_ifnames} %{servers}'
 	timeout_seconds='60' />
 	
 	<exec_method name='stop' type='method'
@@ -136,8 +164,13 @@
 	</property_group>
 
         <property_group name='application' type='application'>
-	  <!-- A space-separated server list is acceptable here for now. -->
-          <propval name='server' type='astring' value='' />
+		<propval name='hop_count' type='integer' value='10' />
+		<propval name='append_agent_option' type='boolean'
+		value='false'/>
+		<!-- A space-separated server list is here for now. -->
+		<propval name='servers' type='astring' value='' />
+		<!-- A space-separated interface list is here for now. -->
+		<propval name='listen_ifnames' type='astring' value='' />
         </property_group>
 
 	<template>
@@ -154,7 +187,7 @@
 
 	<instance name='ipv6' enabled='false'>
 	<exec_method name='start' type='method'
-	exec='/usr/sbin/dhcrelay -6 -l %{lower} -u %{upper}'
+	exec='/lib/svc/method/dhcrelay -6 %{hop_count} NOP %{receive_query_links} %{forward_query_links}'
 	timeout_seconds='60' />
 	
 	<exec_method name='stop' type='method'
@@ -171,12 +204,11 @@
 	</property_group>
 
         <property_group name='application' type='application'>
-          <propval name='server' type='astring' value='' />
-	  <!--	For now, just accept one upper and one lower.
-		We'll need to do ranges later.
-	  -->
-          <propval name='upper' type='astring' value='' />
-          <propval name='lower' type='astring' value='' />
+		<propval name='hop_count' type='integer' value='10' />
+		<!-- A space-separated receive list is here for now. -->
+		<propval name='receive_query_links' type='astring' value='' />
+		<!-- A space-separated forward list is here for now. -->
+		<propval name='forward_query_links' type='astring' value='' />
         </property_group>
 
 	<template>

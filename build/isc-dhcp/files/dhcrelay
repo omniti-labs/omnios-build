@@ -1,0 +1,79 @@
+#!/sbin/sh
+
+#
+# This file and its contents are supplied under the terms of the
+# Common Development and Distribution License ("CDDL"), version 1.0.
+# You may only use this file in accordance with the terms of version
+# 1.0 of the CDDL.
+#
+# A full copy of the text of the CDDL should have accompanied this
+# source.  A copy of the CDDL is also available via the Internet at
+# http://www.illumos.org/license/CDDL.
+#
+
+#
+# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
+#
+
+#
+# We need a method script for both IPv4 and IPv6 DHCP relays, because
+# they both take strings of arguments of this form:
+#
+# -<letter> arg1 -<letter> arg2 ....
+#
+# For example:  -i e1000g0 -i e1000g1 ....
+#
+# Because you can't parse this out via SMF XML manifests, you must parse it
+# out here, in a method script.
+#
+
+. /lib/svc/share/smf_include.sh
+. /lib/svc/share/net_include.sh
+
+#
+# dhcpd/dhcprelay can run in a global or exclusive-stack zone only
+#
+smf_configure_ip || exit $SMF_EXIT_OK
+
+if [ -z $SMF_FMRI ]; then
+	echo "SMF framework variables are not initialized."
+	exit $SMF_EXIT_ERR
+fi
+
+IPVERSION=$1
+HOPCOUNT=$2
+
+# v4 versions of things
+APPEND=$3
+IFNAMES=$4
+SERVERS=$5
+
+# v6 versions of things
+LOWER=$4
+UPPER=$5
+
+optgen() {
+	 for arg in $2; do
+	 	echo "$1 $arg \c"
+	 done
+}
+
+if [ "$IPVERSION" == "-4" ]; then
+	if [ "$APPEND" == "true" ]; then
+		AGENT_OPT="-a"
+	else
+		AGENT_OPT=""
+	fi
+	SRV_UPPER=$SERVERS
+	IF_LOWER=`optgen -i "$IFNAMES"`
+elif [ "$IPVERSION" == "-6" ]; then
+	AGENT_OPT=""
+	SRV_UPPER=`optgen -u "$UPPER"`
+	IF_LOWER=`optgen -l "$LOWER"`
+else
+	exit $SMF_EXIT_ERR
+fi
+
+/usr/sbin/dhcrelay $IPVERSION -c $HOPCOUNT $AGENT_OPT $IF_LOWER $SRV_UPPER
+
+exit $SMF_EXIT_OK

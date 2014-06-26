@@ -14,7 +14,8 @@
 #
 
 <transform dir	path=etc$ -> edit path etc usr/share/isc-dhcp/examples>
-<transform file	path=etc/.* -> edit path etc usr/share/isc-dhcp/examples>
+<transform file	path=etc/dhcpd.* -> edit path etc usr/share/isc-dhcp/examples>
+<transform file path=etc/dhclient.* -> drop>
 <transform dir	path=usr/include -> drop>
 <transform dir	path=usr/include/dhcpctl -> drop>
 <transform file	path=usr/include/dhcpctl/.* -> drop>
