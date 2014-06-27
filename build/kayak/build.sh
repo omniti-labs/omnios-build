@@ -142,7 +142,7 @@ DEPENDS_IPS=""
 
 logmsg "Now building $PKG"
 build_miniroot
-make_package
+make_package kayak-kernel.mog
 clean_up
 # Do extra cleaning up if we got run under sudo from ourselves.
 if [[ -z `echo $RPATH | grep http://` ]]; then

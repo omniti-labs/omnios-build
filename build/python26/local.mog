@@ -1,2 +1,20 @@
 <transform file path=license$ -> drop>
 license license license=PSF
+
+# Prevents pkgdepend from freaking out.
+
+<transform file path=usr/bin/amd64/smtpd.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/bin/i386/smtpd.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/cProfile.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/pdb.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/platform.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/profile.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/pydoc.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/smtpd.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/test/test_cd.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/test/test_cl.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/test/test_gl.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/test/test_imageop.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/test/test_tcl.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/trace.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.6/webbrowser.py -> set pkg.depend.bypass-generate .*>

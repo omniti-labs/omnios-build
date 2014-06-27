@@ -1,1 +1,4 @@
 license COPYING.LIB license=LGPLv2.1
+
+# Prevents pkgdepend from freaking out.
+<transform file path=opt/gcc-4.4.4/lib/libmpc.so.2.0.0 -> set pkg.depend.bypass-generate .*>
