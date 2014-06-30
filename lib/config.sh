@@ -20,18 +20,19 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
-# Use is subject to license terms.
+# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright (c) 2014 by Delphix. All rights reserved.
 #
 #############################################################################
 # Configuration for the build system
 #############################################################################
 
 # Default branch
-RELVER=151008
+RELVER=151011
 PVER=0.$RELVER
 
-# Which server to fetch files from
+# Which server to fetch files from.
+# If $MIRROR begins with a '/', it is treated as a local directory.
 MIRROR=mirrors.omniti.com
 
 # Default prefix for packages (may be overridden)
@@ -179,7 +180,7 @@ reset_configure_opts() {
 
     CONFIGURE_OPTS_64="--prefix=$PREFIX
         --sysconfdir=$SYSCONFDIR
-        --includedir=$PREFIX/include/$ISAPART64
+        --includedir=$PREFIX/include
         --bindir=$PREFIX/bin/$ISAPART64
         --sbindir=$PREFIX/sbin/$ISAPART64
         --libdir=$PREFIX/lib/$ISAPART64

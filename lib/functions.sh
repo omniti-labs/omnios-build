@@ -23,6 +23,7 @@
 #
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
+# Copyright (c) 2014 by Delphix. All rights reserved.
 #
 
 umask 022
@@ -46,7 +47,8 @@ process_opts() {
     BATCH=
     AUTOINSTALL=
     DEPVER=
-    while getopts "bipf:ha:d:" opt; do
+    SKIP_PKGLINT=
+    while getopts "bipf:ha:d:lr:" opt; do
         case $opt in
             h)
                 show_usage
@@ -55,6 +57,9 @@ process_opts() {
             \?)
                 show_usage
                 exit 2
+                ;;
+            l)
+                SKIP_PKGLINT=1
                 ;;
             p)
                 SCREENOUT=1
@@ -69,6 +74,9 @@ process_opts() {
                 FLAVOR=$OPTARG
                 OLDFLAVOR=$OPTARG # Used to see if the script overrides the
                                    # flavor
+                ;;
+            r)
+                PKGSRVR=$OPTARG
                 ;;
             a)
                 BUILDARCH=$OPTARG
@@ -96,10 +104,12 @@ show_usage() {
     echo "  -b        : batch mode (exit on errors without asking)"
     echo "  -i        : autoinstall mode (install build deps)"
     echo "  -p        : output all commands to the screen as well as log file"
+    echo "  -l        : skip pkglint check"
     echo "  -f FLAVOR : build a specific package flavor"
     echo "  -h        : print this help text"
     echo "  -a ARCH   : build 32/64 bit only, or both (default: both)"
     echo "  -d DEPVER : specify an extra dependency version (no default)"
+    echo "  -r REPO   : specify the IPS repo to use (default: $PKGSRVR)"
 }
 
 #############################################################################
@@ -168,6 +178,13 @@ ask_to_install() {
         logmsg "===== Build aborted ====="
         exit 1
     fi
+}
+
+ask_to_pkglint() {
+    local MANIFEST=$1
+
+    ask_to_continue_ "" "Do you want to run pkglint at this time?" "y/n" "[yYnN]"
+    [[ "$REPLY" == "y" || "$REPLY" == "Y" ]]
 }
 
 #############################################################################
@@ -241,6 +258,7 @@ if [[ -f $LOGFILE ]]; then
     mv $LOGFILE $LOGFILE.1
 fi
 process_opts $@
+shift $((OPTIND - 1))
 
 BasicRequirements(){
     local needed=""
@@ -380,6 +398,7 @@ verify_depends() {
                 i=${i:1}
                 pkg info $i > /dev/null 2<&1 &&
                     logerr "--- $i cannot be installed while building this package."
+                continue
                 ;;
         esac
         pkg info $i > /dev/null 2<&1 ||
@@ -478,6 +497,25 @@ patch_file() {
 }
 
 #############################################################################
+# Attempt to download the given resource to the current directory.
+#############################################################################
+# Parameters
+#   $1 - resource to get
+#
+get_resource() {
+    local RESOURCE=$1
+    case ${MIRROR:0:1} in
+        /)
+            logcmd cp $MIRROR/$RESOURCE .
+            ;;
+        *)
+            URLPREFIX=http://$MIRROR
+            $WGET -a $LOGFILE $URLPREFIX/$RESOURCE
+            ;;
+    esac
+}
+
+#############################################################################
 # Download source tarball if needed and extract it
 #############################################################################
 # Parameters
@@ -508,16 +546,21 @@ download_source() {
         logmsg "Specified target directory $TARGETDIR does not exist.  Creating it now."
         logcmd mkdir -p $TARGETDIR
     fi
+
     pushd $TARGETDIR > /dev/null
     logmsg "Checking for source directory"
     if [ -d $BUILDDIR ]; then
         logmsg "--- Source directory found"
-        if check_for_patches "to see if we need to remove the source dir"; then
+        if [ -n "$REMOVE_PREVIOUS" ]; then
+            logmsg "--- Removing previously extracted source directory (REMOVE_PREVIOUS=$REMOVE_PREVIOUS)"
+            logcmd rm -rf $BUILDDIR || \
+                logerr "Failed to remove source directory"
+        elif check_for_patches "to see if we need to remove the source dir"; then
             logmsg "--- Patches are present, removing source directory"
             logcmd rm -rf $BUILDDIR || \
                 logerr "Failed to remove source directory"
         else
-            logmsg "--- Patches are not present, keeping source directory"
+            logmsg "--- Patches are not present and REMOVE_PREVIOUS is not set, keeping source directory"
             popd > /dev/null
             return
         fi
@@ -533,14 +576,13 @@ download_source() {
         # Try all possible archive names
         logmsg "--- Archive not found."
         logmsg "Downloading archive"
-        URLPREFIX=http://$MIRROR/$DLDIR/$ARCHIVEPREFIX
-        $WGET -a $LOGFILE $URLPREFIX.tar.gz || \
-            $WGET -a $LOGFILE $URLPREFIX.tar.bz2 || \
-            $WGET -a $LOGFILE $URLPREFIX.tar.xz || \
-            $WGET -a $LOGFILE $URLPREFIX.tgz || \
-            $WGET -a $LOGFILE $URLPREFIX.tbz || \
-            $WGET -a $LOGFILE $URLPREFIX.tar || \
-            $WGET -a $LOGFILE $URLPREFIX.zip || \
+        get_resource $DLDIR/$ARCHIVEPREFIX.tar.gz || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tar.bz2 || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tar.xz || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tgz || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tbz || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.tar || \
+            get_resource $DLDIR/$ARCHIVEPREFIX.zip || \
             logerr "--- Failed to download file"
         find_archive $ARCHIVEPREFIX FILENAME
         if [[ "$FILENAME" == "" ]]; then
@@ -620,10 +662,15 @@ make_package() {
         DESCSTR="$DESCSTR ($FLAVOR)"
     fi
     PKGSEND=/usr/bin/pkgsend
+    PKGLINT=/usr/bin/pkglint
     PKGMOGRIFY=/usr/bin/pkgmogrify
     PKGFMT=/usr/bin/pkgfmt
+    PKGDEPEND=/usr/bin/pkgdepend
     P5M_INT=$TMPDIR/${PKGE}.p5m.int
+    P5M_INT2=$TMPDIR/${PKGE}.p5m.int.2
+    P5M_INT3=$TMPDIR/${PKGE}.p5m.int.3
     P5M_FINAL=$TMPDIR/${PKGE}.p5m
+    MANUAL_DEPS=$TMPDIR/${PKGE}.deps.mog
     GLOBAL_MOG_FILE=$MYDIR/global-transforms.mog
     MY_MOG_FILE=$TMPDIR/${PKGE}.mog
 
@@ -655,8 +702,20 @@ make_package() {
     echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
     echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
     echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
+    if [[ -f $SRCDIR/local.mog ]]; then
+        LOCAL_MOG_FILE=$SRCDIR/local.mog
+    fi
+    logmsg "--- Applying transforms"
+    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_INT2
+    logmsg "--- Resolving dependencies"
+    (
+        set -e
+        $PKGDEPEND generate -md $DESTDIR $P5M_INT2 > $P5M_INT3
+        $PKGDEPEND resolve -m $P5M_INT3
+    ) || logerr "--- Dependency resolution failed"
+    echo > "$MANUAL_DEPS"
     if [[ -n "$RUN_DEPENDS_IPS" ]]; then
-        logmsg "------ Adding dependencies"
+        logmsg "------ Adding manual dependencies"
         for i in $RUN_DEPENDS_IPS; do
             # IPS dependencies have multiple types, of which we care about four:
             #    require, optional, incorporate, exclude
@@ -678,15 +737,39 @@ make_package() {
                     i=${i:1}
                     ;;
             esac
-            echo "depend type=$DEPTYPE fmri=${i}" >> $MY_MOG_FILE
+            case $i in
+                *@*)
+                    depname=${i%@*}
+                    explicit_ver=true
+                    ;;
+                *)
+                    depname=$i
+                    explicit_ver=false
+                    ;;
+            esac
+            # ugly grep, but pkgmogrify doesn't seem to provide any way to add
+            # actions while avoiding duplicates (except maybe by running it
+            # twice, using drop transform on the first run)
+            if grep -q "^depend .*fmri=[^ ]*$depname" "${P5M_INT3}.res"; then
+                autoresolved=true
+            else
+                autoresolved=false
+            fi
+            if $autoresolved && [ "$DEPTYPE" = "require" ]; then
+                if $explicit_ver; then
+                    echo "<transform depend fmri=(.+/)?$depname -> set fmri $i>" >> $MANUAL_DEPS
+                fi
+            else
+                echo "depend type=$DEPTYPE fmri=$i" >> $MANUAL_DEPS
+            fi
         done
     fi
-    if [[ -f $SRCDIR/local.mog ]]; then
-        LOCAL_MOG_FILE=$SRCDIR/local.mog
+    $PKGMOGRIFY "${P5M_INT3}.res" "$MANUAL_DEPS" | $PKGFMT -u > $P5M_FINAL
+    if [[ -z $SKIP_PKGLINT ]] && ( [[ -n $BATCH ]] ||  ask_to_pkglint ); then
+        $PKGLINT -c $TMPDIR/lint-cache -r $PKGSRVR $P5M_FINAL || \
+            logerr "----- pkglint failed"
     fi
-    logmsg "--- Applying transforms"
-    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_FINAL
-    logmsg "--- Publishing package"
+    logmsg "--- Publishing package to $PKGSRVR"
     if [[ -z $BATCH ]]; then
         logmsg "Intentional pause: Last chance to sanity-check before publication!"
         ask_to_continue
@@ -1110,7 +1193,7 @@ clean_up() {
         logcmd rm -rf $DESTDIR || \
             logerr "Failed to remove temporary install directory"
         logmsg "--- Cleaning up temporary manifest and transform files"
-        logcmd rm -f $P5M_INT $P5M_FINAL $MY_MOG_FILE || \
+        logcmd rm -f $P5M_INT $P5M_INT2 $P5M_INT3 $P5M_FINAL $MY_MOG_FILE $MANUAL_DEPS || \
             logerr "Failed to remove temporary manifest and transform files"
         logmsg "Done."
     fi
@@ -1124,6 +1207,35 @@ save_function() {
     local ORIG_FUNC=$(declare -f $1)
     local NEWNAME_FUNC="$2${ORIG_FUNC#$1}"
     eval "$NEWNAME_FUNC"
+}
+
+# Called by builds that need a PREBUILT_ILLUMOS actually finished.
+wait_for_prebuilt() {
+    if [ ! -d ${PREBUILT_ILLUMOS:-/dev/null} ]; then
+	echo "wait_for_prebuilt() called w/o PREBUILT_ILLUMOS. Bailing."
+	clean_up
+	exit 1
+    fi
+
+    # -h means symbolic link. That's what nightly does.
+    if [ ! -h $PREBUILT_ILLUMOS/log/nightly.lock ]; then
+	return
+    fi
+
+    # NOTE -> if the nightly finishes between the above check and now, we
+    # can produce confusing output since nightly_pid will be empty.
+    nightly_pid=`ls -lt $PREBUILT_ILLUMOS/log/nightly.lock | awk -F. '{print $4}'`
+    # Wait for nightly to be finished if it's running.
+    logmsg "Waiting for illumos nightly build $nightly_pid to be finished."
+    pwait $nightly_pid
+    if [ -h $PREBUILT_ILLUMOS/log/nightly.lock ]; then
+        logmsg "Nightly lock present, but build not running.  Bailing."
+        if [[ -z $BATCH ]]; then
+            ask_to_continue
+        fi
+        clean_up
+        exit 1
+    fi
 }
 
 # Vim hints
