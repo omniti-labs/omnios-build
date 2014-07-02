@@ -35,16 +35,41 @@ PKG=omniti/runtime/go
 SUMMARY="An open source programming language."
 DESC=$SUMMARY
 
+make_clean() {
+    cd $TMPDIR/$BUILDDIR/src
+    logcmd ./clean.bash
+    cd ..
+}
+
+configure64() {
+    logcmd mkdir -p $DESTDIR/opt/omniti/lib/amd64 && \
+    logcmd mkdir -p $DESTDIR/opt/omniti/bin/amd64 || \
+    logerr "Failed to create Go install directory."
+}
+
+make_prog64() {
+    logmsg "Making libraries (64)"
+    cd src
+    logcmd ./all.bash mflag=-m64 || logerr "build failed"
+    cd ..
+}
+
+make_install64() {
+    logmsg "Installing libraries (64)"
+    logcmd mv $TMPDIR/$BUILDDIR/bin/* $DESTDIR/opt/omniti/bin/amd64 && \
+    logcmd mv $TMPDIR/$BUILDDIR/lib/* $DESTDIR/opt/omniti/lib/amd64 || \
+    logerr "Failed to install Go"
+}
+
 init
 download_source $PROG $PROG $VER.src
 patch_source
 prep_build
 
-logcmd cd $TMPDIR/$BUILDDIR/src
-logcmd ./all.bash
-logcmd mkdir -p $DESTDIR/opt/omniti/bin
-logcmd mv $TMPDIR/$BUILDDIR/bin/* $DESTDIR/opt/omniti/bin
-#logcmd mv $TMPDIR/$BUILDDIR/lib/* $DESTDIR/opt/omniti/lib
+make_clean
+configure64
+make_prog64
+make_install64
 
 make_isa_stub
 make_package
