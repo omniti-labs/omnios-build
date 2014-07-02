@@ -40,24 +40,40 @@ make_clean() {
     logcmd ./clean.bash
     cd ..
 }
+configure32() {
+    logcmd mkdir -p $DESTDIR/opt/omni/lib/i386 && \
+    logcmd mkdir -p $DESTDIR/opt/omni/bin/i386 || \
+    logerr "Failed to create Go install directory."
+}
+
+make_prog32() {
+    logmsg "Making libraries (32)"
+    echo "#!/sbin/sh" >$DESTDIR/opt/omni/bin/i386/go
+    echo "echo 'Go is not supported on 32-bit kernels'" >>$DESTDIR/opt/omni/bin/i386/go
+    echo "exit 1" >>$DESTDIR/opt/omni/bin/i386/go
+}
+
+make_install32() {
+    logmsg "Installing libraries (32)"
+}
 
 configure64() {
-    logcmd mkdir -p $DESTDIR/opt/omniti/lib/amd64 && \
-    logcmd mkdir -p $DESTDIR/opt/omniti/bin/amd64 || \
+    logcmd mkdir -p $DESTDIR/opt/omni/lib && \
+    logcmd mkdir -p $DESTDIR/opt/omni/bin/amd64 || \
     logerr "Failed to create Go install directory."
 }
 
 make_prog64() {
     logmsg "Making libraries (64)"
-    cd src
-    logcmd ./all.bash mflag=-m64 || logerr "build failed"
+    cd $TMPDIR/$BUILDDIR/src
+    logcmd ./all.bash || logerr "build failed"
     cd ..
 }
 
 make_install64() {
     logmsg "Installing libraries (64)"
-    logcmd mv $TMPDIR/$BUILDDIR/bin/* $DESTDIR/opt/omniti/bin/amd64 && \
-    logcmd mv $TMPDIR/$BUILDDIR/lib/* $DESTDIR/opt/omniti/lib/amd64 || \
+    logcmd mv $TMPDIR/$BUILDDIR/bin/* $DESTDIR/opt/omni/bin/amd64 && \
+    logcmd mv $TMPDIR/$BUILDDIR/lib/* $DESTDIR/opt/omni/lib || \
     logerr "Failed to install Go"
 }
 
@@ -66,10 +82,7 @@ download_source $PROG $PROG $VER.src
 patch_source
 prep_build
 
-make_clean
-configure64
-make_prog64
-make_install64
+build
 
 make_isa_stub
 make_package
