@@ -1,0 +1,4 @@
+# This entry needs to allow the builder user ("builder") to execute exactly
+# one script:  the Kayak build script in omnios-build.  Single it out.
+
+builder ALL=(ALL) NOPASSWD: /export/home/builder/data/omnios-build/build/kayak/build.sh
