@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=zsh
-VER=5.0.2
+VER=5.0.5
 VERHUMAN=$VER
 PKG=shell/zsh
 SUMMARY="Z shell"
@@ -39,6 +39,7 @@ DEPENDS_IPS="system/library system/library/math library/pcre"
 BUILDARCH=32
 CPPFLAGS32="$CPPFLAGS32 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin
+	--enable-cap
 	--enable-dynamic
 	--enable-etcdir=/etc
 	--enable-function-subdirs
