@@ -35,31 +35,28 @@ PKG=omniti/runtime/go
 SUMMARY="An open source programming language."
 DESC=$SUMMARY
 
+# Tricks so we can make the installation land in the right place.
+export GOROOT_FINAL=/opt/go
+
 make_clean() {
     cd $TMPDIR/$BUILDDIR/src
     logcmd ./clean.bash
     cd ..
 }
 configure32() {
-    logcmd mkdir -p $DESTDIR/opt/omni/lib/i386 && \
-    logcmd mkdir -p $DESTDIR/opt/omni/bin/i386 || \
-    logerr "Failed to create Go install directory."
+    echo "NOP" >/dev/null
 }
 
 make_prog32() {
-    logmsg "Making libraries (32)"
-    echo "#!/sbin/sh" >$DESTDIR/opt/omni/bin/i386/go
-    echo "echo 'Go is not supported on 32-bit kernels'" >>$DESTDIR/opt/omni/bin/i386/go
-    echo "exit 1" >>$DESTDIR/opt/omni/bin/i386/go
+    echo "NOP" >/dev/null
 }
 
 make_install32() {
-    logmsg "Installing libraries (32)"
+    echo "NOP" >/dev/null
 }
 
 configure64() {
-    logcmd mkdir -p $DESTDIR/opt/omni/lib && \
-    logcmd mkdir -p $DESTDIR/opt/omni/bin/amd64 || \
+    logcmd mkdir -p $DESTDIR/opt || \
     logerr "Failed to create Go install directory."
 }
 
@@ -72,9 +69,12 @@ make_prog64() {
 
 make_install64() {
     logmsg "Installing libraries (64)"
-    logcmd mv $TMPDIR/$BUILDDIR/bin/* $DESTDIR/opt/omni/bin/amd64 && \
-    logcmd mv $TMPDIR/$BUILDDIR/lib/* $DESTDIR/opt/omni/lib || \
-    logerr "Failed to install Go"
+    logcmd mv $TMPDIR/$BUILDDIR $DESTDIR/opt/go || logerr "Failed to install Go"
+    # For packaging purposes...
+    ln -s $DESTDIR/opt/go $TMPDIR/$BUILDDIR
+    # Required packages:  godoc and vet
+    GOROOT=$DESTDIR/opt/go $DESTDIR/opt/go/bin/amd64/go get code.google.com/p/go.tools/cmd/godoc
+    GOROOT=$DESTDIR/opt/go $DESTDIR/opt/go/bin/amd64/go get code.google.com/p/go.tools/cmd/vet
 }
 
 init
