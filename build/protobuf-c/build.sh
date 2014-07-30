@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=protobuf-c
-VER=1.0
+VER=1.0.0
 VERHUMAN=$VER   # Human-readable version
 PKG=omniti/library/protobuf-c
 SUMMARY="Protobuf C library"
@@ -37,7 +37,10 @@ DESC="$SUMMARY ($VER)"
 BUILD_DEPENDS_IPS="omniti/library/protobuf omniti/library/pkgconf developer/build/autoconf developer/build/automake developer/build/libtool"
 DEPENDS_IPS="omniti/library/protobuf omniti/library/pkgconf"
 
-CONFIGURE_OPTS="$CONFIGURE_OPTS --disable-protoc CXXFLAGS=-I/opt/omni/include"
+export LD_LIBRARY_PATH=/opt/omni/lib
+
+#CONFIGURE_OPTS="$CONFIGURE_OPTS --disable-protoc CXXFLAGS=-I/opt/omni/include"
+CONFIGURE_OPTS="$CONFIGURE_OPTS CXXFLAGS=-I/opt/omni/include"
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 LDFLAGS=-L/opt/omni/lib"
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-L/opt/omni/lib/amd64"
 
