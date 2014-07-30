@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pbzip2
-VER=1.1.6
+VER=1.1.8
 PKG=omniti/compress/pbzip2
 SUMMARY="A parallel implementation of the bzip2 file compressor"
 DESC="$SUMMARY"
