@@ -39,10 +39,9 @@ DEPENDS_IPS="omniti/library/protobuf omniti/library/pkgconf"
 
 export LD_LIBRARY_PATH=/opt/omni/lib
 
-#CONFIGURE_OPTS="$CONFIGURE_OPTS --disable-protoc CXXFLAGS=-I/opt/omni/include"
-CONFIGURE_OPTS="$CONFIGURE_OPTS CXXFLAGS=-I/opt/omni/include"
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 LDFLAGS=-L/opt/omni/lib"
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-L/opt/omni/lib/amd64"
+CXXFLAGS64="-I/opt/omni/include -m64"
+CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 LDFLAGS=-Wl,-L/opt/omni/lib,-rpath,/opt/omni/lib CXXFLAGS=-I/opt/omni/include" 
+CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-Wl,-L/opt/omni/lib/amd64,-rpath,/opt/omni/lib/amd64" 
 
 reconfig() {
   pushd $TMPDIR/$BUILDDIR || logerr "--- pushd $BUILDDIR failed"
