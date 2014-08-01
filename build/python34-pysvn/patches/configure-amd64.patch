@@ -1,0 +1,54 @@
+diff -ru pysvn-1.7.9.orig//Source/setup_configure.py pysvn-1.7.9/Source/setup_configure.py
+--- pysvn-1.7.9.orig//Source/setup_configure.py	Sun Feb  2 14:19:59 2014
++++ pysvn-1.7.9/Source/setup_configure.py	Fri Aug  1 19:04:29 2014
+@@ -548,8 +548,8 @@
+ 
+     def find_apr_lib( self ):
+         last_exception = None
+-        lib_list = [(self.get_lib_name_for_platform( 'libapr-1' ), 'apr-1'),
+-                    (self.get_lib_name_for_platform( 'libapr-0' ), 'apr-0')]
++        lib_list = [(self.get_lib_name_for_platform( 'libapr' ), 'apr'),
++                    (self.get_lib_name_for_platform( 'libapr' ), 'apr')]
+ 
+         for apr_libname, self.lib_apr in lib_list:
+             try:
+@@ -848,8 +848,8 @@
+     def __init__( self, setup ):
+         Compiler.__init__( self, setup )
+ 
+-        self._addVar( 'CCC',            'g++' )
+-        self._addVar( 'CC',             'gcc' )
++        self._addVar( 'CCC',            'g++ -m64' )
++        self._addVar( 'CC',             'gcc -m64' )
+ 
+     def getPythonExtensionFileExt( self ):
+         return '.so'
+@@ -1230,7 +1230,7 @@
+ 
+     def _getLdLibs( self ):
+         py_ld_libs = [
+-                '-L%(svn_lib_dir)s',
++                '-L/opt/omni/lib/amd64',
+                 '-L/usr/lib/python%d.%d/config -lpython%d.%d.dll' %
+                     (sys.version_info[0], sys.version_info[1], sys.version_info[0], sys.version_info[1]),
+                 '-lsvn_client-1',
+@@ -1270,7 +1270,7 @@
+                 python_exp = 'python.exp'
+ 
+         py_ld_libs = [
+-                '-L%(svn_lib_dir)s',
++                '-L/opt/omni/lib/amd64',
+                 '-lsvn_client-1',
+                 '-lsvn_repos-1',
+                 '-lsvn_subr-1',
+@@ -1303,8 +1303,8 @@
+ 
+     def _getLdLibs( self ):
+         py_ld_libs = [
+-                '-L%(svn_lib_dir)s',
+-                '-Wl,--rpath -Wl,%(svn_lib_dir)s',
++                '-L/opt/omni/lib/amd64',
++                '-Wl,-rpath -Wl,/opt/omni/lib/amd64',
+                 '-lsvn_client-1',
+                 '-lsvn_diff-1',
+                 '-lsvn_repos-1',
