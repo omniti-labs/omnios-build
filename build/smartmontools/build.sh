@@ -28,13 +28,11 @@
 . ../../lib/functions.sh
 
 PROG=smartmontools
-VER=6.0
+VER=6.3
 VERHUMAN=$VER
 PKG=omniti/system/storage/smartmontools
 SUMMARY="Control and monitor storage systems using SMART"
 DESC="Control and monitor storage systems using the Self-Monitoring, Analysis and Reporting Technology System (SMART) built into most modern ATA and SCSI harddisks."
-
-DEPENDS_IPS="system/library/g++-4-runtime system/library/gcc-4-runtime"
 
 BUILDARCH=32
 
