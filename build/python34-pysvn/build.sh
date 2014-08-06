@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pysvn
-VER=1.7.8
+VER=1.7.9
 VERHUMAN=$VER
 PKG=omniti/library/python-34/pysvn
 SUMMARY="SVN adapter for Python"
@@ -36,17 +36,42 @@ DESC=$SUMMARY
 
 # omniti-ms python is 64-bit only
 BUILDARCH=64
-PYTHON=/opt/python34/bin/python
+PYTHON=/opt/python34/bin/python3.4
+PYTHONVER=python3.4
+PYTHONLIB=/opt/python34/lib
 
-LDFLAGS64="-L$PYTHONLIB -R$PYTHONLIB -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
+CONFIGURE_OPTS="--svn-inc-dir=/opt/omni/include/subversion-1 
+--svn-lib-dir=/opt/omni/lib 
+--svn-bin-dir=/opt/omni/bin 
+--apr-inc-dir=/opt/omni/include 
+--apu-inc-dir=/opt/omni/include 
+--apr-lib-dir=/opt/omni/lib 
+--pycxx-dir=../Import/pycxx-6.2.5 
+--pycxx-src-dir=../Import/pycxx-6.2.5/Src"
 
-DEPENDS_IPS="omniti/runtime/python-34"
+
+pysvn_build() {
+    logmsg "Configuring pysvn"
+    pushd $TMPDIR/$BUILDDIR/Source > /dev/null
+    logcmd make clean
+    logcmd $PYTHON setup.py configure $CONFIGURE_OPTS	
+    logmsg "Making pysvn"
+    logcmd make
+    logmsg "Installing pysvn into $PYSVNDIR"
+    logcmd mkdir -p $DESTDIR$PYTHONLIB/$PYTHONVER/pysvn || \
+        logerr "--- Unable to create pysvn directory"
+    logcmd rsync -a pysvn/ $DESTDIR$PYTHONLIB/$PYTHONVER/pysvn/ || \
+        logerr "--- Unable to copy files to pysvn directory"
+    popd > /dev/null
+} 
+
+DEPENDS_IPS="omniti/runtime/python-34 omniti/library/neon omniti/developer/versioning/subversion"
 BUILD_DEPENDS_IPS=$DEPENDS_IPS
 
 init
 download_source $PROG $PROG $VER
-patch_source
 prep_build
-python_build
+patch_source
+pysvn_build
 make_package
 clean_up

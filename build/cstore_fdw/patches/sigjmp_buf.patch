@@ -1,0 +1,87 @@
+diff -ru cstore_fdw-0.0.orig//cstore_fdw.c cstore_fdw-0.0//cstore_fdw.c
+--- cstore_fdw-0.0.orig//cstore_fdw.c	Wed Apr 16 08:54:30 2014
++++ cstore_fdw-0.0//cstore_fdw.c	Thu Jul 31 19:43:26 2014
+@@ -13,6 +13,7 @@
+  *
+  *-------------------------------------------------------------------------
+  */
++typedef long sigjmp_buf;
+ 
+ #include "postgres.h"
+ #include "cstore_fdw.h"
+@@ -43,7 +44,6 @@
+ #include "utils/lsyscache.h"
+ #include "utils/rel.h"
+ 
+-
+ /* local functions forward declarations */
+ static void CStoreProcessUtility(Node *parseTree, const char *queryString,
+ 								 ProcessUtilityContext context,
+diff -ru cstore_fdw-0.0.orig//cstore_metadata_serialization.c cstore_fdw-0.0//cstore_metadata_serialization.c
+--- cstore_fdw-0.0.orig//cstore_metadata_serialization.c	Wed Apr 16 08:54:30 2014
++++ cstore_fdw-0.0//cstore_metadata_serialization.c	Thu Jul 31 19:44:08 2014
+@@ -11,8 +11,8 @@
+  *
+  *-------------------------------------------------------------------------
+  */
++typedef long sigjmp_buf;
+ 
+-
+ #include "postgres.h"
+ #include "cstore_fdw.h"
+ #include "cstore_metadata_serialization.h"
+@@ -19,7 +19,6 @@
+ #include "cstore.pb-c.h"
+ #include "access/tupmacs.h"
+ 
+-
+ /* local functions forward declarations */
+ static ProtobufCBinaryData DatumToProtobufBinary(Datum datum, bool typeByValue,
+ 												 int typeLength);
+diff -ru cstore_fdw-0.0.orig//cstore_reader.c cstore_fdw-0.0//cstore_reader.c
+--- cstore_fdw-0.0.orig//cstore_reader.c	Wed Apr 16 08:54:30 2014
++++ cstore_fdw-0.0//cstore_reader.c	Thu Jul 31 19:43:55 2014
+@@ -12,8 +12,8 @@
+  *
+  *-------------------------------------------------------------------------
+  */
++typedef long sigjmp_buf;
+ 
+-
+ #include "postgres.h"
+ #include "cstore_fdw.h"
+ #include "cstore_metadata_serialization.h"
+@@ -33,7 +33,6 @@
+ #include "utils/pg_lzcompress.h"
+ #include "utils/rel.h"
+ 
+-
+ /* static function declarations */
+ static StripeData * LoadFilteredStripeData(FILE *tableFile,
+ 										   StripeMetadata *stripeMetadata,
+diff -ru cstore_fdw-0.0.orig//cstore_writer.c cstore_fdw-0.0//cstore_writer.c
+--- cstore_fdw-0.0.orig//cstore_writer.c	Wed Apr 16 08:54:30 2014
++++ cstore_fdw-0.0//cstore_writer.c	Thu Jul 31 19:43:45 2014
+@@ -12,8 +12,8 @@
+  *
+  *-------------------------------------------------------------------------
+  */
++typedef long sigjmp_buf;
+ 
+-
+ #include "postgres.h"
+ #include "cstore_fdw.h"
+ #include "cstore_metadata_serialization.h"
+@@ -30,7 +30,6 @@
+ #include "utils/pg_lzcompress.h"
+ #include "utils/rel.h"
+ 
+-
+ static void CStoreWriteFooter(StringInfo footerFileName, TableFooter *tableFooter);
+ static StripeData * CreateEmptyStripeData(uint32 stripeMaxRowCount, uint32 blockRowCount,
+ 										  uint32 columnCount);
+Common subdirectories: cstore_fdw-0.0.orig//data and cstore_fdw-0.0//data
+Common subdirectories: cstore_fdw-0.0.orig//expected and cstore_fdw-0.0//expected
+Common subdirectories: cstore_fdw-0.0.orig//input and cstore_fdw-0.0//input
+Common subdirectories: cstore_fdw-0.0.orig//output and cstore_fdw-0.0//output
+Common subdirectories: cstore_fdw-0.0.orig//sql and cstore_fdw-0.0//sql

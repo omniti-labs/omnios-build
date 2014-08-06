@@ -1,0 +1,15 @@
+diff -ru cstore_fdw-0.0.orig//Makefile cstore_fdw-0.0/Makefile
+--- cstore_fdw-0.0.orig//Makefile	Wed Apr 16 08:54:30 2014
++++ cstore_fdw-0.0/Makefile	Thu Jul 31 20:35:50 2014
+@@ -25,6 +25,11 @@
+ 	EXTRA_CLEAN += *.gcno
+ endif
+ 
++PG_CPPFLAGS += -I/opt/omni/include
++PG_CPPFLAGS += -L/opt/omni/lib
++PG_CPPFLAGS += -Wl,-rpath=/opt/omni/lib
++SHLIB_LINK = -L/opt/omni/lib/amd64 -lprotobuf-c -Wl,-rpath=/opt/omni/lib/amd64
++
+ #
+ # Users need to specify their Postgres installation path through pg_config. For
+ # example: /usr/local/pgsql/bin/pg_config or /usr/lib/postgresql/9.3/bin/pg_config

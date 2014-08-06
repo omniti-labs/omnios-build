@@ -21,38 +21,34 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=protobuf-c
-VER=1.0.0
-VERHUMAN=$VER   # Human-readable version
-PKG=omniti/library/protobuf-c
-SUMMARY="Protobuf C library"
-DESC="$SUMMARY ($VER)"
+PROG=cstore_fdw 
+VER=0.0      
+VERHUMAN=$VER 
+PGVER=934
+PKG=omniti/database/postgresql-${PGVER}/cstore_fdw
+SUMMARY="$PROG - Column-oriented store for PostgreSQL"
+DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="omniti/library/protobuf omniti/library/pkgconf developer/build/autoconf developer/build/automake developer/build/libtool"
-DEPENDS_IPS="omniti/library/protobuf omniti/library/pkgconf"
+export CFLAGS=test
+export C_INCLUDE_PATH=/opt/omni/include
+export LD_LIBRARY_PATH=/opt/omni/lib/amd64
 
-export LD_LIBRARY_PATH=/opt/omni/lib
+BUILDARCH=64
+DEPENDS_IPS="omniti/database/postgresql-$PGVER"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS omniti/library/protobuf-c omniti/library/protobuf"
 
-CXXFLAGS64="-I/opt/omni/include -m64"
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 LDFLAGS=-Wl,-L/opt/omni/lib,-rpath,/opt/omni/lib CXXFLAGS=-I/opt/omni/include" 
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-Wl,-L/opt/omni/lib/amd64,-rpath,/opt/omni/lib/amd64" 
-
-reconfig() {
-  pushd $TMPDIR/$BUILDDIR || logerr "--- pushd $BUILDDIR failed"
-  logcmd autoreconf -i || logerr "--- autoconf failed"
-  popd || logerr "--- popd from $BUILDDIR failed"
-}
+PREFIX=/opt/pgsql$PGVER
+PATH=$PREFIX/bin:$PATH
 
 init
 download_source $PROG $PROG $VER
 patch_source
-reconfig
 prep_build
 build
 make_isa_stub

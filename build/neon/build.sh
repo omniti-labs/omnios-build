@@ -21,38 +21,22 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=protobuf-c
-VER=1.0.0
-VERHUMAN=$VER   # Human-readable version
-PKG=omniti/library/protobuf-c
-SUMMARY="Protobuf C library"
-DESC="$SUMMARY ($VER)"
-
-BUILD_DEPENDS_IPS="omniti/library/protobuf omniti/library/pkgconf developer/build/autoconf developer/build/automake developer/build/libtool"
-DEPENDS_IPS="omniti/library/protobuf omniti/library/pkgconf"
-
-export LD_LIBRARY_PATH=/opt/omni/lib
-
-CXXFLAGS64="-I/opt/omni/include -m64"
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 LDFLAGS=-Wl,-L/opt/omni/lib,-rpath,/opt/omni/lib CXXFLAGS=-I/opt/omni/include" 
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-Wl,-L/opt/omni/lib/amd64,-rpath,/opt/omni/lib/amd64" 
-
-reconfig() {
-  pushd $TMPDIR/$BUILDDIR || logerr "--- pushd $BUILDDIR failed"
-  logcmd autoreconf -i || logerr "--- autoconf failed"
-  popd || logerr "--- popd from $BUILDDIR failed"
-}
+PROG=neon 
+VER=0.30.0  
+VERHUMAN=$VER 
+PKG=omniti/library/neon
+SUMMARY="neon $VER - An HTTP and WebDAV client library, with a C language API"
+DESC="$SUMMARY"  
 
 init
 download_source $PROG $PROG $VER
 patch_source
-reconfig
 prep_build
 build
 make_isa_stub
