@@ -75,7 +75,7 @@ depend fmri=library/security/trousers@0.3.8,5.11-@PVER@ type=incorporate
 depend fmri=library/unixodbc@2.3.1,5.11-@PVER@ type=incorporate
 depend fmri=library/zlib@1.2.8,5.11-@PVER@ type=incorporate
 depend fmri=media/cdrtools@3.0,5.11-@PVER@ type=incorporate
-depend fmri=network/dns/bind@9.9,5.11-@PVER@ type=incorporate
+depend fmri=network/dns/bind@9.10,5.11-@PVER@ type=incorporate
 depend fmri=network/dns/idnconv@1.0,5.11-@PVER@ type=incorporate
 depend fmri=network/rsync@3.1,5.11-@PVER@ type=incorporate
 depend fmri=network/service/isc-dhcp@4.3,5.11-@PVER@ type=incorporate
