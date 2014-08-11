@@ -34,14 +34,16 @@
 . ../../lib/functions.sh
 
 # Patches are synced from gnu.org, e.g.
-#   rsync -a --exclude=*.sig rsync://ftp.gnu.org/ftp/bash/bash-4.2-patches/ patches/bash-4.2-patches/
+#   rsync -a --exclude=*.sig rsync://ftp.gnu.org/ftp/bash/bash-4.3-patches/ patches/bash-4.3-patches/
 #   cd patches
-#   ls bash-4.2-patches/* | sed -e 's/\([0-9]\)$/\1 -p0/' > series
+#   ls bash-4.3-patches/* | sed -e 's/\([0-9]\)$/\1 -p0/' > series
 # Then set PATCHLEVEL to the highest patch number in the updated list
+#
+# NOTE: patches will obviously have to be checked often.
 
 PROG=bash       # App name
-VER=4.2         # App version
-PATCHLEVEL=45   # Patch level
+VER=4.3         # App version
+PATCHLEVEL=22   # Patch level
 VERHUMAN="$VER patchlevel $PATCHLEVEL"
 PKG=shell/bash  # Package name (without prefix)
 SUMMARY="GNU Bourne-Again shell (bash)"

@@ -88,7 +88,7 @@ depend fmri=runtime/perl/manual@5.16.1,5.11-@PVER@ type=incorporate
 depend fmri=runtime/python-26@2.6.8,5.11-@PVER@ type=incorporate
 depend fmri=security/sudo@1.8,5.11-@PVER@ type=incorporate
 depend fmri=service/network/ntp@4.2.7.316,5.11-@PVER@ type=incorporate
-depend fmri=shell/bash@4.2,5.11-@PVER@ type=incorporate
+depend fmri=shell/bash@4.3,5.11-@PVER@ type=incorporate
 depend fmri=shell/pipe-viewer@1.4,5.11-@PVER@ type=incorporate
 depend fmri=shell/tcsh@6.18.1,5.11-@PVER@ type=incorporate
 depend fmri=shell/zsh@5.0.2,5.11-@PVER@ type=incorporate
