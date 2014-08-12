@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=curl       # App name
-VER=7.36.0      # App version
+VER=7.37.1      # App version
 PKG=web/curl    # Package name (without prefix)
 SUMMARY="$PROG - command line tool for transferring data with URL syntax"
 DESC="$SUMMARY"
