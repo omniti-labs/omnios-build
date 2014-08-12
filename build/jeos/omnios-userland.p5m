@@ -121,7 +121,7 @@ depend fmri=system/library/mozilla-nss/header-nss@3.16,5.11-@PVER@ type=incorpor
 depend fmri=system/library/pcap@1.4.0,5.11-@PVER@ type=incorporate
 depend fmri=system/management/ec2-api-tools@1.7.1.0,5.11-@PVER@ type=incorporate
 depend fmri=system/management/ec2-credential@1.0,5.11-@PVER@ type=incorporate
-depend fmri=system/management/ipmitool@1.8.13,5.11-@PVER@ type=incorporate
+depend fmri=system/management/ipmitool@1.8.14,5.11-@PVER@ type=incorporate
 depend fmri=system/management/snmp/net-snmp@5.7.2,5.11-@PVER@ type=incorporate
 depend fmri=system/pciutils@3.2,5.11-@PVER@ type=incorporate
 depend fmri=system/pciutils/pci.ids@2.2,5.11-@PVER@ type=incorporate

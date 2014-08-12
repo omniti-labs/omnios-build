@@ -1,0 +1,22 @@
+--- ipmitool-old/src/plugins/ipmi_intf.c	Tue Aug 12 19:27:35 2014
++++ ipmitool/src/plugins/ipmi_intf.c	Tue Aug 12 19:32:58 2014
+@@ -454,8 +454,11 @@
+ 								tmp6->sin6_scope_id);
+ 						}
+ 
++#ifdef _sun
+ 						if (tmp6->sin6_scope_id != 0) {
++#endif /* _sun */
+ 							addr6->sin6_scope_id = tmp6->sin6_scope_id;
++#ifdef _sun
+ 						} else {
+ 							/* 
+ 							 * No scope information in interface address information 
+@@ -469,6 +472,7 @@
+ 								addr6->sin6_scope_id = ntohs(tmp6->sin6_addr.s6_addr16[1]);
+ 							}
+ 						}
++#endif /* _sun */
+ 
+ 						/* OK, now try to connect with the scope id from this interface address */
+ 						if (addr6->sin6_scope_id != 0) {

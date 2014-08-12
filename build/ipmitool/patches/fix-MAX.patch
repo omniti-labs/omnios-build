@@ -1,0 +1,10 @@
+--- ipmitool-old/lib/ipmi_hpmfwupg.c	Tue Aug 12 19:42:51 2014
++++ ipmitool/lib/ipmi_hpmfwupg.c	Tue Aug 12 19:43:02 2014
+@@ -41,6 +41,7 @@
+ #include <stdio.h>
+ #include <time.h>
+ #include <sys/param.h>
++#include <sys/sysmacros.h>
+ 
+ #if HAVE_CONFIG_H
+ # include <config.h>
