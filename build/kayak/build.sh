@@ -60,18 +60,16 @@ clone_source() {
     logmsg "kayak -> $CHECKOUTDIR/kayak"
     logcmd mkdir -p $TMPDIR/$BUILDDIR
     pushd $CHECKOUTDIR > /dev/null
-    if [[ ! -d kayak ]]; then
-        logmsg "--- No checkout found, cloning anew"
-        logcmd $GIT clone anon@src.omniti.com:~omnios/core/kayak
-    else
-        logmsg "--- Checkout found, updating it"
-        pushd kayak > /dev/null
-        $GIT pull || logerr "failed to update"
-        popd > /dev/null
+    if [[ -d kayak ]]; then
+        logmsg "--- old checkout found, removing it."
+        logcmd rm -rf kayak
     fi
+    logcmd $GIT clone -b r$RELVER anon@src.omniti.com:~omnios/core/kayak
     pushd kayak > /dev/null
-    GITREV=$(git rev-parse HEAD)
-    VERHUMAN="$VERHUMAN (git: ${GITREV:0:7})"
+    GITREV=`$GIT log -1  --format=format:%at`
+    COMMIT=`$GIT log -1  --format=format:%h`
+    REVDATE=`echo $REV | gawk '{ print strftime("%c %Z",$1) }'`
+    VERHUMAN="${COMMIT:0:7} from $REVDATE"
     popd > /dev/null
     popd > /dev/null
 }
