@@ -1,21 +1,23 @@
---- expat-2007-06-05.orig/configure	Wed Apr  3 03:47:15 2013
-+++ expat-2007-06-05/configure	Wed Apr  3 03:47:42 2013
-@@ -19361,9 +19361,9 @@
+diff -ru expat-2.1.0-orig/configure expat-2.1.0/configure
+--- expat-2.1.0-orig/configure	Sat Mar 24 15:12:48 2012
++++ expat-2.1.0/configure	Tue Aug 12 15:10:47 2014
+@@ -15161,9 +15161,9 @@
  
  if test "$GCC" = yes ; then
                          OLDCFLAGS="$CFLAGS -Wall -Wmissing-prototypes -Wstrict-prototypes"
 -    CFLAGS="$OLDCFLAGS -fexceptions"
--    echo "$as_me:$LINENO: checking whether $CC accepts -fexceptions" >&5
--echo $ECHO_N "checking whether $CC accepts -fexceptions... $ECHO_C" >&6
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $CC accepts -fexceptions" >&5
+-$as_echo_n "checking whether $CC accepts -fexceptions... " >&6; }
 +    CFLAGS="$OLDCFLAGS -funwind-tabless"
-+    echo "$as_me:$LINENO: checking whether $CC accepts -funwind-tabless" >&5
-+echo $ECHO_N "checking whether $CC accepts -funwind-tabless... $ECHO_C" >&6
-     cat >conftest.$ac_ext <<_ACEOF
- /* confdefs.h.  */
- _ACEOF
---- expat-2007-06-05.orig/configure.in	Wed Apr  3 03:47:22 2013
-+++ expat-2007-06-05/configure.in	Wed Apr  3 03:47:42 2013
-@@ -66,13 +66,13 @@
++    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $CC accepts -funwind-tabless" >&5
++$as_echo_n "checking whether $CC accepts -funwind-tabless... " >&6; }
+     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+diff -ru expat-2.1.0-orig/configure.in expat-2.1.0/configure.in
+--- expat-2.1.0-orig/configure.in	Sat Mar  3 18:45:53 2012
++++ expat-2.1.0/configure.in	Tue Aug 12 15:11:41 2014
+@@ -67,13 +67,13 @@
  
  if test "$GCC" = yes ; then
      dnl

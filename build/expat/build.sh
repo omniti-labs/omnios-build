@@ -28,11 +28,11 @@
 . ../../lib/functions.sh
 
 PROG=expat
-VER=2.0.1
+VER=2.1.0
 PKG=library/expat
 SUMMARY="libexpat - XML parser library"
 DESC="$SUMMARY"
-BUILDDIR=$PROG-2007-06-05
+BUILDDIR=$PROG-$VER
 
 LIBTOOL_NOSTDLIB=libtool
 LIBTOOL_NOSTDLIB_EXTRAS=-lc
