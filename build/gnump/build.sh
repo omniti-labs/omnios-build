@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=gmp
-VER=5.1.2
+VER=5.1.3
 VERHUMAN=$VER
 PKG=library/gmp
 SUMMARY="GNU MP $VER"
