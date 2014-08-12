@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=flex
-VER=2.5.37
+VER=2.5.39
 PKG=developer/lexer/flex
 SUMMARY="$PROG - A fast lexical analyser generator"
 DESC="$SUMMARY"
