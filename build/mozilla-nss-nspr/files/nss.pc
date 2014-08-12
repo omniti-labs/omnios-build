@@ -5,7 +5,7 @@ includedir=/usr/include/mps
 
 Name: NSS
 Description: Network Security Services
-Version: 3.16.1
+Version: 3.16.4
 Requires: nspr >= 4.10
 Libs: -L${libdir} -lnss3 -lsmime3 -lssl3 -lnssutil3
 Cflags: -I${includedir}

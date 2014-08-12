@@ -5,6 +5,6 @@ includedir=/usr/include/mps
 
 Name: NSPR
 Description: Netscape Portable Runtime
-Version: 4.8.4
+Version: 4.10.6
 Libs: -L${libdir} -lplds4 -lplc4 -lnspr4 -lpthread -ldl -lposix4
 Cflags: -I${includedir}
