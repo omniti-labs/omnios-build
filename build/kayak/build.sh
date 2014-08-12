@@ -91,7 +91,7 @@ clone_source() {
     pushd kayak > /dev/null
     GITREV=`$GIT log -1  --format=format:%at`
     COMMIT=`$GIT log -1  --format=format:%h`
-    REVDATE=`echo $REV | gawk '{ print strftime("%c %Z",$1) }'`
+    REVDATE=`echo $GITREV | gawk '{ print strftime("%c %Z",$1) }'`
     VERHUMAN="${COMMIT:0:7} from $REVDATE"
     popd > /dev/null
     popd > /dev/null
