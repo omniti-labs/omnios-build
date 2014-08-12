@@ -2,7 +2,7 @@ set name=pkg.fmri value=pkg://@PKGPUBLISHER@/incorporation/jeos/omnios-userland@
 set name=pkg.depend.install-hold value=core-os.omnios
 set name=pkg.summary value="Incorporation to constrain OmniOS user-land packages to same build"
 set name=pkg.description value="This package constrains OmniOS user-land packages to the same build as osnet-incorporation."
-depend fmri=archiver/gnu-tar@1.26,5.11-@PVER@ type=incorporate
+depend fmri=archiver/gnu-tar@1.28,5.11-@PVER@ type=incorporate
 depend fmri=compress/bzip2@1.0.6,5.11-@PVER@ type=incorporate
 depend fmri=compress/gzip@1.6,5.11-@PVER@ type=incorporate
 depend fmri=compress/p7zip@9.20.1,5.11-@PVER@ type=incorporate
