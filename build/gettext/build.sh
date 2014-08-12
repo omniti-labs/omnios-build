@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=gettext                  # App name
-VER=0.18.3.1                  # App version
+VER=0.19.2                  # App version
 PKG=text/gnu-gettext          # Package name (without prefix)
 SUMMARY="gettext - GNU gettext utility"
 DESC="GNU gettext - GNU gettext utility ($VER)"
