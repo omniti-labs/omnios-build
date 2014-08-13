@@ -1,10 +1,11 @@
---- pyOpenSSL-0.11/setup.py.orig	Mon Feb 14 23:17:02 2011
-+++ pyOpenSSL-0.11/setup.py	Mon Feb 14 23:17:31 2011
-@@ -203,7 +203,6 @@
+diff -ru pyOpenSSL-0.14-orig/setup.py pyOpenSSL-0.14/setup.py
+--- pyOpenSSL-0.14-orig/setup.py	Sun Feb 23 07:58:50 2014
++++ pyOpenSSL-0.14/setup.py	Wed Aug 13 17:04:35 2014
+@@ -27,6 +27,7 @@
                       'OpenSSL.test.test_crypto',
                       'OpenSSL.test.test_rand',
                       'OpenSSL.test.test_ssl'],
--      zip_safe = False,
-       cmdclass = {"build_ext": BuildExtension},
++      zip_safe = False,
        description = 'Python wrapper module around the OpenSSL library',
-       author = 'Martin Sjögren, AB Strakt',
+       author = 'Jean-Paul Calderone',
+       author_email = 'exarkun@twistedmatrix.com',
