@@ -1,5 +1,2 @@
 10-linkclean.patch
 30-getifaddrs.patch
-40-not-on-solaris.patch
-50-dlpi-illumos.patch
-bufmod_header_find.patch
