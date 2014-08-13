@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=CherryPy
-VER=3.2.2
+VER=3.5.0
 PKG=library/python-2/cherrypy
 SUMMARY="cherrypy - A Minimalist Python Web Framework"
 DESC="$SUMMARY"
