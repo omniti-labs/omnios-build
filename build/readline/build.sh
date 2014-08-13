@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=readline
-VER=6.2
+VER=6.3
 VERHUMAN=$VER
 PKG=library/readline
 SUMMARY="GNU readline"
