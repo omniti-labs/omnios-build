@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=patch
-VER=2.7
+VER=2.7.1
 PKG=text/gnu-patch
 SUMMARY="The GNU Patch utility"
 DESC="$SUMMARY"
