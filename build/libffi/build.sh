@@ -28,14 +28,14 @@
 . ../../lib/functions.sh
 
 PROG=libffi
-VER=3.0.11
+VER=3.1
 VERHUMAN=$VER
 PKG=library/libffi
 SUMMARY="A Portable Foreign Function Interface Library"
 DESC="$SUMMARY"
 
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --includedir=/usr/lib/libffi-3.0.10/include"
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --includedir=/usr/lib/amd64/libffi-3.0.10/include"
+CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --includedir=/usr/lib/libffi-3.0.11/include"
+CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --includedir=/usr/lib/amd64/libffi-3.0.11/include"
 
 make_prog32() {
     logmsg "Making program (32)"
