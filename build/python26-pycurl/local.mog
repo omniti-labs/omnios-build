@@ -1,2 +1,5 @@
-license COPYING license=GPLv2
-license COPYING2 license=MIT
+license COPYING-LGPL license=LGPL
+license COPYING-MIT license=MIT
+
+# Prevents pkgdepend from freaking out.
+<transform file path=usr/share/doc/pycurl/examples/linksys.py -> set pkg.depend.bypass-generate .* >

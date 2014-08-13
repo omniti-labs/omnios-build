@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pycurl
-VER=7.19.0
+VER=7.19.5
 PKG=library/python-2/pycurl
 SUMMARY="Python bindings for libcurl"
 DESC="PycURL provides a thin layer of Python bindings on top of libcurl."
@@ -40,6 +40,5 @@ download_source $PROG $PROG $VER
 patch_source
 prep_build
 python_build
-VER=7.19.0.1
 make_package
 clean_up
