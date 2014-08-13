@@ -28,13 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=screen
-VER=4.0.3
+VER=4.2.1
 PKG=terminal/screen
 SUMMARY="GNU Screen terminal multiplexer"
 DESC="$SUMMARY"
 
 BUILDARCH=32
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --with-sys-screenrc=/etc/screenrc"
+CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --with-sys-screenrc=/etc/screenrc LDFLAGS=-lxnet"
 gnu_cleanup() {
     logcmd rm $DESTDIR/usr/bin/screen
     logcmd mv $DESTDIR/usr/bin/screen-${VER} $DESTDIR/usr/bin/screen
