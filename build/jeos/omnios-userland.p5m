@@ -9,7 +9,7 @@ depend fmri=compress/p7zip@9.20.1,5.11-@PVER@ type=incorporate
 depend fmri=compress/unzip@6.0,5.11-@PVER@ type=incorporate
 depend fmri=compress/xz@5.0.5,5.11-@PVER@ type=incorporate
 depend fmri=compress/zip@3.0,5.11-@PVER@ type=incorporate
-depend fmri=data/iso-codes@3.46,5.11-@PVER@ type=incorporate
+depend fmri=data/iso-codes@3.55,5.11-@PVER@ type=incorporate
 depend fmri=database/sqlite-3@3.8.0.2,5.11-@PVER@ type=incorporate
 depend fmri=developer/build/autoconf@2.69,5.11-@PVER@ type=incorporate
 depend fmri=developer/build/automake@1.14,5.11-@PVER@ type=incorporate
