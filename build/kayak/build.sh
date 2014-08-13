@@ -89,7 +89,7 @@ clone_source() {
     fi
     logcmd $GIT clone anon@src.omniti.com:~omnios/core/kayak
     pushd kayak > /dev/null
-    logcmd $GIT checkout r$RELVER || logerr "No r$RELVER branch, using master."
+    logcmd $GIT checkout r$RELVER || logmsg "No r$RELVER branch, using master."
     GITREV=`$GIT log -1  --format=format:%at`
     COMMIT=`$GIT log -1  --format=format:%h`
     REVDATE=`echo $GITREV | gawk '{ print strftime("%c %Z",$1) }'`
