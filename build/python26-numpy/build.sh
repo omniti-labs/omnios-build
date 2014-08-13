@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=numpy
-VER=1.6.1
+VER=1.8.1
 PKG=library/python-2/numpy-26
 SUMMARY="numpy - package for scientific computing with Python"
 DESC="$SUMMARY"
