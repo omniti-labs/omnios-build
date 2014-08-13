@@ -274,7 +274,7 @@ depend fmri=service/file-system/nfs@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/file-system/smb@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/hal@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/network/network-clients@0.5.11,5.11-@PVER@ type=require
-depend fmri=service/network/ntp@4.2.7.316,5.11-@PVER@ type=require
+depend fmri=service/network/ntp@4.2.7.460,5.11-@PVER@ type=require
 depend fmri=service/network/ssh@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/picl@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/resource-pools/poold@0.5.11,5.11-@PVER@ type=require
