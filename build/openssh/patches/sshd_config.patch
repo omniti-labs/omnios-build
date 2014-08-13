@@ -9,10 +9,11 @@
  #StrictModes yes
  #MaxAuthTries 6
  #MaxSessions 10
-@@ -95,7 +95,7 @@
+@@ -95,8 +95,8 @@
  #X11Forwarding no
  #X11DisplayOffset 10
  #X11UseLocalhost yes
+ #PermitTTY yes
 -#PrintMotd yes
 +PrintMotd no
  #PrintLastLog yes
