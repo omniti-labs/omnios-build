@@ -33,7 +33,12 @@ PKG=library/glib2
 SUMMARY="$PROG - GNOME GLib utility library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="SUNWcs library/libffi@3.0.11 library/zlib system/library
+# HEADS UP!!!  Change this if/when you update your system's libffi.
+# The reason that we call it out is because of the explicit include directory.
+# XXX TODO We might be able to detect FFIVERS by using pkg(1M).
+FFIVERS=3.1
+
+DEPENDS_IPS="SUNWcs library/libffi@$FFIVERS library/zlib system/library
 	system/library/gcc-4-runtime runtime/perl"
 
 CONFIGURE_OPTS="--disable-fam --disable-dtrace"
@@ -41,7 +46,7 @@ CONFIGURE_OPTS="--disable-fam --disable-dtrace"
 save_function configure32 configure32_orig
 save_function configure64 configure64_orig
 configure32() {
-    LIBFFI_CFLAGS=-I/usr/lib/libffi-3.0.11/include
+    LIBFFI_CFLAGS=-I/usr/lib/libffi-$FFIVERS/include
     export LIBFFI_CFLAGS
     LIBFFI_LIBS=-lffi
     export LIBFFI_LIBS
@@ -57,7 +62,7 @@ configure32() {
     popd > /dev/null
 }
 configure64() {
-    LIBFFI_CFLAGS=-I/usr/lib/amd64/libffi-3.0.11/include
+    LIBFFI_CFLAGS=-I/usr/lib/amd64/libffi-$FFIVERS/include
     export LIBFFI_CFLAGS
     LIBFFI_LIBS=-lffi
     export LIBFFI_LIBS
