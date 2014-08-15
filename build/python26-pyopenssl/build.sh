@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pyOpenSSL
-VER=0.14
+VER=0.11
 PKG=library/python-2/pyopenssl-26
 SUMMARY="pyOpenSSL - Python interface to the OpenSSL library for Python 2.6"
 DESC="$SUMMARY"
