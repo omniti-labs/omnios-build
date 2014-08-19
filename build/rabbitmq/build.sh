@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=rabbitmq
-VER=2.8.7
+VER=3.3.5
 VERHUMAN=$VER
 PKG=omniti/network/rabbitmq
 SUMMARY="RabbitMQ Message Queue Broker"
@@ -69,7 +69,7 @@ service_configs() {
         $DESTDIR/lib/svc/manifest/network/rabbitmq.xml
     logmsg "Installing configs"
     logcmd mkdir -p $DESTDIR/$PREFIX/etc/rabbitmq
-    logcmd cp $SRCDIR/files/enabled-plugins $DESTDIR/$PREFIX/etc/rabbitmq/
+    logcmd cp $SRCDIR/files/enabled_plugins $DESTDIR/$PREFIX/etc/rabbitmq/
 }
 
 init
