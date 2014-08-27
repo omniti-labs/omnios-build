@@ -478,7 +478,7 @@ get_resource() {
             logcmd cp $MIRROR/$RESOURCE .
             ;;
         *)
-            URLPREFIX=http://$MIRROR
+            URLPREFIX=$MIRROR
             $WGET -a $LOGFILE $URLPREFIX/$RESOURCE
             ;;
     esac
