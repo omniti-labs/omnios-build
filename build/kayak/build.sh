@@ -129,7 +129,7 @@ clean_up
 if [[ -z `echo $RPATH | grep http://` ]]; then
        OLDUSER=`ls -ltd $RPATH | awk '{print $3}'`
        logmsg "--- Re-chowning $RPATH to user $OLDUSER"
-       chown -R $OLDUSER $RPATH
+       logcmd chown -R $OLDUSER $RPATH
 fi
 
 PKG=system/install/kayak-kernel
@@ -147,7 +147,7 @@ clean_up
 if [[ -z `echo $RPATH | grep http://` ]]; then
        OLDUSER=`ls -ltd $RPATH | awk '{print $3}'`
        logmsg "--- Re-chowning $RPATH to user $OLDUSER"
-       chown -R $OLDUSER $RPATH
+       logmsg chown -R $OLDUSER $RPATH
 fi
 
 # Vim hints
