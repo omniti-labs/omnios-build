@@ -32,6 +32,7 @@ depend fmri=driver/graphics/drm@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/i86pc/fipe@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/i86pc/ioat@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/i86pc/platform@0.5.11,5.11-@PVER@ type=require
+depend fmri=driver/misc/virtio@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/afe@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/amd8111s@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/atge@0.5.11,5.11-@PVER@ type=require
@@ -113,6 +114,7 @@ depend fmri=driver/storage/sdcard@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/ses@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/si3124@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/smp@0.5.11,5.11-@PVER@ type=require
+depend fmri=driver/storage/vioblk@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/usb/ugen@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/usb@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/virtualization/kvm@1.0.3-@PVER@ type=require
