@@ -42,33 +42,26 @@ if [[ -z "$PKGPUBLISHER" ]]; then
 fi
 
 GIT=/usr/bin/git
-GITHASH=
+# On a running system, these are in /usr/include/.
 HEADERS="libbrand.h libuutil.h libzonecfg.h"
 BRAND_CFLAGS="-I./gate-include"
 
 BUILD_DEPENDS_IPS="developer/versioning/git developer/versioning/mercurial system/zones/internal"
 DEPENDS_IPS="runtime/python-26@2.6.7"
 
-clone_gate(){
-    logmsg "gate -> $TMPDIR/$BUILDDIR/illumos-omni-os"
-    logcmd mkdir -p $TMPDIR/$BUILDDIR
-    pushd $TMPDIR/$BUILDDIR > /dev/null 
-    if [[ ! -d illumos-omni-os ]]; then
-        logcmd  $GIT clone -b omni anon@src.omniti.com:~omnios/core/illumos-omni-os 
-    fi
-    logcmd  cd illumos-omni-os || logerr "gate inaccessible"
-    popd > /dev/null 
-}
-
 crib_headers(){
-    clone_gate
+    # Use PREBUILT_ILLUMOS if available, otherwise, just pull off the
+    # running system.
     mkdir -p $TMPDIR/$BUILDDIR/pkg/src/brand/gate-include ||
         logerr "Cannot create include stub directory"
     for hdr in $HEADERS; do
-        for file in $(find $TMPDIR/$BUILDDIR/illumos-omni-os -name $hdr); do
-            cp $file $TMPDIR/$BUILDDIR/pkg/src/brand/gate-include/ ||
-                logerr "Copy failed"
-        done
+	# first just copy from the running system
+	cp /usr/include/$hdr $TMPDIR/$BUILDDIR/pkg/src/brand/gate-include/. ||
+	    logerr "Copy $hdr from /usr/include failed"
+	# then see if we can get the more recent PREBUILT_ILLUMOS version...
+	cp $PREBUILT_ILLUMOS/proto/root_`uname -p`/usr/include/$hdr \
+	    $TMPDIR/$BUILDDIR/pkg/src/brand/gate-include/. ||
+	    logmsg "Copy $hdr from PREBUILT_ILLUMOS ($PREBUILT_ILLUMOS) failed. Using /usr/include version."
     done
 }
 
@@ -81,9 +74,7 @@ clone_source(){
     fi
     pushd pkg > /dev/null || logerr "no source"
     logcmd $GIT pull || logerr "failed to pull"
-    if [ -n "${GITHASH}" ]; then
-        logcmd $GIT checkout $GITHASH || logerr "failed checkout of $GITHASH"
-    fi
+    logcmd $GIT checkout r$RELVER || logmsg "No r$RELVER branch, using master."
     popd > /dev/null
     popd > /dev/null 
 }
