@@ -41,7 +41,7 @@
 
 PROG=bash       # App name
 VER=4.2         # App version
-PATCHLEVEL=45   # Patch level
+PATCHLEVEL=48   # Patch level
 VERHUMAN="$VER patchlevel $PATCHLEVEL"
 PKG=shell/bash  # Package name (without prefix)
 SUMMARY="GNU Bourne-Again shell (bash)"
