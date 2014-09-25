@@ -1,2 +1,5 @@
 license COPYING license=GPLv3
 license COPYING.LESSER license=LGPLv3
+
+# Prevents pkgdepend from freaking out.
+<transform file path=opt/gcc-4.8.1/lib/libmpfr.so.4.1.1 -> set pkg.depend.bypass-generate .* >

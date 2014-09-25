@@ -3,3 +3,9 @@ license COPYING.LIB license=LGPLv2.1
 license COPYING.RUNTIME license="GCC runtime license"
 license COPYING3 license=GPLv3
 license COPYING3.LIB license=LGPLv3
+
+# Prevents pkgdepend from freaking out.
+<transform file path=opt/gcc-4.8.1/libexec/gcc/i386-pc-solaris2.11/4.8.1/cc1 -> set pkg.depend.bypass-generate .* >
+<transform file path=opt/gcc-4.8.1/libexec/gcc/i386-pc-solaris2.11/4.8.1/cc1plus -> set pkg.depend.bypass-generate .* >
+<transform file path=opt/gcc-4.8.1/libexec/gcc/i386-pc-solaris2.11/4.8.1/f951 -> set pkg.depend.bypass-generate .* >
+<transform file path=opt/gcc-4.8.1/libexec/gcc/i386-pc-solaris2.11/4.8.1/lto1 -> set pkg.depend.bypass-generate .* >
