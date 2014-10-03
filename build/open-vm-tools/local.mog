@@ -1,0 +1,44 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+
+#
+# Copyright (c) 2014 by Delphix. All rights reserved.
+#
+
+license COPYING license="LGPLv2"
+set name=info.classification value="org.opensolaris.category.2008:System/Virtualization"
+<transform dir path=lib/svc/manifest/system$ -> edit group bin sys>
+<transform link path=sbin/mount.vmblock$ -> drop>
+<transform file path=usr/sbin/mount.vmblock$ -> drop>
+<transform dir path=etc/pam.d$ -> drop>
+<transform file path=etc/pam.d/vmtoolsd$ -> drop>
+
+#
+# Were we to support kernel modules, we would need to use something like
+# the following transforms:
+#
+# <transform link path=sbin/mount.vmblock$ -> edit target ^.*$ usr/sbin/mount.vmblock>
+# <transform dir path=kernel$ -> edit group bin sys>
+# <transform dir path=kernel/drv$ -> edit group bin sys>
+# <transform dir path=kernel/drv/amd64$ -> edit group bin sys>
+# Note: use the "driver" action (see
+# http://docs.oracle.com/cd/E26502_01/html/E21383/pkgterms.html#gluea) for
+# drivers.
