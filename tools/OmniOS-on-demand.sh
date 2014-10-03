@@ -154,13 +154,21 @@ build_gates() {
 	# Per above, /etc/sudoers.d needs an appropriate file with
 	# appropriate permissions.
 	export KAYAK_SUDO_BUILD=1
-	./buildctl -lb build all
-	# Restore factory site.sh.
-	git checkout -- ../lib/site.sh
+
+	./buildctl list-build | awk '{print $2}' | grep -v kayak >/tmp/blist.$$
+	./buildctl list-build | awk '{print $2}' | grep kayak >>/tmp/blist.$$
+	./buildctl -lb build `cat /tmp/blist.$$`
+	rm -f /tmp/blist.$$
 
 	# NOW clean the existing packages, and replace 'em.
-	/bin/rm -rf $FINAL_REPO
-	mv $INPROGRESS_REPO $FINAL_REPO
+	# /bin/rm -rf $FINAL_REPO
+	# mv $INPROGRESS_REPO $FINAL_REPO
+
+	# NOW upgrade the existing packages with the ones you just built.
+	echo "Sending just-built packages upstream. Using /bin/time..."
+	/bin/time pkgrecv -s $INPROGRESS_REPO -d $FINAL_REPO 'pkg:/*' > /dev/null
+	/bin/rm -rf $INPROGRESS_REPO
+	echo "Refreshing $FINAL_REPO"
 	pkgrepo refresh -s $FINAL_REPO
 }
 
