@@ -26,12 +26,6 @@ Patch (apply with `patch -p0'):
 + 
     current_token = '\n';		/* XXX */
     last_read_token = '\n';
-***************
-*** 8377,8379 ****
-  }
-  #endif /* HANDLE_MULTIBYTE */
-- 
---- 8379,8380 ----
 *** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
 --- patchlevel.h	Thu Feb 24 21:41:34 2011
 ***************
