@@ -28,25 +28,32 @@
 . ../../lib/functions.sh
 
 PROG=rsyslog
-VER=7.4.3
-VERDEV=7
+VER=8.4.2
+VERDEV=8
 VERHUMAN="$VER (v${VERDEV}-stable)"
 PKG=omniti/logging/rsyslog
 SUMMARY="The enhanced syslogd for Linux and Unix"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="developer/parser/bison omniti/library/python-2/docutils library/security/openssl omniti/security/libguardtime omniti/security/guardtime omniti/library/libee omniti/library/libestr omniti/library/json-c omniti/library/uuid omniti/security/libgcrypt"
-DEPENDS_IPS="library/security/openssl omniti/security/libguardtime omniti/security/guardtime omniti/library/libee omniti/library/libestr omniti/library/json-c omniti/library/uuid omniti/security/libgcrypt"
+BUILD_DEPENDS_IPS="developer/parser/bison omniti/library/python-2/docutils library/security/openssl omniti/security/libguardtime omniti/security/guardtime omniti/library/libee omniti/library/libestr omniti/library/json-c omniti/library/uuid omniti/security/libgcrypt omniti/library/liblogging-stdlog omniti/library/pkgconf developer/build/autoconf developer/build/automake developer/build/libtool"
+DEPENDS_IPS="library/security/openssl omniti/security/libguardtime omniti/security/guardtime omniti/library/libee omniti/library/libestr omniti/library/json-c omniti/library/uuid omniti/security/libgcrypt omniti/library/liblogging-stdlog"
 
 CFLAGS="-I/opt/omni/include"
 CFLAGS64="-I/usr/include/amd64 -I/opt/omni/include/amd64 $CFLAGS64"
 LDFLAGS64="-L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
-
+ACLOCAL_PATH=/opt/omni/share/aclocal
 
 CONFIGURE_OPTS="--enable-imfile --enable-imsolaris --enable-guardtime --enable-diagtools --enable-usertools"
 
+run_autoconf() {
+    export ACLOCAL_PATH
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    logmsg "--- Running autoreconf -fvi"
+    logcmd autoreconf -fvi
+}
+
 build32_opts() {
-    CFLAGS="-DHAVE_LSEEK64 -I/opt/omni/include"
+    CFLAGS="-DHAVE_LSEEK64 $CFLAGS"
     LDFLAGS="-L/opt/omni/lib -R/opt/omni/lib"
     LIBESTR_CFLAGS="$CFLAGS"
     LIBESTR_LIBS="$LDFLAGS -lestr"
@@ -67,15 +74,15 @@ build32_opts() {
 }
 
 build64_opts() {
-    LIBESTR_CFLAGS="$CFLAGS"
+    LIBESTR_CFLAGS="$CFLAGS64"
     LIBESTR_LIBS="$LDFLAGS64 -lestr"
-    LIBEE_CFLAGS="$CFLAGS"
+    LIBEE_CFLAGS="$CFLAGS64"
     LIBEE_LIBS="$LDFLAGS64 -lee"
     JSON_C_CFLAGS="$CFLAGS"
     JSON_C_LIBS="$LDFLAGS64 -ljson-c"
-    LIBUUID_CFLAGS="$CFLAGS"
+    LIBUUID_CFLAGS="$CFLAGS64"
     LIBUUID_LIBS="$LDFLAGS64 -luuid"
-    GUARDTIME_CFLAGS="$CFLAGS"
+    GUARDTIME_CFLAGS="$CFLAGS64"
     GUARDTIME_LIBS="$LDFLAGS64 -lgtbase -lgthttp -lgtpng"
     export LIBESTR_CFLAGS LIBESTR_LIBS \
            LIBEE_CFLAGS LIBEE_LIBS \
@@ -96,8 +103,9 @@ init
 download_source $PROG $PROG ${VER}
 patch_source
 prep_build
-build32_opts
-build32
+#run_autoconf
+#build32_opts
+#build32
 build64_opts
 build64
 make_isa_stub
