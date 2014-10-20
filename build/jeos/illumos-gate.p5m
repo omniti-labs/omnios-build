@@ -772,7 +772,6 @@ depend fmri=system/library/libdiskmgt/header-libdiskmgt@0.5.11,5.11-@PVER@ type=
 depend fmri=system/library/libdiskmgt@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/libfcoe@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/math@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/library/math/header-math@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/platform@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/policykit@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/processor@0.5.11,5.11-@PVER@ type=incorporate

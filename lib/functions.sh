@@ -237,7 +237,7 @@ BasicRequirements(){
     [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
     [[ -x /usr/bin/gmake ]] || needed+=" developer/build/gnu-make"
     [[ -f /usr/include/sys/types.h ]] || needed+=" system/header"
-    [[ -f /usr/include/math.h ]] || needed+=" system/library/math/header-math"
+    [[ -f /usr/include/math.h ]] || needed+=" system/library/math"
     if [[ -n "$needed" ]]; then
         logmsg "You appear to be missing some basic build requirements."
         logmsg "To fix this run:"
