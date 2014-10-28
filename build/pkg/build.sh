@@ -65,12 +65,14 @@ crib_headers(){
     done
 }
 
+PKG_SOURCE_REPO=${PKG_SOURCE_REPO:-anon@src.omniti.com:~omnios/core/pkg}
+
 clone_source(){
     logmsg "pkg -> $TMPDIR/$BUILDDIR/pkg"
     logcmd mkdir -p $TMPDIR/$BUILDDIR
     pushd $TMPDIR/$BUILDDIR > /dev/null 
     if [[ ! -d pkg ]]; then
-        logcmd $GIT clone anon@src.omniti.com:~omnios/core/pkg
+        logcmd $GIT clone $PKG_SOURCE_REPO pkg
     fi
     pushd pkg > /dev/null || logerr "no source"
     logcmd $GIT pull || logerr "failed to pull"
