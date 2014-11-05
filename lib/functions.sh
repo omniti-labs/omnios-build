@@ -1181,13 +1181,14 @@ save_function() {
 # Called by builds that need a PREBUILT_ILLUMOS actually finished.
 wait_for_prebuilt() {
     if [ ! -d ${PREBUILT_ILLUMOS:-/dev/null} ]; then
-	echo "wait_for_prebuilt() called w/o PREBUILT_ILLUMOS. Bailing."
+	logmsg "wait_for_prebuilt() called w/o PREBUILT_ILLUMOS. Bailing."
 	clean_up
 	exit 1
     fi
 
     # -h means symbolic link. That's what nightly does.
     if [ ! -h $PREBUILT_ILLUMOS/log/nightly.lock ]; then
+	logmsg "$PREBUILT_ILLUMOS already built (no nightly.lock present...)"
 	return
     fi
 
@@ -1196,7 +1197,8 @@ wait_for_prebuilt() {
     nightly_pid=`ls -lt $PREBUILT_ILLUMOS/log/nightly.lock | awk -F. '{print $4}'`
     # Wait for nightly to be finished if it's running.
     logmsg "Waiting for illumos nightly build $nightly_pid to be finished."
-    pwait $nightly_pid
+    logmsg "Amount of time waiting for illumos nightly follows."
+    logcmd /bin/time pwait $nightly_pid
     if [ -h $PREBUILT_ILLUMOS/log/nightly.lock ]; then
         logmsg "Nightly lock present, but build not running.  Bailing."
         if [[ -z $BATCH ]]; then
