@@ -145,7 +145,7 @@ ask_to_continue_() {
     # Ask the user if they want to continue or quit in the event of an error
     echo -n "${1}${MSG} ($STR) "
     read
-    while [[ ! "$REPLY" =~ $RE ]]; do
+    while [[ ! "$REPLY" =~ ^${RE}$ ]]; do
         echo -n "continue? ($STR) "
         read
     done
