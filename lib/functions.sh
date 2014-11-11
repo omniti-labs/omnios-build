@@ -1046,7 +1046,7 @@ buildperl32() {
     logmsg "Building 32-bit"
     export ISALIST="$ISAPART"
     local OPTS
-    OPTS=${MAKEFILE_OPTS//_ARCH_/}
+    OPTS=${PERL_MAKEFILE_OPTS//_ARCH_/}
     OPTS=${OPTS//_ARCHBIN_/$ISAPART}
     if [[ -f Makefile.PL ]]; then
         make_clean
@@ -1074,7 +1074,7 @@ buildperl64() {
     pushd $TMPDIR/$BUILDDIR > /dev/null
     logmsg "Building 64-bit"
     local OPTS
-    OPTS=${MAKEFILE_OPTS//_ARCH_/$ISAPART64}
+    OPTS=${PERL_MAKEFILE_OPTS//_ARCH_/$ISAPART64}
     OPTS=${OPTS//_ARCHBIN_/$ISAPART64}
     if [[ -f Makefile.PL ]]; then
         make_clean
