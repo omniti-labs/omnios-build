@@ -41,12 +41,21 @@ NO_PARALLEL_MAKE=true
 
 CONFIGURE_OPTS="$CONFIGURE_OPTS --enable-spamassassin --enable-postfix --enable-dnsrbl --enable-mx --enable-stdio-hack --enable-p0f --enable-p0f3 --enable-p0f306"
 
+install_manifest() {
+    logmsg "Placing SMF manifest"
+    logcmd mkdir -p $DESTDIR/var/svc/manifest/network/smtp || \
+        logerr "--- failed to create manifest directory"
+    logcmd cp $SRCDIR/files/milter-greylist.xml $DESTDIR/var/svc/manifest/network/smtp || \
+        logerr "--- failed to install manifest"
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
+install_manifest
 make_package
 clean_up
 
