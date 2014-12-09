@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=vippy
-VER=0.0.9
+VER=0.0.10
 PKG=omniti/runtime/nodejs/$PROG
 SUMMARY="VIP management (juggler of IPs)"
 DESC="$SUMMARY"
