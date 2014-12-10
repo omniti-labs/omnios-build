@@ -1,0 +1,14 @@
+--- Python-2.6.8/Modules/posixmodule.c.orig  Tue Dec  9 20:39:20 2014
++++ Python-2.6.8/Modules/posixmodule.c       Tue Dec  9 20:40:10 2014
+@@ -6743,9 +6743,9 @@
+ {
+     char *filename;
+     int mode = 0600;
+-    int device = 0;
++    ulong_t device = 0;
+     int res;
+-    if (!PyArg_ParseTuple(args, "s|ii:mknod", &filename, &mode, &device))
++    if (!PyArg_ParseTuple(args, "s|il:mknod", &filename, &mode, &device))
+         return NULL;
+     Py_BEGIN_ALLOW_THREADS
+     res = mknod(filename, mode, device);
