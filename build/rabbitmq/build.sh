@@ -43,13 +43,18 @@ DEPENDS_IPS="omniti/runtime/erlang text/gnu-sed"
 build() {
     install_rabbitmq_server
     make_scripts_use_bash
+    set_erl_path
+}
+
+set_erl_path() {
+     logmsg "Adding path to erl binary"
+     gsed -i -e 's+ERL_DIR=+ERL_DIR=/opt/omni/bin/+' $DESTDIR/$PREFIX/sbin/rabbitmq-defaults 
 }
 
 make_scripts_use_bash() {
-    logmsg "Fixing script to use bash and explicit erl"
+    logmsg "Fixing script to use bash"
     for i in $DESTDIR/$PREFIX/sbin/*; do
         gsed -i -e '1s+#!/bin/sh+#!/bin/bash+' $i 
-        gsed -i -e 's+erl+/opt/omni/bin/erl+' $i 
     done
 }
 
