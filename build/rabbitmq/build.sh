@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=rabbitmq
-VER=3.3.5
+VER=3.4.2
 VERHUMAN=$VER
 PKG=omniti/network/rabbitmq
 SUMMARY="RabbitMQ Message Queue Broker"
