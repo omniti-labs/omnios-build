@@ -31,9 +31,9 @@ PATH=$SRCDIR/bin:$PATH
 export PATH
 
 PROG=erlang
-OTPVER=17.0
+OTPVER=17.4
 #REPO=git://github.com/slfritchie/otp.git
-VER=17.0.0
+VER=17.4.0
 VERHUMAN=$OTPVER
 PKG=omniti/runtime/erlang
 SUMMARY="Erlang OTP Platform"
