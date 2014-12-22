@@ -29,7 +29,7 @@
 . ../../lib/functions.sh
 
 PROG=git
-VER=2.0.5
+VER=2.2.1
 PKG=developer/versioning/git
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
