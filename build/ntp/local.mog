@@ -30,4 +30,5 @@
 <transform file path=etc/security/.*/ntp$ -> set mode 0444>
 <transform file path=usr/sbin/.* -> set mode 0555>
 <transform file path=usr/lib/inet/.* -> set mode 0555>
+<transform file path=usr/lib/inet/ntpd -> add restart_fmri svc:/network/ntp:default>
 license COPYRIGHT license="UD Open Source"
