@@ -404,7 +404,7 @@ verify_depends() {
         esac
         deppkgs="$deppkgs $i"
     done
-    if [ -n "$deppkgs" ]; then
+    if [[ -n "$deppkgs" ]]; then
         if ! pkg list -H $deppkgs >/dev/null; then
             ask_to_install "$deppkgs" '--- Build dependencies unsatisfied'
         fi
