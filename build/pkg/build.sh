@@ -30,6 +30,7 @@
 # This are used so people can see what packages get built.. pkg actually publishes
 PKG=package/pkg
 PKG=system/zones/brand/ipkg
+PKG=system/zones/brand/lipkg
 SUMMARY="This isn't used, it's in the makefiles for pkg"
 DESC="This isn't used, it's in the makefiles for pkg"
 
