@@ -66,12 +66,15 @@ crib_headers(){
     done
 }
 
-PKG_SOURCE_REPO=${PKG_SOURCE_REPO:-anon@src.omniti.com:~omnios/core/pkg}
+# Respect an environmental override on this, for development's sake.
+PKG_SOURCE_REPO=${PKG_SOURCE_REPO:-https://github.com/omniti-labs/pkg5}
 
 clone_source(){
     logmsg "pkg -> $TMPDIR/$BUILDDIR/pkg"
     logcmd mkdir -p $TMPDIR/$BUILDDIR
     pushd $TMPDIR/$BUILDDIR > /dev/null 
+    # Even though our default is "pkg5" now, still call the directory 
+    # "pkg" for now due to the hideous number of places "pkg" occurs here.
     if [[ ! -d pkg ]]; then
         logcmd $GIT clone $PKG_SOURCE_REPO pkg
     fi
