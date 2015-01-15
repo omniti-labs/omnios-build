@@ -40,7 +40,7 @@ DEPENDS_IPS="$BUILD_DEPENDS_IPS"
 TAR=gtar
 IGNOREGIT=true
 export IGNOREGIT
-BUILDDIR=${PROG}-ss-${VER:6}
+BUILDDIR=${PROG}-${VER}
 
 BUILDARCH=64
 
@@ -63,7 +63,7 @@ make_install() {
 }
 
 init
-download_source $PROG $PROG ss-${VER:6}
+download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
