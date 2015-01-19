@@ -387,6 +387,7 @@ verify_depends() {
     if [[ -z "$BUILD_DEPENDS_IPS" && -n "$DEPENDS_IPS" ]]; then
         BUILD_DEPENDS_IPS=$DEPENDS_IPS
     fi
+    local deppkgs=""
     for i in $BUILD_DEPENDS_IPS; do
         # Trim indicators to get the true name (see make_package for details)
         case ${i:0:1} in
@@ -401,9 +402,13 @@ verify_depends() {
                 continue
                 ;;
         esac
-        pkg info $i > /dev/null 2<&1 ||
-            ask_to_install "$i" "--- Build-time dependency $i not found"
+        deppkgs="$deppkgs $i"
     done
+    if [[ -n "$deppkgs" ]]; then
+        if ! pkg list -H $deppkgs >/dev/null; then
+            ask_to_install "$deppkgs" '--- Build dependencies unsatisfied'
+        fi
+    fi
 }
 
 #############################################################################
