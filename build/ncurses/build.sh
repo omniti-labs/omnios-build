@@ -40,29 +40,34 @@ CPPFLAGS='-std=c99'
 CFLAGS="-std=c99"
 LD=/usr/ccs/bin/ld
 export LD
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --libdir=/usr/gnu/lib"
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --libdir=/usr/gnu/lib/$ISAPART64"
+GPREFIX=$PREFIX/gnu
 CONFIGURE_OPTS="
     --program-prefix=g
-    --prefix=/usr/gnu
-    --mandir=/usr/gnu/share/man
-    --includedir=/usr/include/ncurses
-    --with-normal
+    --mandir=$GPREFIX/share/man
+    --disable-overwrite
+    --without-normal
     --with-shared
-    --enable-rpath
     --enable-widec
     --without-debug
+    --includedir=$PREFIX/include/ncurses
+    --prefix=$GPREFIX
 "
+CONFIGURE_OPTS_32="
+    --bindir=$PREFIX/bin/$ISAPART"
+
+CONFIGURE_OPTS_64="
+    --bindir=$PREFIX/bin/$ISAPART64
+    --libdir=$GPREFIX/lib/$ISAPART64"
 
 gnu_links() {
-    mkdir $DESTDIR/usr/gnu/bin
-    mkdir $DESTDIR/usr/gnu/bin/{i386,amd64}
-    mv $DESTDIR/usr/bin/ncurses5-config $DESTDIR/usr/gnu/bin/
-    mv $DESTDIR/usr/bin/i386/ncurses5-config $DESTDIR/usr/gnu/bin/i386/
-    mv $DESTDIR/usr/bin/amd64/ncurses5-config $DESTDIR/usr/gnu/bin/amd64/
+    mkdir -p $DESTDIR/$GPREFIX/bin
     for cmd in captoinfo clear infocmp infotocap reset tic toe tput tset ; do
-        ln -s ../../bin/g$cmd $DESTDIR/usr/gnu/bin/$cmd
+        ln -s ../../bin/g$cmd $DESTDIR/$GPREFIX/bin/$cmd
     done
+    # put libncurses* in PREFIX/lib so other programs don't need to link with rpath
+    mkdir -p $DESTDIR/$PREFIX/lib/$ISAPART64
+    mv $DESTDIR/$GPREFIX/lib/libncurses* $DESTDIR/$PREFIX/lib
+    mv $DESTDIR/$GPREFIX/lib/$ISAPART64/libncurses* $DESTDIR/$PREFIX/lib/$ISAPART64
 }
 
 init
