@@ -62,12 +62,14 @@ export LD_FOR_HOST
 LD=/bin/ld
 export LD
 
+HSTRING=i386-pc-solaris2.11
+
 CONFIGURE_OPTS_32="--prefix=/opt/gcc-${VER}"
-CONFIGURE_OPTS="--host i386-pc-solaris2.11 --build i386-pc-solaris2.11 --target i386-pc-solaris2.11 \
+CONFIGURE_OPTS="--host ${HSTRING} --build ${HSTRING} --target ${HSTRING} \
     --with-boot-ldflags=-R/opt/gcc-${VER}/lib \
     --with-gmp=/opt/gcc-${VER} --with-mpfr=/opt/gcc-${VER} --with-mpc=/opt/gcc-${VER} \
     --enable-languages=c,c++,fortran --without-gnu-ld --with-ld=/bin/ld \
-    --with-as=/usr/bin/gas --with-gnu-as --with-build-time-tools=/usr/gnu/i386-pc-solaris2.11/bin"
+    --with-as=/usr/bin/gas --with-gnu-as --with-build-time-tools=/usr/gnu/${HSTRING}/bin"
 LDFLAGS32="-R/opt/gcc-${VER}/lib"
 export LD_OPTIONS="-zignore -zcombreloc -Bdirect -i"
 
@@ -76,6 +78,15 @@ download_source gcc44 ${PROG}-il-4_4_4
 patch_source
 prep_build
 build
+
+# Ick.  For some bizarre reason, this gcc44 package doesn't properly push
+# the LDFLAGS shown above into various subdirectories.  Use elfedit to fix
+# it.
+ESTRING="dyn:runpath /opt/gcc-${VER}/lib:%o"
+elfedit -e "${ESTRING}" ${TMPDIR}/${BUILDDIR}/host-${HSTRING}/gcc/cc1
+elfedit -e "${ESTRING}" ${TMPDIR}/${BUILDDIR}/host-${HSTRING}/gcc/cc1plus
+elfedit -e "${ESTRING}" ${TMPDIR}/${BUILDDIR}/host-${HSTRING}/gcc/f951
+
 make_package gcc.mog
 clean_up
 
