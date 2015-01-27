@@ -35,7 +35,7 @@ DESC="$SUMMARY"
 
 DEPENDS_IPS="runtime/python-26 \
              web/curl \
-             library/security/openssl@1.0.1
+             library/security/openssl@1.0.2
              library/zlib"
 
 # For inet_ntop which isn't detected properly in the configure script

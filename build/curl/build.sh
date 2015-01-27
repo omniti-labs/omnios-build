@@ -33,7 +33,7 @@ PKG=web/curl    # Package name (without prefix)
 SUMMARY="$PROG - command line tool for transferring data with URL syntax"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="web/ca-bundle library/security/openssl@1.0.1 library/zlib
+DEPENDS_IPS="web/ca-bundle library/security/openssl@1.0.2 library/zlib
     library/libidn"
 
 CONFIGURE_OPTS="--enable-thread --with-ca-bundle=/etc/ssl/cacert.pem"

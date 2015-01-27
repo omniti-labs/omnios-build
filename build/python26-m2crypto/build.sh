@@ -33,7 +33,7 @@ PKG=library/python-2/m2crypto
 SUMMARY="Python interface for openssl"
 DESC="M2Crypto provides a python interface to the openssl library."
 
-DEPENDS_IPS="runtime/python-26 library/security/openssl@1.0.1"
+DEPENDS_IPS="runtime/python-26 library/security/openssl@1.0.2"
 BUILD_DEPENDS_IPS="swig"
 
 init

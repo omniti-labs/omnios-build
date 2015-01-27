@@ -34,7 +34,7 @@ PKG=network/openssh
 SUMMARY="OpenSSH Client and utilities"
 DESC="OpenSSH Secure Shell protocol Client and associated Utilities"
 
-GLOBAL_DEPENDS="library/security/openssl@1.0.1 library/zlib@1.2 system/library system/library/g++-4-runtime@4.7.2"
+GLOBAL_DEPENDS="library/security/openssl@1.0.2 library/zlib@1.2 system/library system/library/g++-4-runtime@4.7.2"
 
 BUILDARCH=32
 # Since we're only building 32-bit, don't bother with isaexec subdirs

@@ -35,7 +35,7 @@ SUMMARY="trousers - TCG Software Stack - software for accessing a TPM device"
 DESC="$SUMMARY ($VER)"
 
 BUILD_DEPENDS_IPS="developer/build/libtool developer/build/automake developer/build/autoconf"
-DEPENDS_IPS="system/library/gcc-4-runtime library/security/openssl@1.0.1"
+DEPENDS_IPS="system/library/gcc-4-runtime library/security/openssl@1.0.2"
 
 LIBS="-lbsm -lnsl -lsocket -lgen -lscf -lresolv"
 
