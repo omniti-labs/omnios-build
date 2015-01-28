@@ -2,3 +2,4 @@ build.sh.patch
 configure.patch
 #ctf.sh.patch
 preadv.patch
+ncurses-include.patch

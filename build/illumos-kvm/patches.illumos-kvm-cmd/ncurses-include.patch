@@ -1,0 +1,23 @@
+--- illumos-kvm-cmd-1.0.3/ui/curses.c.orig	Tue Jan 27 18:51:38 2015
++++ illumos-kvm-cmd-1.0.3/ui/curses.c	Tue Jan 27 18:51:02 2015
+@@ -21,7 +21,7 @@
+  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  * THE SOFTWARE.
+  */
+-#include <curses.h>
++#include <ncurses/curses.h>
+ 
+ #ifndef _WIN32
+ #include <signal.h>
+
+--- illumos-kvm-cmd-1.0.3/ui/curses_keys.h.orig	Tue Jan 27 18:59:17 2015
++++ illumos-kvm-cmd-1.0.3/ui/curses_keys.h	Tue Jan 27 18:59:28 2015
+@@ -22,7 +22,7 @@
+  * THE SOFTWARE.
+  */
+ 
+-#include <curses.h>
++#include <ncurses/curses.h>
+ #include "keymaps.h"
+ 
+
