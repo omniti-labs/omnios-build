@@ -30,16 +30,14 @@
 PROG=postgresql
 VER=9.3.6
 VERHUMAN=$VER
-PKG=omniti/database/postgresql-${VER//./}/dblink
+PKG=omniti/database/postgresql-${VER//./}/pg_buffercache
 DOWNLOADDIR=postgres
-MODULE=dblink
+MODULE=pg_buffercache
 CONTRIBDIR=contrib/$MODULE
-SUMMARY="$PROG $MODULE - Executes A Query In A Remote Database for PostgreSQL $VER"
+SUMMARY="$PROG $MODULE - provides the ability to perform real-time queries on the buffercache for Postgresql $VER" 
 DESC="$SUMMARY"
 
 BUILDARCH=64
-CFLAGS="-O3"
-CPPFLAGS="-I$TMPDIR/$PROG-$VER/src/backend"
 
 PREFIX=/opt/pgsql${VER//./}
 reset_configure_opts
@@ -53,11 +51,10 @@ CONFIGURE_OPTS="--enable-thread-safety
 CONFIGURE_OPTS_64=""
 
 make_prog() {
+    [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
     logmsg "--- make"
-    logmsg "------ making fmgroids.h"
-    logcmd $MAKE -C src/backend ../../src/include/utils/fmgroids.h || \
-        logerr "------ make fmgroids.h failed"
-    make_in src/interfaces/libpq
+    logcmd $MAKE $MAKE_JOBS || \
+        logerr "--- Make failed"
     make_in $CONTRIBDIR
 }
 

@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=9.2.9
+VER=9.2.10
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/pg_stat_statements
 DOWNLOADDIR=postgres

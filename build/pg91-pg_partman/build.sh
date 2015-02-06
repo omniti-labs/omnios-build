@@ -27,47 +27,33 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=postgresql
-VER=9.3.6
+PROG=pg_partman
+VER=1.8.0
 VERHUMAN=$VER
-PKG=omniti/database/postgresql-${VER//./}/dblink
-DOWNLOADDIR=postgres
-MODULE=dblink
-CONTRIBDIR=contrib/$MODULE
-SUMMARY="$PROG $MODULE - Executes A Query In A Remote Database for PostgreSQL $VER"
+PGVER=9115
+PKG=omniti/database/postgresql-${PGVER}/pg_partman
+SUMMARY="$PROG - Partition management extention for PostgreSQL"
 DESC="$SUMMARY"
 
+TAR=gtar
+DEPENDS_IPS="omniti/database/postgresql-$PGVER"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS"
+
 BUILDARCH=64
-CFLAGS="-O3"
-CPPFLAGS="-I$TMPDIR/$PROG-$VER/src/backend"
+PREFIX=/opt/pgsql$PGVER
+PATH=$PREFIX/bin:$PATH
 
-PREFIX=/opt/pgsql${VER//./}
-reset_configure_opts
-
-CONFIGURE_OPTS="--enable-thread-safety
-    --enable-debug
-    --with-openssl
-    --prefix=$PREFIX
-    --without-readline"
-# We don't want the default settings
-CONFIGURE_OPTS_64=""
-
-make_prog() {
-    logmsg "--- make"
-    logmsg "------ making fmgroids.h"
-    logcmd $MAKE -C src/backend ../../src/include/utils/fmgroids.h || \
-        logerr "------ make fmgroids.h failed"
-    make_in src/interfaces/libpq
-    make_in $CONTRIBDIR
+configure64() {
+    logmsg "--- Skipping configure - not required"
 }
 
+export USE_PGXS=1
 make_install() {
-    logmsg "--- make install"
-    make_install_in $CONTRIBDIR
+    make_param DESTDIR=${DESTDIR} prefix=$PREFIX install
 }
 
 init
-download_source $DOWNLOADDIR $PROG $VER
+download_source $PROG $PROG $VER
 patch_source
 prep_build
 build

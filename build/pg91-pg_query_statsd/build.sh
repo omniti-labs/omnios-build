@@ -30,7 +30,7 @@
 PROG=pg_query_statsd
 VER=0.0.1
 VERHUMAN=$VER
-PGVER=919
+PGVER=9115
 PKG=omniti/database/postgresql-${PGVER}/$PROG
 SUMMARY="$PROG - send query statistics to a statsd compatible interface"
 DESC="$PROG is a small plugin for PostgreSQL that sends query statistics to a statsd compatible interface. Right now it sends query runtime and total tuples returned."

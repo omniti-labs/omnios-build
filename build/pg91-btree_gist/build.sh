@@ -28,13 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=9.3.6
+VER=9.1.15
 VERHUMAN=$VER
-PKG=omniti/database/postgresql-${VER//./}/dblink
+PKG=omniti/database/postgresql-${VER//./}/btree_gist
 DOWNLOADDIR=postgres
-MODULE=dblink
+MODULE=btree_gist
 CONTRIBDIR=contrib/$MODULE
-SUMMARY="$PROG $MODULE - Executes A Query In A Remote Database for PostgreSQL $VER"
+SUMMARY="$PROG $MODULE - Implements a GiST index operator class that implements B-tree equivalent behavior for PostgreSQL $VER"
 DESC="$SUMMARY"
 
 BUILDARCH=64
@@ -54,10 +54,6 @@ CONFIGURE_OPTS_64=""
 
 make_prog() {
     logmsg "--- make"
-    logmsg "------ making fmgroids.h"
-    logcmd $MAKE -C src/backend ../../src/include/utils/fmgroids.h || \
-        logerr "------ make fmgroids.h failed"
-    make_in src/interfaces/libpq
     make_in $CONTRIBDIR
 }
 
