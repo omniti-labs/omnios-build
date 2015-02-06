@@ -321,6 +321,7 @@ depend fmri=system/library/g++-4-runtime@4.6.2,5.11-@PVER@ type=require
 depend fmri=system/library/gcc-4-runtime@4.6.2,5.11-@PVER@ type=require
 depend fmri=system/library/libdiskmgt@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/library/math@0.5.11,5.11-@PVER@ type=require
+depend fmri=system/library/mtsk@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/library/platform@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/library/policykit@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/library/processor@0.5.11,5.11-@PVER@ type=require
