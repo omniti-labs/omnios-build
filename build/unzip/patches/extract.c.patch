@@ -8,12 +8,13 @@
 
      if (compr_offset < 4)                /* field is not compressed: */
          return PK_OK;                    /* do nothing and signal OK */
-@@ -2226,6 +2227,12 @@ static int test_compr_eb(__G__ eb, eb_si
+@@ -2226,6 +2227,13 @@ static int test_compr_eb(__G__ eb, eb_si
           eb_size <= (compr_offset + EB_CMPRHEADLEN)))
          return IZ_EF_TRUNC;               /* no compressed data! */
 
 +    method = makeword(eb + (EB_HEADSIZE + compr_offset));
-+    if ((method == STORED) && (eb_size - compr_offset != eb_ucsize))
++    if ((method == STORED) &&
++        (eb_size - compr_offset - EB_CMPRHEADLEN != eb_ucsize))
 +       return PK_ERR;                    /* compressed & uncompressed
 +                                          * should match in STORED
 +                                          * method */
