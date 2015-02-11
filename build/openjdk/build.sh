@@ -30,13 +30,13 @@
 
 PROG=openjdk
 VER=1.7.0
-UPDATE=21
-BUILD=30
+UPDATE=76
+BUILD=31
 VERHUMAN="jdk7u${UPDATE}-b${BUILD}"
 
 # Mercurial hash from jdk7u repo marking the desired update/build
 # taken from http://hg.openjdk.java.net/jdk7u/jdk7u/file/tip/.hgtags
-HGREV=450e8dde919df278fe75ae95e0eb0a6464f5bc41
+HGREV=ed58c355d118cb3d9713de41ecb105cca3175472
 
 PKG=
 SUMMARY="x"
