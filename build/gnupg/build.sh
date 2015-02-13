@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=gnupg
-VER=1.4.13
+VER=1.4.18
 VERHUMAN=$VER
 PKG=omniti/security/gnupg
 SUMMARY="The GNU Privacy Guard"
