@@ -31,7 +31,7 @@ depend fmri=developer/macro/cpp@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=developer/macro/gnu-m4@1.4.17,5.11-@PVER@ type=incorporate
 depend fmri=developer/parser/bison@3.0,5.11-@PVER@ type=incorporate
 depend fmri=developer/sunstudio12.1@12.1,5.11-@PVER@ type=incorporate
-depend fmri=developer/swig@2.0.12,5.11-@PVER@ type=incorporate
+depend fmri=developer/swig@3.0,5.11-@PVER@ type=incorporate
 depend fmri=developer/versioning/git@2.3,5.11-@PVER@ type=incorporate
 depend fmri=developer/versioning/mercurial@2.7,5.11-@PVER@ type=incorporate
 depend fmri=driver/virtualization/kvm@1.0,5.11-@PVER@ type=incorporate
