@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=bind
-VER=9.9.2-P2
+VER=9.9.6-P2
 VERHUMAN=$VER
 PKG=omniti/server/dns/bind
 SUMMARY="BIND DNS server and tools"
