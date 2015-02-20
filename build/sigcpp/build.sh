@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libsigc++
-VER=2.3.2
+VER=2.4.0
 VERHUMAN=$VER
 PKG=library/c++/sigcpp
 SUMMARY="Libsigc++ - a library that implements typesafe callback system"
