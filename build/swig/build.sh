@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=swig
-VER=3.0.5
+VER=2.0.12
 PKG=developer/swig
 SUMMARY="The Simplified Wrapper and Interface Generator (swig)"
 DESC="$SUMMARY"
