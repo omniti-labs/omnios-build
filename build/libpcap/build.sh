@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libpcap
-VER=1.6.1
+VER=1.6.2
 VERHUMAN=$VER
 PKG=system/library/pcap
 SUMMARY="libpcap - a packet capture library"
