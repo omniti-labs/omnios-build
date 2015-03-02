@@ -1,7 +1,7 @@
-diff -ru openssh-6.6p1-orig/Makefile.in openssh-6.6p1/Makefile.in
---- openssh-6.6p1-orig/Makefile.in	Mon Feb  3 19:12:56 2014
-+++ openssh-6.6p1/Makefile.in	Wed Aug 13 11:17:04 2014
-@@ -260,8 +260,8 @@
+diff -ru openssh-6.7p1-orig/Makefile.in openssh-6.7p1/Makefile.in
+--- openssh-6.7p1-orig/Makefile.in	Sat Aug 30 02:23:07 2014
++++ openssh-6.7p1/Makefile.in	Fri Feb 27 15:50:37 2015
+@@ -282,8 +282,8 @@
  	$(srcdir)/mkinstalldirs $(DESTDIR)$(sbindir)
  	$(srcdir)/mkinstalldirs $(DESTDIR)$(mandir)
  	$(srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/$(mansubdir)1
@@ -12,7 +12,7 @@ diff -ru openssh-6.6p1-orig/Makefile.in openssh-6.6p1/Makefile.in
  	$(srcdir)/mkinstalldirs $(DESTDIR)$(libexecdir)
  	(umask 022 ; $(srcdir)/mkinstalldirs $(DESTDIR)$(PRIVSEP_PATH))
  	$(INSTALL) -m 0755 $(STRIP_OPT) ssh$(EXEEXT) $(DESTDIR)$(bindir)/ssh$(EXEEXT)
-@@ -281,14 +281,14 @@
+@@ -303,14 +303,14 @@
  	$(INSTALL) -m 644 ssh-agent.1.out $(DESTDIR)$(mandir)/$(mansubdir)1/ssh-agent.1
  	$(INSTALL) -m 644 ssh-keygen.1.out $(DESTDIR)$(mandir)/$(mansubdir)1/ssh-keygen.1
  	$(INSTALL) -m 644 ssh-keyscan.1.out $(DESTDIR)$(mandir)/$(mansubdir)1/ssh-keyscan.1
@@ -34,10 +34,11 @@ diff -ru openssh-6.6p1-orig/Makefile.in openssh-6.6p1/Makefile.in
  	-rm -f $(DESTDIR)$(bindir)/slogin
  	ln -s ./ssh$(EXEEXT) $(DESTDIR)$(bindir)/slogin
  	-rm -f $(DESTDIR)$(mandir)/$(mansubdir)1/slogin.1
-Only in openssh-6.6p1: Makefile.in.orig
-diff -ru openssh-6.6p1-orig/moduli.5 openssh-6.6p1/moduli.5
---- openssh-6.6p1-orig/moduli.5	Tue Nov  6 16:36:01 2012
-+++ openssh-6.6p1/moduli.5	Wed Aug 13 11:18:29 2014
+Only in openssh-6.7p1: Makefile.in.orig
+Common subdirectories: openssh-6.7p1-orig/contrib and openssh-6.7p1/contrib
+diff -ru openssh-6.7p1-orig/moduli.5 openssh-6.7p1/moduli.5
+--- openssh-6.7p1-orig/moduli.5	Tue Nov  6 16:36:01 2012
++++ openssh-6.7p1/moduli.5	Fri Feb 27 15:50:37 2015
 @@ -14,7 +14,7 @@
  .\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
@@ -94,10 +95,13 @@ diff -ru openssh-6.6p1-orig/moduli.5 openssh-6.6p1/moduli.5
  .Sh STANDARDS
  .Rs
  .%A M. Friedl
-diff -ru openssh-6.6p1-orig/scp.1 openssh-6.6p1/scp.1
---- openssh-6.6p1-orig/scp.1	Wed Oct 23 01:30:00 2013
-+++ openssh-6.6p1/scp.1	Wed Aug 13 11:33:36 2014
-@@ -118,13 +118,13 @@
+Common subdirectories: openssh-6.7p1-orig/openbsd-compat and openssh-6.7p1/openbsd-compat
+Common subdirectories: openssh-6.7p1-orig/regress and openssh-6.7p1/regress
+Common subdirectories: openssh-6.7p1-orig/scard and openssh-6.7p1/scard
+diff -ru openssh-6.7p1-orig/scp.1 openssh-6.7p1/scp.1
+--- openssh-6.7p1-orig/scp.1	Sat Apr 19 23:02:58 2014
++++ openssh-6.7p1/scp.1	Fri Feb 27 15:50:37 2015
+@@ -116,13 +116,13 @@
  Can be used to pass options to
  .Nm ssh
  in the format used in
@@ -113,7 +117,7 @@ diff -ru openssh-6.6p1-orig/scp.1 openssh-6.6p1/scp.1
  .Pp
  .Bl -tag -width Ds -offset indent -compact
  .It AddressFamily
-@@ -231,8 +231,8 @@
+@@ -227,8 +227,8 @@
  .Xr ssh-add 1 ,
  .Xr ssh-agent 1 ,
  .Xr ssh-keygen 1 ,
@@ -123,14 +127,15 @@ diff -ru openssh-6.6p1-orig/scp.1 openssh-6.6p1/scp.1
 +.Xr sshd 1M
  .Sh HISTORY
  .Nm
- is based on the
-diff -ru openssh-6.6p1-orig/sftp-server.8 openssh-6.6p1/sftp-server.8
---- openssh-6.6p1-orig/sftp-server.8	Mon Oct 14 21:07:05 2013
-+++ openssh-6.6p1/sftp-server.8	Wed Aug 13 11:19:21 2014
+ is based on the rcp program in
+Only in openssh-6.7p1: scp.1.orig
+diff -ru openssh-6.7p1-orig/sftp-server.8 openssh-6.7p1/sftp-server.8
+--- openssh-6.7p1-orig/sftp-server.8	Tue Jul 29 22:33:21 2014
++++ openssh-6.7p1/sftp-server.8	Fri Feb 27 15:51:27 2015
 @@ -23,7 +23,7 @@
  .\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  .\"
- .Dd $Mdocdate: October 14 2013 $
+ .Dd $Mdocdate: July 28 2014 $
 -.Dt SFTP-SERVER 8
 +.Dt SFTP-SERVER 1M
  .Os
@@ -155,7 +160,7 @@ diff -ru openssh-6.6p1-orig/sftp-server.8 openssh-6.6p1/sftp-server.8
  .Pp
  Valid options are:
 @@ -147,13 +147,13 @@
- Use of
+ for logging to work, and use of
  .Nm
  in a chroot configuration therefore requires that
 -.Xr syslogd 8
@@ -171,9 +176,9 @@ diff -ru openssh-6.6p1-orig/sftp-server.8 openssh-6.6p1/sftp-server.8
  .Rs
  .%A T. Ylonen
  .%A S. Lehtinen
-diff -ru openssh-6.6p1-orig/sftp.1 openssh-6.6p1/sftp.1
---- openssh-6.6p1-orig/sftp.1	Wed Oct 23 01:30:00 2013
-+++ openssh-6.6p1/sftp.1	Wed Aug 13 11:34:03 2014
+diff -ru openssh-6.7p1-orig/sftp.1 openssh-6.7p1/sftp.1
+--- openssh-6.7p1-orig/sftp.1	Wed May 14 23:47:37 2014
++++ openssh-6.7p1/sftp.1	Fri Feb 27 15:50:37 2015
 @@ -85,7 +85,7 @@
  option.
  In such cases, it is necessary to configure non-interactive authentication
@@ -210,7 +215,7 @@ diff -ru openssh-6.6p1-orig/sftp.1 openssh-6.6p1/sftp.1
  does not have an sftp subsystem configured.
  .It Fl v
  Raise logging level.
-@@ -589,9 +589,9 @@
+@@ -610,9 +610,9 @@
  .Xr ssh-add 1 ,
  .Xr ssh-keygen 1 ,
  .Xr glob 3 ,
@@ -223,9 +228,10 @@ diff -ru openssh-6.6p1-orig/sftp.1 openssh-6.6p1/sftp.1
  .Rs
  .%A T. Ylonen
  .%A S. Lehtinen
-diff -ru openssh-6.6p1-orig/ssh-add.1 openssh-6.6p1/ssh-add.1
---- openssh-6.6p1-orig/ssh-add.1	Wed Dec 18 01:46:28 2013
-+++ openssh-6.6p1/ssh-add.1	Wed Aug 13 11:34:21 2014
+Only in openssh-6.7p1: sftp.1.orig
+diff -ru openssh-6.7p1-orig/ssh-add.1 openssh-6.7p1/ssh-add.1
+--- openssh-6.7p1-orig/ssh-add.1	Wed Dec 18 01:46:28 2013
++++ openssh-6.7p1/ssh-add.1	Fri Feb 27 15:50:37 2015
 @@ -126,7 +126,7 @@
  Set a maximum lifetime when adding identities to an agent.
  The lifetime may be specified in seconds or in a time format
@@ -244,9 +250,9 @@ diff -ru openssh-6.6p1-orig/ssh-add.1 openssh-6.6p1/ssh-add.1
  .Sh AUTHORS
  OpenSSH is a derivative of the original and free
  ssh 1.2.12 release by Tatu Ylonen.
-diff -ru openssh-6.6p1-orig/ssh-keygen.1 openssh-6.6p1/ssh-keygen.1
---- openssh-6.6p1-orig/ssh-keygen.1	Thu Feb  6 17:24:15 2014
-+++ openssh-6.6p1/ssh-keygen.1	Wed Aug 13 11:39:23 2014
+diff -ru openssh-6.7p1-orig/ssh-keygen.1 openssh-6.7p1/ssh-keygen.1
+--- openssh-6.7p1-orig/ssh-keygen.1	Sat Apr 19 23:23:04 2014
++++ openssh-6.7p1/ssh-keygen.1	Fri Feb 27 15:50:37 2015
 @@ -433,7 +433,7 @@
  Disable execution of
  .Pa ~/.ssh/rc
@@ -310,9 +316,9 @@ diff -ru openssh-6.6p1-orig/ssh-keygen.1 openssh-6.6p1/ssh-keygen.1
  .Rs
  .%R RFC 4716
  .%T "The Secure Shell (SSH) Public Key File Format"
-diff -ru openssh-6.6p1-orig/ssh-keysign.8 openssh-6.6p1/ssh-keysign.8
---- openssh-6.6p1-orig/ssh-keysign.8	Wed Dec 18 01:46:28 2013
-+++ openssh-6.6p1/ssh-keysign.8	Wed Aug 13 11:30:15 2014
+diff -ru openssh-6.7p1-orig/ssh-keysign.8 openssh-6.7p1/ssh-keysign.8
+--- openssh-6.7p1-orig/ssh-keysign.8	Wed Dec 18 01:46:28 2013
++++ openssh-6.7p1/ssh-keysign.8	Fri Feb 27 15:50:37 2015
 @@ -23,7 +23,7 @@
  .\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  .\"
@@ -342,9 +348,9 @@ diff -ru openssh-6.6p1-orig/ssh-keysign.8 openssh-6.6p1/ssh-keysign.8
  .Sh HISTORY
  .Nm
  first appeared in
-diff -ru openssh-6.6p1-orig/ssh-pkcs11-helper.8 openssh-6.6p1/ssh-pkcs11-helper.8
---- openssh-6.6p1-orig/ssh-pkcs11-helper.8	Thu Jul 18 02:14:14 2013
-+++ openssh-6.6p1/ssh-pkcs11-helper.8	Wed Aug 13 11:30:43 2014
+diff -ru openssh-6.7p1-orig/ssh-pkcs11-helper.8 openssh-6.7p1/ssh-pkcs11-helper.8
+--- openssh-6.7p1-orig/ssh-pkcs11-helper.8	Thu Jul 18 02:14:14 2013
++++ openssh-6.7p1/ssh-pkcs11-helper.8	Fri Feb 27 15:50:37 2015
 @@ -15,7 +15,7 @@
  .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  .\"
@@ -354,10 +360,10 @@ diff -ru openssh-6.6p1-orig/ssh-pkcs11-helper.8 openssh-6.6p1/ssh-pkcs11-helper.
  .Os
  .Sh NAME
  .Nm ssh-pkcs11-helper
-diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
---- openssh-6.6p1-orig/ssh.1	Wed Dec 18 01:46:28 2013
-+++ openssh-6.6p1/ssh.1	Wed Aug 13 11:40:55 2014
-@@ -178,7 +178,7 @@
+diff -ru openssh-6.7p1-orig/ssh.1 openssh-6.7p1/ssh.1
+--- openssh-6.7p1-orig/ssh.1	Tue Jul 29 22:32:28 2014
++++ openssh-6.7p1/ssh.1	Fri Feb 27 15:52:48 2015
+@@ -164,7 +164,7 @@
  See the
  .Cm Ciphers
  keyword in
@@ -366,7 +372,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  for more information.
  .It Fl D Xo
  .Sm off
-@@ -355,7 +355,7 @@
+@@ -343,7 +343,7 @@
  Refer to the description of
  .Cm ControlMaster
  in
@@ -375,7 +381,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  for details.
  .It Fl m Ar mac_spec
  Additionally, for protocol version 2 a comma-separated list of MAC
-@@ -411,7 +411,7 @@
+@@ -399,7 +399,7 @@
  This is useful for specifying options for which there is no separate
  command-line flag.
  For full details of the options listed below, and their possible values, see
@@ -384,7 +390,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  .Pp
  .Bl -tag -width Ds -offset indent -compact
  .It AddressFamily
-@@ -551,7 +551,7 @@
+@@ -541,7 +541,7 @@
  will only succeed if the server's
  .Cm GatewayPorts
  option is enabled (see
@@ -393,7 +399,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  .Pp
  If the
  .Ar port
-@@ -572,7 +572,7 @@
+@@ -562,7 +562,7 @@
  and
  .Cm ControlMaster
  in
@@ -402,7 +408,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  for details.
  .It Fl s
  May be used to request invocation of a subsystem on the remote system.
-@@ -642,7 +642,7 @@
+@@ -632,7 +632,7 @@
  and
  .Cm TunnelDevice
  directives in
@@ -411,7 +417,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  If the
  .Cm Tunnel
  directive is unset, it is set to the default tunnel mode, which is
-@@ -665,7 +665,7 @@
+@@ -655,7 +655,7 @@
  option and the
  .Cm ForwardX11Trusted
  directive in
@@ -420,7 +426,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  for more information.
  .It Fl x
  Disables X11 forwarding.
-@@ -684,7 +684,7 @@
+@@ -674,7 +674,7 @@
  may additionally obtain configuration data from
  a per-user configuration file and a system-wide configuration file.
  The file format and configuration options are described in
@@ -429,7 +435,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  .Sh AUTHENTICATION
  The OpenSSH SSH client supports SSH protocols 1 and 2.
  The default is to use protocol 2 only,
-@@ -691,7 +691,7 @@
+@@ -681,7 +681,7 @@
  though this can be changed via the
  .Cm Protocol
  option in
@@ -438,7 +444,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  or the
  .Fl 1
  and
-@@ -951,7 +951,7 @@
+@@ -941,7 +941,7 @@
  allows the user to execute a local command if the
  .Ic PermitLocalCommand
  option is enabled in
@@ -447,7 +453,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  Basic help is available, using the
  .Fl h
  option.
-@@ -1148,7 +1148,7 @@
+@@ -1138,7 +1138,7 @@
  See the
  .Cm VerifyHostKeyDNS
  option in
@@ -456,7 +462,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  for more information.
  .Sh SSH-BASED VIRTUAL PRIVATE NETWORKS
  .Nm
-@@ -1158,7 +1158,7 @@
+@@ -1148,7 +1148,7 @@
  network pseudo-device,
  allowing two networks to be joined securely.
  The
@@ -465,7 +471,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  configuration option
  .Cm PermitTunnel
  controls whether the server supports this,
-@@ -1308,7 +1308,7 @@
+@@ -1298,7 +1298,7 @@
  For more information, see the
  .Cm PermitUserEnvironment
  option in
@@ -474,7 +480,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  .Sh FILES
  .Bl -tag -width Ds -compact
  .It Pa ~/.rhosts
-@@ -1316,7 +1316,7 @@
+@@ -1306,7 +1306,7 @@
  On some machines this file may need to be
  world-readable if the user's home directory is on an NFS partition,
  because
@@ -483,7 +489,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  reads it as root.
  Additionally, this file must be owned by the user,
  and must not have write permissions for anyone else.
-@@ -1341,7 +1341,7 @@
+@@ -1331,7 +1331,7 @@
  Lists the public keys (DSA, ECDSA, ED25519, RSA)
  that can be used for logging in as this user.
  The format of this file is described in the
@@ -492,7 +498,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  manual page.
  This file is not highly sensitive, but the recommended
  permissions are read/write for the user, and not accessible by others.
-@@ -1349,7 +1349,7 @@
+@@ -1339,7 +1339,7 @@
  .It Pa ~/.ssh/config
  This is the per-user configuration file.
  The file format and configuration options are described in
@@ -501,7 +507,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  Because of the potential for abuse, this file must have strict permissions:
  read/write for the user, and not writable by others.
  .Pp
-@@ -1386,7 +1386,7 @@
+@@ -1376,7 +1376,7 @@
  Contains a list of host keys for all hosts the user has logged into
  that are not already in the systemwide list of known host keys.
  See
@@ -510,7 +516,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  for further details of the format of this file.
  .Pp
  .It Pa ~/.ssh/rc
-@@ -1395,7 +1395,7 @@
+@@ -1385,7 +1385,7 @@
  when the user logs in, just before the user's shell (or command) is
  started.
  See the
@@ -519,7 +525,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  manual page for more information.
  .Pp
  .It Pa /etc/hosts.equiv
-@@ -1411,7 +1411,7 @@
+@@ -1401,7 +1401,7 @@
  .It Pa /etc/ssh/ssh_config
  Systemwide configuration file.
  The file format and configuration options are described in
@@ -528,7 +534,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  .Pp
  .It Pa /etc/ssh/ssh_host_key
  .It Pa /etc/ssh/ssh_host_dsa_key
-@@ -1426,7 +1426,7 @@
+@@ -1416,7 +1416,7 @@
  For protocol version 2,
  .Nm
  uses
@@ -537,7 +543,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  to access the host keys,
  eliminating the requirement that
  .Nm
-@@ -1442,7 +1442,7 @@
+@@ -1432,7 +1432,7 @@
  organization.
  It should be world-readable.
  See
@@ -546,7 +552,7 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  for further details of the format of this file.
  .Pp
  .It Pa /etc/ssh/sshrc
-@@ -1450,7 +1450,7 @@
+@@ -1440,7 +1440,7 @@
  .Nm
  when the user logs in, just before the user's shell (or command) is started.
  See the
@@ -555,34 +561,32 @@ diff -ru openssh-6.6p1-orig/ssh.1 openssh-6.6p1/ssh.1
  manual page for more information.
  .El
  .Sh EXIT STATUS
-@@ -1465,10 +1465,10 @@
+@@ -1455,9 +1455,9 @@
  .Xr ssh-keygen 1 ,
  .Xr ssh-keyscan 1 ,
  .Xr tun 4 ,
--.Xr hosts.equiv 5 ,
 -.Xr ssh_config 5 ,
 -.Xr ssh-keysign 8 ,
 -.Xr sshd 8
-+.Xr hosts.equiv 4 ,
 +.Xr ssh_config 4 ,
 +.Xr ssh-keysign 1M ,
 +.Xr sshd 1M
  .Sh STANDARDS
  .Rs
  .%A S. Lehtinen
-diff -ru openssh-6.6p1-orig/sshd.8 openssh-6.6p1/sshd.8
---- openssh-6.6p1-orig/sshd.8	Wed Dec 18 01:46:28 2013
-+++ openssh-6.6p1/sshd.8	Wed Aug 13 11:33:17 2014
+diff -ru openssh-6.7p1-orig/sshd.8 openssh-6.7p1/sshd.8
+--- openssh-6.7p1-orig/sshd.8	Thu Jul  3 19:00:04 2014
++++ openssh-6.7p1/sshd.8	Fri Feb 27 15:54:50 2015
 @@ -35,7 +35,7 @@
  .\"
- .\" $OpenBSD: sshd.8,v 1.273 2013/12/07 11:58:46 naddy Exp $
- .Dd $Mdocdate: December 7 2013 $
+ .\" $OpenBSD: sshd.8,v 1.276 2014/07/03 22:40:43 djm Exp $
+ .Dd $Mdocdate: July 3 2014 $
 -.Dt SSHD 8
 +.Dt SSHD 1M
  .Os
  .Sh NAME
  .Nm sshd
-@@ -80,7 +80,7 @@
+@@ -77,7 +77,7 @@
  .Nm
  can be configured using command-line options or a configuration file
  (by default
@@ -591,7 +595,7 @@ diff -ru openssh-6.6p1-orig/sshd.8 openssh-6.6p1/sshd.8
  command-line options override values specified in the
  configuration file.
  .Nm
-@@ -186,7 +186,7 @@
+@@ -183,7 +183,7 @@
  Specifies that
  .Nm
  is being run from
@@ -600,7 +604,7 @@ diff -ru openssh-6.6p1-orig/sshd.8 openssh-6.6p1/sshd.8
  .Nm
  is normally not run
  from inetd because it needs to generate the server key before it can
-@@ -210,7 +210,7 @@
+@@ -207,7 +207,7 @@
  This is useful for specifying options for which there is no separate
  command-line flag.
  For full details of the options, and their values, see
@@ -609,7 +613,7 @@ diff -ru openssh-6.6p1-orig/sshd.8 openssh-6.6p1/sshd.8
  .It Fl p Ar port
  Specifies the port on which the server listens for connections
  (default 22).
-@@ -280,7 +280,7 @@
+@@ -277,7 +277,7 @@
  though this can be changed via the
  .Cm Protocol
  option in
@@ -618,7 +622,7 @@ diff -ru openssh-6.6p1-orig/sshd.8 openssh-6.6p1/sshd.8
  Protocol 2 supports DSA, ECDSA, ED25519 and RSA keys;
  protocol 1 only supports RSA keys.
  For both protocols,
-@@ -405,7 +405,7 @@
+@@ -402,7 +402,7 @@
  See the
  .Cm PermitUserEnvironment
  option in
@@ -645,16 +649,7 @@ diff -ru openssh-6.6p1-orig/sshd.8 openssh-6.6p1/sshd.8
  for more information on patterns.
  .Pp
  In addition to the wildcard matching that may be applied to hostnames or
-@@ -855,7 +855,7 @@
- .It Pa /etc/hosts.deny
- Access controls that should be enforced by tcp-wrappers are defined here.
- Further details are described in
--.Xr hosts_access 5 .
-+.Xr hosts_access 4 .
- .Pp
- .It Pa /etc/hosts.equiv
- This file is for host-based authentication (see
-@@ -865,11 +865,11 @@
+@@ -859,11 +859,11 @@
  .It Pa /etc/moduli
  Contains Diffie-Hellman groups used for the "Diffie-Hellman Group Exchange".
  The file format is described in
@@ -668,7 +663,7 @@ diff -ru openssh-6.6p1-orig/sshd.8 openssh-6.6p1/sshd.8
  .Pp
  .It Pa /etc/nologin
  If this file exists,
-@@ -926,7 +926,7 @@
+@@ -920,7 +920,7 @@
  Contains configuration data for
  .Nm sshd .
  The file format and configuration options are described in
@@ -677,17 +672,16 @@ diff -ru openssh-6.6p1-orig/sshd.8 openssh-6.6p1/sshd.8
  .Pp
  .It Pa /etc/ssh/sshrc
  Similar to
-@@ -960,12 +960,11 @@
+@@ -954,11 +954,11 @@
  .Xr ssh-keygen 1 ,
  .Xr ssh-keyscan 1 ,
  .Xr chroot 2 ,
--.Xr hosts_access 5 ,
 -.Xr login.conf 5 ,
 -.Xr moduli 5 ,
 -.Xr sshd_config 5 ,
 -.Xr inetd 8 ,
 -.Xr sftp-server 8
-+.Xr hosts_access 4 ,
++.Xr login.conf 4 ,
 +.Xr moduli 4 ,
 +.Xr sshd_config 4 ,
 +.Xr inetd 1M ,
@@ -695,13 +689,13 @@ diff -ru openssh-6.6p1-orig/sshd.8 openssh-6.6p1/sshd.8
  .Sh AUTHORS
  OpenSSH is a derivative of the original and free
  ssh 1.2.12 release by Tatu Ylonen.
-diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
---- openssh-6.6p1-orig/sshd_config.5	Thu Feb 27 18:01:28 2014
-+++ openssh-6.6p1/sshd_config.5	Wed Aug 13 11:28:56 2014
+diff -ru openssh-6.7p1-orig/sshd_config.5 openssh-6.7p1/sshd_config.5
+--- openssh-6.7p1-orig/sshd_config.5	Thu Oct  2 19:24:57 2014
++++ openssh-6.7p1/sshd_config.5	Fri Feb 27 15:56:01 2015
 @@ -35,7 +35,7 @@
  .\"
- .\" $OpenBSD: sshd_config.5,v 1.172 2014/02/27 22:47:07 djm Exp $
- .Dd $Mdocdate: February 27 2014 $
+ .\" $OpenBSD: sshd_config.5,v 1.176 2014/07/28 15:40:08 schwarze Exp $
+ .Dd $Mdocdate: July 28 2014 $
 -.Dt SSHD_CONFIG 5
 +.Dt SSHD_CONFIG 4
  .Os
@@ -743,7 +737,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  for more information on patterns.
  .It Cm AllowTcpForwarding
  Specifies whether TCP forwarding is permitted.
-@@ -158,7 +158,7 @@
+@@ -178,7 +178,7 @@
  .Cm AllowGroups .
  .Pp
  See PATTERNS in
@@ -752,7 +746,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  for more information on patterns.
  .It Cm AuthenticationMethods
  Specifies the authentication methods that must be successfully completed
-@@ -202,7 +202,7 @@
+@@ -222,7 +222,7 @@
  It will be invoked with a single argument of the username
  being authenticated, and should produce on standard output zero or
  more lines of authorized_keys output (see AUTHORIZED_KEYS in
@@ -761,7 +755,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  If a key supplied by AuthorizedKeysCommand does not successfully authenticate
  and authorize the user then public key authentication continues using the usual
  .Cm AuthorizedKeysFile
-@@ -218,7 +218,7 @@
+@@ -238,7 +238,7 @@
  The format is described in the
  AUTHORIZED_KEYS FILE FORMAT
  section of
@@ -770,7 +764,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  .Cm AuthorizedKeysFile
  may contain tokens of the form %T which are substituted during connection
  setup.
-@@ -241,7 +241,7 @@
+@@ -261,7 +261,7 @@
  to be accepted for authentication.
  Names are listed one per line preceded by key options (as described
  in AUTHORIZED_KEYS FILE FORMAT in
@@ -779,7 +773,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  Empty lines and comments starting with
  .Ql #
  are ignored.
-@@ -271,7 +271,7 @@
+@@ -291,7 +291,7 @@
  though the
  .Cm principals=
  key option offers a similar facility (see
@@ -788,16 +782,16 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  for details).
  .It Cm Banner
  The contents of the specified file are sent to the remote user before
-@@ -284,7 +284,7 @@
+@@ -304,7 +304,7 @@
  .It Cm ChallengeResponseAuthentication
  Specifies whether challenge-response authentication is allowed (e.g. via
- PAM or though authentication styles supported in
+ PAM or through authentication styles supported in
 -.Xr login.conf 5 )
 +.Xr login.conf 4 )
  The default is
  .Dq yes .
  .It Cm ChrootDirectory
-@@ -294,7 +294,7 @@
+@@ -314,7 +314,7 @@
  All components of the pathname must be root-owned directories that are
  not writable by any other user or group.
  After the chroot,
@@ -806,16 +800,16 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  changes the working directory to the user's home directory.
  .Pp
  The pathname may contain the following tokens that are expanded at runtime once
-@@ -327,7 +327,7 @@
- though sessions which use logging do require
+@@ -347,7 +347,7 @@
+ though sessions which use logging may require
  .Pa /dev/log
- inside the chroot directory (see
+ inside the chroot directory on some operating systems (see
 -.Xr sftp-server 8
 +.Xr sftp-server 1M
  for details).
  .Pp
  The default is not to
-@@ -370,7 +370,7 @@
+@@ -404,7 +404,7 @@
  .It Cm ClientAliveCountMax
  Sets the number of client alive messages (see below) which may be
  sent without
@@ -824,7 +818,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  receiving any messages back from the client.
  If this threshold is reached while client alive messages are being sent,
  sshd will disconnect the client, terminating the session.
-@@ -397,7 +397,7 @@
+@@ -431,7 +431,7 @@
  .It Cm ClientAliveInterval
  Sets a timeout interval in seconds after which if no data has been received
  from the client,
@@ -833,7 +827,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  will send a message through the encrypted
  channel to request a response from the client.
  The default
-@@ -428,7 +428,7 @@
+@@ -462,7 +462,7 @@
  .Cm AllowGroups .
  .Pp
  See PATTERNS in
@@ -842,7 +836,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  for more information on patterns.
  .It Cm DenyUsers
  This keyword can be followed by a list of user name patterns, separated
-@@ -447,7 +447,7 @@
+@@ -481,7 +481,7 @@
  .Cm AllowGroups .
  .Pp
  See PATTERNS in
@@ -851,7 +845,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  for more information on patterns.
  .It Cm ForceCommand
  Forces the execution of the command specified by
-@@ -472,7 +472,7 @@
+@@ -506,7 +506,7 @@
  Specifies whether remote hosts are allowed to connect to ports
  forwarded for the client.
  By default,
@@ -860,7 +854,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  binds remote port forwardings to the loopback address.
  This prevents other remote hosts from connecting to forwarded ports.
  .Cm GatewayPorts
-@@ -520,7 +520,7 @@
+@@ -554,7 +554,7 @@
  A setting of
  .Dq yes
  means that
@@ -869,7 +863,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  uses the name supplied by the client rather than
  attempting to resolve the name from the TCP connection itself.
  The default is
-@@ -531,7 +531,7 @@
+@@ -565,7 +565,7 @@
  by
  .Cm HostKey .
  The default behaviour of
@@ -878,7 +872,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  is not to load any certificates.
  .It Cm HostKey
  Specifies a file containing a private host key
-@@ -546,7 +546,7 @@
+@@ -580,7 +580,7 @@
  .Pa /etc/ssh/ssh_host_rsa_key
  for protocol version 2.
  Note that
@@ -887,7 +881,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  will refuse to use a file if it is group/world-accessible.
  It is possible to have multiple host key files.
  .Dq rsa1
-@@ -587,7 +587,7 @@
+@@ -621,7 +621,7 @@
  .Dq yes .
  .It Cm IgnoreUserKnownHosts
  Specifies whether
@@ -896,7 +890,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  should ignore the user's
  .Pa ~/.ssh/known_hosts
  during
-@@ -692,7 +692,7 @@
+@@ -745,7 +745,7 @@
  The default is 3600 (seconds).
  .It Cm ListenAddress
  Specifies the local addresses
@@ -905,7 +899,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  should listen on.
  The following forms may be used:
  .Pp
-@@ -735,7 +735,7 @@
+@@ -788,7 +788,7 @@
  The default is 120 seconds.
  .It Cm LogLevel
  Gives the verbosity level that is used when logging messages from
@@ -914,7 +908,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  The possible values are:
  QUIET, FATAL, ERROR, INFO, VERBOSE, DEBUG, DEBUG1, DEBUG2, and DEBUG3.
  The default is INFO.
-@@ -791,7 +791,7 @@
+@@ -881,7 +881,7 @@
  The match patterns may consist of single entries or comma-separated
  lists and may use the wildcard and negation operators described in the
  PATTERNS section of
@@ -923,7 +917,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  .Pp
  The patterns in an
  .Cm Address
-@@ -871,7 +871,7 @@
+@@ -962,7 +962,7 @@
  the three colon separated values
  .Dq start:rate:full
  (e.g. "10:30:60").
@@ -932,7 +926,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  will refuse connection attempts with a probability of
  .Dq rate/100
  (30%)
-@@ -984,7 +984,7 @@
+@@ -1075,7 +1075,7 @@
  options in
  .Pa ~/.ssh/authorized_keys
  are processed by
@@ -941,7 +935,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  The default is
  .Dq no .
  Enabling environment processing may enable users to bypass access
-@@ -997,7 +997,7 @@
+@@ -1094,7 +1094,7 @@
  .Pa /var/run/sshd.pid .
  .It Cm Port
  Specifies the port number that
@@ -950,7 +944,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  listens on.
  The default is 22.
  Multiple options of this type are permitted.
-@@ -1005,7 +1005,7 @@
+@@ -1102,7 +1102,7 @@
  .Cm ListenAddress .
  .It Cm PrintLastLog
  Specifies whether
@@ -959,7 +953,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  should print the date and time of the last user login when a user logs
  in interactively.
  The default is
-@@ -1012,7 +1012,7 @@
+@@ -1109,7 +1109,7 @@
  .Dq yes .
  .It Cm PrintMotd
  Specifies whether
@@ -968,7 +962,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  should print
  .Pa /etc/motd
  when a user logs in interactively.
-@@ -1023,7 +1023,7 @@
+@@ -1120,7 +1120,7 @@
  .Dq yes .
  .It Cm Protocol
  Specifies the protocol versions
@@ -977,8 +971,8 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  supports.
  The possible values are
  .Sq 1
-@@ -1096,7 +1096,7 @@
- The minimum value is 512, and the default is 1024.
+@@ -1220,7 +1220,7 @@
+ .Dq no .
  .It Cm StrictModes
  Specifies whether
 -.Xr sshd 8
@@ -986,7 +980,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  should check file modes and ownership of the
  user's files and home directory before accepting login.
  This is normally desirable because novices sometimes accidentally leave their
-@@ -1112,7 +1112,7 @@
+@@ -1236,7 +1236,7 @@
  to execute upon subsystem request.
  .Pp
  The command
@@ -995,7 +989,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  implements the
  .Dq sftp
  file transfer subsystem.
-@@ -1130,7 +1130,7 @@
+@@ -1254,7 +1254,7 @@
  Note that this option applies to protocol version 2 only.
  .It Cm SyslogFacility
  Gives the facility code that is used when logging messages from
@@ -1004,7 +998,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  The possible values are: DAEMON, USER, AUTH, LOCAL0, LOCAL1, LOCAL2,
  LOCAL3, LOCAL4, LOCAL5, LOCAL6, LOCAL7.
  The default is AUTH.
-@@ -1171,7 +1171,7 @@
+@@ -1295,7 +1295,7 @@
  .Xr ssh-keygen 1 .
  .It Cm UseDNS
  Specifies whether
@@ -1013,7 +1007,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  should look up the remote host name and check that
  the resolved host name for the remote IP address maps back to the
  very same IP address.
-@@ -1216,13 +1216,13 @@
+@@ -1340,13 +1340,13 @@
  If
  .Cm UsePAM
  is enabled, you will not be able to run
@@ -1029,7 +1023,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  separates privileges by creating an unprivileged child process
  to deal with incoming network traffic.
  After successful authentication, another process will be created that has
-@@ -1244,7 +1244,7 @@
+@@ -1368,7 +1368,7 @@
  .Dq none .
  .It Cm X11DisplayOffset
  Specifies the first display number available for
@@ -1038,7 +1032,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  X11 forwarding.
  This prevents sshd from interfering with real X11 servers.
  The default is 10.
-@@ -1259,7 +1259,7 @@
+@@ -1383,7 +1383,7 @@
  .Pp
  When X11 forwarding is enabled, there may be additional exposure to
  the server and to client displays if the
@@ -1047,7 +1041,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  proxy display is configured to listen on the wildcard address (see
  .Cm X11UseLocalhost
  below), though this is not the default.
-@@ -1270,7 +1270,7 @@
+@@ -1394,7 +1394,7 @@
  forwarding (see the warnings for
  .Cm ForwardX11
  in
@@ -1056,7 +1050,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  A system administrator may have a stance in which they want to
  protect clients that may expose themselves to attack by unwittingly
  requesting X11 forwarding, which can warrant a
-@@ -1284,7 +1284,7 @@
+@@ -1408,7 +1408,7 @@
  is enabled.
  .It Cm X11UseLocalhost
  Specifies whether
@@ -1065,7 +1059,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  should bind the X11 forwarding server to the loopback address or to
  the wildcard address.
  By default,
-@@ -1315,7 +1315,7 @@
+@@ -1439,7 +1439,7 @@
  .Pa /usr/X11R6/bin/xauth .
  .El
  .Sh TIME FORMATS
@@ -1074,7 +1068,7 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  command-line arguments and configuration file options that specify time
  may be expressed using a sequence of the form:
  .Sm off
-@@ -1359,12 +1359,12 @@
+@@ -1483,12 +1483,12 @@
  .Bl -tag -width Ds
  .It Pa /etc/ssh/sshd_config
  Contains configuration data for
@@ -1089,3 +1083,16 @@ diff -ru openssh-6.6p1-orig/sshd_config.5 openssh-6.6p1/sshd_config.5
  .Sh AUTHORS
  OpenSSH is a derivative of the original and free
  ssh 1.2.12 release by Tatu Ylonen.
+Common subdirectories: openssh-6.7p1-orig/contrib/aix and openssh-6.7p1/contrib/aix
+Common subdirectories: openssh-6.7p1-orig/contrib/caldera and openssh-6.7p1/contrib/caldera
+Common subdirectories: openssh-6.7p1-orig/contrib/cygwin and openssh-6.7p1/contrib/cygwin
+Common subdirectories: openssh-6.7p1-orig/contrib/hpux and openssh-6.7p1/contrib/hpux
+Common subdirectories: openssh-6.7p1-orig/contrib/redhat and openssh-6.7p1/contrib/redhat
+Common subdirectories: openssh-6.7p1-orig/contrib/solaris and openssh-6.7p1/contrib/solaris
+Common subdirectories: openssh-6.7p1-orig/contrib/suse and openssh-6.7p1/contrib/suse
+Common subdirectories: openssh-6.7p1-orig/openbsd-compat/regress and openssh-6.7p1/openbsd-compat/regress
+Common subdirectories: openssh-6.7p1-orig/regress/unittests and openssh-6.7p1/regress/unittests
+Common subdirectories: openssh-6.7p1-orig/regress/unittests/sshbuf and openssh-6.7p1/regress/unittests/sshbuf
+Common subdirectories: openssh-6.7p1-orig/regress/unittests/sshkey and openssh-6.7p1/regress/unittests/sshkey
+Common subdirectories: openssh-6.7p1-orig/regress/unittests/test_helper and openssh-6.7p1/regress/unittests/test_helper
+Common subdirectories: openssh-6.7p1-orig/regress/unittests/sshkey/testdata and openssh-6.7p1/regress/unittests/sshkey/testdata
