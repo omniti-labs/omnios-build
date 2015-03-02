@@ -28,12 +28,18 @@
 . ../../lib/functions.sh
 
 PROG=numpy
-VER=1.8.1
+VER=1.9.2
 PKG=library/python-2/numpy-26
 SUMMARY="numpy - package for scientific computing with Python"
 DESC="$SUMMARY"
 
 DEPENDS_IPS="runtime/python-26"
+
+pre_python_64() {
+	logmsg "prepping 64bit python build"
+	# Remove any 32-bit binaries that got built.
+	logcmd $PYTHON ./setup.py clean
+}
 
 init
 download_source $PROG $PROG $VER

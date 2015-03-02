@@ -945,7 +945,7 @@ pre_python_32() {
     logmsg "prepping 32bit python build"
 }
 pre_python_64() {
-    logmsg "prepping 32bit python build"
+    logmsg "prepping 64bit python build"
 }
 python_build() {
     if [[ -z "$PYTHON" ]]; then logerr "PYTHON not set"; fi
@@ -958,22 +958,22 @@ python_build() {
     export ISALIST
     pre_python_32
     logmsg "--- setup.py (32) build"
-    logcmd $PYTHON ./setup.py build ||
+    logcmd $PYTHON ./setup.py build $PYBUILD32OPTS ||
         logerr "--- build failed"
     logmsg "--- setup.py (32) install"
     logcmd $PYTHON \
-        ./setup.py install --root=$DESTDIR ||
+        ./setup.py install --root=$DESTDIR $PYINST32OPTS ||
         logerr "--- install failed"
 
     ISALIST="amd64 i386"
     export ISALIST
     pre_python_64
     logmsg "--- setup.py (64) build"
-    logcmd $PYTHON ./setup.py build ||
+    logcmd $PYTHON ./setup.py build $PYBUILD64OPTS ||
         logerr "--- build failed"
     logmsg "--- setup.py (64) install"
     logcmd $PYTHON \
-        ./setup.py install --root=$DESTDIR ||
+        ./setup.py install --root=$DESTDIR $PYINST64OPTS ||
         logerr "--- install failed"
     popd > /dev/null
 
