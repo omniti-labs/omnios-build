@@ -25,7 +25,7 @@ depend fmri=developer/gcc48@4.8.1,5.11-@PVER@ type=incorporate
 depend fmri=developer/gcc48/libgmp-gcc48@5.0.5,5.11-@PVER@ type=incorporate
 depend fmri=developer/gcc48/libmpc-gcc48@1.0.1,5.11-@PVER@ type=incorporate
 depend fmri=developer/gcc48/libmpfr-gcc48@3.1.1,5.11-@PVER@ type=incorporate
-depend fmri=developer/gnu-binutils@2.24,5.11-@PVER@ type=incorporate
+depend fmri=developer/gnu-binutils@2.25,5.11-@PVER@ type=incorporate
 depend fmri=developer/lexer/flex@2.5.39,5.11-@PVER@ type=incorporate
 depend fmri=developer/macro/cpp@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=developer/macro/gnu-m4@1.4.17,5.11-@PVER@ type=incorporate
