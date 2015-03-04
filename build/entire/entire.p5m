@@ -348,6 +348,7 @@ depend fmri=system/storage/fibre-channel/port-utility@0.5.11,5.11-@PVER@ type=re
 depend fmri=system/storage/luxadm@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/xopen/xcu4@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/zones/brand/ipkg@0.5.11,5.11-@PVER@ type=require
+depend fmri=system/zones/brand/lipkg@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/zones@0.5.11,5.11-@PVER@ type=require
 depend fmri=terminal/screen@4.2.1,5.11-@PVER@ type=require
 depend fmri=text/doctools@0.5.11,5.11-@PVER@ type=require
