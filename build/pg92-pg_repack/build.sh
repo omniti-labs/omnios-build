@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=pg_repack
-VER=1.2.1
+VER=1.3.1
 VERHUMAN=$VER
-PGVER=929
+PGVER=9210
 PKG=omniti/database/postgresql-${PGVER}/pg_repack
 SUMMARY="$PROG - Reorganize tables in PostgreSQL databases with minimal locks"
 DESC="$SUMMARY"
@@ -42,7 +42,7 @@ BUILDARCH=64
 PREFIX=/opt/pgsql$PGVER
 PATH=$PREFIX/bin:$PATH
 TAR=gtar
-BUILDDIR=${PROG}-ver_$VER
+#BUILDDIR=${PROG}-ver_$VER
 
 configure64() {
     logmsg "--- Skipping configure - not required"
