@@ -56,6 +56,17 @@ PATCHDIR=patches
 NOSCRIPTSTUB=
 
 #############################################################################
+# The version of certain software that's *installed* matters.  We don't yet
+# have a sophisticated build-certain-things-first bootstrap for omnios-build.
+# We must sometimes determine or even hardcode things about our build system.
+#############################################################################
+
+# libffi --> use pkg(5) to determine what we're running:
+FFIVERS=`pkg list libffi | grep libffi | awk '{print $2}' | \
+	awk -F- '{print $1}'`
+
+
+#############################################################################
 # Perl stuff
 #############################################################################
 
@@ -79,6 +90,7 @@ export PERL_MM_USE_DEFAULT=true
 # When building perl modules, run make test
 # Unset in a build script to skip tests
 PERL_MAKE_TEST=1
+
 
 #############################################################################
 # Python

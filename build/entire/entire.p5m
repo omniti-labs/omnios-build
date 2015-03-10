@@ -127,7 +127,7 @@ depend fmri=library/c++/sigcpp@2.4,5.11-@PVER@ type=require
 depend fmri=library/expat@2.1,5.11-@PVER@ type=require
 depend fmri=library/glib2@2.34.1,5.11-@PVER@ type=require
 depend fmri=library/gmp@6.0.0,5.11-@PVER@ type=require
-depend fmri=library/libffi@3.1,5.11-@PVER@ type=require
+depend fmri=library/libffi@3.2,5.11-@PVER@ type=require
 depend fmri=library/libidn@1.30,5.11-@PVER@ type=require
 depend fmri=library/libtecla@1.6.0,5.11-@PVER@ type=require
 depend fmri=library/libtool/libltdl@2.4.2,5.11-@PVER@ type=require

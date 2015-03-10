@@ -33,11 +33,6 @@ PKG=library/glib2
 SUMMARY="$PROG - GNOME GLib utility library"
 DESC="$SUMMARY"
 
-# HEADS UP!!!  Change this if/when you update your system's libffi.
-# The reason that we call it out is because of the explicit include directory.
-# XXX TODO We might be able to detect FFIVERS by using pkg(1M).
-FFIVERS=3.1
-
 DEPENDS_IPS="SUNWcs library/libffi@$FFIVERS library/zlib system/library
 	system/library/gcc-4-runtime runtime/perl"
 
