@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -29,7 +29,25 @@
 
 PROG=pci.ids
 FORMAT=2.2
-# The pci.ids file is stored locally; check http://pci-ids.ucw.cz/v${FORMAT}/ for updates
+
+PCIIDS_PATH=usr/src/cmd/hwdata/${PROG}
+LOCAL_PCIIDS=${PREBUILT_ILLUMOS}/${PCIIDS_PATH}
+BRANCH=$(git branch | fgrep \* | awk '{print $2}')
+GITHUB_PREFIX=https://github.com/omniti-labs/illumos-omnios/raw
+GITHUB_PCIIDS=${GITHUB_PREFIX}/${BRANCH}/${PCIIDS_PATH}
+
+# We should grab the pci.ids from $PREBUILT_ILLUMOS so we match the illumos
+# version.  If we aren't building with PREBUILT_ILLUMOS (and these days, we
+# should be), grab it from the illumos-omnios branch we're in.
+if [ -d ${PREBUILT_ILLUMOS:-/dev/null} ]; then
+    logmsg "-- Getting pci.ids from $LOCAL_PCIIDS"
+    logcmd cp $LOCAL_PCIIDS $SRCDIR/$PROG
+else
+    logmsg "-- Getting pci.ids from $GITHUB_PCIIDS"
+    logcmd wget -O $SRCDIR/$PROG $GITHUB_PCIIDS 
+fi
+
+
 SNAPDATE=`gawk '$2 == "Version:" { ver = $3; gsub(/\./, "", ver); print ver }' $SRCDIR/$PROG`
 VER=${FORMAT}.${SNAPDATE}
 VERHUMAN="v$FORMAT snapshot from $SNAPDATE"
@@ -59,6 +77,7 @@ prep_build
 build
 make_package
 clean_up
+logcmd rm -f $SRCDIR/$PROG
 
 # Vim hints
 # vim:ts=4:sw=4:et:
