@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=zsh
-VER=5.0.5
+VER=5.0.7
 VERHUMAN=$VER
 PKG=shell/zsh
 SUMMARY="Z shell"
