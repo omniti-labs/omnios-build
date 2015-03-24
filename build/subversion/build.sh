@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=subversion
-VER=1.8.8
+VER=1.8.10
 VERHUMAN=$VER
 PKG=omniti/developer/versioning/subversion
 SUMMARY="$PROG - An Open-Source Revision Control System"
@@ -37,7 +37,7 @@ DESC="$SUMMARY"
 #NEON=neon
 #NVER=0.29.0
 
-DEPENDS_IPS="database/sqlite-3@3.8 library/security/openssl@1.0.1 
+DEPENDS_IPS="database/sqlite-3@3.8 library/security/openssl@1.0.2 
              omniti/library/apr@1.4 omniti/library/apr-util@1.4
              library/expat library/zlib system/library/gcc-4-runtime
              omniti/library/serf"

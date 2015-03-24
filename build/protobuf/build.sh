@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=protobuf
-VER=2.5.0
+VER=2.6.1
 PKG=omniti/library/protobuf
 SUMMARY="Protocol Buffers - Google's data interchange format"
 DESC="$SUMMARY"
