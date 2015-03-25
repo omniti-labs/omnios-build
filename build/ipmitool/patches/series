@@ -1,4 +1,4 @@
-configure.in.patch
+configure.patch
 7052161.patch
 ipmievd.local4.patch
 v6-noaddr16.patch
