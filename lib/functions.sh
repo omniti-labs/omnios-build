@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 # Copyright (c) 2014 by Delphix. All rights reserved.
 #
@@ -745,7 +745,8 @@ make_package() {
     fi
     if [[ -n "$DESTDIR" ]]; then
         logcmd $PKGSEND -s $PKGSRVR publish -d $DESTDIR -d $TMPDIR/$BUILDDIR \
-            -d $SRCDIR $P5M_FINAL || logerr "------ Failed to publish package"
+            -d $SRCDIR -T \*.py $P5M_FINAL || \
+	    logerr "------ Failed to publish package"
     else
         # If we're a metapackage (no DESTDIR) then there are no directories to check
         logcmd $PKGSEND -s $PKGSRVR publish $P5M_FINAL || \
