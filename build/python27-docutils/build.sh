@@ -21,44 +21,42 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2013 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=protobuf-c
-VER=1.1.1
-VERHUMAN=$VER   # Human-readable version
-PKG=omniti/library/protobuf-c
-SUMMARY="Protobuf C library"
-DESC="$SUMMARY ($VER)"
+PROG=docutils
+VER=0.11
+VERHUMAN=$VER
+PKG=omniti/library/python-2/docutils
+SUMMARY="Python text processing system"
+DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="omniti/library/protobuf omniti/library/pkgconf developer/build/autoconf developer/build/automake developer/build/libtool"
-DEPENDS_IPS="omniti/library/protobuf omniti/library/pkgconf"
+BUILD_DEPENDS_IPS="omniti/runtime/python-27"
+DEPENDS_IPS="omniti/runtime/python-27"
 
-export LD_LIBRARY_PATH=/opt/omni/lib
-export PKG_CONFIG_PATH=/opt/omni/lib/pkgconfig
+BUILDARCH=64
+PYTHON=/opt/python27/bin/python
+LDFLAGS64="-L$PYTHONLIB -R$PYTHONLIB -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
+PATH=/opt/omni/bin:/opt/python27/bin:$PATH
 
-CXXFLAGS64="-I/opt/omni/include -m64"
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 LDFLAGS=-Wl,-L/opt/omni/lib,-rpath,/opt/omni/lib CXXFLAGS=-I/opt/omni/include" 
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-Wl,-L/opt/omni/lib/amd64,-rpath,/opt/omni/lib/amd64" 
-
-reconfig() {
-  pushd $TMPDIR/$BUILDDIR || logerr "--- pushd $BUILDDIR failed"
-  logcmd autoreconf -i || logerr "--- autoconf failed"
-  popd || logerr "--- popd from $BUILDDIR failed"
+link_bins() {
+    logmsg "--- Symlinking binaries"
+    pushd ${DESTDIR}/opt/python27/bin
+    for BIN in `ls *.py` ; do
+        NEWBIN=$(basename $BIN | cut -d. -f1)
+        logcmd ln -sf $BIN $NEWBIN
+    done
+    popd
 }
 
 init
 download_source $PROG $PROG $VER
 patch_source
-reconfig
 prep_build
-build
-make_isa_stub
+python_build
+link_bins
 make_package
 clean_up
-
-# Vim hints
-# vim:ts=4:sw=4:et:

@@ -170,7 +170,7 @@ case ${RELEASE:1} in
         GCC_CMD="/opt/gcc-4.7.2/bin/gcc"
         GCC_PKG="developer/gcc47"
         ;;
-    151008|151010|151012)
+    151008|151010|151012|151014)
         PATH="/opt/gcc-4.8.1/bin:$PATH"
         GCC_CMD="/opt/gcc-4.8.1/bin/gcc"
         GCC_PKG="developer/gcc48"
