@@ -1,6 +1,6 @@
---- ipmitool-1.8.15/configure.orig	Wed Mar 25 19:40:41 2015
-+++ ipmitool-1.8.15/configure	Wed Mar 25 19:40:50 2015
-@@ -12638,7 +12638,7 @@
+--- ipmitool-1.8.15/configure.ac.orig	Fri Apr  3 17:46:06 2015
++++ ipmitool-1.8.15/configure.ac	Fri Apr  3 17:45:47 2015
+@@ -78,7 +78,7 @@
  	# disable the linux-specific interfaces
  	xenable_intf_bmc=yes
  	xenable_intf_imb=no
