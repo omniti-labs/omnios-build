@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ntp
-VER=4.2.8
+VER=4.2.8p2
 VERHUMAN=$VER
 PKG=service/network/ntp
 SUMMARY="Network Time Services"
@@ -70,9 +70,9 @@ prep_build
 build
 overlay_root
 make_isa_stub
-#NOTE: Uncomment these two IFF we go back to ntp-dev versions again.
+NOTE: Uncomment these IFF we go back to ntp-dev versions or p-releases again.
 #VER=${VER//dev-/}
-#VER=${VER//p/.}
+VER=${VER//p/.}
 make_package
 clean_up
 

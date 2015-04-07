@@ -1,17 +1,7 @@
---- ./ntpd/refclock_oncore.c.orig	Tue Apr  5 07:35:33 2011
-+++ ./ntpd/refclock_oncore.c	Sun Feb 26 21:30:59 2012
-@@ -1210,7 +1210,7 @@
- 
- 	FILE	*fd;
- 	char	*cp, *cc, *ca, line[100], units[2], device[64], **cpp;
--	char	*dirs[] = { "/etc/ntp", "/etc", 0 };
-+	char	*dirs[] = { "/etc/inet", "/etc", 0 };
- 	int	i, sign, lat_flg, long_flg, ht_flg, mode, mask;
- 	double	f1, f2, f3;
- 
---- ./include/ntp_config.h.orig	Tue Jun  5 19:16:14 2012
-+++ ./include/ntp_config.h	Tue Jun  5 19:16:22 2012
-@@ -10,7 +10,7 @@
+diff -ru ntp-4.2.8p1.orig/include/ntp_config.h ntp-4.2.8p1/include/ntp_config.h
+--- include/ntp_config.h.orig	Fri Jan  2 22:47:47 2015
++++ include/ntp_config.h	Mon Mar  2 10:56:10 2015
+@@ -14,7 +14,7 @@
   */
  #ifndef CONFIG_FILE
  # ifndef SYS_WINNT
@@ -20,3 +10,15 @@
  # else /* SYS_WINNT */
  #  define	CONFIG_FILE	"%windir%\\system32\\drivers\\etc\\ntp.conf"
  #  define	ALT_CONFIG_FILE "%windir%\\ntp.conf"
+diff -ru ntp-4.2.8p1.orig/ntpd/refclock_oncore.c ntp-4.2.8p1/ntpd/refclock_oncore.c
+--- ntpd/refclock_oncore.c.orig	Fri Jan  2 22:47:48 2015
++++ ntpd/refclock_oncore.c	Mon Mar  2 10:57:03 2015
+@@ -1211,7 +1211,7 @@
+ 
+ 	FILE	*fd;
+ 	char	*cc, *ca, line[100], units[2], device[64];
+-	const char	*dirs[] = { "/etc/ntp", "/etc", 0 };
++	const char	*dirs[] = { "/etc/inet", "/etc", 0 };
+ 	const char *cp, **cpp;
+ 	int	i, sign, lat_flg, long_flg, ht_flg, mode, mask;
+ 	double	f1, f2, f3;
