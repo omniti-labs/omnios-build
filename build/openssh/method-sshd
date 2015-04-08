@@ -8,7 +8,6 @@
 . /lib/svc/share/smf_include.sh
 
 CONFDIR=/etc/ssh
-PIDFILE=/var/run/sshd.pid
 
 create_host_key() {
     TYPE=$1
@@ -26,11 +25,6 @@ case $1 in
     	[[ -f $CONFDIR/ssh_host_ecdsa_key ]] || create_host_key ecdsa $CONFDIR/ssh_host_ecdsa_key
     	[[ -f $CONFDIR/ssh_host_ed25519_key ]] || create_host_key ed25519 $CONFDIR/ssh_host_ed25519_key
         /usr/sbin/sshd
-	;;
-    "restart")
-    	if [[ -f $PIDFILE ]]; then
-	    /usr/bin/kill -HUP `/usr/bin/cat $PIDFILE`
-	fi
 	;;
 esac        
 
