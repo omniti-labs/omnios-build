@@ -60,7 +60,7 @@
 			</common_name>
 
 			<documentation>
-				<manpage title='sshd' section='8' />
+				<manpage title='sshd' section='1M' />
 				<doc_link name='openssh.com' uri='http://openssh.com' />
 			</documentation>
 		</template>
