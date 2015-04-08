@@ -260,8 +260,8 @@ depend fmri=network/ftp@0.5.11,5.11-@PVER@ type=require
 depend fmri=network/ipfilter@0.5.11,5.11-@PVER@ type=require
 depend fmri=network/iscsi/initiator@0.5.11,5.11-@PVER@ type=require
 depend fmri=network/iscsi/iser@0.5.11,5.11-@PVER@ type=require
-depend fmri=network/ssh/ssh-key@0.5.11,5.11-@PVER@ type=require
-depend fmri=network/ssh@0.5.11,5.11-@PVER@ type=require
+depend fmri=network/ssh/ssh-key@0.5.11,5.11-@PVER@ fmri=network/openssh type=require-any
+depend fmri=network/ssh@0.5.11,5.11-@PVER@ fmri=network/openssh type=require-any
 depend fmri=network/telnet@0.5.11,5.11-@PVER@ type=require
 depend fmri=package/pkg@0.5.11,5.11-@PVER@ type=require
 depend fmri=release/name@0.5.11,5.11-@PVER@ type=require
@@ -277,7 +277,7 @@ depend fmri=service/file-system/smb@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/hal@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/network/network-clients@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/network/ntp@4.2.8,5.11-@PVER@ type=require
-depend fmri=service/network/ssh@0.5.11,5.11-@PVER@ type=require
+depend fmri=service/network/ssh@0.5.11,5.11-@PVER@ fmri=network/openssh-server type=require-any
 depend fmri=service/picl@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/resource-pools/poold@0.5.11,5.11-@PVER@ type=require
 depend fmri=service/resource-pools@0.5.11,5.11-@PVER@ type=require
