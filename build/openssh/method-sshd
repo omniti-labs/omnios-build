@@ -24,6 +24,7 @@ case $1 in
     	[[ -f $CONFDIR/ssh_host_dsa_key ]] || create_host_key dsa $CONFDIR/ssh_host_dsa_key
     	[[ -f $CONFDIR/ssh_host_rsa_key ]] || create_host_key rsa $CONFDIR/ssh_host_rsa_key
     	[[ -f $CONFDIR/ssh_host_ecdsa_key ]] || create_host_key ecdsa $CONFDIR/ssh_host_ecdsa_key
+    	[[ -f $CONFDIR/ssh_host_ed25519_key ]] || create_host_key ed25519 $CONFDIR/ssh_host_ed25519_key
         /usr/sbin/sshd
 	;;
     "restart")
