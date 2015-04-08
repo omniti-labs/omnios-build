@@ -34,8 +34,6 @@ PKG=network/openssh
 SUMMARY="OpenSSH Client and utilities"
 DESC="OpenSSH Secure Shell protocol Client and associated Utilities"
 
-GLOBAL_DEPENDS="library/security/openssl@1.0.2 library/zlib@1.2 system/library system/library/g++-4-runtime@4.7.2"
-
 BUILDARCH=32
 # Since we're only building 32-bit, don't bother with isaexec subdirs
 CONFIGURE_OPTS_32="
@@ -78,7 +76,7 @@ build
 VER=${VER//p/.}
 
 # Client package
-DEPENDS_IPS="-network/ssh -network/ssh/ssh-key $GLOBAL_DEPENDS"
+RUN_DEPENDS_IPS="-pkg:/network/ssh -pkg:/network/ssh/ssh-key"
 make_package client.mog
 
 # Server package
@@ -86,7 +84,7 @@ PKG=network/openssh-server
 PKGE=$(url_encode $PKG)
 SUMMARY="OpenSSH Server"
 DESC="OpenSSH Secure Shell protocol Server"
-DEPENDS_IPS="-service/network/ssh network/openssh $GLOBAL_DEPENDS"
+RUN_DEPENDS_IPS="-pkg:/service/network/ssh pkg:/network/openssh@$VER"
 install_smf
 make_package server.mog
 

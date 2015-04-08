@@ -1,1 +1,2 @@
 license LICENCE license=OpenSSH
+<transform dir path=etc/ssh -> set group sys>
