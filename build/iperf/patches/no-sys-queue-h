@@ -1,0 +1,10 @@
+--- iperf-3.0.11/src/tcp_info.c.orig	Fri Apr 10 10:34:59 2015
++++ iperf-3.0.11/src/tcp_info.c	Fri Apr 10 10:35:07 2015
+@@ -46,7 +46,6 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/param.h>
+-#include <sys/queue.h>
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #include <netinet/tcp.h>
