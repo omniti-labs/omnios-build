@@ -41,12 +41,17 @@ BUILDARCH=64
 CONFIGURE_OPTS="--bindir=$PREFIX/bin"
 LDFLAGS="-lsocket -lnsl"
 
+make_symlinks()  {
+	logcmd ln -s iperf3 $DESTDIR/usr/bin/iperf
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
+make_symlinks
 make_package
 clean_up
 
