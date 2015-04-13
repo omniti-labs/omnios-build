@@ -34,7 +34,7 @@ SUMMARY="GNU Screen terminal multiplexer"
 DESC="$SUMMARY"
 
 BUILDARCH=32
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --with-sys-screenrc=/etc/screenrc LDFLAGS=-lxnet"
+CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --with-sys-screenrc=/etc/screenrc --enable-colors256 LDFLAGS=-lxnet"
 gnu_cleanup() {
     logcmd rm $DESTDIR/usr/bin/screen
     logcmd mv $DESTDIR/usr/bin/screen-${VER} $DESTDIR/usr/bin/screen
