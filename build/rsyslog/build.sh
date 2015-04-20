@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=rsyslog
-VER=8.4.2
+VER=8.9.0
 VERDEV=8
 VERHUMAN="$VER (v${VERDEV}-stable)"
 PKG=omniti/logging/rsyslog
@@ -43,7 +43,7 @@ CFLAGS64="-I/usr/include/amd64 -I/opt/omni/include/amd64 $CFLAGS64"
 LDFLAGS64="-L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
 ACLOCAL_PATH=/opt/omni/share/aclocal
 
-CONFIGURE_OPTS="--enable-imfile --enable-imsolaris --enable-guardtime --enable-diagtools --enable-usertools"
+CONFIGURE_OPTS="--enable-imfile --enable-imsolaris --enable-guardtime --enable-diagtools --enable-usertools --disable-generate-man-pages"
 
 run_autoconf() {
     export ACLOCAL_PATH
@@ -65,11 +65,14 @@ build32_opts() {
     LIBUUID_LIBS="$LDFLAGS -luuid"
     GUARDTIME_CFLAGS="$CFLAGS"
     GUARDTIME_LIBS="$LDFLAGS -lgtbase -lgthttp -lgtpng"
+    LIBLOGGING_STDLOG_CFLAGS="$CFLAGS"
+    LIBLOGGING_STDLOG_LIBS="$LDFLAGS -llogging-stdlog"
     export LIBESTR_CFLAGS LIBESTR_LIBS \
            LIBEE_CFLAGS LIBEE_LIBS \
            JSON_C_CFLAGS JSON_C_LIBS \
            LIBUUID_CFLAGS LIBUUID_LIBS \
-           GUARDTIME_CFLAGS GUARDTIME_LIBS
+           GUARDTIME_CFLAGS GUARDTIME_LIBS \
+           LIBLOGGING_STDLOG_CFLAGS LIBLOGGING_STDLOG_LIBS
     export PATH=/opt/omni/bin:/opt/python26/bin:$PATH
 }
 
@@ -84,11 +87,14 @@ build64_opts() {
     LIBUUID_LIBS="$LDFLAGS64 -luuid"
     GUARDTIME_CFLAGS="$CFLAGS64"
     GUARDTIME_LIBS="$LDFLAGS64 -lgtbase -lgthttp -lgtpng"
+    LIBLOGGING_STDLOG_CFLAGS="$CFLAGS"
+    LIBLOGGING_STDLOG_LIBS="$LDFLAGS -llogging-stdlog"
     export LIBESTR_CFLAGS LIBESTR_LIBS \
            LIBEE_CFLAGS LIBEE_LIBS \
            JSON_C_CFLAGS JSON_C_LIBS \
            LIBUUID_CFLAGS LIBUUID_LIBS \
-           GUARDTIME_CFLAGS GUARDTIME_LIBS
+           GUARDTIME_CFLAGS GUARDTIME_LIBS \
+           LIBLOGGING_STDLOG_CFLAGS LIBLOGGING_STDLOG_LIBS
     export PATH=/opt/omni/bin/amd64:/usr/bin/amd64:/opt/python26/bin:$PATH
 }
 

@@ -1,0 +1,231 @@
+diff -r -u rsyslog-8.4.2.orig//action.c rsyslog-8.4.2//action.c
+--- rsyslog-8.4.2.orig//action.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//action.c	Tue Oct 14 18:35:32 2014
+@@ -92,7 +92,7 @@
+ #include <strings.h>
+ #include <time.h>
+ #include <errno.h>
+-#include <json.h>
++#include <json/json.h>
+ 
+ #include "dirty.h"
+ #include "template.h"
+Common subdirectories: rsyslog-8.4.2.orig//compat and rsyslog-8.4.2//compat
+Common subdirectories: rsyslog-8.4.2.orig//contrib and rsyslog-8.4.2//contrib
+Common subdirectories: rsyslog-8.4.2.orig//grammar and rsyslog-8.4.2//grammar
+Common subdirectories: rsyslog-8.4.2.orig//java and rsyslog-8.4.2//java
+Common subdirectories: rsyslog-8.4.2.orig//m4 and rsyslog-8.4.2//m4
+Common subdirectories: rsyslog-8.4.2.orig//platform and rsyslog-8.4.2//platform
+Common subdirectories: rsyslog-8.4.2.orig//plugins and rsyslog-8.4.2//plugins
+Common subdirectories: rsyslog-8.4.2.orig//runtime and rsyslog-8.4.2//runtime
+diff -r -u rsyslog-8.4.2.orig//template.c rsyslog-8.4.2//template.c
+--- rsyslog-8.4.2.orig//template.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//template.c	Tue Oct 14 18:35:32 2014
+@@ -34,7 +34,7 @@
+ #include <string.h>
+ #include <ctype.h>
+ #include <assert.h>
+-#include <json.h>
++#include <json/json.h>
+ #include "stringbuf.h"
+ #include "syslogd-types.h"
+ #include "template.h"
+diff -r -u rsyslog-8.4.2.orig//template.h rsyslog-8.4.2//template.h
+--- rsyslog-8.4.2.orig//template.h	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//template.h	Tue Oct 14 18:35:32 2014
+@@ -30,7 +30,7 @@
+ #ifndef	TEMPLATE_H_INCLUDED
+ #define	TEMPLATE_H_INCLUDED 1
+ 
+-#include <json.h>
++#include <json/json.h>
+ #include <libestr.h>
+ #include "regexp.h"
+ #include "stringbuf.h"
+Common subdirectories: rsyslog-8.4.2.orig//tests and rsyslog-8.4.2//tests
+Common subdirectories: rsyslog-8.4.2.orig//tools and rsyslog-8.4.2//tools
+Common subdirectories: rsyslog-8.4.2.orig//contrib/gnutls and rsyslog-8.4.2//contrib/gnutls
+Common subdirectories: rsyslog-8.4.2.orig//platform/freebsd and rsyslog-8.4.2//platform/freebsd
+Common subdirectories: rsyslog-8.4.2.orig//platform/redhat and rsyslog-8.4.2//platform/redhat
+Common subdirectories: rsyslog-8.4.2.orig//platform/slackware and rsyslog-8.4.2//platform/slackware
+Common subdirectories: rsyslog-8.4.2.orig//plugins/im3195 and rsyslog-8.4.2//plugins/im3195
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imdiag and rsyslog-8.4.2//plugins/imdiag
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imfile and rsyslog-8.4.2//plugins/imfile
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imgssapi and rsyslog-8.4.2//plugins/imgssapi
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imjournal and rsyslog-8.4.2//plugins/imjournal
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imklog and rsyslog-8.4.2//plugins/imklog
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imkmsg and rsyslog-8.4.2//plugins/imkmsg
+Common subdirectories: rsyslog-8.4.2.orig//plugins/immark and rsyslog-8.4.2//plugins/immark
+Common subdirectories: rsyslog-8.4.2.orig//plugins/impstats and rsyslog-8.4.2//plugins/impstats
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imptcp and rsyslog-8.4.2//plugins/imptcp
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imrelp and rsyslog-8.4.2//plugins/imrelp
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imsolaris and rsyslog-8.4.2//plugins/imsolaris
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imtcp and rsyslog-8.4.2//plugins/imtcp
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imttcp and rsyslog-8.4.2//plugins/imttcp
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imudp and rsyslog-8.4.2//plugins/imudp
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imuxsock and rsyslog-8.4.2//plugins/imuxsock
+Common subdirectories: rsyslog-8.4.2.orig//plugins/imzmq3 and rsyslog-8.4.2//plugins/imzmq3
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmanon and rsyslog-8.4.2//plugins/mmanon
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmaudit and rsyslog-8.4.2//plugins/mmaudit
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmcount and rsyslog-8.4.2//plugins/mmcount
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmexternal and rsyslog-8.4.2//plugins/mmexternal
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmfields and rsyslog-8.4.2//plugins/mmfields
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmjsonparse and rsyslog-8.4.2//plugins/mmjsonparse
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmnormalize and rsyslog-8.4.2//plugins/mmnormalize
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmpstrucdata and rsyslog-8.4.2//plugins/mmpstrucdata
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmrfc5424addhmac and rsyslog-8.4.2//plugins/mmrfc5424addhmac
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmsequence and rsyslog-8.4.2//plugins/mmsequence
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmsnmptrapd and rsyslog-8.4.2//plugins/mmsnmptrapd
+Common subdirectories: rsyslog-8.4.2.orig//plugins/mmutf8fix and rsyslog-8.4.2//plugins/mmutf8fix
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omelasticsearch and rsyslog-8.4.2//plugins/omelasticsearch
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omgssapi and rsyslog-8.4.2//plugins/omgssapi
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omhdfs and rsyslog-8.4.2//plugins/omhdfs
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omhiredis and rsyslog-8.4.2//plugins/omhiredis
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omjournal and rsyslog-8.4.2//plugins/omjournal
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omlibdbi and rsyslog-8.4.2//plugins/omlibdbi
+Common subdirectories: rsyslog-8.4.2.orig//plugins/ommail and rsyslog-8.4.2//plugins/ommail
+Common subdirectories: rsyslog-8.4.2.orig//plugins/ommongodb and rsyslog-8.4.2//plugins/ommongodb
+Common subdirectories: rsyslog-8.4.2.orig//plugins/ommysql and rsyslog-8.4.2//plugins/ommysql
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omoracle and rsyslog-8.4.2//plugins/omoracle
+Common subdirectories: rsyslog-8.4.2.orig//plugins/ompgsql and rsyslog-8.4.2//plugins/ompgsql
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omprog and rsyslog-8.4.2//plugins/omprog
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omrabbitmq and rsyslog-8.4.2//plugins/omrabbitmq
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omrelp and rsyslog-8.4.2//plugins/omrelp
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omruleset and rsyslog-8.4.2//plugins/omruleset
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omsnmp and rsyslog-8.4.2//plugins/omsnmp
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omstdout and rsyslog-8.4.2//plugins/omstdout
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omtesting and rsyslog-8.4.2//plugins/omtesting
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omudpspoof and rsyslog-8.4.2//plugins/omudpspoof
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omuxsock and rsyslog-8.4.2//plugins/omuxsock
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omzmq3 and rsyslog-8.4.2//plugins/omzmq3
+Common subdirectories: rsyslog-8.4.2.orig//plugins/pmaixforwardedfrom and rsyslog-8.4.2//plugins/pmaixforwardedfrom
+Common subdirectories: rsyslog-8.4.2.orig//plugins/pmciscoios and rsyslog-8.4.2//plugins/pmciscoios
+Common subdirectories: rsyslog-8.4.2.orig//plugins/pmcisconames and rsyslog-8.4.2//plugins/pmcisconames
+Common subdirectories: rsyslog-8.4.2.orig//plugins/pmlastmsg and rsyslog-8.4.2//plugins/pmlastmsg
+Common subdirectories: rsyslog-8.4.2.orig//plugins/pmrfc3164sd and rsyslog-8.4.2//plugins/pmrfc3164sd
+Common subdirectories: rsyslog-8.4.2.orig//plugins/pmsnare and rsyslog-8.4.2//plugins/pmsnare
+Common subdirectories: rsyslog-8.4.2.orig//plugins/sm_cust_bindcdr and rsyslog-8.4.2//plugins/sm_cust_bindcdr
+diff -r -u rsyslog-8.4.2.orig//plugins/imkmsg/kmsg.c rsyslog-8.4.2//plugins/imkmsg/kmsg.c
+--- rsyslog-8.4.2.orig//contrib/imkmsg/kmsg.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//contrib/imkmsg/kmsg.c	Tue Oct 14 18:35:32 2014
+@@ -35,7 +35,7 @@
+ #include <sys/klog.h>
+ #include <sys/sysinfo.h>
+ #include <sys/time.h>
+-#include <json.h>
++#include <json/json.h>
+ 
+ #include "rsyslog.h"
+ #include "srUtils.h"
+diff -r -u rsyslog-8.4.2.orig//plugins/mmaudit/mmaudit.c rsyslog-8.4.2//plugins/mmaudit/mmaudit.c
+--- rsyslog-8.4.2.orig//plugins/mmaudit/mmaudit.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//plugins/mmaudit/mmaudit.c	Tue Oct 14 18:35:32 2014
+@@ -43,7 +43,7 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <ctype.h>
+-#include <json.h>
++#include <json/json.h>
+ #include "conf.h"
+ #include "syslogd-types.h"
+ #include "template.h"
+diff -r -u rsyslog-8.4.2.orig//plugins/mmcount/mmcount.c rsyslog-8.4.2//plugins/mmcount/mmcount.c
+--- rsyslog-8.4.2.orig//contrib/mmcount/mmcount.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//contrib/mmcount/mmcount.c	Tue Oct 14 18:35:32 2014
+@@ -30,7 +30,7 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <stdint.h>
+-#include <json.h>
++#include <json/json.h>
+ #include "conf.h"
+ #include "syslogd-types.h"
+ #include "srUtils.h"
+diff -r -u rsyslog-8.4.2.orig//plugins/mmjsonparse/mmjsonparse.c rsyslog-8.4.2//plugins/mmjsonparse/mmjsonparse.c
+--- rsyslog-8.4.2.orig//plugins/mmjsonparse/mmjsonparse.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//plugins/mmjsonparse/mmjsonparse.c	Tue Oct 14 18:35:32 2014
+@@ -35,7 +35,7 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <ctype.h>
+-#include <json.h>
++#include <json/json.h>
+ #include "conf.h"
+ #include "syslogd-types.h"
+ #include "template.h"
+diff -r -u rsyslog-8.4.2.orig//plugins/mmnormalize/mmnormalize.c rsyslog-8.4.2//plugins/mmnormalize/mmnormalize.c
+--- rsyslog-8.4.2.orig//plugins/mmnormalize/mmnormalize.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//plugins/mmnormalize/mmnormalize.c	Tue Oct 14 18:35:32 2014
+@@ -36,7 +36,7 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <libestr.h>
+-#include <json.h>
++#include <json/json.h>
+ #include <liblognorm.h>
+ #include "conf.h"
+ #include "syslogd-types.h"
+diff -r -u rsyslog-8.4.2.orig//plugins/mmsequence/mmsequence.c rsyslog-8.4.2//plugins/mmsequence/mmsequence.c
+--- rsyslog-8.4.2.orig//contrib/mmsequence/mmsequence.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//contrib/mmsequence/mmsequence.c	Tue Oct 14 18:35:32 2014
+@@ -35,7 +35,7 @@
+ #include <stdint.h>
+ #include <time.h>
+ #include <limits.h>
+-#include <json.h>
++#include <json/json.h>
+ #include <pthread.h>
+ #include "conf.h"
+ #include "syslogd-types.h"
+Common subdirectories: rsyslog-8.4.2.orig//plugins/omelasticsearch/cJSON and rsyslog-8.4.2//plugins/omelasticsearch/cJSON
+diff -r -u rsyslog-8.4.2.orig//plugins/ommongodb/ommongodb.c rsyslog-8.4.2//plugins/ommongodb/ommongodb.c
+--- rsyslog-8.4.2.orig//plugins/ommongodb/ommongodb.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//plugins/ommongodb/ommongodb.c	Tue Oct 14 18:35:32 2014
+@@ -33,7 +33,7 @@
+ #include <stdint.h>
+ #include <time.h>
+ #include <mongo.h>
+-#include <json.h>
++#include <json/json.h>
+ /* For struct json_object_iter, should not be necessary in future versions */
+-#include <json_object_private.h>
++#include <json/json_object_private.h>
+ 
+Common subdirectories: rsyslog-8.4.2.orig//plugins/ommysql/contrib and rsyslog-8.4.2//plugins/ommysql/contrib
+diff -r -u rsyslog-8.4.2.orig//runtime/lookup.c rsyslog-8.4.2//runtime/lookup.c
+--- rsyslog-8.4.2.orig//runtime/lookup.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//runtime/lookup.c	Tue Oct 14 18:35:32 2014
+@@ -26,7 +26,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+-#include <json.h>
++#include <json/json.h>
+ #include <assert.h>
+ 
+ #include "rsyslog.h"
+diff -r -u rsyslog-8.4.2.orig//runtime/msg.c rsyslog-8.4.2//runtime/msg.c
+--- rsyslog-8.4.2.orig//runtime/msg.c	Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//runtime/msg.c	Tue Oct 14 18:35:32 2014
+@@ -41,7 +41,7 @@
+ #endif
+ #include <netdb.h>
+ #include <libestr.h>
+-#include <json.h>
++#include <json/json.h>
+ /* For struct json_object_iter, should not be necessary in future versions */
+-#include <json_object_private.h>
++#include <json/json_object_private.h>
+ #if HAVE_MALLOC_H
+diff -r -u rsyslog-8.4.2.orig//runtime/msg.h rsyslog-8.4.2//runtime/msg.h
+--- rsyslog-8.4.2.orig//runtime/msg.h   Thu Oct  2 10:27:22 2014
++++ rsyslog-8.4.2//runtime/msg.h        Tue Oct 14 18:35:32 2014
+@@ -31,7 +31,7 @@
+ #include <pthread.h>
+ #include <libestr.h>
+ #include <stdint.h>
+-#include <json.h>
++#include <json/json.h>
+ #include "obj.h"
+ #include "syslogd-types.h"
+ #include "template.h"
