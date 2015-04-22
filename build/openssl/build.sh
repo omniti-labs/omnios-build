@@ -35,6 +35,7 @@ SUMMARY="$PROG - A toolkit for Secure Sockets Layer (SSL v2/v3) and Transport La
 DESC="$SUMMARY"
 
 DEPENDS_IPS="SUNWcs system/library system/library/gcc-4-runtime library/zlib@1.2.8"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/sunstudio12.1"
 
 NO_PARALLEL_MAKE=1
 
@@ -133,6 +134,8 @@ patch_source
 prep_build
 build
 move_libs
+make_lintlibs crypto /lib /usr/include "openssl/!(ssl*|*tls*).h"
+make_lintlibs ssl /lib /usr/include "openssl/{ssl,*tls}*.h"
 make_isa_stub
 make_package
 clean_up

@@ -10,6 +10,8 @@ SUMMARY="$PROG - A massively spiffy yet delicately unobtrusive compression libra
 DESC="$SUMMARY"
 
 DEPENDS_IPS="system/library/gcc-4-runtime"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/sunstudio12.1"
+
 
 CFLAGS="-DNO_VIZ"
 
@@ -44,6 +46,7 @@ download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
+make_lintlibs z /usr/lib /usr/include
 make_isa_stub
 install_license
 make_package
