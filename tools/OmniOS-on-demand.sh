@@ -66,7 +66,7 @@ ILLUMOS_ENV=$HOME/data/illumos-omnios.env
 BUILD_PATH=$HOME/data/omnios-build
 
 # omnios-build's site.sh variables we need - export 'em.
-export KVM_CMD_ROLLBACK=1c6181be55d1cadc4426069960688307a6083131
+# export KVM_CMD_ROLLBACK=1c6181be55d1cadc4426069960688307a6083131
 export PREBUILT_ILLUMOS=$ILLUMOS_PATH
 export PKGSRVR=file://$INPROGRESS_REPO
 
