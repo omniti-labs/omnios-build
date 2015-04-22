@@ -907,6 +907,41 @@ make_install_in() {
         logerr "------ Make install in $1 failed"
 }
 
+make_lintlibs() {
+    logmsg "Making lint libraries"
+
+    LINTLIB=$1
+    LINTLIBDIR=$2
+    LINTINCDIR=$3
+    LINTINCFILES=$4
+
+    [[ -z ${LINTLIB} ]] && logerr "not lint library specified"
+    [[ -z ${LINTINCFILES} ]] && LINTINCFILES="*.h"
+
+    cat <<EOF > ${DTMPDIR}/${PKGD}_llib-l${LINTLIB}
+/* LINTLIBRARY */
+/* PROTOLIB1 */
+#include <sys/types.h>
+#undef _LARGEFILE_SOURCE
+EOF
+    pushd ${DESTDIR}${LINTINCDIR} > /dev/null
+	sh -c "eval /usr/gnu/bin/ls -U ${LINTINCFILES}" | \
+	    sed -e 's/\(.*\)/#include <\1>/' >> ${DTMPDIR}/${PKGD}_llib-l${LINTLIB}
+    popd > /dev/null
+
+    pushd ${DESTDIR}${LINTLIBDIR} > /dev/null
+    logcmd /opt/sunstudio12.1/bin/lint -nsvx -I${DESTDIR}${LINTINCDIR} \
+	    -o ${LINTLIB} ${DTMPDIR}/${PKGD}_llib-l${LINTLIB} || \
+	    logerr "failed to generate 32bit lint library ${LINTLIB}"
+    popd > /dev/null
+
+    pushd ${DESTDIR}${LINTLIBDIR}/amd64 > /dev/null
+    logcmd /opt/sunstudio12.1/bin/lint -nsvx -I${DESTDIR}${LINTINCDIR} -m64 \
+	    -o ${LINTLIB} ${DTMPDIR}/${PKGD}_llib-l${LINTLIB} || \
+	    logerr "failed to generate 64bit lint library ${LINTLIB}"
+    popd > /dev/null
+}
+
 build() {
     if [[ $BUILDARCH == "32" || $BUILDARCH == "both" ]]; then
         build32
