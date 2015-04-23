@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ImageMagick
-VER=6.7.9-10
+VER=6.9.1-2
 VERHUMAN=$VER
 PKG=omniti/image/imagemagick
 SUMMARY="software suite to create, edit, compose, or convert bitmap images"
