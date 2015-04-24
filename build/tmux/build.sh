@@ -50,6 +50,10 @@ configure32(){
   logcmd ./configure --disable-static --disable-libevent-install || \
     logerr "failed libevent configure"
   logcmd "building a static libevent"
+  # Ewww, we have to patch libevent as well. Change PATCHDIR for now...
+  PATCHDIR=patches-libevent
+  patch_source
+  PATCHDIR=patches
   logcmd make || logerr "failed libevent build"
   popd > /dev/null
   configure32_orig
