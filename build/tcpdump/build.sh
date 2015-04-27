@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=tcpdump    # App name
-VER=4.3.0       # App version
+VER=4.7.4       # App version
 VERHUMAN=$VER   # Human-readable version
 PKG=omniti/network/tcpdump # Package name (e.g. library/foo)
 SUMMARY="tcpdump is a powerful command-line packet analyzer"      # One-liner, must be filled in
