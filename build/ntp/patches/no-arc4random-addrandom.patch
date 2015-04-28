@@ -1,0 +1,17 @@
+--- ntp-4.2.8p2/sntp/libevent/evutil_rand.c.orig	Fri Apr 24 13:55:50 2015
++++ ntp-4.2.8p2/sntp/libevent/evutil_rand.c	Fri Apr 24 13:58:04 2015
+@@ -153,7 +153,14 @@
+ void
+ evutil_secure_rng_add_bytes(const char *buf, size_t n)
+ {
++	/*
++	 * Apparently OpenBSD has an arc4random_addrandom(), which illumos
++	 * does not.  Since this patch is for a hacky static-only instantiation
++	 * of libevent, we just if 0 this out.  :(
++	 */
++#if 0
+ 	arc4random_addrandom((unsigned char*)buf,
+ 	    n>(size_t)INT_MAX ? INT_MAX : (int)n);
++#endif
+ }
+ 
