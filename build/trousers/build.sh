@@ -34,7 +34,7 @@ PKG=library/security/trousers  # Package name (without prefix)
 SUMMARY="trousers - TCG Software Stack - software for accessing a TPM device"
 DESC="$SUMMARY ($VER)"
 
-BUILD_DEPENDS_IPS="developer/build/libtool developer/build/automake developer/build/autoconf"
+BUILD_DEPENDS_IPS="developer/build/libtool developer/build/automake developer/build/autoconf developer/sunstudio12.1"
 DEPENDS_IPS="system/library/gcc-4-runtime library/security/openssl@1.0.2"
 
 LIBS="-lbsm -lnsl -lsocket -lgen -lscf -lresolv"
@@ -104,6 +104,7 @@ patch_source
 preprep_build
 prep_build
 build
+make_lintlibs tspi /usr/lib /usr/include "{tss,trousers}/*.h"
 make_isa_stub
 install_license
 make_package

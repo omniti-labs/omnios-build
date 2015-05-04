@@ -34,7 +34,7 @@ SUMMARY="$PROG - XML C parser and toolkit"
 DESC="$SUMMARY"
 
 DEPENDS_IPS="compress/xz@5.0 system/library/gcc-4-runtime library/zlib@1.2.8"
-BUILD_DEPENDS_IPS="$DEPENDS_IPS"
+BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/sunstudio12.1"
 
 fix_python_install() {
     logcmd mkdir -p $DESTDIR/usr/lib/python2.6/vendor-packages
@@ -81,6 +81,7 @@ download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
+make_lintlibs xml2 /usr/lib /usr/include/libxml2 "libxml/*.h"
 fix_python_install
 make_isa_stub
 install_license
