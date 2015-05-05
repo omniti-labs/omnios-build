@@ -42,7 +42,8 @@ CONFIGURE_OPTS="--bindir=$PREFIX/bin"
 LDFLAGS="-lsocket -lnsl"
 
 make_symlinks()  {
-	logcmd ln -s iperf3 $DESTDIR/usr/bin/iperf
+    logcmd ln -s iperf3 $DESTDIR/usr/bin/iperf
+    logcmd ln -s iperf3.1 $DESTDIR/usr/share/man/man1/iperf.1
 }
 
 init
