@@ -1,0 +1,10 @@
+--- php-5.3.15/ext/zlib/zlib.c.orig	Mon Jul 23 19:30:39 2012
++++ php-5.3.15/ext/zlib/zlib.c	Tue Jul 24 19:04:14 2012
+@@ -20,6 +20,7 @@
+  */
+ 
+ /* $Id$ */
++#define ZLIB_INTERNAL
+ 
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"

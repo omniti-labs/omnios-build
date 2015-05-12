@@ -1,0 +1,13 @@
+--- sendrecvmsg.c	Mon May 11 19:54:47 2015
++++ sendrecvmsg.c	Mon May 11 19:54:58 2015
+@@ -15,7 +15,9 @@
+    | Authors: Gustavo Lopes    <cataphract@php.net>                       |
+    +----------------------------------------------------------------------+
+  */
+-
++#define _XOPEN_SOURCE 500
++#define _XOPEN_SOURCE_EXTENDED 1
++#define __EXTENSIONS__
+ #include <php.h>
+ #include "php_sockets.h"
+ #include "sendrecvmsg.h"
