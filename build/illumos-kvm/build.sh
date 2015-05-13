@@ -31,9 +31,9 @@
 PROG=illumos-kvm
 VER=1.0.5
 # Default to building tip, but if needed, specify the desired commit here
-COMMIT=
+COMMIT=2bbad6a788
 SRC_REPO=https://github.com/joyent/illumos-kvm.git
-KERNEL_SOURCE=/code/omnios-$RELVER/illumos-omnios
+KERNEL_SOURCE=${KERNEL_SOURCE:-/code/omnios-$RELVER/illumos-omnios}
 PROTO_AREA=$KERNEL_SOURCE/proto/root_i386
 PATCHDIR=patches.$PROG
 PKG=driver/virtualization/kvm
@@ -103,9 +103,9 @@ clean_up
 # Next, the utilities (they follow the kernel module version)
 PROG=illumos-kvm-cmd
 # Default to building tip, but if needed, specify the desired commit here
-COMMIT=
+COMMIT=b1d3693c0b
 SRC_REPO=https://github.com/joyent/illumos-kvm-cmd.git
-KERNEL_SOURCE=/code/omnios-$RELVER/illumos-omnios
+KERNEL_SOURCE=${KERNEL_SOURCE:-/code/omnios-$RELVER/illumos-omnios}
 KVM_DIR=$TMPDIR/illumos-kvm-$VER
 PATCHDIR=patches.$PROG
 PKG=system/kvm
