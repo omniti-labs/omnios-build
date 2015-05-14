@@ -46,7 +46,7 @@ reset_configure_opts
 APXS_OPTS="--with-apxs2=/opt/apache22/bin/apxs"
 FREETYPE_PATH="/opt/omni"
 
-CFLAGS="-w -std=gnu99 -O2 -I/opt/omni/include"
+CFLAGS="-w -m64 -std=gnu99 -O2 -I/opt/omni/include"
 LDFLAGS64="$LDFLAGS64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64 \
     -L/opt/omni/lib/$ISAPART64/mysql -R/opt/omni/lib/$ISAPART64/mysql \
     -L$PREFIX/lib -R$PREFIX/lib"
