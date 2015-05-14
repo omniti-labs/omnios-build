@@ -39,7 +39,7 @@ PATH=/usr/gnu/bin:$PATH
 export PATH
 
 BUILDARCH=32
-DEPENDS_IPS="omniti/runtime/ruby-19 =library/libffi@3.0.11 library/libffi"
+DEPENDS_IPS="omniti/runtime/ruby-19 library/libffi"
 BUILD_DEPENDS_IPS="gnu-coreutils gnu-findutils omniti/runtime/ruby-19"
 
 # we Fetch all of these direclty from rubygens.org. you can chnage that in the files/gemrc.
@@ -110,7 +110,8 @@ make_bin_symlinks() {
     logmsg "Linking commands into $PREFIX/bin"
     logcmd mkdir -p ${DESTDIR}${PREFIX}/bin
     pushd ${DESTDIR}${PREFIX}/bin > /dev/null
-    for c in $(gfind ${DESTDIR}${PREFIX}/lib/ruby/gems/1.9/bin/ -type f -printf "%f "); do
+    # Remove rake rdoc and ri binaries as they are included in ruby-19
+    for c in $(gfind ${DESTDIR}${PREFIX}/lib/ruby/gems/1.9/bin/ -type f -printf "%f " | sed -e 's/ rake rdoc ri//g'); do
         logcmd ln -s $PREFIX/lib/ruby/gems/1.9/bin/$c $c
     done
     popd > /dev/null
