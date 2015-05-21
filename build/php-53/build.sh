@@ -48,7 +48,7 @@ APXS_OPTS="--with-apxs2=/opt/apache22/bin/apxs"
 
 FREETYPE_PATH="/opt/omni"
 
-CFLAGS="-O2 -I/opt/omni/include"
+CFLAGS="-O2 -I/opt/omni/include  -I/usr/include/amd64"
 LDFLAGS64="$LDFLAGS64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64 \
     -L/opt/omni/lib/$ISAPART64/mysql -R/opt/omni/lib/$ISAPART64/mysql \
     -L$PREFIX/lib -R$PREFIX/lib"
