@@ -1,0 +1,14 @@
+sapi/cli/php_cli.lo: /tmp/build_vagrant/php-5.5.24/sapi/cli/php_cli.c
+	$(LIBTOOL) --mode=compile $(CC)  -Isapi/cli/ -I/tmp/build_vagrant/php-5.5.24/sapi/cli/ $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) -c /tmp/build_vagrant/php-5.5.24/sapi/cli/php_cli.c -o sapi/cli/php_cli.lo 
+sapi/cli/php_http_parser.lo: /tmp/build_vagrant/php-5.5.24/sapi/cli/php_http_parser.c
+	$(LIBTOOL) --mode=compile $(CC)  -Isapi/cli/ -I/tmp/build_vagrant/php-5.5.24/sapi/cli/ $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) -c /tmp/build_vagrant/php-5.5.24/sapi/cli/php_http_parser.c -o sapi/cli/php_http_parser.lo 
+sapi/cli/php_cli_server.lo: /tmp/build_vagrant/php-5.5.24/sapi/cli/php_cli_server.c
+	$(LIBTOOL) --mode=compile $(CC)  -Isapi/cli/ -I/tmp/build_vagrant/php-5.5.24/sapi/cli/ $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) -c /tmp/build_vagrant/php-5.5.24/sapi/cli/php_cli_server.c -o sapi/cli/php_cli_server.lo 
+sapi/cli/ps_title.lo: /tmp/build_vagrant/php-5.5.24/sapi/cli/ps_title.c
+	$(LIBTOOL) --mode=compile $(CC)  -Isapi/cli/ -I/tmp/build_vagrant/php-5.5.24/sapi/cli/ $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) -c /tmp/build_vagrant/php-5.5.24/sapi/cli/ps_title.c -o sapi/cli/ps_title.lo 
+sapi/cli/php_cli_process_title.lo: /tmp/build_vagrant/php-5.5.24/sapi/cli/php_cli_process_title.c
+	$(LIBTOOL) --mode=compile $(CC)  -Isapi/cli/ -I/tmp/build_vagrant/php-5.5.24/sapi/cli/ $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) -c /tmp/build_vagrant/php-5.5.24/sapi/cli/php_cli_process_title.c -o sapi/cli/php_cli_process_title.lo 
+sapi/cgi/cgi_main.lo: /tmp/build_vagrant/php-5.5.24/sapi/cgi/cgi_main.c
+	$(LIBTOOL) --mode=compile $(CC)  -Isapi/cgi/ -I/tmp/build_vagrant/php-5.5.24/sapi/cgi/ $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) -c /tmp/build_vagrant/php-5.5.24/sapi/cgi/cgi_main.c -o sapi/cgi/cgi_main.lo 
+sapi/cgi/fastcgi.lo: /tmp/build_vagrant/php-5.5.24/sapi/cgi/fastcgi.c
+	$(LIBTOOL) --mode=compile $(CC)  -Isapi/cgi/ -I/tmp/build_vagrant/php-5.5.24/sapi/cgi/ $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) -c /tmp/build_vagrant/php-5.5.24/sapi/cgi/fastcgi.c -o sapi/cgi/fastcgi.lo 
