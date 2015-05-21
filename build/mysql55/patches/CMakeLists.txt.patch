@@ -1,0 +1,10 @@
+--- mysql-5.5.43/CMakeLists.txt.orig	Thu May 21 18:10:03 2015
++++ mysql-5.5.43/CMakeLists.txt	Thu May 21 18:10:20 2015
+@@ -148,6 +148,7 @@
+   ADD_DEFINITIONS($ENV{CPPFLAGS})
+ ENDIF()
+ 
++OPTION(ENABLE_DTRACE "Enable Dtrace profiling" OFF)
+ # Add macros
+ INCLUDE(character_sets)
+ INCLUDE(zlib)
