@@ -31,6 +31,9 @@ DEPENDS_IPS="system/library"
 # XXX 32-bit until Y2038 rears its ugly head.
 BUILDARCH=32
 
+# Use old gcc4 standards level for this.
+export CFLAGS="$CFLAGS -std=gnu89"
+
 CONFIGURE_OPTS="--enable-use-sockets --enable-ipv4-pktinfo --prefix=$PREFIX --bindir=$PREFIX/bin --sbindir=$PREFIX/sbin"
 
 pre_package() {

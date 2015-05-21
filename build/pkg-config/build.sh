@@ -40,6 +40,9 @@ RUN_DEPENDS_IPS=
 
 CONFIGURE_OPTS="--with-internal-glib"
 
+# Use old gcc4 standards level for this.
+CFLAGS="$CFLAGS -std=gnu89"
+
 init
 download_source $PROG $PROG $VER
 prep_build

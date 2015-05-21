@@ -34,7 +34,7 @@ PKG=media/cdrtools
 SUMMARY="CD creation utilities"
 DESC="$SUMMARY ($VER)"
 
-DEPENDS_IPS="system/library system/library/gcc-4-runtime"
+DEPENDS_IPS="system/library system/library/gcc-5-runtime"
 
 MAKE="make"
 BUILDARCH=32

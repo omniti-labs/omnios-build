@@ -34,7 +34,7 @@ PKG=library/libidn
 SUMMARY="The Internationalized Domains Library"
 DESC="IDN - The Internationalized Domains Library"
 
-DEPENDS_IPS="system/library system/library/gcc-4-runtime"
+DEPENDS_IPS="system/library system/library/gcc-5-runtime"
 
 CONFIGURE_OPTS="--disable-static"
 LIBTOOL_NOSTDLIB=libtool

@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=gcc
-VER=4.8.1
+VER=5.1.0
 VERHUMAN=$VER
-PKG=developer/gcc48
+PKG=developer/gcc51
 SUMMARY="gcc ${VER}"
 DESC="$SUMMARY"
 
@@ -38,8 +38,7 @@ export LD_LIBRARY_PATH=/opt/gcc-${VER}/lib
 PATH=/usr/perl5/5.16.1/bin:$PATH
 export PATH
 
-DEPENDS_IPS="developer/gcc48/libgmp-gcc48 developer/gcc48/libmpfr-gcc48 developer/gcc48/libmpc-gcc48
-	     developer/gnu-binutils developer/library/lint developer/linker system/library/gcc-4-runtime"
+DEPENDS_IPS="developer/gcc51/libgmp-gcc51 developer/gcc51/libmpfr-gcc51 developer/gcc51/libmpc-gcc51 developer/gnu-binutils developer/library/lint developer/linker system/library/gcc-5-runtime"
 NO_PARALLEL_MAKE=1
 
 # This stuff is in its own domain

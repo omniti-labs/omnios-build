@@ -33,7 +33,7 @@ PKG=library/libxml2 # Package name (without prefix)
 SUMMARY="$PROG - XML C parser and toolkit"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="compress/xz@5.0 system/library/gcc-4-runtime library/zlib@1.2.8"
+DEPENDS_IPS="compress/xz@5.0 system/library/gcc-5-runtime library/zlib@1.2.8"
 BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/sunstudio12.1"
 
 fix_python_install() {

@@ -28,16 +28,16 @@
 . ../../lib/functions.sh
 
 PROG=libstdc++
-VER=4.8.1
+VER=5.1.0
 VERHUMAN=$VER
-PKG=system/library/g++-4-runtime
+PKG=system/library/g++-5-runtime
 SUMMARY="g++ runtime dependencis libstc++/libssp"
 DESC="$SUMMARY"
 
 PATH=/opt/gcc-${VER}/bin:$PATH
 export LD_LIBRARY_PATH=/opt/gcc-${VER}/lib
 
-BUILD_DEPENDS_IPS="gcc48 gcc44"
+BUILD_DEPENDS_IPS="gcc51 gcc44"
 if [ -f /usr/lib/libstdc++.so.6.0.16 ]; then
     GCC46_LOC=/usr/lib
 else
@@ -52,7 +52,14 @@ else
     BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS gcc47"
 fi
 
-DEPENDS_IPS="system/library/gcc-4-runtime"
+if [ -f /usr/lib/libstdc++.so.6.0.18 ]; then
+    GCC48_LOC=/usr/lib
+else
+    GCC48_LOC=/opt/gcc-4.8.1/lib
+    BUILD_DEPENDS_IPS="$BUILD_DEPENDS_IPS gcc48"
+fi
+
+DEPENDS_IPS="system/library/gcc-5-runtime"
 NO_PARALLEL_MAKE=1
 
 # This stuff is in its own domain
@@ -76,15 +83,17 @@ LIB=libstdc++.so
 cp /opt/gcc-4.4.4/lib/$LIB.6.0.13 $DESTDIR/usr/lib/$LIB.6.0.13
 cp ${GCC46_LOC}/$LIB.6.0.16 $DESTDIR/usr/lib/$LIB.6.0.16
 cp ${GCC47_LOC}/$LIB.6.0.17 $DESTDIR/usr/lib/$LIB.6.0.17
-cp /opt/gcc-${VER}/lib/$LIB.6.0.18 $DESTDIR/usr/lib/$LIB.6.0.18 || logerr "Failed to copy 6.0.18"
-ln -s /usr/lib/$LIB.6.0.18 $DESTDIR/usr/lib/$LIB.6
-ln -s /usr/lib/$LIB.6.0.18 $DESTDIR/usr/lib/$LIB
+cp ${GCC48_LOC}/$LIB.6.0.18 $DESTDIR/usr/lib/$LIB.6.0.18
+cp /opt/gcc-${VER}/lib/$LIB.6.0.21 $DESTDIR/usr/lib/$LIB.6.0.21 || logerr "Failed to copy 6.0.21"
+ln -s /usr/lib/$LIB.6.0.21 $DESTDIR/usr/lib/$LIB.6
+ln -s /usr/lib/$LIB.6.0.21 $DESTDIR/usr/lib/$LIB
 cp /opt/gcc-4.4.4/lib/amd64/$LIB.6.0.13 $DESTDIR/usr/lib/amd64/$LIB.6.0.13
 cp ${GCC46_LOC}/amd64/$LIB.6.0.16 $DESTDIR/usr/lib/amd64/$LIB.6.0.16
 cp ${GCC47_LOC}/amd64/$LIB.6.0.17 $DESTDIR/usr/lib/amd64/$LIB.6.0.17
-cp /opt/gcc-${VER}/lib/amd64/$LIB.6.0.18 $DESTDIR/usr/lib/amd64/$LIB.6.0.18 || logerr "Failed to copy 6.0.18 (amd64)"
-ln -s /usr/lib/amd64/$LIB.6.0.18 $DESTDIR/usr/lib/amd64/$LIB.6
-ln -s /usr/lib/amd64/$LIB.6.0.18 $DESTDIR/usr/lib/amd64/$LIB
+cp ${GCC48_LOC}/amd64/$LIB.6.0.18 $DESTDIR/usr/lib/amd64/$LIB.6.0.18
+cp /opt/gcc-${VER}/lib/amd64/$LIB.6.0.21 $DESTDIR/usr/lib/amd64/$LIB.6.0.21 || logerr "Failed to copy 6.0.21 (amd64)"
+ln -s /usr/lib/amd64/$LIB.6.0.21 $DESTDIR/usr/lib/amd64/$LIB.6
+ln -s /usr/lib/amd64/$LIB.6.0.21 $DESTDIR/usr/lib/amd64/$LIB
 
 LIB=libssp.so
 cp /opt/gcc-${VER}/lib/$LIB.0.0.0 $DESTDIR/usr/lib/$LIB.0.0.0

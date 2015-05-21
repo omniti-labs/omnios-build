@@ -34,7 +34,7 @@ PKG=library/security/openssl # Package name (without prefix)
 SUMMARY="$PROG - A toolkit for Secure Sockets Layer (SSL v2/v3) and Transport Layer (TLS v1) protocols and general purpose cryptographic library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="SUNWcs system/library system/library/gcc-4-runtime library/zlib@1.2.8"
+DEPENDS_IPS="SUNWcs system/library system/library/gcc-5-runtime library/zlib@1.2.8"
 BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/sunstudio12.1"
 
 NO_PARALLEL_MAKE=1

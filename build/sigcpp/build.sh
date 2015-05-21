@@ -34,7 +34,7 @@ PKG=library/c++/sigcpp
 SUMMARY="Libsigc++ - a library that implements typesafe callback system"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="system/library system/library/math system/library/g++-4-runtime"
+DEPENDS_IPS="system/library system/library/math system/library/g++-5-runtime"
 
 MAKE=/bin/gmake
 export MAKE

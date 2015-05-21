@@ -33,7 +33,7 @@ PKG=system/library/libdbus-glib
 SUMMARY="$PROG - GNOME GLib DBUS integration library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="system/library/libdbus library/glib2 library/zlib system/library system/library/gcc-4-runtime"
+DEPENDS_IPS="system/library/libdbus library/glib2 library/zlib system/library system/library/gcc-5-runtime"
 
 CONFIGURE_OPTS="--disable-fam --disable-dtrace --disable-tests"
 GLIB_GENMARSHAL=/usr/bin/glib-genmarshal

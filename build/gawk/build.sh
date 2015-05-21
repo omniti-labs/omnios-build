@@ -36,6 +36,8 @@ DESC="$SUMMARY"
 
 BUILDARCH=32
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin"
+# Use old gcc4 standards level for this.
+CFLAGS="$CFLAGS -std=gnu89"
 
 # as of 4.1, gawk now supports arbitrary precision numbers.
 # build in MPFR/GMP support rather than dynamically linking it.
@@ -45,7 +47,7 @@ configure32() {
 
     logmsg "Patching Makefile to make mpfr/gmp static"
     pushd $TMPDIR/$BUILDDIR > /dev/null
-    logcmd gsed -i -e 's#-lmpfr -lgmp#/opt/gcc-4.8.1/lib/libmpfr.a /opt/gcc-4.8.1/lib/libgmp.a#' Makefile
+    logcmd gsed -i -e 's#-lmpfr -lgmp#/opt/gcc-5.1.0/lib/libmpfr.a /opt/gcc-5.1.0/lib/libgmp.a#' Makefile
     popd > /dev/null
 }
 

@@ -175,7 +175,7 @@ build_mogs
 PKG=runtime/perl
 SUMMARY="Perl $VER Programming Language"
 DESC="$SUMMARY"
-DEPENDS_IPS="system/library/g++-4-runtime system/library/math system/library"
+DEPENDS_IPS="system/library/g++-5-runtime system/library/math system/library"
 make_package $TMPDIR/perl.mog
 
 PKG=runtime/perl/manual

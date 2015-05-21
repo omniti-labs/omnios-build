@@ -27,23 +27,22 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=mpc
-VER=1.0.1
+PROG=mpfr
+VER=3.1.2
 VERHUMAN=$VER
-PKG=developer/gcc48/libmpc-gcc48
-SUMMARY="gcc48 - private libmpc"
+PKG=developer/gcc51/libmpfr-gcc51
+SUMMARY="gcc51 - private libmpfr"
 DESC="$SUMMARY"
-
-DEPENDS_IPS="developer/gcc48/libgmp-gcc48 developer/gcc48/libmpfr-gcc48"
+DEPENDS_IPS="developer/gcc51/libgmp-gcc51"
 
 # This stuff is in its own domain
 PKGPREFIX=""
 
 [[ "$BUILDARCH" == "both" ]] && BUILDARCH=32
-GCCVER=4.8.1
+GCCVER=5.1.0
 PREFIX=/opt/gcc-${GCCVER}
 CC=gcc
-CONFIGURE_OPTS="--with-gmp=/opt/gcc-${GCCVER} --with-mpfr=/opt/gcc-${GCCVER}"
+CONFIGURE_OPTS="--with-gmp=/opt/gcc-${GCCVER}"
 LDFLAGS="-R/opt/gcc-${GCCVER}/lib -L/opt/gcc-${GCCVER}/lib"
 
 make_install32() {
@@ -57,5 +56,5 @@ download_source $PROG $PROG $VER
 prep_build
 build
 make_isa_stub
-make_package libmpc.mog
+make_package libmpfr.mog
 clean_up

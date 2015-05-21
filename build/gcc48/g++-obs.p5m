@@ -1,0 +1,5 @@
+set name=pkg.fmri value=system/library/g++-4-runtime@4.8.1-0.@RELVER@
+set name=pkg.renamed value=true
+set name=pkg.description value="g++ runtime dependencies libstc++/libssp"
+set name=pkg.summary value="g++ runtime dependencies libstc++/libssp"
+depend fmri=system/library/g++-5-runtime@5,5.11-@PVER@ type=require

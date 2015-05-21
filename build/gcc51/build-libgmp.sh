@@ -27,15 +27,15 @@
 # Load support functions
 . ../../lib/functions.sh
 
-GCCVER=4.8.1
+GCCVER=5.1.0
 PATH=/opt/gcc-${GCCVER}/bin:$PATH
 export LD_LIBRARY_PATH=/opt/gcc-${GCCVER}/lib
 
 PROG=gmp         # App name
-VER=5.0.5        # App version
+VER=6.0.0        # App version
 VERHUMAN=$VER    # Human-readable version
-PKG=developer/gcc48/libgmp-gcc48 # Package name (without prefix)
-SUMMARY="gcc48 - private libgmp"
+PKG=developer/gcc51/libgmp-gcc51 # Package name (without prefix)
+SUMMARY="gcc51 - private libgmp"
 DESC="$SUMMARY" # Longer description
 
 # This stuff is in its own domain

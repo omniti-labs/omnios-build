@@ -316,8 +316,10 @@ depend fmri=system/kernel/suspend-resume@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/kernel@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/kvm@1.0.3-@PVER@ type=require
 depend fmri=system/library/c++/sunpro@0.5.11,5.11-@PVER@ type=require
-depend fmri=system/library/g++-4-runtime@4.6.2,5.11-@PVER@ type=require
-depend fmri=system/library/gcc-4-runtime@4.6.2,5.11-@PVER@ type=require
+depend fmri=system/library/g++-4-runtime@4.8.1,5.11-@PVER@ type=require
+depend fmri=system/library/gcc-4-runtime@4.8.1,5.11-@PVER@ type=require
+depend fmri=system/library/g++-5-runtime@5.1.0,5.11-@PVER@ type=require
+depend fmri=system/library/gcc-5-runtime@5.1.0,5.11-@PVER@ type=require
 depend fmri=system/library/libdiskmgt@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/library/math@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/library/mtsk@0.5.11,5.11-@PVER@ type=require

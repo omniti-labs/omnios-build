@@ -34,7 +34,7 @@ PKG=library/readline
 SUMMARY="GNU readline"
 DESC="GNU readline library ($VER)"
 
-DEPENDS_IPS="system/library system/library/gcc-4-runtime"
+DEPENDS_IPS="system/library system/library/gcc-5-runtime"
 
 CONFIGURE_OPTS="--disable-static"
 

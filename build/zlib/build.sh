@@ -9,7 +9,7 @@ PKG=library/zlib
 SUMMARY="$PROG - A massively spiffy yet delicately unobtrusive compression library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="system/library/gcc-4-runtime"
+DEPENDS_IPS="system/library/gcc-5-runtime"
 BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/sunstudio12.1"
 
 

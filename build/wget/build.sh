@@ -39,6 +39,9 @@ DEPENDS_IPS="library/libidn library/security/openssl@1.0.2 web/ca-bundle"
 
 CONFIGURE_OPTS="--with-ssl=openssl --mandir=$PREFIX/share/man POD2MAN=/usr/perl5/5.16.1/bin/pod2man"
 
+# Use old gcc4 standards level for this.
+CFLAGS="$CFLAGS -std=gnu89"
+
 BUILDARCH=32
 
 make_sfw_links() {

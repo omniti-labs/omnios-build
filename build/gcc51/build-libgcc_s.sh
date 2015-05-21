@@ -28,16 +28,16 @@
 . ../../lib/functions.sh
 
 PROG=libgcc_s
-VER=4.8.1
+VER=5.1.0
 VERHUMAN=$VER
-PKG=system/library/gcc-4-runtime
-SUMMARY="gcc 4.8 runtime"
+PKG=system/library/gcc-5-runtime
+SUMMARY="gcc 5.1.0 runtime"
 DESC="$SUMMARY"
 
 PATH=/opt/gcc-${VER}/bin:$PATH
 export LD_LIBRARY_PATH=/opt/gcc-{$VER}/lib
 
-BUILD_DEPENDS_IPS="gcc48"
+BUILD_DEPENDS_IPS="gcc51"
 NO_PARALLEL_MAKE=1
 
 # This stuff is in its own domain

@@ -206,7 +206,7 @@ url_encode() {
 LANG=C
 export LANG
 # Set the path - This can be overriden/extended in the build script
-PATH="/opt/gcc-4.8.1/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
+PATH="/opt/gcc-5.1.0/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
 export PATH
 # The dir where this file is located - used for sourcing further files
 MYDIR=$PWD/`dirname $BASH_SOURCE[0]`
@@ -231,7 +231,7 @@ shift $((OPTIND - 1))
 
 BasicRequirements(){
     local needed=""
-    [[ -x /opt/gcc-4.8.1/bin/gcc ]] || needed+=" developer/gcc48"
+    [[ -x /opt/gcc-5.1.0/bin/gcc ]] || needed+=" developer/gcc51"
     [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
     [[ -x /usr/bin/ld ]] || needed+=" developer/linker"
     [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
@@ -382,6 +382,16 @@ run_autoconf() {
     logmsg "Running autoconf"
     pushd $TMPDIR/$BUILDDIR > /dev/null
     logcmd autoconf || logerr "Failed to run autoconf"
+    popd > /dev/null
+}
+
+#############################################################################
+# People that need this should call it explicitly
+#############################################################################
+run_automake() {
+    logmsg "Running automake"
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    logcmd automake || logerr "Failed to run automake"
     popd > /dev/null
 }
 

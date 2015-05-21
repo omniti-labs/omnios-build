@@ -33,7 +33,7 @@ PKG=text/groff    # Package name (without prefix)
 SUMMARY="$PROG - GNU Troff typesetting package"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library/g++-4-runtime
+DEPENDS_IPS="SUNWcs system/library/gcc-5-runtime system/library/g++-5-runtime
 	runtime/perl system/library/math system/library"
 
 BUILDARCH=32

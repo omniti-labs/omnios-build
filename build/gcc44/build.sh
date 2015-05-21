@@ -38,11 +38,12 @@ DESC="GCC with the patches from Codesourcery/Sun Microsystems used in the 3.4.3 
 BUILDDIR=${PROG}-il-4_4_4
 
 export LD_LIBRARY_PATH=/opt/gcc-${VER}/lib
-PATH=/usr/perl5/5.16.1/bin:$PATH
+# Build gcc44 only with itself...
+PATH=/usr/perl5/5.16.1/bin:/opt/gcc-${VER}/bin:$PATH
 export PATH
 
 DEPENDS_IPS="developer/gcc44/libgmp-gcc44 developer/gcc44/libmpfr-gcc44 developer/gcc44/libmpc-gcc44
-	     developer/gnu-binutils developer/library/lint developer/linker system/library/gcc-4-runtime"
+	     developer/gnu-binutils developer/library/lint developer/linker system/library/gcc-5-runtime"
 BUILD_DEPENDS_IPS="$DEPENDS_IPS"
 
 NO_PARALLEL_MAKE=1

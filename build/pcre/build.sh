@@ -34,8 +34,8 @@ PKG=library/pcre
 SUMMARY="Perl-Compatible Regular Expressions"
 DESC="PCRE - Perl-Compatible Regular Expressions"
 
-DEPENDS_IPS="library/readline compress/bzip2 library/zlib system/library/g++-4-runtime
-	system/library/gcc-4-runtime system/library system/library/math"
+DEPENDS_IPS="library/readline compress/bzip2 library/zlib system/library/g++-5-runtime
+	system/library/gcc-5-runtime system/library system/library/math"
 
 LIBTOOL_NOSTDLIB=libtool
 LIBTOOL_NOSTDLIB_EXTRAS=-lc

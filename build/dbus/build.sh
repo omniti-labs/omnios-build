@@ -35,6 +35,8 @@ DESC="$SUMMARY"
 
 DEPENDS_IPS="SUNWcs"
 
+# Use old gcc4 standards level for this.
+CFLAGS="$CFLAGS -std=gnu89"
 CPPFLAGS="$CPPFLAGS -D__EXTENSIONS__ -D_REENTRANT"
 CONFIGURE_OPTS="--with-x=no --with-dbus-user=root --disable-static --with-dbus-daemondir=/usr/lib
 	--bindir=/usr/bin --localstatedir=/var --libexecdir=/usr/libexec"

@@ -39,6 +39,9 @@ BUILD_DEPENDS_IPS="gcc44"
 
 CONFIGURE_OPTS="--enable-gold=yes --exec-prefix=/usr/gnu --program-prefix=g"
 
+# Use old gcc4 standards level for this.
+CFLAGS="$CFLAGS -std=gnu89"
+
 make_prog() {
     [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
     logmsg "--- make"

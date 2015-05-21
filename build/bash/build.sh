@@ -49,7 +49,7 @@ PKG=shell/bash  # Package name (without prefix)
 SUMMARY="GNU Bourne-Again shell (bash)"
 DESC="$SUMMARY version $VER"
 
-DEPENDS_IPS="system/library system/library/gcc-4-runtime"
+DEPENDS_IPS="system/library system/library/gcc-5-runtime"
 
 BUILDARCH=32
 NO_PARALLEL_MAKE=1

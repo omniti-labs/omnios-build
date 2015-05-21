@@ -1,0 +1,5 @@
+set name=pkg.fmri value=system/library/gcc-4-runtime@4.8.1-0.@RELVER@
+set name=pkg.renamed value=true
+set name=pkg.description value="gcc 4.8 runtime"
+set name=pkg.summary value="gcc 4.8 runtime"
+depend fmri=system/library/gcc-5-runtime@5,5.11-@PVER@ type=require

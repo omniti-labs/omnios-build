@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=nss
-VER=3.17.4
+VER=3.19
 # Include NSPR version since we're downloading a combined tarball.
-NSPRVER=4.10.7
+NSPRVER=4.10.8
 # But set BUILDDIR to just be the NSS version.
 BUILDDIR=$PROG-$VER
 VERHUMAN=$VER
@@ -52,6 +52,9 @@ NSS_LIBS="libfreebl3.so libnss3.so
 	libnssutil3.so libsmime3.so
 	libsoftokn3.so libssl3.so"
 NSPR_LIBS="libnspr4.so libplc4.so libplds4.so"
+
+# Use old gcc4 standards level for this.
+export OS_CFLAGS="-std=gnu89"
 
 # Variables that switch between NSS and NSPR
 TGT_LIBS=$NSS_LIBS
@@ -148,7 +151,7 @@ SUMMARY="Network Security Services Headers"
 DESC="$SUMMARY"
 make_package header-nss.mog
 
-DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library
+DEPENDS_IPS="SUNWcs system/library/gcc-5-runtime system/library
 	library/nspr database/sqlite-3"
 PKG=system/library/mozilla-nss
 SUMMARY="Network Security Services Libraries"
@@ -202,7 +205,7 @@ SUMMARY="Netscape Portable Runtime Headers"
 DESC="$SUMMARY"
 make_package header-nspr.mog
 
-DEPENDS_IPS="SUNWcs system/library/gcc-4-runtime system/library"
+DEPENDS_IPS="SUNWcs system/library/gcc-5-runtime system/library"
 PKG=library/nspr
 SUMMARY="Netscape Portable Runtime"
 DESC="$SUMMARY"
