@@ -1,0 +1,11 @@
+--- mysql-5.5.43/cmake/dtrace.cmake.orig	Thu May 21 18:12:04 2015
++++ mysql-5.5.43/cmake/dtrace.cmake	Thu May 21 18:14:06 2015
+@@ -46,6 +46,8 @@
+    ELSE()
+      SET(ENABLE_DTRACE ON CACHE BOOL "Enable dtrace")
+    ENDIF()
++ ELSE()
++   SET(ENABLE_DTRACE OFF CACHE BOOL "Enable dtrace" FORCE)
+  ENDIF()
+  SET(HAVE_DTRACE ${ENABLE_DTRACE})
+  IF(CMAKE_SYSTEM_NAME MATCHES "SunOS")
