@@ -30,7 +30,7 @@
 PROG=mimeo
 VER=1.3.4
 VERHUMAN=$VER
-PGVER=9210
+PGVER=9211
 PKG=omniti/database/postgresql-${PGVER}/mimeo
 SUMMARY="$PROG - Extension for specialized replication between PostgreSQL instances"
 DESC="$SUMMARY"
