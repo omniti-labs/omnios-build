@@ -142,7 +142,7 @@ build() {
             logmsg "--- Setting new environment"
             . environment
         fi
-	if [[ -f dependencies && $DEPENDENCY_CHECK = "y" ]]; then
+	if [[ -f dependencies && "$DEPENDENCY_CHECK" = "y" ]]; then
 	    for dep in `cat dependencies`
 	    do
 		logmsg "--------- Dependency on $dep"
