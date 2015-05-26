@@ -47,6 +47,8 @@ fi
 if [ -d ${PREBUILT_ILLUMOS:-/dev/null} ]; then
     logmsg "Using pre-built Illumos at $PREBUILT_ILLUMOS (may need to wait)"
     wait_for_prebuilt
+    # Export PREBUILT_ILLUMOS for kayak's scripts.
+    export PREBUILT_ILLUMOS
     export VERSION=r$RELVER
     logmsg "Using VERSION=$VERSION"
 else
