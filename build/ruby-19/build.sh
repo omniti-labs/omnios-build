@@ -59,7 +59,7 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
 
 export CLFAGS="-I/usr/include/openssl"
 export EXTLIBS=-lm
-export CPPFLAGS="-I/usr/include/libelf -I/usr/include -I/usr/lib/libffi-3.0.10/include"
+export CPPFLAGS="-I/usr/include/libelf -I/usr/include -I/usr/lib/libffi-3.2.1/include"
 
 init
 download_source $PROG $PROG $VER

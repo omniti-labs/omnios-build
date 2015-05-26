@@ -28,10 +28,10 @@
 . ../../lib/functions.sh
 
 PROG=php
-VER=5.3.29
+VER=5.5.24
 VERHUMAN=$VER
-PKG=omniti/runtime/php-53
-SUMMARY="PHP Server 5.3"
+PKG=omniti/runtime/php-55
+SUMMARY="PHP Server 5.5"
 DESC="PHP is a widely-used general-purpose scripting language that is especially suited for Web development and can be embedded into HTML."
 
 BUILD_DEPENDS_IPS="service/network/smtp/sendmail compress/bzip2 database/sqlite-3 library/libtool/libltdl library/libxml2 library/libxslt system/library/iconv/unicode system/library/iconv/utf-8 system/library/iconv/utf-8/manual system/library/iconv/xsh4/latin web/curl omniti/database/mysql-55/library omniti/library/freetype2 omniti/library/gd  omniti/library/libjpeg omniti/library/libmcrypt omniti/library/libpng omniti/library/libpq5 omniti/library/libssh2 omniti/library/mhash omniti/server/apache22"
@@ -40,15 +40,13 @@ DEPENDS_IPS="database/sqlite-3 system/library/iconv/unicode system/library/iconv
 
 # Though not strictly needed since we override build(), still nice to set
 BUILDARCH=64
-PREFIX=/opt/php53
+PREFIX=/opt/php55
 reset_configure_opts
 
-# Php will be compiled once for each of the following options
 APXS_OPTS="--with-apxs2=/opt/apache22/bin/apxs"
-
 FREETYPE_PATH="/opt/omni"
 
-CFLAGS="-O2 -I/opt/omni/include  -I/usr/include/amd64"
+CFLAGS="-w -m64 -std=gnu99 -O2 -I/opt/omni/include -I/usr/include/amd64"
 LDFLAGS64="$LDFLAGS64 -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64 \
     -L/opt/omni/lib/$ISAPART64/mysql -R/opt/omni/lib/$ISAPART64/mysql \
     -L$PREFIX/lib -R$PREFIX/lib"
@@ -95,7 +93,7 @@ PHP_CONFIGURE_OPTS="
         --with-sqlite
         --enable-pcntl
         --with-openssl
-        $PHPOPT"
+        "
 
 # We need to make a fake httpd.conf so apxs in make install
 make_httpd_conf() {

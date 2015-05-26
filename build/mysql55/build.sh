@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=mysql
-VER=5.5.41
+VER=5.5.43
 VERHUMAN=$VER
 
 BUILD_DEPENDS_IPS="omniti/developer/build/cmake system/library/g++-4-runtime system/library/gcc-4-runtime"
@@ -67,7 +67,8 @@ CPPFLAGS="-D__EXTENSIONS__"
 CONFIGURE_OPTS="-DCMAKE_INSTALL_PREFIX=$PREFIX
                 -DBUILD_CONFIG=mysql_release
                 -DHAVE_FAKE_PAUSE_INSTRUCTION=1
-                -DHAVE_PAUSE_INSTRUCTION=0"
+                -DHAVE_PAUSE_INSTRUCTION=0
+                -DENABLE_DTRACE=false"
 CONFIGURE_CMD="/opt/omni/bin/cmake ."
 
 make_clean() {

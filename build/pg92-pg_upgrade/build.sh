@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=9.2.8
+VER=9.2.11
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}/pg_upgrade
 DOWNLOADDIR=postgres

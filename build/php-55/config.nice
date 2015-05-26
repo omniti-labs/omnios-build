@@ -1,0 +1,8 @@
+#! /bin/sh
+#
+# Created by configure
+
+CFLAGS='-w -std=gnu99 -O2 -I/opt/omni/include -m64' \
+CC='/opt/gcc-4.7.2/bin/gcc' \
+'/tmp/build_vagrant/php-5.5.24/configure' \
+"$@"
