@@ -2,3 +2,10 @@
 # one script:  the Kayak build script in omnios-build.  Single it out.
 
 builder ALL=(ALL) NOPASSWD: /export/home/builder/data/omnios-build/build/kayak/build.sh
+
+# Also preserve PREBUILT_ILLUMOS, so Kayak can grab bits from a prebuilt
+# illumos's proto area.
+Defaults env_keep += "PREBUILT_ILLUMOS"
+
+# Finally, let the builder user construct ISO and USB images.
+builder ALL=(ALL) NOPASSWD: /usr/bin/distro_const
