@@ -39,7 +39,7 @@ DEPENDS_IPS="omniti/runtime/python-34"
 
 # omniti-ms python is 64-bit only
 BUILDARCH=64
-PYTHON=/opt/python34/bin/python
+PYTHON=/opt/python34/bin/python3
 
 init
 download_source $PROG $PROG $VER

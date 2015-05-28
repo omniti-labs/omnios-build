@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=Python
-VER=3.4.0
+VER=3.4.3
 VERHUMAN=$VER
 PKG=omniti/runtime/python-34
 SUMMARY="$PROG - An Interpreted, Interactive, Object-oriented, Extensible Programming Language."

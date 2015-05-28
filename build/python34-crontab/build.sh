@@ -36,7 +36,7 @@ DESC=$SUMMARY
 
 # omniti-ms python is 64-bit only
 BUILDARCH=64
-PYTHON=/opt/python34/bin/python
+PYTHON=/opt/python34/bin/python3
 
 LDFLAGS64="-L$PYTHONLIB -R$PYTHONLIB -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
 
