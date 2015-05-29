@@ -34,7 +34,7 @@ PKG=omniti/network/tcpdump # Package name (e.g. library/foo)
 SUMMARY="tcpdump is a powerful command-line packet analyzer"      # One-liner, must be filled in
 DESC="$SUMMARY"         # Longer description, must be filled in
 
-BUILD_DEPENDS_IPS="system/library/pcap@1.3.0"
+BUILD_DEPENDS_IPS="system/library/pcap"
 
 init
 download_source $PROG $PROG $VER

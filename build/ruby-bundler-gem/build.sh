@@ -32,7 +32,7 @@
 # PKGSRVR=http://localhost:888/
 
 PROG=bundler      # App name
-VER=1.2.2         # App version
+VER=1.10.1        # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=omniti/library/ruby/bundler            # Package name (e.g. library/foo)
