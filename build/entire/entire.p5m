@@ -313,7 +313,6 @@ depend fmri=system/kernel/power@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/kernel/secure-rpc@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/kernel/security/gss@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/kernel/suspend-resume@0.5.11,5.11-@PVER@ type=require
-depend fmri=system/kernel/ultra-wideband@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/kernel@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/kvm@1.0.3-@PVER@ type=require
 depend fmri=system/library/c++/sunpro@0.5.11,5.11-@PVER@ type=require

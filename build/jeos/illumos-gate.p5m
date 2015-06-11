@@ -765,7 +765,6 @@ depend fmri=system/kernel/rsmops@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/kernel/secure-rpc@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/kernel/security/gss@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/kernel/suspend-resume@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/kernel/ultra-wideband@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/kernel@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/install/libinstzones@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/libdiskmgt/header-libdiskmgt@0.5.11,5.11-@PVER@ type=incorporate
