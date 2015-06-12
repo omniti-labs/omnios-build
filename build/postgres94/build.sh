@@ -28,7 +28,8 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=9.4.4
+# To build another version run "VER=9.4.2 ./build.sh"
+: ${VER:=9.4.4}
 VERHUMAN=$VER
 PKG=omniti/database/postgresql-${VER//./}
 SUMMARY="$PROG - Open Source Database System"
