@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 PROG=elasticsearch
-VER=0.90.5
+VER=1.1.2
 RPMREV=3
 PKG=omniti/system/elasticsearch
 SUMMARY="ElasticSearch - Open Source, Distributed, RESTful, Search Engine"
