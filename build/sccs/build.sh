@@ -26,21 +26,16 @@
 #
 # this will build
 #
-#   * make
 #   * sccs
-#   * assorted bin-only bits: (from sub root)
-#     * as
-#     * libtdf
-#     * libxprof
-#     * libxprof_audit
+#
 
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=make
 VER=0.5.11
-PKG=developer/build/make
-SUMMARY="OmniOS Bundled Development Tools (aka DevPro)"
+PKG=developer/versioning/sccs
+SUMMARY="Source Code Control System (SCCS)"
 DESC="$SUMMARY"
 
 BUILD_DEPENDS_IPS="sunstudio12.1 compatibility/ucb"
@@ -48,11 +43,12 @@ DEPENDS_IPS="system/library SUNWcs system/library/math"
 
 CONFIGURE_OPTS=""
 PKGE=$(url_encode $PKG)
-DESTDIR=$DTMPDIR/make_pkg
+DESTDIR=$DTMPDIR/sccs
 
 prebuild_clean() {
     logmsg "Cleaning destdir: $DESTDIR"
     logcmd rm -rf $DESTDIR
+    mkdir -p $DESTDIR/usr/bin
 }
 
 build() {
@@ -63,11 +59,6 @@ build() {
     popd > /dev/null
 }
 
-place_bins() {
-    logmsg "Moving closed bins into place"
-    (cd $SRCDIR/root && tar cf - .) | (cd $DESTDIR && tar xf -) ||
-        logerr "Failed to copy closed bins"
-}
 move_and_links() {
     logmsg "Shifting binaries and setting up links"
     logcmd mv $DESTDIR/usr/ccs/bin/help $DESTDIR/usr/bin/sccshelp
@@ -83,19 +74,10 @@ move_and_links() {
 }
 
 init
-
 prebuild_clean
-
-BUILDDIR=devpro-make-20061219
-download_source devpro devpro-make src-20061219
-build devpro-make-20061219
-
 BUILDDIR=devpro-sccs-20061219
 download_source devpro devpro-sccs src-20061219
 build devpro-sccs-20061219
-
-place_bins
 move_and_links
-
 make_package
 clean_up

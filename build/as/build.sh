@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 #
 # CDDL HEADER START
 #
@@ -23,8 +24,43 @@
 # Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
-<transform dir path=usr/xpg4.* -> drop>
-<transform file path=usr/xpg4/bin/.* -> drop>
-<transform link path=usr/xpg4/bin/.* -> drop>
-license usr/src/OPENSOLARIS.LICENSE license=CDDL
-license files/BINARYLICENSE.txt license="Sun Binary License"
+# this will build
+#
+#   * assorted bin-only bits: (from sub root)
+#     * as
+#     * libtdf
+#     * libxprof
+#     * libxprof_audit
+
+# Load support functions
+. ../../lib/functions.sh
+
+PROG=make
+VER=0.5.11
+PKG=developer/as
+SUMMARY="OmniOS Bundled Assembler (aka DevPro)"
+DESC="$SUMMARY"
+
+DEPENDS_IPS="system/library SUNWcs system/library/math"
+
+CONFIGURE_OPTS=""
+PKGE=$(url_encode $PKG)
+DESTDIR=$DTMPDIR/as
+
+prebuild_clean() {
+    logmsg "Cleaning destdir: $DESTDIR"
+    logcmd rm -rf $DESTDIR
+    logcmd mkdir -p $DESTDIR
+}
+
+place_bins() {
+    logmsg "Moving closed bins into place"
+    (cd $SRCDIR/root && tar cf - .) | (cd $DESTDIR && tar xf -) ||
+        logerr "Failed to copy closed bins"
+}
+
+init
+prebuild_clean
+place_bins
+make_package
+clean_up
