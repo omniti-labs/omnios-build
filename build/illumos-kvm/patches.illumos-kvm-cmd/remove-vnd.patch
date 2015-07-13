@@ -203,7 +203,7 @@ index af60741..d03ba32 100644
 -	}
 -
 -	altsize = 0;
--	for (i = MIN(iovcnt, FRAMEIO_NVECS_MAX); i != iovcnt; i++, iov++) {
+-	for (i = MIN(iovcnt, FRAMEIO_NVECS_MAX - 1); i != iovcnt; i++, iov++) {
 -		/*
 -		 * The packet is too large. We're goin to silently drop it...
 -		 */
