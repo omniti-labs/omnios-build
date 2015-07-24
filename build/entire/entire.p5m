@@ -80,6 +80,7 @@ depend fmri=driver/network/sdpib@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/sfe@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/tavor@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/usbecm@0.5.11,5.11-@PVER@ type=require
+depend fmri=driver/network/vioif@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/vr@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/xge@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/network/yge@0.5.11,5.11-@PVER@ type=require
