@@ -44,7 +44,7 @@ configure32() {
 
 configure64() {
     logmsg "--- Configure (make makefiles)"
-    logcmd $MAKE makefiles CCARGS='-DNO_NIS \
+    logcmd $MAKE makefiles CCARGS='-m64 -DNO_NIS \
         -DDEF_COMMAND_DIR=\"/opt/omni/sbin\" \
         -DDEF_CONFIG_DIR=\"/opt/omni/etc/postfix\" \
         -DDEF_DAEMON_DIR=\"/opt/omni/libexec/postfix\" \
