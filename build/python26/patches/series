@@ -31,3 +31,4 @@ Python26-28-no-libdl.patch -p1
 Python26-29-ATTRIBUTE_FORMAT_PARSETUPLE.patch -p1
 Python26-30-recvfrom-vuln.patch -p1
 Python26-31-mknod-64-bit.patch -p1
+Python26-32-readline63.patch -p1
