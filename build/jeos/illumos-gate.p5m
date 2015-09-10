@@ -336,7 +336,6 @@ depend fmri=SUNWusb@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWusbs@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWusbu@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWusbvc@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWuwb@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWvia823x@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWvr@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWvrrp@0.5.11,5.11-0.133 type=incorporate
