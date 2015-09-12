@@ -30,7 +30,7 @@
 PROG=cabundle   # App name
 VER=5.11        # App version
 VERHUMAN=$VER   # Human-readable version
-NSSVER=3.17.4   # Keep this in sync with the version of system/library/mozilla-nss
+NSSVER=3.19   # Keep this in sync with the version of system/library/mozilla-nss
 PKG=web/ca-bundle  # Package name (without prefix)
 SUMMARY="$PROG - Bundle of SSL Root CA certificates"
 DESC="SSL Root CA certificates extracted from mozilla-nss $NSSVER source, plus OmniTI CA cert."
