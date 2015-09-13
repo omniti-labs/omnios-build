@@ -119,8 +119,8 @@ depend fmri=system/library/iconv/xsh4/latin@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/install@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/libdbus@1.6.8,5.11-@PVER@ type=incorporate
 depend fmri=system/library/libdbus-glib@0.100,5.11-@PVER@ type=incorporate
-depend fmri=system/library/mozilla-nss@3.19,5.11-@PVER@ type=incorporate
-depend fmri=system/library/mozilla-nss/header-nss@3.19,5.11-@PVER@ type=incorporate
+depend fmri=system/library/mozilla-nss@3.20,5.11-@PVER@ type=incorporate
+depend fmri=system/library/mozilla-nss/header-nss@3.20,5.11-@PVER@ type=incorporate
 depend fmri=library/mtsk@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/pcap@1.6.2,5.11-@PVER@ type=incorporate
 depend fmri=system/management/ec2-api-tools@1.7.3.0,5.11-@PVER@ type=incorporate
