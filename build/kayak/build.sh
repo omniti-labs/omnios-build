@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 
@@ -109,6 +109,10 @@ build_server() {
 }
 
 build_miniroot() {
+    if [[ ! -z $KAYAK_CLOBBER ]]; then
+	logmsg "Clobbering $IMG_DSET"
+	/sbin/zfs destroy -R $IMG_DSET
+    fi
     if [[ -z "`zfs list $IMG_DSET`" ]]; then
         /sbin/zfs create $IMG_DSET
     fi
