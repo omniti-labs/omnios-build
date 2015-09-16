@@ -6,6 +6,9 @@ builder ALL=(ALL) NOPASSWD: /export/home/builder/data/omnios-build/build/kayak/b
 # Also preserve PREBUILT_ILLUMOS, so Kayak can grab bits from a prebuilt
 # illumos's proto area.
 Defaults env_keep += "PREBUILT_ILLUMOS"
+# Also preserve KAYAK_CLOBBER, so we know if we need to destroy the Kayak
+# zfs dataset for a fresh build.
+Defaults env_keep += "KAYAK_CLOBBER"
 
 # Finally, let the builder user construct ISO and USB images.
 builder ALL=(ALL) NOPASSWD: /usr/bin/distro_const
