@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=coreutils          # App name
-VER=8.23                # App version
+VER=8.24                # App version
 PKG=file/gnu-coreutils  # Package name (without prefix)
 SUMMARY="coreutils - GNU core utilities"
 DESC="GNU core utilities ($VER)"
