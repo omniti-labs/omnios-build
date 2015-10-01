@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -47,10 +47,10 @@ if [[ -z "$PKGPUBLISHER" ]]; then
 fi
 
 GIT=/usr/bin/git
-DMAKE=/opt/sunstudio12.1/bin/dmake
+DMAKE=/usr/bin/dmake
 
 BUILD_DEPENDS_IPS="developer/versioning/git library/idnkit
-	library/idnkit/header-idnkit developer/sunstudio12.1"
+	library/idnkit/header-idnkit developer/build/make"
 DEPENDS_IPS=""
 
 clone_source(){
