@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=ec2-api-tools
-VER=1.7.3.0
+VER=1.7.5.1
 VERHUMAN=$VER
 PKG=system/management/ec2-api-tools
 SUMMARY="The API tools serve as the client interface to the Amazon EC2 web service."
