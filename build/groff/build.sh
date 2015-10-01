@@ -28,10 +28,15 @@
 . ../../lib/functions.sh
 
 PROG=groff       # App name
-VER=1.22.2       # App version
+VER=1.22.3       # App version
 PKG=text/groff    # Package name (without prefix)
 SUMMARY="$PROG - GNU Troff typesetting package"
 DESC="$SUMMARY"
+
+# groff depends on gtar-specific crud as of 1.22.3.
+TAR=gtar
+# And also as of 1.22.3, parallel gmake breaks as well.
+NO_PARALLEL_MAKE=1
 
 DEPENDS_IPS="SUNWcs system/library/gcc-5-runtime system/library/g++-5-runtime
 	runtime/perl system/library/math system/library"
