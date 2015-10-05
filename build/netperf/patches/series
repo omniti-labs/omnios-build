@@ -1,1 +1,3 @@
 sys-types-h
+sendfile
+xopen-sendmsg

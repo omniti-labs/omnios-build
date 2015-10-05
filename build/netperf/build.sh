@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=netperf
-VER=2.6.0
+VER=2.7.0
 VERHUMAN=$VER
 PKG=network/test/netperf
 SUMMARY="netperf network testing tool"
@@ -38,7 +38,7 @@ DEPENDS_IPS="system/library"
 
 BUILDARCH=64
 
-CONFIGURE_OPTS="--bindir=$PREFIX/bin"
+CONFIGURE_OPTS="--bindir=$PREFIX/bin LDFLAGS=-lxnet"
 
 init
 download_source $PROG $PROG $VER
