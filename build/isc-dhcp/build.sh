@@ -14,13 +14,13 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=dhcp
-VER=4.3.2
+VER=4.3.3
 VERHUMAN=$VER
 PKG=network/service/isc-dhcp
 SUMMARY="ISC DHCP"
@@ -30,6 +30,9 @@ DEPENDS_IPS="system/library"
 
 # XXX 32-bit until Y2038 rears its ugly head.
 BUILDARCH=32
+
+# Doesn't work with parallel gmake
+NO_PARALLEL_MAKE=1
 
 # Use old gcc4 standards level for this.
 export CFLAGS="$CFLAGS -std=gnu89"
