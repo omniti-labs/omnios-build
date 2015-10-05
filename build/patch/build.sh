@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=patch
-VER=2.7.4
+VER=2.7.5
 PKG=text/gnu-patch
 SUMMARY="The GNU Patch utility"
 DESC="$SUMMARY"
