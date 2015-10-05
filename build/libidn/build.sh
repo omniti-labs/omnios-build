@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libidn
-VER=1.30
+VER=1.32
 VERHUMAN=$VER
 PKG=library/libidn
 SUMMARY="The Internationalized Domains Library"
