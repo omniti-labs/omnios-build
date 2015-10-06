@@ -95,6 +95,7 @@ fix_header_files() {
 
 init
 download_source $PROG $PROG $VER
+patch_source
 prep_build
 build
 fix_header_files
