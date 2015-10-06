@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=pcre
-VER=8.35
+VER=8.37
 VERHUMAN=$VER
 PKG=library/pcre
 SUMMARY="Perl-Compatible Regular Expressions"
