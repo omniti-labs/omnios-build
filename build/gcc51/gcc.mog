@@ -3,3 +3,20 @@ license COPYING.LIB license=LGPLv2.1
 license COPYING.RUNTIME license="GCC runtime license"
 license COPYING3 license=GPLv3
 license COPYING3.LIB license=LGPLv3
+
+# mediated symlinks
+<transform link path=usr/bin/.* -> default mediator gcc>
+<transform link path=usr/share/man/.* -> default mediator gcc>
+<transform link target=/opt/gcc-5.1.0/.* -> default mediator-version 5.1>
+
+link path=usr/bin/g++      target=/opt/gcc-5.1.0/bin/g++
+link path=usr/bin/gcc      target=/opt/gcc-5.1.0/bin/gcc
+link path=usr/bin/gcov     target=/opt/gcc-5.1.0/bin/gcov
+link path=usr/bin/gcpp     target=/opt/gcc-5.1.0/bin/cpp
+link path=usr/bin/gfortran target=/opt/gcc-5.1.0/bin/gfortran
+
+link path=usr/share/man/man1/g++.1      target=/opt/gcc-5.1.0/share/man/man1/g++.1
+link path=usr/share/man/man1/gcc.1      target=/opt/gcc-5.1.0/share/man/man1/gcc.1
+link path=usr/share/man/man1/gcov.1     target=/opt/gcc-5.1.0/share/man/man1/gcov.1
+link path=usr/share/man/man1/gcpp.1     target=/opt/gcc-5.1.0/share/man/man1/cpp.1
+link path=usr/share/man/man1/gfortran.1 target=/opt/gcc-5.1.0/share/man/man1/gfortran.1
