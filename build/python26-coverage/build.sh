@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=coverage
-VER=3.7.1
+VER=4.0
 PKG=library/python-2/coverage-26
 SUMMARY="Code coverage measurement for Python"
 DESC="$SUMMARY"
