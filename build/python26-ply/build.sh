@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ply
-VER=3.4
+VER=3.8
 PKG=library/python-2/ply
 SUMMARY="ply - Python lex and yacc"
 DESC="$SUMMARY"
@@ -37,7 +37,7 @@ DEPENDS_IPS="runtime/python-26"
 
 make_license() {
     # Sigh. People. put the license in a standalong file!
-    awk '/Copyright/,/DAMAGE.$/{print}' $TMPDIR/$BUILDDIR/README > \
+    awk '/Copyright/,/DAMAGE.$/{print}' $TMPDIR/$BUILDDIR/README.md > \
         $TMPDIR/$BUILDDIR/LICENSE
 }
 init
