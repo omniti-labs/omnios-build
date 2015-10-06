@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pylint
-VER=1.3.1
+VER=1.4.4
 PKG=library/python-2/pylint-26
 SUMMARY="python code static checker"
 DESC="$SUMMARY"
