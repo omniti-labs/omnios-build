@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=lxml
-VER=3.4.2
+VER=3.4.4
 PKG=library/python-2/lxml-26
 SUMMARY="lxml - Powerful and Pythonic XML processing library"
 DESC="$SUMMARY"
