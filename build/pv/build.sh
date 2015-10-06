@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=pv
-VER=1.5.7
+VER=1.6.0
 VERHUMAN=$VER
 PKG=shell/pipe-viewer
 SUMMARY="Pipe Viewer"
