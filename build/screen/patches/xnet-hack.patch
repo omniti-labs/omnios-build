@@ -5,9 +5,9 @@ diff -ru screen-4.2.1-orig/socket.c screen-4.2.1/socket.c
  #include <sys/stat.h>
  #include <fcntl.h>
  #if !defined(NAMEDPIPE)
-+#define _XPG4_2  /* HACK for xnet sockets... */
- #include <sys/socket.h>
++#define _XPG4_2
+ # include <sys/socket.h>
 +#undef _XPG4_2
- #include <sys/un.h>
- #endif
- 
+ # ifdef _OpenBSD_
+ #  include <sys/uio.h>
+ # endif

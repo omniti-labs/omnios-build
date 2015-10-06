@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=screen
-VER=4.2.1
+VER=4.3.1
 PKG=terminal/screen
 SUMMARY="GNU Screen terminal multiplexer"
 DESC="$SUMMARY"
