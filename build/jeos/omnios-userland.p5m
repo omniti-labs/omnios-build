@@ -132,7 +132,7 @@ depend fmri=system/pciutils/pci.ids@2.2,5.11-@PVER@ type=incorporate
 depend fmri=system/pkgtree@1,5.11-@PVER@ type=incorporate
 depend fmri=system/prerequisite/gnu@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=terminal/screen@4.3.1,5.11-@PVER@ type=incorporate
-depend fmri=terminal/tmux@1.9,5.11-@PVER@ type=incorporate
+depend fmri=terminal/tmux@2.0,5.11-@PVER@ type=incorporate
 depend fmri=text/auto_ef@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=text/gawk@4.1,5.11-@PVER@ type=incorporate
 depend fmri=text/gnu-diffutils@3.3,5.11-@PVER@ type=incorporate
