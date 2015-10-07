@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=unixODBC
-VER=2.3.2
+VER=2.3.4
 VERHUMAN=$VER
 PKG=library/unixodbc
 SUMMARY="The UnixODBC Subsystem and SDK"
