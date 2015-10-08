@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 PROG=xz
-VER=5.0.5
+VER=5.2.2
 VERHUMAN=$VER
 PKG=compress/xz
 SUMMARY="XZ Utils - general-purpose data compression software"
