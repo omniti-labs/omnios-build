@@ -14,7 +14,7 @@ depend fmri=database/sqlite-3@3.8.11.1,5.11-@PVER@ type=incorporate
 depend fmri=developer/as@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=developer/build/autoconf@2.69,5.11-@PVER@ type=incorporate
 depend fmri=developer/build/automake@1.15,5.11-@PVER@ type=incorporate
-depend fmri=developer/build/gnu-make@3.82,5.11-@PVER@ type=incorporate
+depend fmri=developer/build/gnu-make@4.1,5.11-@PVER@ type=incorporate
 depend fmri=developer/build/libtool@2.4,5.11-@PVER@ type=incorporate
 depend fmri=developer/dtrace/toolkit@0.99,5.11-@PVER@ type=incorporate
 depend fmri=developer/gcc44@4.4.4,5.11-@PVER@ type=incorporate
