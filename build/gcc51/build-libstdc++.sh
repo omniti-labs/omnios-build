@@ -60,7 +60,6 @@ else
 fi
 
 DEPENDS_IPS="system/library/gcc-5-runtime"
-NO_PARALLEL_MAKE=1
 
 # This stuff is in its own domain
 PKGPREFIX=""

@@ -39,7 +39,6 @@ PATH=/usr/perl5/5.16.1/bin:$PATH
 export PATH
 
 DEPENDS_IPS="developer/gcc51/libgmp-gcc51 developer/gcc51/libmpfr-gcc51 developer/gcc51/libmpc-gcc51 developer/gnu-binutils developer/library/lint developer/linker system/library/gcc-5-runtime"
-NO_PARALLEL_MAKE=1
 
 # This stuff is in its own domain
 PKGPREFIX=""

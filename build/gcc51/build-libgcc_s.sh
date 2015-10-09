@@ -38,7 +38,6 @@ PATH=/opt/gcc-${VER}/bin:$PATH
 export LD_LIBRARY_PATH=/opt/gcc-{$VER}/lib
 
 BUILD_DEPENDS_IPS="gcc51"
-NO_PARALLEL_MAKE=1
 
 # This stuff is in its own domain
 PKGPREFIX=""
