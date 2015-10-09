@@ -49,9 +49,17 @@ install_smf(){
     logcmd cp $SRCDIR/files/svc-ipmievd $DESTDIR/lib/svc/method/svc-ipmievd
 }
 
+auto_reconf() {
+	# This package doesn't like aclocal 1.15.  Fix it!
+	pushd $TMPDIR/$BUILDDIR
+	autoreconf -fi
+	popd
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
+auto_reconf
 prep_build
 run_autoconf
 build
