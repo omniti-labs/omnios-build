@@ -39,7 +39,7 @@ LDIR=libevent-${LIBEVENT_VER}-stable
 BUILDARCH=32
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin"
 CPPFLAGS="-I$TMPDIR/$PROG-$VER/$LDIR/include/event2 \
-    -I$TMPDIR/$PROG-$VER/$LDIR/include"
+    -I$TMPDIR/$PROG-$VER/$LDIR/include -I/usr/include/ncurses"
 CFLAGS="-std=c99 -D_XPG6 -D_POSIX_C_SOURCE=200112L"
 LDFLAGS="-L$TMPDIR/$PROG-$VER/$LDIR/.libs -lsocket -lnsl -lsendfile"
 
