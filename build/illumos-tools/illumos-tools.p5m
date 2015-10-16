@@ -2,6 +2,7 @@ set name=pkg.fmri value=pkg://@PKGPUBLISHER@/developer/illumos-tools@11,5.11-@PV
 set name=pkg.depend.install-hold value=core-os.omnios
 set name=pkg.summary value="Single meta-package containing required tools to build illumos."
 set name=pkg.description value="Single meta-package containing required tools to build illumos."
+depend fmri=developer/as type=require
 depend fmri=developer/astdev type=require
 depend fmri=developer/build/make type=require
 depend fmri=developer/build/onbld type=require
