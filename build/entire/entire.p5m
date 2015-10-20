@@ -108,6 +108,7 @@ depend fmri=driver/storage/mega_sas@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/mpt_sas@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/mr_sas@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/nv_sata@0.5.11,5.11-@PVER@ type=require
+depend fmri=driver/storage/nvme@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/pmcs@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/sbp2@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/storage/scsa1394@0.5.11,5.11-@PVER@ type=require
