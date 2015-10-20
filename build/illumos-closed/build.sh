@@ -45,6 +45,9 @@ install_closed() {
     logerr "--- failed to unpack closed bins (debug version)"
   logcmd tar xjvpf $SRCDIR/on-closed-bins-nd.i386.tar.bz2 || \
     logerr "--- failed to unpack closed bins (non-debug version)"
+  cd closed
+  logcmd cp $SRCDIR/on-closed-bins.i386.tar.bz2 .
+  logcmd cp $SRCDIR/on-closed-bins-nd.i386.tar.bz2 .
   popd > /dev/null
 }
 
