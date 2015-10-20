@@ -36,20 +36,16 @@ DESC="Closed-source binaries required to build an illumos distribution, like Omn
 
 install_closed() {
   logmsg "Creating proto directory"
-  #echo "DIagnostics:"
-  #echo "TMPDIR == $TMPDIR"
-  #echo "DESTDIR == $DESTDIR"
-  #echo "BUILDDIR == $BUILDDIR"
-  # Bail for now.
-  #exit 0
-  mkdir -p $DESTDIR/opt/onbld
-  cp *.tar.bz2 $DESTDIR/opt/onbld
-  pushd $DESTDIR/opt/onbld
-  # XXX KEBE ASKS - should we be -v about this? Or more quiet?
-  tar xjvpf on-closed-bins.i386.tar.bz2
-  tar xjvpf on-closed-bins-nd.i386.tar.bz2
-  /bin/rm *.tar.bz2
-  popd
+  logcmd mkdir -p $DESTDIR/opt/onbld || \
+    logerr "--- Failed to create proto directory"
+
+  logmsg "Unpacking closed binaries"
+  pushd $DESTDIR/opt/onbld > /dev/null
+  logcmd tar xjvpf $SRCDIR/on-closed-bins.i386.tar.bz2 || \
+    logerr "--- failed to unpack closed bins (debug version)"
+  logcmd tar xjvpf $SRCDIR/on-closed-bins-nd.i386.tar.bz2 || \
+    logerr "--- failed to unpack closed bins (non-debug version)"
+  popd > /dev/null
 }
 
 init
