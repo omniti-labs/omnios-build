@@ -9,6 +9,7 @@ depend fmri=developer/build/onbld type=require
 depend fmri=developer/gcc44 type=require
 depend fmri=developer/sunstudio12.1 type=require
 depend fmri=developer/gnu-binutils type=require
+depend fmri=developer/illumos-closed type=require
 depend fmri=developer/java/jdk type=require
 depend fmri=developer/lexer/flex type=require
 depend fmri=developer/object-file type=require
