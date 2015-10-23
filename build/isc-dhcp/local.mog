@@ -35,4 +35,9 @@
 <transform file	path=var/db/dhcp.leases -> set preserve true>
 <transform file	path=var/db/dhcp6.leases -> set preserve true>
 
+<transform file path=usr/sbin/dhcpd$ -> set restart_fmri svc:/network/service/dhcp:ipv4>
+<transform file path=usr/sbin/dhcpd$ -> add restart_fmri svc:/network/service/dhcp:ipv6>
+<transform file path=(usr/sbin/dhcrelay|lib/svc/method/dhcrelay)$ -> set restart_fmri svc:/network/service/dhcrelay:ipv4>
+<transform file path=(usr/sbin/dhcrelay|lib/svc/method/dhcrelay)$ -> add restart_fmri svc:/network/service/dhcrelay:ipv6>
+
 license LICENSE license=ISC
