@@ -14,3 +14,4 @@ user ftpuser=false gcos-field="OpenSSH privsep user" group=sshd login-shell=/bin
 <transform file path=usr/share/man/man4/ssh_config.4 -> drop>
 <transform file path=usr/share/man/man1m/ssh-keysign.1m -> drop>
 <transform file path=usr/share/man/man1m/ssh-pkcs11-helper.1m -> drop>
+<transform file path=(usr/sbin/sshd|lib/svc/method/sshd|etc/ssh/sshd_config)$ -> set restart_fmri svc:/network/ssh:default>
