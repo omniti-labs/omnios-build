@@ -76,9 +76,6 @@ depend fmri=SUNWdcaf@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWdcopy@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWdfb@0.5.11,5.11-0.130 type=incorporate
 depend fmri=SUNWdfbh@0.5.11,5.11-0.130 type=incorporate
-depend fmri=SUNWdhcm@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWdhcs@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWdhcsb@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWdmfe@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWdmgt@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWdoc@0.5.11,5.11-0.133 type=incorporate
@@ -143,7 +140,6 @@ depend fmri=SUNWipf@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWipfh@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWipoib@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWippcore@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWippl@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWipw@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWiscsi@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWiscsidm@0.5.11,5.11-0.133 type=incorporate
@@ -211,12 +207,10 @@ depend fmri=SUNWpacket@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpapi@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWparted@1.8.8,5.11-0.133 type=incorporate
 depend fmri=SUNWpc@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWpcan@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpcelx@0.5.11,5.11-0.132 type=incorporate
 depend fmri=SUNWpcmci@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpcmcu@0.5.11,5.11-0.130 type=incorporate
 depend fmri=SUNWpcmem@0.5.11,5.11-0.130 type=incorporate
-depend fmri=SUNWpcwl@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpd@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpicl@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpiclh@0.5.11,5.11-0.133 type=incorporate
@@ -238,7 +232,6 @@ depend fmri=SUNWpppgS@0.5.11,5.11-0.148 type=incorporate
 depend fmri=SUNWps@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpsdcr@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpsdir@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWpsdpr@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpsf@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpsh@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWpsm-ipp@0.5.11,5.11-0.133 type=incorporate
@@ -316,7 +309,6 @@ depend fmri=SUNWtnfd@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWtoo@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWtpm@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWts@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWtsg@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWuacm@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWuath@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWucbt@0.5.11,5.11-0.133 type=incorporate
@@ -466,9 +458,7 @@ depend fmri=driver/network/nge@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/ntxn@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/nxge@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/ofk@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=driver/network/pcan@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/pcn@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=driver/network/pcwl@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/platform@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/qlc/qlc-mdb@0.5.11,5.11-0.134 type=incorporate
 depend fmri=driver/network/qlc@0.5.11,5.11-@PVER@ type=incorporate
@@ -821,8 +811,6 @@ depend fmri=system/storage/mms@0.5.11,5.11-0.139 type=incorporate
 depend fmri=system/storage/parted@1.8.8,5.11-@PVER@ type=incorporate
 depend fmri=system/storage/sasinfo@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/tnf@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/trusted/global-zone@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/trusted@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/xopen/xcu4@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/xopen/xcu6@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/xvm/ipagent@0.5.11,5.11-@PVER@ type=incorporate
