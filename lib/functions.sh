@@ -736,7 +736,8 @@ make_package() {
             fi
             if $autoresolved && [ "$DEPTYPE" = "require" ]; then
                 if $explicit_ver; then
-                    echo "<transform depend fmri=(.+/)?$depname -> set fmri $i>" >> $MANUAL_DEPS
+                    escaped_depname="$(python -c "import re; print re.escape(r'$depname')")"
+                    echo "<transform depend fmri=(.+/)?$escaped_depname -> set fmri $i>" >> $MANUAL_DEPS
                 fi
             else
                 echo "depend type=$DEPTYPE fmri=$i" >> $MANUAL_DEPS
