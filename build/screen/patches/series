@@ -1,2 +1,3 @@
 Makefile.in.patch -p0
 xnet-hack.patch -p1
+recursion-fix.patch -p1
