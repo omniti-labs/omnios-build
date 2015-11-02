@@ -44,7 +44,7 @@
 		timeout_seconds='60' />
 		
 		<exec_method name='refresh' type='method'
-		exec='/lib/svc/method/sshd restart'
+		exec=':kill -HUP'
 		timeout_seconds='60' />
 
 		<property_group name='general' type='framework'>
@@ -60,7 +60,7 @@
 			</common_name>
 
 			<documentation>
-				<manpage title='sshd' section='8' />
+				<manpage title='sshd' section='1M' />
 				<doc_link name='openssh.com' uri='http://openssh.com' />
 			</documentation>
 		</template>
