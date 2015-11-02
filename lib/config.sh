@@ -20,8 +20,8 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
-# Copyright (c) 2014 by Delphix. All rights reserved.
+# Copyright 2015 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright (c) 2015 by Delphix. All rights reserved.
 #
 #############################################################################
 # Configuration for the build system
