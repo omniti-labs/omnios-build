@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=nss
-VER=3.20
+VER=3.20.1
 # Include NSPR version since we're downloading a combined tarball.
-NSPRVER=4.10.8
+NSPRVER=4.10.10
 # But set BUILDDIR to just be the NSS version.
 BUILDDIR=$PROG-$VER
 VERHUMAN=$VER
