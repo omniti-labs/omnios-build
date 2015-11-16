@@ -154,6 +154,8 @@ build_gates() {
 	# Per above, /etc/sudoers.d needs an appropriate file with
 	# appropriate permissions.
 	export KAYAK_SUDO_BUILD=1
+	# Also clobber kayak's special rpool.
+	export KAYAK_CLOBBER=1
 
 	./buildctl list-build | awk '{print $2}' | grep -v kayak >/tmp/blist.$$
 	./buildctl list-build | awk '{print $2}' | grep kayak >>/tmp/blist.$$
@@ -220,15 +222,15 @@ fi
 # If we reach here, build and then clobber things.  The gates have settled down
 # after DELAY_CYCLES checks.
 # Record build's start date.
-echo "Build start date: `date`"
+echo "Build start date: `date`" | tee -a $LOGFILE
 # Remove omnios-build's tmp gate.
 /bin/rm -rf /tmp/build_$USER
 build_gates > $LOGFILE 2>&1
 # Record build's end date to see how long it took.
-echo "Build end date: `date`"
+echo "Build end date: `date`" | tee -a $LOGFILE
 echo "Log in $LOGFILE"
-echo "Pull log is below:"
-cat $PULL_LOG
+echo "Pull log is below:" | tee -a $LOGFILE
+cat $PULL_LOG | tee -a $LOGFILE
 # Cleanup on bit from build_gates.
 rm -f /tmp/nightly.$$
 rm -f $PULL_LOG
