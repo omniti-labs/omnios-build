@@ -170,7 +170,20 @@ push_pkgs() {
         logmsg "Intentional pause: Last chance to sanity-check before publication!"
         ask_to_continue
     fi
-    logcmd pkgrecv -s packages/i386/nightly-nd/repo.redist/ -d $PKGSRVR 'pkg:/*'
+
+    # Before, we used to just send out the non-DEBUG illumos packages.
+    #logcmd pkgrecv -s packages/i386/nightly-nd/repo.redist/ -d $PKGSRVR 'pkg:/*'
+    # NOW, however, we use pkgmerge to set pkg(5) variants for non-DEBUG *and*
+    # DEBUG.  The idea is, if someone wants to shift their illumos from
+    # non-DEBUG (default) to DEBUG, they can simply utter:
+    #
+    #      pkg change-variant debug.illumos=true
+    #
+    # and a new BE with DEBUG bits appears.
+    logcmd pkgmerge -d $PKGSRVR \
+	-s debug.illumos=false,packages/i386/nightly-nd/repo.redist/ \
+	-s debug.illumos=true,packages/i386/nightly/repo.redist/
+
     logmsg "Leaving $CODEMGR_WS"
     popd > /dev/null
 }
