@@ -225,7 +225,7 @@ fi
 echo "Build start date: `date`" | tee -a $LOGFILE
 # Remove omnios-build's tmp gate.
 /bin/rm -rf /tmp/build_$USER
-build_gates > $LOGFILE 2>&1
+build_gates >> $LOGFILE 2>&1
 # Record build's end date to see how long it took.
 echo "Build end date: `date`" | tee -a $LOGFILE
 echo "Log in $LOGFILE"
