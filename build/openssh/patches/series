@@ -1,2 +1,3 @@
 man-sections.patch
 sshd_config.patch
+0032-Accept-LANG-and-LC_-environment-variables-from-clien.patch
