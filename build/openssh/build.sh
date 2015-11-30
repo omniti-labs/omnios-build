@@ -53,6 +53,7 @@ CONFIGURE_OPTS="
     --with-ssl-engine
     --with-pam
     --with-audit=solaris
+    --disable-lastlog
     "
 
 install_smf() {
