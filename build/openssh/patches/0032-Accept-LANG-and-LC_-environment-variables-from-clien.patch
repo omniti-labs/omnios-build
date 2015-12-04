@@ -10,7 +10,7 @@ behaviour (at least the parts that are most commonly used).
  servconf.c    | 27 +++++++++++++++++++++++++--
  session.c     | 26 ++++++++++++++++++++++++--
  sshd_config   |  4 ++++
- sshd_config.5 | 13 ++++++++++++-
+ sshd_config.4 | 13 ++++++++++++-
  4 files changed, 65 insertions(+), 5 deletions(-)
 
 diff --git a/servconf.c b/servconf.c
@@ -143,10 +143,10 @@ index 0048f98..bbdc6ae 100644
  # Authentication:
  
  #LoginGraceTime 2m
-diff --git a/sshd_config.5 b/sshd_config.5
+diff --git a/sshd_config.4 b/sshd_config.4
 index cce3a5a..913f528 100644
---- a/sshd_config.5
-+++ b/sshd_config.5
+--- a/sshd_config.4
++++ b/sshd_config.4
 @@ -86,7 +86,18 @@ directives.
  Be warned that some environment variables could be used to bypass restricted
  user environments.
