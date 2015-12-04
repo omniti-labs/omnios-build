@@ -52,6 +52,7 @@ CONFIGURE_OPTS="
     --with-tcp-wrappers
     --with-ssl-engine
     --with-pam
+    --with-audit=solaris
     "
 
 install_smf() {
@@ -66,10 +67,13 @@ install_smf() {
         logerr "--- Failed to copy method script"
 }
 
+CFLAGS+="-DPAM_ENHANCEMENT -DSET_USE_PAM -DPAM_BUGFIX -DDTRACE_SFTP"
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
+run_autoconf
 build
 
 # Remove the letter from VER for packaging
