@@ -36,8 +36,7 @@ DESC="$SUMMARY ($VER)"
 
 NO_PARALLEL_MAKE=true
 
-DEPENDS_IPS="SUNWcs shell/bash system/library
-             system/management/snmp/sea/sea-config"
+DEPENDS_IPS="SUNWcs shell/bash system/library"
 
 MIB_MODULES="host disman/event-mib ucd-snmp/diskio udp-mib tcp-mib if-mib"
 

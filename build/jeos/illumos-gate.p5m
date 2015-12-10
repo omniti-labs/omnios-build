@@ -264,7 +264,6 @@ depend fmri=SUNWrum@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWrwd@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWrwn@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWs10brand@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWsacom@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWsasnm@0.5.11,5.11-0.148 type=incorporate
 depend fmri=SUNWsbp2@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWscm@0.5.11,5.11-0.133 type=incorporate
@@ -783,8 +782,6 @@ depend fmri=system/library/svm-rcm@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/management/intel-amt@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/management/pcitool@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/management/snmp/sea/sea-config@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/management/snmp/sea@0.5.11,5.11-0.148 type=incorporate
 depend fmri=system/management/wbem/data-management@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/management/wbem/resource-management@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/manual@0.5.11,5.11-0.148 type=incorporate
