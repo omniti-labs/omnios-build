@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libxml2        # App name
-VER=2.9.1           # App version
+VER=2.9.3           # App version
 PKG=library/libxml2 # Package name (without prefix)
 SUMMARY="$PROG - XML C parser and toolkit"
 DESC="$SUMMARY"
