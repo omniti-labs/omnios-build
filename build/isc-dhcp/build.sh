@@ -20,7 +20,7 @@
 . ../../lib/functions.sh
 
 PROG=dhcp
-VER=4.3.3
+VER=4.3.3-P1
 VERHUMAN=$VER
 PKG=network/service/isc-dhcp
 SUMMARY="ISC DHCP"
@@ -66,6 +66,8 @@ prep_build
 build
 # Make directories in the proto area prior to the package being built.
 pre_package
+VER=${VER//-P/.}
+VER=${VER//-W/.}
 make_package
 clean_up
 
