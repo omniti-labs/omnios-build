@@ -53,6 +53,7 @@ depend fmri=library/libidn@1.32,5.11-@PVER@ type=incorporate
 depend fmri=library/libtool/libltdl@2.4,5.11-@PVER@ type=incorporate
 depend fmri=library/libxml2@2.9,5.11-@PVER@ type=incorporate
 depend fmri=library/libxslt@1.1.28,5.11-@PVER@ type=incorporate
+depend fmri=library/ncurses@6,5.11-@PVER@ type=incorporate
 depend fmri=library/ncurses@5.9,5.11-@PVER@ type=incorporate
 depend fmri=library/nspr@4.12,5.11-@PVER@ type=incorporate
 depend fmri=library/nspr/header-nspr@4.12,5.11-@PVER@ type=incorporate
