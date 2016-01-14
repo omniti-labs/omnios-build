@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=openssh
-VER=7.1p1
+VER=7.1p2
 VERHUMAN=$VER
 PKG=network/openssh
 SUMMARY="OpenSSH Client and utilities"
