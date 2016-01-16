@@ -84,23 +84,23 @@ cp ${GCC46_LOC}/$LIB.6.0.16 $DESTDIR/usr/lib/$LIB.6.0.16
 cp ${GCC47_LOC}/$LIB.6.0.17 $DESTDIR/usr/lib/$LIB.6.0.17
 cp ${GCC48_LOC}/$LIB.6.0.18 $DESTDIR/usr/lib/$LIB.6.0.18
 cp /opt/gcc-${VER}/lib/$LIB.6.0.21 $DESTDIR/usr/lib/$LIB.6.0.21 || logerr "Failed to copy 6.0.21"
-ln -s /usr/lib/$LIB.6.0.21 $DESTDIR/usr/lib/$LIB.6
-ln -s /usr/lib/$LIB.6.0.21 $DESTDIR/usr/lib/$LIB
+ln -s $LIB.6.0.21 $DESTDIR/usr/lib/$LIB.6
+ln -s $LIB.6.0.21 $DESTDIR/usr/lib/$LIB
 cp /opt/gcc-4.4.4/lib/amd64/$LIB.6.0.13 $DESTDIR/usr/lib/amd64/$LIB.6.0.13
 cp ${GCC46_LOC}/amd64/$LIB.6.0.16 $DESTDIR/usr/lib/amd64/$LIB.6.0.16
 cp ${GCC47_LOC}/amd64/$LIB.6.0.17 $DESTDIR/usr/lib/amd64/$LIB.6.0.17
 cp ${GCC48_LOC}/amd64/$LIB.6.0.18 $DESTDIR/usr/lib/amd64/$LIB.6.0.18
 cp /opt/gcc-${VER}/lib/amd64/$LIB.6.0.21 $DESTDIR/usr/lib/amd64/$LIB.6.0.21 || logerr "Failed to copy 6.0.21 (amd64)"
-ln -s /usr/lib/amd64/$LIB.6.0.21 $DESTDIR/usr/lib/amd64/$LIB.6
-ln -s /usr/lib/amd64/$LIB.6.0.21 $DESTDIR/usr/lib/amd64/$LIB
+ln -s $LIB.6.0.21 $DESTDIR/usr/lib/amd64/$LIB.6
+ln -s $LIB.6.0.21 $DESTDIR/usr/lib/amd64/$LIB
 
 LIB=libssp.so
 cp /opt/gcc-${VER}/lib/$LIB.0.0.0 $DESTDIR/usr/lib/$LIB.0.0.0
-ln -s /usr/lib/$LIB.0.0.0 $DESTDIR/usr/lib/$LIB.0
-ln -s /usr/lib/$LIB.0.0.0 $DESTDIR/usr/lib/$LIB
+ln -s $LIB.0.0.0 $DESTDIR/usr/lib/$LIB.0
+ln -s $LIB.0.0.0 $DESTDIR/usr/lib/$LIB
 cp /opt/gcc-${VER}/lib/amd64/$LIB.0.0.0 $DESTDIR/usr/lib/amd64/$LIB.0.0.0
-ln -s /usr/lib/amd64/$LIB.0.0.0 $DESTDIR/usr/lib/amd64/$LIB.0
-ln -s /usr/lib/amd64/$LIB.0.0.0 $DESTDIR/usr/lib/amd64/$LIB
+ln -s $LIB.0.0.0 $DESTDIR/usr/lib/amd64/$LIB.0
+ln -s $LIB.0.0.0 $DESTDIR/usr/lib/amd64/$LIB
 
 make_package runtime.mog
 clean_up
