@@ -85,7 +85,7 @@ move_libs() {
     logmsg "link up certs"
     logcmd rmdir $DESTDIR/usr/ssl/certs ||
         logerr "Failed to remove /usr/ssl/certs"
-    logcmd ln -s /etc/ssl/certs $DESTDIR/usr/ssl/certs ||
+    logcmd ln -s ../../etc/ssl/certs $DESTDIR/usr/ssl/certs ||
         logerr "Failed to link up /usr/ssl/certs -> /etc/ssl/certs"
     logmsg "Relocating libs from usr/lib to lib"
     logcmd mv $DESTDIR/usr/lib/64 $DESTDIR/usr/lib/amd64
