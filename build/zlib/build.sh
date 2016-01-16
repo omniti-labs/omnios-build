@@ -24,7 +24,7 @@ CONFIGURE_OPTS_64="--prefix=$PREFIX
     --libdir=$PREFIX/lib/$ISAPART64"
 
 install_license(){
-    # This is fun, strip fromt he zlib.h header
+    # This is fun, take from the zlib.h header
     /bin/awk '/Copyright/,/\*\//{if($1 != "*/"){print}}' \
         $TMPDIR/$BUILDDIR/zlib.h > $DESTDIR/license
 }
@@ -41,6 +41,26 @@ make_prog64() {
     popd > /dev/null
 }
 
+# Relocate the libs to /lib, to match upstream
+move_libs() {
+    logcmd mkdir -p $DESTDIR/lib/amd64
+    logcmd ln -s $DESTDIR/lib/64 amd64
+    logcmd mv $DESTDIR/usr/lib/lib* $DESTDIR/lib || \
+        logerr "failed to move libs (32-bit)"
+    logcmd mv $DESTDIR/usr/lib/amd64/lib* $DESTDIR/lib/amd64 || \
+        logerr "failed to move libs (64-bit)"
+    pushd $DESTDIR/usr/lib >/dev/null
+    logcmd ln -s ../../lib/libz.so.1.2.8 libz.so
+    logcmd ln -s ../../lib/libz.so.1.2.8 libz.so.1
+    logcmd ln -s ../../lib/libz.so.1.2.8 libz.so.1.2.8
+    popd >/dev/null
+    pushd $DESTDIR/usr/lib/amd64 >/dev/null
+    logcmd ln -s ../../../lib/64/libz.so.1.2.8 libz.so
+    logcmd ln -s ../../../lib/64/libz.so.1.2.8 libz.so.1
+    logcmd ln -s ../../../lib/64/libz.so.1.2.8 libz.so.1.2.8
+    popd>/dev/null
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -49,5 +69,6 @@ build
 make_lintlibs z /usr/lib /usr/include
 make_isa_stub
 install_license
+move_libs
 make_package
 clean_up
