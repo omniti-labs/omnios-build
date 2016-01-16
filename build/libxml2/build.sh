@@ -76,6 +76,26 @@ make_install64() {
         logerr "--- Make install failed"
 }
 
+# Relocate the libs to /lib, to match upstream
+move_libs() {
+    logcmd mkdir -p $DESTDIR/lib/amd64
+    logcmd ln -s $DESTDIR/lib/64 amd64
+    logcmd mv $DESTDIR/usr/lib/lib* $DESTDIR/lib || \
+        logerr "failed to move libs (32-bit)"
+    logcmd mv $DESTDIR/usr/lib/amd64/lib* $DESTDIR/lib/amd64 || \
+        logerr "failed to move libs (64-bit)"
+    pushd $DESTDIR/usr/lib >/dev/null
+    logcmd ln -s ../../lib/libxml2.so.2.9.3 libxml2.so
+    logcmd ln -s ../../lib/libxml2.so.2.9.3 libxml2.so.2
+    logcmd ln -s ../../lib/libxml2.so.2.9.3 libxml2.so.2.9.3
+    popd >/dev/null
+    pushd $DESTDIR/usr/lib/amd64 >/dev/null
+    logcmd ln -s ../../../lib/64/libxml2.so.2.9.3 libxml2.so
+    logcmd ln -s ../../../lib/64/libxml2.so.2.9.3 libxml2.so.2
+    logcmd ln -s ../../../lib/64/libxml2.so.2.9.3 libxml2.so.2.9.3
+    popd>/dev/null
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -85,5 +105,6 @@ make_lintlibs xml2 /usr/lib /usr/include/libxml2 "libxml/*.h"
 fix_python_install
 make_isa_stub
 install_license
+move_libs
 make_package
 clean_up
