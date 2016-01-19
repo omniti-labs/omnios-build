@@ -43,7 +43,10 @@ PREFIX=/usr
 #    to avoid collision on shared build systems,
 #    TMPDIR includes a username
 # DTMPDIR is used for constructing the DESTDIR path
-TMPDIR=/tmp/build_$USER
+# Let the environment override TMPDIR.
+if [[ -z $TMPDIR ]]; then
+	TMPDIR=/tmp/build_$USER
+fi
 DTMPDIR=$TMPDIR
 
 # Log file for all output
