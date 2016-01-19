@@ -54,9 +54,9 @@ do
 done
 mkdir -p $DESTDIR/usr/lib
 cp /opt/gcc-${VER}/lib/libgcc_s.so.1 $DESTDIR/usr/lib/libgcc_s.so.1
-ln -s /usr/lib/libgcc_s.so.1 $DESTDIR/usr/lib/libgcc_s.so
+ln -s libgcc_s.so.1 $DESTDIR/usr/lib/libgcc_s.so
 mkdir -p $DESTDIR/usr/lib/amd64
 cp /opt/gcc-${VER}/lib/amd64/libgcc_s.so.1 $DESTDIR/usr/lib/amd64/libgcc_s.so.1
-ln -s /usr/lib/amd64/libgcc_s.so.1 $DESTDIR/usr/lib/amd64/libgcc_s.so
+ln -s libgcc_s.so.1 $DESTDIR/usr/lib/amd64/libgcc_s.so
 make_package runtime.mog
 clean_up
