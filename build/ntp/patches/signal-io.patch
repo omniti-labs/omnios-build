@@ -1,0 +1,16 @@
+--- ntpd/ntp_io.c.orig	Wed Jan 27 11:29:59 2016
++++ ntpd/ntp_io.c	Wed Jan 27 11:30:59 2016
+@@ -62,9 +62,10 @@
+ # endif
+ #endif
+ 
+-#if defined(HAVE_SIGNALED_IO) && defined(DEBUG_TIMING)
+-# undef DEBUG_TIMING
+-#endif
++/*
++ * XXX KEBE SAYS this patch should disappear when the next release after
++ * 4.2.8p6 ships.
++ */
+ 
+ /*
+  * setsockopt does not always have the same arg declaration
