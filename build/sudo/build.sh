@@ -50,6 +50,7 @@ CONFIGURE_OPTS="
     --without-lecture
     --with-ignore-dot
     --with-bsm-audit
+    --disable-pam-session
 "
 
 make_install64() {
