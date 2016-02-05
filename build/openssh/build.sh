@@ -47,32 +47,37 @@ CONFIGURE_OPTS_32="
     "
 # Feature choices
 CONFIGURE_OPTS="
-    --with-solaris-contracts
-    --with-solaris-projects
-    --with-tcp-wrappers
-    --with-ssl-engine
-    --with-pam
     --with-audit=solaris
+    --with-kerberos5=$PREFIX/usr
+    --with-pam
+    --with-sandbox=solaris
+    --with-solaris-contracts
+    --with-solaris-privs
+    --with-tcp-wrappers
+    --with-4in6
+    --enable-strip=no
+    --without-rpath
     --disable-lastlog
+    --with-privsep-user=daemon
+    --with-ssl-engine
+    --with-solaris-projects
     "
 
-install_smf() {
-    logmsg "Installing SMF components"
-    logcmd mkdir -p $DESTDIR/lib/svc/manifest/network || \
-        logerr "--- Failed to create manifest directory"
-    logcmd cp $SRCDIR/ssh.xml $DESTDIR/lib/svc/manifest/network/ || \
-        logerr "--- Failed to copy manifest file"
-    logcmd mkdir -p $DESTDIR/lib/svc/method || \
-        logerr "--- Failed to create method directory"
-    logcmd cp $SRCDIR/method-sshd $DESTDIR/lib/svc/method/sshd || \
-        logerr "--- Failed to copy method script"
-}
+CFLAGS+="-DPAM_ENHANCEMENT -DSET_USE_PAM -DPAM_BUGFIX -DDTRACE_SFTP "
+CFLAGS+="-I/usr/include/kerberosv5 -DKRB5_BUILD_FIX -DDISABLE_BANNER "
+CFLAGS+="-DDEPRECATE_SUNSSH_OPT -DOPTION_DEFAULT_VALUE -DSANDBOX_SOLARIS"
 
-CFLAGS+="-DPAM_ENHANCEMENT -DSET_USE_PAM -DPAM_BUGFIX -DDTRACE_SFTP"
+auto_reconf() {
+        # This package needs a whack upside the head post-patches!
+        pushd $TMPDIR/$BUILDDIR
+        autoreconf -fi
+        popd
+}
 
 init
 download_source $PROG $PROG $VER
 patch_source
+auto_reconf
 prep_build
 run_autoconf
 build
@@ -90,7 +95,6 @@ PKGE=$(url_encode $PKG)
 SUMMARY="OpenSSH Server"
 DESC="OpenSSH Secure Shell protocol Server"
 RUN_DEPENDS_IPS="-pkg:/service/network/ssh pkg:/network/openssh@$VER"
-install_smf
 make_package server.mog
 
 clean_up
