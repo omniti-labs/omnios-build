@@ -48,6 +48,7 @@
 <transform file path=usr/sbin/pkcs11.* -> drop>
 <transform file path=usr/share/man/man1/arpaname.1 -> drop>
 <transform file path=usr/share/man/man1/isc-config.sh.1 -> drop>
+<transform file path=usr/share/man/man1/named-rrchecker.1 -> drop>
 <transform hardlink path=usr/share/man/man1/bind9-config.sh.1 -> drop>
 <transform hardlink path=usr/share/man/man1/bind9-config.1 -> drop>
 <transform dir  path=usr/share/man/man3 -> drop>
