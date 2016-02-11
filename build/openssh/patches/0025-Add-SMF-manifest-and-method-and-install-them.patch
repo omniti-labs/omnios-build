@@ -322,7 +322,7 @@ index 0000000..e91ed55
 +	create_key $SSHKEYDIR/ssh_host_ecdsa_key ecdsa
 +	create_key $SSHKEYDIR/ssh_host_ed25519_key ed25519
 +
-+	/usr/lib/ssh/sshd
++	/usr/sbin/sshd
 +	;;
 +
 +'restart')
