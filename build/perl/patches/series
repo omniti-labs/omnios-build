@@ -1,3 +1,4 @@
 t_op_getppid.t.patch -p0
 rehash.patch
 gcc5-errno.patch
+dupenv.patch
