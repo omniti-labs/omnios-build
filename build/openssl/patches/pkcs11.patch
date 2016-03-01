@@ -10640,19 +10640,17 @@ diff -ruN openssl-1.0.2-orig/crypto/opensslconf.h openssl-1.0.2/crypto/opensslco
 diff -ruN openssl-1.0.2-orig/Makefile openssl-1.0.2/Makefile
 --- openssl-1.0.2-orig/Makefile	Thu Jan 22 11:12:26 2015
 +++ openssl-1.0.2/Makefile	Sun Jan 25 22:14:33 2015
-@@ -11,11 +11,11 @@
- SHLIB_VERSION_HISTORY=
+@@ -12,10 +12,10 @@
  SHLIB_MAJOR=1
  SHLIB_MINOR=0.0
--SHLIB_EXT=
+ SHLIB_EXT=
 -PLATFORM=dist
--OPTIONS= no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-libunbound no-md2 no-rc5 no-rfc3779 no-sctp no-shared no-ssl-trace no-store no-unit-test no-zlib no-zlib-dynamic static-engine
+-OPTIONS= no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-libunbound no-md2 no-rc5 no-rfc3779 no-sctp no-shared no-ssl-trace no-ssl2 no-store no-unit-test no-weak-ssl-ciphers no-zlib no-zlib-dynamic static-engine
 -CONFIGURE_ARGS=dist
 -SHLIB_TARGET=
-+SHLIB_EXT=.so.$(SHLIB_MAJOR).$(SHLIB_MINOR)
 +PLATFORM=solaris-x86-cc
-+OPTIONS=--pk11-libname=/usr/lib/64/libpkcs11.so.1 enable-shared enable-threads enable-zlib enable-md2 --prefix=/opt/omni no-gmp no-jpake no-krb5 no-rc5 no-rfc3779 no-store no-sctp no-zlib-dynamic no-static-engine static-engine
-+CONFIGURE_ARGS=solaris-x86-cc shared threads zlib enable-md2 --prefix=/opt/omni
++OPTIONS= --pk11-libname=/usr/lib/64/libpkcs11.so.1 enable-shared enable-threads enable-zlib --prefix=/opt/omni no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-sctp no-ssl2 no-store no-weak-ssl-ciphers no-zlib-dynamic no-static-engine static-engine
++CONFIGURE_ARGS=solaris-x86-cc shared threads zlib --prefix=/opt/omni
 +SHLIB_TARGET=solaris-shared
  
  # HERE indicates where this Makefile lives.  This can be used to indicate
@@ -10678,9 +10676,9 @@ diff -ruN openssl-1.0.2-orig/Makefile openssl-1.0.2/Makefile
  
  CC= cc
 -CFLAG= -O
--DEPFLAG= -DOPENSSL_NO_EC_NISTP_64_GCC_128 -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_LIBUNBOUND -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_SCTP -DOPENSSL_NO_SSL_TRACE -DOPENSSL_NO_STORE -DOPENSSL_NO_UNIT_TEST
-+CFLAG=-KPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -fast -xtarget=generic -O -Xa
-+DEPFLAG= -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_STORE
+-DEPFLAG= -DOPENSSL_NO_EC_NISTP_64_GCC_128 -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_LIBUNBOUND -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_SCTP -DOPENSSL_NO_SSL_TRACE -DOPENSSL_NO_SSL2 -DOPENSSL_NO_STORE -DOPENSSL_NO_UNIT_TEST -DOPENSSL_NO_WEAK_SSL_CIPHERS
++CFLAG= -KPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -fast -xtarget=generic -O -Xa
++DEPFLAG= -DOPENSSL_NO_EC_NISTP_64_GCC_128 -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_SCTP -DOPENSSL_NO_SSL2 -DOPENSSL_NO_STORE -DOPENSSL_NO_WEAK_SSL_CIPHERS
  PEX_LIBS= 
 -EX_LIBS= 
 +EX_LIBS= -lsocket -lnsl -ldl -lz
