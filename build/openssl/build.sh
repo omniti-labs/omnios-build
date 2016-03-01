@@ -57,7 +57,7 @@ configure32() {
       SSLPLAT=solaris-x86-gcc
     fi
     logmsg "--- Configure (32-bit) $SSLPLAT"
-    logcmd ./Configure $SSLPLAT --pk11-libname=/usr/lib/libpkcs11.so.1 shared threads zlib enable-md2 --prefix=$PREFIX ||
+    logcmd ./Configure $SSLPLAT --pk11-libname=/usr/lib/libpkcs11.so.1 shared threads zlib enable-ssl2 --prefix=$PREFIX ||
         logerr "Failed to run configure"
     SHARED_LDFLAGS="-shared -Wl,-z,text"
 }
@@ -68,7 +68,7 @@ configure64() {
       SSLPLAT=solaris64-x86_64-gcc
     fi
     logmsg "--- Configure (64-bit) $SSLPLAT"
-    logcmd ./Configure $SSLPLAT --pk11-libname=/usr/lib/64/libpkcs11.so.1 shared threads zlib enable-md2 \
+    logcmd ./Configure $SSLPLAT --pk11-libname=/usr/lib/64/libpkcs11.so.1 shared threads zlib enable-ssl2 \
         --prefix=$PREFIX ||
         logerr "Failed ot run configure"
     SHARED_LDFLAGS="-m64 -shared -Wl,-z,text"

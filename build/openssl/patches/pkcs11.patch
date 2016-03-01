@@ -7372,7 +7372,7 @@ diff -ruN openssl-1.0.2-orig/crypto/engine/Makefile openssl-1.0.2/crypto/engine/
 +hw_pk11.o: ../../include/openssl/ui.h ../../include/openssl/err.h
 +hw_pk11.o: ../../include/openssl/lhash.h ../../include/openssl/dso.h
 +hw_pk11.o: ../../include/openssl/pem.h ../../include/openssl/evp.h
-+hw_pk11.o: ../../include/openssl/md2.h ../../include/openssl/md4.h
++hw_pk11.o: ../../include/openssl/md4.h
 +hw_pk11.o: ../../include/openssl/md5.h ../../include/openssl/sha.h
 +hw_pk11.o: ../../include/openssl/ripemd.h ../../include/openssl/des.h
 +hw_pk11.o: ../../include/openssl/des_old.h ../../include/openssl/ui_compat.h
@@ -7396,7 +7396,7 @@ diff -ruN openssl-1.0.2-orig/crypto/engine/Makefile openssl-1.0.2/crypto/engine/
 +hw_pk11_pub.o: ../../include/openssl/ui.h ../../include/openssl/err.h
 +hw_pk11_pub.o: ../../include/openssl/lhash.h ../../include/openssl/dso.h
 +hw_pk11_pub.o: ../../include/openssl/pem.h ../../include/openssl/evp.h
-+hw_pk11_pub.o: ../../include/openssl/md2.h ../../include/openssl/md4.h
++hw_pk11_pub.o: ../../include/openssl/md4.h
 +hw_pk11_pub.o: ../../include/openssl/md5.h ../../include/openssl/sha.h
 +hw_pk11_pub.o: ../../include/openssl/ripemd.h ../../include/openssl/des.h
 +hw_pk11_pub.o: ../../include/openssl/des_old.h ../../include/openssl/ui_compat.h
@@ -10649,7 +10649,7 @@ diff -ruN openssl-1.0.2-orig/Makefile openssl-1.0.2/Makefile
 -CONFIGURE_ARGS=dist
 -SHLIB_TARGET=
 +PLATFORM=solaris-x86-cc
-+OPTIONS= --pk11-libname=/usr/lib/64/libpkcs11.so.1 enable-shared enable-threads enable-zlib --prefix=/opt/omni no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-sctp no-ssl2 no-store no-weak-ssl-ciphers no-zlib-dynamic no-static-engine static-engine
++OPTIONS= --pk11-libname=/usr/lib/64/libpkcs11.so.1 enable-shared enable-threads enable-zlib enable-ssl2 --prefix=/opt/omni no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-sctp no-store no-weak-ssl-ciphers no-zlib-dynamic no-static-engine static-engine
 +CONFIGURE_ARGS=solaris-x86-cc shared threads zlib --prefix=/opt/omni
 +SHLIB_TARGET=solaris-shared
  
@@ -10678,7 +10678,7 @@ diff -ruN openssl-1.0.2-orig/Makefile openssl-1.0.2/Makefile
 -CFLAG= -O
 -DEPFLAG= -DOPENSSL_NO_EC_NISTP_64_GCC_128 -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_LIBUNBOUND -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_SCTP -DOPENSSL_NO_SSL_TRACE -DOPENSSL_NO_SSL2 -DOPENSSL_NO_STORE -DOPENSSL_NO_UNIT_TEST -DOPENSSL_NO_WEAK_SSL_CIPHERS
 +CFLAG= -KPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -fast -xtarget=generic -O -Xa
-+DEPFLAG= -DOPENSSL_NO_EC_NISTP_64_GCC_128 -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_SCTP -DOPENSSL_NO_SSL2 -DOPENSSL_NO_STORE -DOPENSSL_NO_WEAK_SSL_CIPHERS
++DEPFLAG= -DOPENSSL_NO_EC_NISTP_64_GCC_128 -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_SCTP -DOPENSSL_NO_STORE -DOPENSSL_NO_WEAK_SSL_CIPHERS
  PEX_LIBS= 
 -EX_LIBS= 
 +EX_LIBS= -lsocket -lnsl -ldl -lz
