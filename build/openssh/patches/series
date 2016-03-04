@@ -26,7 +26,6 @@ sshd_config.patch
 0025-Add-SMF-manifest-and-method-and-install-them.patch 
 0026-Make-default-sshd_config-more-like-the-old-illumos-o.patch 
 0027-Add-with-key-dir-configure-option-to-place-SSH-host-.patch 
-0028-Re-enable-DSA-keys-for-pk-auth.patch 
 0029-Don-t-use-krb5-config-to-check-for-GSSAPI-on-Illumos.patch 
 0030-Set-default-sshd-options-based-on-etc-default-login.patch 
 0031-Compatibility-for-SunSSH_1.5-should-include-old-DH-K.patch 
