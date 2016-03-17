@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=nss
-VER=3.22
+VER=3.23
 # Include NSPR version since we're downloading a combined tarball.
-NSPRVER=4.11
+NSPRVER=4.12
 # But set BUILDDIR to just be the NSS version.
 BUILDDIR=$PROG-$VER
 VERHUMAN=$VER
@@ -52,9 +52,6 @@ NSS_LIBS="libfreebl3.so libnss3.so
 	libnssutil3.so libsmime3.so
 	libsoftokn3.so libssl3.so"
 NSPR_LIBS="libnspr4.so libplc4.so libplds4.so"
-
-# Use old gcc4 standards level for this.
-export OS_CFLAGS="-std=gnu89"
 
 # Variables that switch between NSS and NSPR
 TGT_LIBS=$NSS_LIBS
