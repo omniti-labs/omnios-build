@@ -1,7 +1,7 @@
-diff -ru expat-2.1.0-orig/configure expat-2.1.0/configure
---- expat-2.1.0-orig/configure	Sat Mar 24 15:12:48 2012
-+++ expat-2.1.0/configure	Tue Aug 12 15:10:47 2014
-@@ -15161,9 +15161,9 @@
+diff -ru expat-2.1.1-orig/configure expat-2.1.1/configure
+--- expat-2.1.1-orig/configure	Fri Mar 11 22:22:24 2016
++++ expat-2.1.1/configure	Fri Mar 18 15:05:04 2016
+@@ -15216,9 +15216,9 @@
  
  if test "$GCC" = yes ; then
                          OLDCFLAGS="$CFLAGS -Wall -Wmissing-prototypes -Wstrict-prototypes"
@@ -14,9 +14,9 @@ diff -ru expat-2.1.0-orig/configure expat-2.1.0/configure
      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
  /* end confdefs.h.  */
  
-diff -ru expat-2.1.0-orig/configure.in expat-2.1.0/configure.in
---- expat-2.1.0-orig/configure.in	Sat Mar  3 18:45:53 2012
-+++ expat-2.1.0/configure.in	Tue Aug 12 15:11:41 2014
+diff -ru expat-2.1.1-orig/configure.ac expat-2.1.1/configure.ac
+--- expat-2.1.1-orig/configure.ac	Fri Mar 11 22:21:09 2016
++++ expat-2.1.1/configure.ac	Fri Mar 18 15:04:45 2016
 @@ -67,13 +67,13 @@
  
  if test "$GCC" = yes ; then
