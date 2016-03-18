@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=dbus-glib
-VER=0.100
+VER=0.106
 PKG=system/library/libdbus-glib
 SUMMARY="$PROG - GNOME GLib DBUS integration library"
 DESC="$SUMMARY"
