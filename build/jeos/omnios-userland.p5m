@@ -107,7 +107,7 @@ depend fmri=system/install/text-install@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/kvm@1.0,5.11-@PVER@ type=incorporate
 depend fmri=system/library/boot-management@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/c++/sunpro@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/library/dbus@1.6.8,5.11-@PVER@ type=incorporate
+depend fmri=system/library/dbus@1.10.8,5.11-@PVER@ type=incorporate
 depend fmri=system/library/g++-4-runtime@4.8.1,5.11-@PVER@ type=incorporate
 depend fmri=system/library/gcc-4-runtime@4.8.1,5.11-@PVER@ type=incorporate
 depend fmri=system/library/g++-5-runtime@5.1,5.11-@PVER@ type=incorporate
@@ -117,7 +117,7 @@ depend fmri=system/library/iconv/utf-8@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/iconv/utf-8/manual@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/iconv/xsh4/latin@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/install@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/library/libdbus@1.6.8,5.11-@PVER@ type=incorporate
+depend fmri=system/library/libdbus@1.10.8,5.11-@PVER@ type=incorporate
 depend fmri=system/library/libdbus-glib@0.106,5.11-@PVER@ type=incorporate
 depend fmri=system/library/mozilla-nss@3.23,5.11-@PVER@ type=incorporate
 depend fmri=system/library/mozilla-nss/header-nss@3.23,5.11-@PVER@ type=incorporate
