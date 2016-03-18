@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=findutils
-VER=4.4.2
+VER=4.6.0
 PKG=file/gnu-findutils
 SUMMARY="GNU utilities find and xargs"
 DESC="$SUMMARY"
