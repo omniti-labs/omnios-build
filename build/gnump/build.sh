@@ -28,8 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=gmp
-# NOTE: The GMP upstream calls it 6.0.0a, but it untars to 6.0.0.
-VER=6.0.0
+VER=6.1.0
 VERHUMAN=$VER
 PKG=library/gmp
 SUMMARY="GNU MP $VER"
