@@ -28,11 +28,14 @@
 . ../../lib/functions.sh
 
 PROG=iperf
-VER=3.0.11
+VER=3.1.2
 VERHUMAN=$VER
 PKG=network/test/iperf
 SUMMARY="iperf network testing tool"
 DESC="$SUMMARY $VER"
+
+# As of 3.1.2, iperf depends on GNU tar specific crud.
+TAR=gtar
 
 DEPENDS_IPS="system/library"
 
