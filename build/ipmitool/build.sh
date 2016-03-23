@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ipmitool
-VER=1.8.15
+VER=1.8.16
 VERHUMAN=$VER
 PKG=system/management/ipmitool
 SUMMARY="IPMI management tool"
@@ -39,7 +39,8 @@ BUILD_DEPENDS_IPS="driver/ipmi"
 BUILDARCH=32
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/sbin --sbindir=/usr/lib"
 CONFIGURE_OPTS="$CONFIGURE_OPTS --mandir=/usr/share/man
-	--enable-intf-free=no
+	--enable-intf-free=yes
+	--enable-intf-usb=no
 	--enable-solaris-opt"
 
 install_smf(){

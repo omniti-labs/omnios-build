@@ -1,0 +1,36 @@
+--- ipmitool-1.8.16-orig/lib/helper.c	Fri Feb 19 16:01:38 2016
++++ ipmitool-1.8.16/lib/helper.c	Wed Mar 23 14:24:07 2016
+@@ -29,7 +29,7 @@
+  * LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE,
+  * EVEN IF SUN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+  */
+-#define _POSIX_SOURCE
++/* #define _POSIX_SOURCE */
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
+--- ipmitool-1.8.16-orig/src/plugins/open/open.c	Fri Feb 19 16:01:38 2016
++++ ipmitool-1.8.16/src/plugins/open/open.c	Wed Mar 23 14:24:44 2016
+@@ -29,7 +29,7 @@
+  * LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE,
+  * EVEN IF SUN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+  */
+-#define _POSIX_SOURCE
++/* #define _POSIX_SOURCE */
+ 
+ #include <stdio.h>
+ #include <fcntl.h>
+--- ipmitool-1.8.16-orig/src/plugins/ipmi_intf.c        Fri Feb 19 16:02:19 2016
++++ ipmitool-1.8.16/src/plugins/ipmi_intf.c     Wed Mar 23 15:17:54 2016
+@@ -29,8 +29,8 @@
+  * LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE,
+  * EVEN IF SUN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+  */
+-#define _XOPEN_SOURCE 700
+-#define _GNU_SOURCE 1
++/*#define _XOPEN_SOURCE 700
++#define _GNU_SOURCE 1 */
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+
