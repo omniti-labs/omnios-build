@@ -1,6 +1,20 @@
 diff -ru openssh-7.1p1.orig/sshd_config openssh-7.1p1/sshd_config
 --- openssh-7.1p1.orig/sshd_config	Fri Aug 21 00:49:03 2015
 +++ openssh-7.1p1/sshd_config	Wed Sep  2 08:52:58 2015
+@@ -21,10 +21,10 @@
+ # HostKey for protocol version 1
+ #HostKey /etc/ssh/ssh_host_key
+ # HostKeys for protocol version 2
+-#HostKey /etc/ssh/ssh_host_rsa_key
++HostKey /etc/ssh/ssh_host_rsa_key
+ #HostKey /etc/ssh/ssh_host_dsa_key
+-#HostKey /etc/ssh/ssh_host_ecdsa_key
+-#HostKey /etc/ssh/ssh_host_ed25519_key
++HostKey /etc/ssh/ssh_host_ecdsa_key
++HostKey /etc/ssh/ssh_host_ed25519_key
+ 
+ # Lifetime and size of ephemeral version 1 server key
+ #KeyRegenerationInterval 1h
 @@ -41,7 +41,7 @@
  # Authentication:
  
