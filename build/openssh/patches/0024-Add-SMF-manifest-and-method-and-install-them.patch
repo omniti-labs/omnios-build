@@ -227,7 +227,7 @@ index 0000000..e91ed55
 +. /lib/svc/share/smf_include.sh
 +
 +SSHDIR=/etc/ssh
-+SSHKEYDIR=/var/ssh
++SSHKEYDIR=/etc/ssh
 +KEYGEN="/usr/bin/ssh-keygen -q"
 +PIDFILE=/var/run/sshd.pid
 +
