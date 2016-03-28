@@ -12,7 +12,7 @@ Subject: [PATCH 15/34] GSS-API key exchange support
  kex.c          |  11 +-
  kex.h          |  11 ++
  kexgssc.c      | 347 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- kexgsss.c      | 297 ++++++++++++++++++++++++++++++++++++++++++++++++
+ kexgsss.c      | 296 ++++++++++++++++++++++++++++++++++++++++++++++++
  monitor.c      |  77 +++++++++++++
  monitor.h      |   3 +
  monitor_wrap.c |  23 ++++
@@ -30,7 +30,7 @@ Subject: [PATCH 15/34] GSS-API key exchange support
  sshd_config.4  |   5 +
  sshkey.c       |   1 +
  sshkey.h       |   3 +
- 26 files changed, 1237 insertions(+), 21 deletions(-)
+ 26 files changed, 1236 insertions(+), 21 deletions(-)
  create mode 100644 kexgssc.c
  create mode 100644 kexgsss.c
 
@@ -878,7 +878,7 @@ new file mode 100644
 index 0000000..2009cd9
 --- /dev/null
 +++ b/kexgsss.c
-@@ -0,0 +1,297 @@
+@@ -0,0 +1,296 @@
 +/*
 + * Copyright (c) 2001-2009 Simon Wilkinson. All rights reserved.
 + *
@@ -999,13 +999,12 @@ index 0000000..2009cd9
 +		min = packet_get_int();
 +		nbits = packet_get_int();
 +		max = packet_get_int();
-+		min = MAX(DH_GRP_MIN, min);
-+		max = MIN(DH_GRP_MAX, max);
 +		packet_check_eom();
 +		if (max < min || nbits < min || max < nbits)
 +			fatal("GSS_GEX, bad parameters: %d !< %d !< %d",
 +			    min, nbits, max);
-+		kex->dh = PRIVSEP(choose_dh(min, nbits, max));
++		kex->dh = PRIVSEP(choose_dh(MAX(DH_GRP_MIN, min),
++		    nbits, MIN(DH_GRP_MAX, max)));
 +		if (kex->dh == NULL)
 +			packet_disconnect("Protocol error:"
 +			    " no matching group found");
