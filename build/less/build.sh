@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2015 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=less       # App name
-VER=458         # App version
+VER=481         # App version
 PKG=text/less    # Package name (without prefix)
 SUMMARY="$PROG - GNU paginator"
 DESC="$SUMMARY"
