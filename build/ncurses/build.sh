@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ncurses
-VER=5.9
+VER=6.0
 VERHUMAN=$VER
 PKG=library/ncurses
 SUMMARY="A CRT screen handling and optimization package."
@@ -36,22 +36,24 @@ DESC="$SUMMARY"
 
 DEPENDS_IPS="shell/bash system/library"
 
-CPPFLAGS='-std=c99'
-CFLAGS="-std=c99"
 LD=/usr/ccs/bin/ld
 export LD
 GPREFIX=$PREFIX/gnu
-CONFIGURE_OPTS="
+CONFIGURE_OPTS_COMMON="
     --program-prefix=g
     --mandir=$GPREFIX/share/man
     --disable-overwrite
     --without-normal
     --with-shared
     --enable-widec
+    --disable-lib-suffixes
     --without-debug
+    --enable-string-hacks
     --includedir=$PREFIX/include/ncurses
     --prefix=$GPREFIX
 "
+CONFIGURE_OPTS_ABI6="$CONFIGURE_OPTS_COMMON"
+CONFIGURE_OPTS_ABI5="$CONFIGURE_OPTS_COMMON --with-abi-version=5"
 CONFIGURE_OPTS_32="
     --bindir=$PREFIX/bin/$ISAPART"
 
@@ -70,11 +72,31 @@ gnu_links() {
     mv $DESTDIR/$GPREFIX/lib/$ISAPART64/libncurses* $DESTDIR/$PREFIX/lib/$ISAPART64
 }
 
+save_function make_install make_install_orig
+make_install_libs() {
+    logmsg "--- make install.libs"
+    logcmd $MAKE DESTDIR=${DESTDIR} install.libs || \
+        logerr "--- Make install.libs failed"
+}
+build_abi5() {
+    logmsg '--- Building backward-compatible ABI version 5 libraries.'
+    CONFIGURE_OPTS="$CONFIGURE_OPTS_ABI5"
+    save_function make_install_libs make_install
+    build
+}
+build_abi6() {
+    logmsg '--- Building ABI version 6.'
+    CONFIGURE_OPTS="$CONFIGURE_OPTS_ABI6"
+    save_function make_install_orig make_install
+    build
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
-build
+build_abi5
+build_abi6
 make_isa_stub
 gnu_links
 make_package

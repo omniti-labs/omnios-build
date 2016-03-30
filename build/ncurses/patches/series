@@ -1,3 +1,0 @@
-configure.patch -p0
-remove-cfmakeflags.patch -p0
-gcc5.patch -p1
