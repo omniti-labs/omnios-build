@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=Mako
-VER=1.0.1
+VER=1.0.4
 PKG=library/python-2/mako
 SUMMARY="Mako - a python templating language"
 DESC="$SUMMARY"
