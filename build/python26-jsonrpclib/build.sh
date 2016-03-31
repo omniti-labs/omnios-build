@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=jsonrpclib
-VER=0.1.3
+VER=0.1.7
 PKG=library/python-2/jsonrpclib-26
 SUMMARY="A Python JSON-RPC over HTTP that mirrors xmlrpclib syntax"
 DESC="$SUMMARY"
