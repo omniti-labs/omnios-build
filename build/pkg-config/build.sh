@@ -29,7 +29,7 @@
 . ../../lib/functions.sh
 
 PROG=pkg-config
-VER=0.28
+VER=0.29.1
 VERHUMAN=$VER
 PKG=developer/pkg-config
 SUMMARY="A tool for generating compiler command line options"
@@ -37,8 +37,6 @@ DESC="pkg-config is a helper tool used when compiling applications and libraries
 
 BUILD_DEPENDS_IPS=
 RUN_DEPENDS_IPS=
-
-CONFIGURE_OPTS="--with-internal-glib"
 
 # Use old gcc4 standards level for this.
 CFLAGS="$CFLAGS -std=gnu89"
