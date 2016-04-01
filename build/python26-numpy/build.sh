@@ -28,18 +28,25 @@
 . ../../lib/functions.sh
 
 PROG=numpy
-VER=1.10.2
+VER=1.11.0
 PKG=library/python-2/numpy-26
 SUMMARY="numpy - package for scientific computing with Python"
 DESC="$SUMMARY"
 
 DEPENDS_IPS="runtime/python-26"
 
+# This builds leaves uncleanable crud behind.  See pre_python_64() below for
+# more details.
+REMOVE_PREVIOUS=1
+
 pre_python_64() {
 	logmsg "prepping 64bit python build"
-	# Remove any 32-bit binaries that got built.
-	logcmd $PYTHON ./setup.py clean
+	# "./setup.py clean" was removed from numpy.  Use a more
+	# brute-force approach.
+	logcmd /bin/rm -rf build
 }
+
+save_function clean_up clean_up_orig
 
 init
 download_source $PROG $PROG $VER
