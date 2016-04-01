@@ -1,0 +1,16 @@
+diff -ru jsonrpclib-0.1.7-orig/jsonrpclib/SimpleJSONRPCServer.py jsonrpclib-0.1.7/jsonrpclib/SimpleJSONRPCServer.py
+--- jsonrpclib-0.1.7-orig/jsonrpclib/SimpleJSONRPCServer.py	Mon Dec  7 01:57:40 2015
++++ jsonrpclib-0.1.7/jsonrpclib/SimpleJSONRPCServer.py	Fri Apr  1 13:20:17 2016
+@@ -139,8 +139,10 @@
+                 else:
+                     response = func(**params)
+                 return response
+-            # except TypeError:
+-            #     return Fault(-32602, 'Invalid parameters.')
++            # Reinstate these two lines for OmniOS's pkg(5). At the very least,
++            # its test suite depends on TypeError returning what is below.
++            except TypeError:
++                return Fault(-32602, 'Invalid parameters.')
+             except:
+                 err_lines = traceback.format_exc().splitlines()
+                 trace_string = '%s | %s' % (err_lines[-3], err_lines[-1])
