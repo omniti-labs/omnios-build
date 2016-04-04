@@ -1,5 +1,5 @@
---- tmux-1.9a/libevent-2.0.20-stable/evutil_rand.c.orig	Fri Apr 24 13:55:50 2015
-+++ tmux-1.9a/libevent-2.0.20-stable/evutil_rand.c	Fri Apr 24 13:58:04 2015
+--- tmux-2.1/libevent-2.0.22-stable/evutil_rand.c.orig	Fri Apr 24 13:55:50 2015
++++ tmux-2.1/libevent-2.0.22-stable/evutil_rand.c	Fri Apr 24 13:58:04 2015
 @@ -153,7 +153,14 @@
  void
  evutil_secure_rng_add_bytes(const char *buf, size_t n)

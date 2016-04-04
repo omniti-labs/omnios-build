@@ -28,12 +28,12 @@
 . ../../lib/functions.sh
 
 PROG=tmux
-VER=2.0
+VER=2.1
 VERHUMAN=$VER
 PKG=terminal/tmux
 SUMMARY="terminal multiplexer"
 DESC="$SUMMARY"
-LIBEVENT_VER=2.0.20
+LIBEVENT_VER=2.0.22
 LDIR=libevent-${LIBEVENT_VER}-stable
 
 BUILDARCH=32
@@ -49,7 +49,7 @@ configure32(){
   logmsg "configuring libevent"
   logcmd ./configure --disable-static --disable-libevent-install || \
     logerr "failed libevent configure"
-  logcmd "building a static libevent"
+  logmsg "building a static libevent"
   # Ewww, we have to patch libevent as well. Change PATCHDIR for now...
   PATCHDIR=patches-libevent
   patch_source

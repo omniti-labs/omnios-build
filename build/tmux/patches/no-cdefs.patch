@@ -1,0 +1,22 @@
+--- tmux-2.1/compat/vis.h.orig	Sun Sep 27 05:42:08 2015
++++ tmux-2.1/compat/vis.h	Mon Apr  4 10:46:16 2016
+@@ -73,9 +73,9 @@
+  */
+ #define	UNVIS_END	1	/* no more characters */
+ 
+-#include <sys/cdefs.h>
++/* #include <sys/cdefs.h> 
+ 
+-__BEGIN_DECLS
++__BEGIN_DECLS */
+ char	*vis(char *, int, int, int);
+ int	strvis(char *, const char *, int);
+ int	stravis(char **, const char *, int);
+@@ -85,6 +85,6 @@
+ int	unvis(char *, char, int *, int);
+ ssize_t strnunvis(char *, const char *, size_t);
+ 
+-__END_DECLS
++/* __END_DECLS */
+ 
+ #endif /* !_VIS_H_ */

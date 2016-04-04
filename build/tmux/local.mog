@@ -1,2 +1,2 @@
-license libevent-2.0.20-stable/LICENSE license=OpenBSD
+license libevent-2.0.22-stable/LICENSE license=OpenBSD
 license files/LICENSE license=BSD
