@@ -28,8 +28,8 @@
 . ../../lib/functions.sh
 
 PROG=sqlite-autoconf
-VER=3081101
-VERHUMAN=3.8.11.1
+VER=3120000
+VERHUMAN=3.12.0
 PKG=database/sqlite-3
 SUMMARY="SQL database engine library"
 DESC="$SUMMARY"
