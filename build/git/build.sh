@@ -34,7 +34,7 @@ PKG=developer/versioning/git
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
 
-BUILD_DEPENDS_IPS="compatibility/ucb developer/build/autoconf"
+BUILD_DEPENDS_IPS="compatibility/ucb developer/build/autoconf archiver/gnu-tar"
 
 DEPENDS_IPS="runtime/python-26 \
              web/curl \
