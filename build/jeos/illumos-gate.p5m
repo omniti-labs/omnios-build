@@ -678,6 +678,7 @@ depend fmri=service/network/slp@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=service/network/smtp/sendmail@8.14.4,5.11-@PVER@ type=incorporate
 depend fmri=service/network/snmp/mibiisa@0.5.11,5.11-0.148 type=incorporate
 depend fmri=service/network/ssh@0.5.11,5.11-@PVER@ type=incorporate
+depend fmri=service/network/ssh-common@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=service/network/telnet@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=service/network/tftp@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=service/network/uucp@0.5.11,5.11-@PVER@ type=incorporate
