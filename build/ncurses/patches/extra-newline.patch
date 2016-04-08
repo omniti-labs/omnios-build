@@ -1,0 +1,13 @@
+--- ncurses-6.0-orig/configure  Wed Aug  5 05:20:32 2015
++++ ncurses-6.0/configure       Fri Apr  8 15:12:57 2016
+@@ -24038,6 +24038,10 @@
+ echo installing \$SRC in \$DST
+ CF_EOF
+ 
++# Gratuitious newline because rarely, this script doesn't insert one here.
++# An extra newline won't hurt, however.
++echo "" >>headers.sh
++
+ if test $WITH_CURSES_H = yes; then
+        cat >>headers.sh <<CF_EOF
+ case \$DST in
