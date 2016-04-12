@@ -297,7 +297,7 @@ depend fmri=system/boot/wanboot@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/data/hardware-registry@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/data/keyboard/keytables@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/data/terminfo@0.5.11,5.11-@PVER@ type=require
-depend fmri=system/data/zoneinfo@2015.7,5.11-@PVER@ type=require
+depend fmri=system/data/zoneinfo@2016.3,5.11-@PVER@ type=require
 depend fmri=system/extended-system-utilities@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/file-system/autofs@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/file-system/nfs@0.5.11,5.11-@PVER@ type=require
