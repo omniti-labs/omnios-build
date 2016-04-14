@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2013 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 # Copyright (c) 2014 by Delphix. All rights reserved.
 #
@@ -33,6 +33,12 @@ VER=1.7.0
 UPDATE=76
 BUILD=31
 VERHUMAN="jdk7u${UPDATE}-b${BUILD}"
+
+# Taken from illumos...
+# Magic variables to prevent the devpro compilers/teamware from checking
+# for updates or sending mail back to devpro on every use.
+export SUNW_NO_UPDATE_NOTIFY='1'
+export UT_NO_USAGE_TRACKING='1'
 
 # Mercurial hash from jdk7u repo marking the desired update/build
 # taken from http://hg.openjdk.java.net/jdk7u/jdk7u/file/tip/.hgtags
