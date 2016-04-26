@@ -74,9 +74,18 @@ auto_reconf() {
         popd
 }
 
+copy_smf() {
+    mkdir -p $TMPDIR/$BUILDDIR/smf
+    cp $SRCDIR/files/sshd-method $TMPDIR/$BUILDDIR/smf/method.sh ||
+        logerr 'method script copy failed'
+    cp $SRCDIR/files/ssh.xml $TMPDIR/$BUILDDIR/smf/manifest.xml ||
+        logerr 'manifest copy failed'
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
+copy_smf
 auto_reconf
 prep_build
 run_autoconf
