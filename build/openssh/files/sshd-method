@@ -1,0 +1,42 @@
+#!/sbin/sh
+#
+# Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+
+. /lib/svc/share/ipf_include.sh
+. /lib/svc/share/smf_include.sh
+
+create_ipf_rules()
+{
+	FMRI=$1
+	ipf_file=`fmri_to_file ${FMRI} $IPF_SUFFIX`
+	policy=`get_policy ${FMRI}`
+
+	tports=`/usr/sbin/sshd -T 2>/dev/null | awk '/^port / {print $2}'`
+
+	echo "# $FMRI" >$ipf_file
+	for port in $tports; do
+		generate_rules $FMRI $policy "tcp" "any" $port $ipf_file
+	done
+}
+
+case $1 in
+'ipfilter')
+	create_ipf_rules $2
+	;;
+
+'start')
+	# If host keys don't exist when the service is started, create
+	# them.
+        /usr/bin/ssh-keygen -A || exit $SMF_EXIT_ERR_FATAL
+	exec /usr/sbin/sshd
+	;;
+
+*)
+	echo "Usage: $0 start"
+	exit 1
+	;;
+esac
+
+exit $?
