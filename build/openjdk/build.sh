@@ -30,8 +30,8 @@
 
 PROG=openjdk
 VER=1.7.0
-UPDATE=76
-BUILD=31
+UPDATE=101
+BUILD=00
 VERHUMAN="jdk7u${UPDATE}-b${BUILD}"
 
 # Taken from illumos...
@@ -42,7 +42,7 @@ export UT_NO_USAGE_TRACKING='1'
 
 # Mercurial hash from jdk7u repo marking the desired update/build
 # taken from http://hg.openjdk.java.net/jdk7u/jdk7u/file/tip/.hgtags
-HGREV=ed58c355d118cb3d9713de41ecb105cca3175472
+HGREV=12491db47c7ccffcc3e881df68f4c2f727b44e5d
 
 PKG=
 SUMMARY="x"
