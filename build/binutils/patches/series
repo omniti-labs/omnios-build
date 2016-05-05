@@ -1,2 +1,3 @@
 gold-fallocate.patch
 x86ld64so.patch
+bfd_config.patch
