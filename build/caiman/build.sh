@@ -44,7 +44,7 @@ DESC="$SUMMARY"
 
 #all of the ips depends should be available from OmniTI repos
 
-BUILD_DEPENDS_IPS="developer/sunstudio12.1 system/boot/wanboot system/boot/wanboot/internal developer/build/onbld system/library developer/versioning/git developer/swig"
+BUILD_DEPENDS_IPS="developer/sunstudio12.1 system/boot/wanboot system/boot/wanboot/internal developer/build/onbld system/library developer/versioning/git developer/swig developer/illumos-closed"
 
 GIT=git
 
@@ -53,30 +53,15 @@ PKGPREFIX=""
 PREFIX=""
 BUILDDIR=$PROG-$VER
 CODEMGR_WS=$TMPDIR/$BUILDDIR/caiman
-ON_CLOSED_BINS="$CODEMGR_WS/closed"
+ON_CLOSED_BINS="/opt/onbld/closed"
 export ON_CLOSED_BINS
+
+# Workaround for caiman.
+export SPRO_ROOT=/opt/sunstudio12.1
 
 CAIMAN_CODEMGR_SEDSTRING="s/CODEMGR_WS=.*/CODEMGR_WS=`echo $CODEMGR_WS | sed 's/\//\\\\\//g'`/g"
 CAIMAN_PKG_REDIST="PKGPUBLISHER_REDIST=omnios; export PKGPUBLISHER_REDIST;"
 CAIMAN_PKG_BRANCH="PKGVERS_BRANCH=$PVER; export PKGVERS_BRANCH;"
-
-sunstudio_location() {
-    logmsg "Ensuring that Sun Studio is where Caiman thinks it is..."
-    if [[ -d /opt/SUNWspro ]]; then
-	logmsg "--- fake SUNWspro directory exists, good"
-    else
-	logmsg "--- making fake SUNWspro directory"
-	logcmd mkdir -p /opt/SUNWspro || \
-	    logerr "--- Error: failed to make directory"
-    fi
-    if [[ -L /opt/SUNWspro/sunstudio12.1 ]]; then
-	logmsg "--- sunstudio12.1 link exists, good"
-    else
-	logmsg "--- soft-linking to /opt/sunstudio12.1"
-        logcmd ln -s /opt/sunstudio12.1 /opt/SUNWspro/sunstudio12.1 || \
-            logerr "--- Failed: ln -s /opt/sunstudio12.1/ /opt/SUNWspro"
-    fi
-}
 
 #In order for the clone to work while running as root, you must have ssh'ed into the box with agent forwarding turned on.  Also the sudo'er file must either have the default, group, or user set to allow SSL_AUTH_SOCK.
 
@@ -111,20 +96,6 @@ modify_build_script() {
 
 }
 
-closed_bins() {
-    logmsg "Entering $CODEMGR_WS"
-    pushd $CODEMGR_WS > /dev/null
-    logmsg "Getting Closed Source Bins..."
-    for bin in on-closed-bins.i386.tar.bz2 on-closed-bins-nd.i386.tar.bz2 ; do
-        if [[ ! -f $bin ]]; then
-	    get_resource illumos-gate/$bin || logerr "Unable to get $bin"
-        fi
-        logcmd tar xpf $bin
-    done
-    logmsg "Leaving $CODEMGR_WS"
-    popd > /dev/null
-}
-
 build_pkgs() {
     logmsg "Entering $CODEMGR_WS"
     pushd $CODEMGR_WS > /dev/null
@@ -137,6 +108,10 @@ build_pkgs() {
 
 push_pkgs() {
     logmsg "Entering $CODEMGR_WS"
+    if [[ -z $BATCH ]]; then
+        logmsg "Intentional pause: Last chance to sanity-check before publication!"
+        ask_to_continue
+    fi
     pushd $CODEMGR_WS > /dev/null
     logmsg "Pushing caiman pkgs to $PKGSERVER..."
     logcmd pkgrecv -s packages/i386/nightly-nd/repo.redist/ -d $PKGSERVER 'pkg:/*'
@@ -146,10 +121,8 @@ push_pkgs() {
 
 init
 prep_build
-sunstudio_location
 clone_source
 modify_build_script
-closed_bins
 build_pkgs
 push_pkgs
 clean_up
