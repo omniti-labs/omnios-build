@@ -1,3 +1,2 @@
-#pthread_once.patch
-#example_Makefile.in.patch
-#doc_examples_Makefile.in.patch
+CVE-2016-3627.patch
+CVE-2016-3705.patch
