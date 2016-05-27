@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libxml2        # App name
-VER=2.9.3           # App version
+VER=2.9.4           # App version
 PKG=library/libxml2 # Package name (without prefix)
 SUMMARY="$PROG - XML C parser and toolkit"
 DESC="$SUMMARY"
@@ -79,7 +79,6 @@ make_install64() {
 # Relocate the libs to /lib, to match upstream
 move_libs() {
     logcmd mkdir -p $DESTDIR/lib/amd64
-    logcmd ln -s $DESTDIR/lib/64 amd64
     logcmd mv $DESTDIR/usr/lib/lib* $DESTDIR/lib || \
         logerr "failed to move libs (32-bit)"
     logcmd mv $DESTDIR/usr/lib/amd64/lib* $DESTDIR/lib/amd64 || \
