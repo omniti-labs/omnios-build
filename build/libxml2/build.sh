@@ -79,7 +79,6 @@ make_install64() {
 # Relocate the libs to /lib, to match upstream
 move_libs() {
     logcmd mkdir -p $DESTDIR/lib/amd64
-    logcmd ln -s amd64 $DESTDIR/lib/64
     logcmd mv $DESTDIR/usr/lib/lib* $DESTDIR/lib || \
         logerr "failed to move libs (32-bit)"
     logcmd mv $DESTDIR/usr/lib/amd64/lib* $DESTDIR/lib/amd64 || \
