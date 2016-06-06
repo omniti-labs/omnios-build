@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ntp
-VER=4.2.8p7
+VER=4.2.8p8
 VERHUMAN=$VER
 PKG=service/network/ntp
 SUMMARY="Network Time Services"
