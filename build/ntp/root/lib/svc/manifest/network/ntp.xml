@@ -21,6 +21,7 @@
  CDDL HEADER END
 
  Copyright (c) 2009, 2011, Oracle and/or its affiliates. All rights reserved.
+ Copyright 2016 Andrew Stormont <andyjstormont@gmail.com>
 
  NOTE:  This service manifest is not editable; its contents will
  be overwritten by package or patch operations, including
@@ -126,6 +127,16 @@
 			    type='boolean'
 			    value='false' />
 		
+			<propval
+			    name='wait_for_sync_tries'
+			    type='integer'
+			    value='500' />
+
+			<propval
+			    name='wait_for_sync_sleep'
+			    type='integer'
+			    value='3' />
+
 			<propval
 			    name='no_auth_required'
 			    type='boolean'

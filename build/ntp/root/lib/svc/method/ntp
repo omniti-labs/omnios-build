@@ -22,6 +22,7 @@
 
 #
 # Copyright (c) 2009, 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright 2016 Andrew Stormont <andyjstormont@gmail.com>
 #
 
 # Standard prolog
@@ -108,6 +109,11 @@ fi
 
 # Now, wait for the first sync, if requested.
 val=`svcprop -c -p config/wait_for_sync $SMF_FMRI`
-[ "$val" = "true" ] && /usr/lib/inet/ntp-wait
+tries=`svcprop -c -p config/wait_for_sync_tries $SMF_FMRI`
+sleep=`svcprop -c -p config/wait_for_sync_sleep $SMF_FMRI`
+if [ "$val" = "true" ]; then
+	/usr/lib/inet/ntp-wait --tries=$tries --sleep=$sleep ||
+	    exit $SMF_EXIT_ERR_CONFIG
+fi
 
 exit $SMF_EXIT_OK
