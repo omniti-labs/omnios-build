@@ -808,7 +808,7 @@ depend fmri=system/tnf@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/xopen/xcu4@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/xopen/xcu6@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/xvm/ipagent@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/zones/brand/lx@0.5.11,5.11-0.143 type=incorporate
+depend fmri=system/zones/brand/lx@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/zones/brand/s10@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/zones/brand/sn1@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/zones/internal@0.5.11,5.11-@PVER@ type=incorporate
