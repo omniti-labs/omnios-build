@@ -370,4 +370,4 @@ depend fmri=text/less@481,5.11-@PVER@ type=require
 depend fmri=text/locale@0.5.11,5.11-@PVER@ type=require
 depend fmri=web/ca-bundle@2.0,5.11-@PVER@ type=require
 depend fmri=web/curl@7,5.11-@PVER@ type=require
-depend fmri=web/wget@1.17,5.11-@PVER@ type=require
+depend fmri=web/wget@1.18,5.11-@PVER@ type=require
