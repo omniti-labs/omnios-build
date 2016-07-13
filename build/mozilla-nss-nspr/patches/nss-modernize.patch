@@ -10,9 +10,17 @@ diff -ur pristine/nspr/configure nss-3.16.1/nspr/configure
      ;;
  
  *-sco-sysv5*)
-diff -ur pristine/nss/coreconf/SunOS5.mk nss-3.16.1/nss/coreconf/SunOS5.mk
---- pristine/nss/coreconf/SunOS5.mk	Fri May  2 03:27:18 2014
-+++ nss-3.16.1/nss/coreconf/SunOS5.mk	Thu May 22 20:54:20 2014
+--- nss-3.25/nss/coreconf/SunOS5.mk.orig	Wed Jul 13 15:14:12 2016
++++ nss-3.25/nss/coreconf/SunOS5.mk	Wed Jul 13 15:15:34 2016
+@@ -34,7 +34,7 @@
+ 
+ ifdef NS_USE_GCC
+ 	CC         = gcc
+-	OS_CFLAGS += -Wall -Wno-format -Werror-implicit-function-declaration -Wno-switch
++	OS_CFLAGS += --std=gnu99 -Wall -Wno-format -Werror-implicit-function-declaration -Wno-switch
+ 	CCC        = g++
+ 	CCC       += -Wall -Wno-format
+ 	ASFLAGS	  += -x assembler-with-cpp
 @@ -141,4 +141,4 @@
  RPATH = -R '$$ORIGIN'
  endif
