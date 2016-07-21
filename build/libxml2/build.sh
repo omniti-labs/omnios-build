@@ -84,14 +84,14 @@ move_libs() {
     logcmd mv $DESTDIR/usr/lib/amd64/lib* $DESTDIR/lib/amd64 || \
         logerr "failed to move libs (64-bit)"
     pushd $DESTDIR/usr/lib >/dev/null
-    logcmd ln -s ../../lib/libxml2.so.$VERSION libxml2.so
-    logcmd ln -s ../../lib/libxml2.so.$VERSION libxml2.so.2
-    logcmd ln -s ../../lib/libxml2.so.$VERSION libxml2.so.$VERSION
+    logcmd ln -s ../../lib/libxml2.so.$VER libxml2.so
+    logcmd ln -s ../../lib/libxml2.so.$VER libxml2.so.2
+    logcmd ln -s ../../lib/libxml2.so.$VER libxml2.so.$VER
     popd >/dev/null
     pushd $DESTDIR/usr/lib/amd64 >/dev/null
-    logcmd ln -s ../../../lib/64/libxml2.so.$VERSION libxml2.so
-    logcmd ln -s ../../../lib/64/libxml2.so.$VERSION libxml2.so.2
-    logcmd ln -s ../../../lib/64/libxml2.so.$VERSION libxml2.so.$VERSION
+    logcmd ln -s ../../../lib/64/libxml2.so.$VER libxml2.so
+    logcmd ln -s ../../../lib/64/libxml2.so.$VER libxml2.so.2
+    logcmd ln -s ../../../lib/64/libxml2.so.$VER libxml2.so.$VER
     popd>/dev/null
 }
 
