@@ -40,12 +40,12 @@
 
 	<single_instance />
 
-	<dependency name='fs-local'
+	<dependency name='fs-minimal'
 		grouping='require_all'
 		restart_on='none'
 		type='service'>
 		<service_fmri
-			value='svc:/system/filesystem/local' />
+			value='svc:/system/filesystem/minimal' />
 	</dependency>
 
 	<dependency name='fs-autofs'
