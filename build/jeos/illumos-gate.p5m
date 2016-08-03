@@ -436,6 +436,7 @@ depend fmri=driver/network/fp@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/hermon@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/hme@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/hxge@0.5.11,5.11-@PVER@ type=incorporate
+depend fmri=driver/network/i40e@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/ib@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/network/ibd@0.5.11,5.11-0.139 type=incorporate
 depend fmri=driver/network/ibdma@0.5.11,5.11-@PVER@ type=incorporate
