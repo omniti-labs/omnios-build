@@ -1,0 +1,5 @@
+set name=pkg.fmri value=service/network/ssh@0.5.11,5.11-@PVER@
+set name=pkg.renamed value=true
+set name=pkg.description value="SunSSH server (obsolete)"
+set name=pkg.summary value="SunSSH server (obsolete)"
+depend fmri=network/openssh-server type=require

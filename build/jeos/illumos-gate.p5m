@@ -291,9 +291,6 @@ depend fmri=SUNWspsv@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWsra@0.5.11,5.11-0.130 type=incorporate
 depend fmri=SUNWsrh@0.5.11,5.11-0.130 type=incorporate
 depend fmri=SUNWsrpt@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWssh@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWsshcu@0.5.11,5.11-0.133 type=incorporate
-depend fmri=SUNWsshd@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWstmf@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWtavor@0.5.11,5.11-0.133 type=incorporate
 depend fmri=SUNWtcpd@7.6,5.11-0.133 type=incorporate
@@ -650,8 +647,6 @@ depend fmri=network/iscsi/target/legacy@0.5.11,5.11-0.136 type=incorporate
 depend fmri=network/iscsi/target@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=network/iscsi@0.5.11,5.11-0.134 type=incorporate
 depend fmri=network/netcat@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=network/ssh/ssh-key@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=network/ssh@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=network/telnet@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=package/svr4@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=print/lp/compatibility/sunos4@0.5.11,5.11-@PVER@ type=incorporate
@@ -680,8 +675,6 @@ depend fmri=service/network/nis@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=service/network/slp@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=service/network/smtp/sendmail@8.14.4,5.11-@PVER@ type=incorporate
 depend fmri=service/network/snmp/mibiisa@0.5.11,5.11-0.148 type=incorporate
-depend fmri=service/network/ssh@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=service/network/ssh-common@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=service/network/telnet@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=service/network/tftp@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=service/network/uucp@0.5.11,5.11-@PVER@ type=incorporate
