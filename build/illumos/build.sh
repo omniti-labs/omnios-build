@@ -56,9 +56,9 @@ CODEMGR_WS=$TMPDIR/$BUILDDIR/illumos-omnios
 
 #Since these variables are used in a sed statment make sure to escape properly
 ILLUMOS_NO="NIGHTLY\_OPTIONS=\'\-nDCmpr\'"
-ILLUMOS_CODEMGR_WS="CODEMGR\_WS=\/code\/$BUILDDIR\/illumos\-omnios"
-#ILLUMOS_CLONE_WS="CLONE\_WS=\'ssh:\/\/anonhg@hg.illumos.org\/illumos\-gate\'"
-ILLUMOS_CLONE_WS="CLONE\_WS=\'anon@src.omniti.com:~omnios\/core\/illumos\-omnios\'"
+ILLUMOS_CODEMGR_WS="CODEMGR\_WS=/code/$BUILDDIR/illumos\-omnios"
+#ILLUMOS_CLONE_WS="CLONE\_WS=\'ssh://anonhg@hg.illumos.org/illumos\-gate\'"
+ILLUMOS_CLONE_WS="CLONE\_WS=\'anon@src.omniti.com:~omnios/core/illumos\-omnios\'"
 
 ILLUMOS_PKG_REDIST="PKGPUBLISHER\_REDIST=\'omnios\'"
 
@@ -121,8 +121,16 @@ modify_build_script() {
     pushd $CODEMGR_WS > /dev/null
     logmsg "Changing illumos.sh variables to what we want them to be..."
     logcmd cp usr/src/tools/env/illumos.sh .    
-    logcmd /usr/bin/gsed -i -e 's/^.*export NIGHTLY_OPTIONS.*/export '$ILLUMOS_NO'/g;s/^.*export CODEMGR_WS=.*/export '$ILLUMOS_CODEMGR_WS'/g;s/^.*export CLONE_WS=.*/export '$ILLUMOS_CLONE_WS'/g;s/^.*export PKGPUBLISHER_REDIST=.*/export '$ILLUMOS_PKG_REDIST'/g;s/^.*export VERSION=.*/export '$ILLUMOS_VERSION'/g;/^.*GNUC=.*/d;/^.*CW_NO_SHADOW=.*/d;/^.*ONNV_BUILDNUM=.*/d' illumos.sh || \
-        logerr "/usr/bin/gsed failed"
+
+    logcmd /usr/bin/gsed -i -e 's|^.*export NIGHTLY_OPTIONS.*|export '$ILLUMOS_NO'|g' illumos.sh || logerr "/usr/bin/gsed failed nightly"
+    logcmd /usr/bin/gsed -i -e 's|^.*export CODEMGR_WS=.*|export '$ILLUMOS_CODEMGR_WS'|g' illumos.sh || logerr "/usr/bin/gsed failed codemgr"
+    logcmd /usr/bin/gsed -i -e 's|^.*export CLONE_WS=.*|export '$ILLUMOS_CLONE_WS'|g' illumos.sh || logerr "/usr/bin/gsed failed clone"
+    logcmd /usr/bin/gsed -i -e 's|^.*export PKGPUBLISHER_REDIST=.*|export '$ILLUMOS_PKG_REDIST'|g' illumos.sh || logerr "/usr/bin/gsed failed publisher"
+    logcmd /usr/bin/gsed -i -e 's|^.*export VERSION=.*|export '$ILLUMOS_VERSION'|g' illumos.sh || logerr "/usr/bin/gsed failed version"
+    logcmd /usr/bin/gsed -i -e '/^.*GNUC=.*/d' illumos.sh || logerr "/usr/bin/gsed failed gnuc"
+    logcmd /usr/bin/gsed -i -e '/^.*CW_NO_SHADOW=.*/d' illumos.sh || logerr "/usr/bin/gsed failed cwnoshadow"
+    logcmd /usr/bin/gsed -i -e '/^.*ONNV_BUILDNUM=.*/d' illumos.sh || logerr "/usr/bin/gsed failed buildnum"
+
     logcmd `echo $ILLUMOS_GNUC >> illumos.sh` 
     logcmd `echo $ILLUMOS_GNUC4 >> illumos.sh` 
     logcmd `echo $ILLUMOS_GCC_ROOT >> illumos.sh` 
