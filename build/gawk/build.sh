@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=gawk
-VER=4.1.3
+VER=4.1.4
 VERHUMAN=$VER
 PKG=text/gawk
 SUMMARY="gawk - GNU implementation of awk"
