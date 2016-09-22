@@ -128,7 +128,7 @@ depend fmri=file/gnu-coreutils@8.23,5.11-@PVER@ type=require
 depend fmri=file/gnu-findutils@4.4.2,5.11-@PVER@ type=require
 depend fmri=install/beadm@0.5.11,5.11-@PVER@ type=require
 depend fmri=library/c++/sigcpp@2.4,5.11-@PVER@ type=require
-depend fmri=library/expat@2.1,5.11-@PVER@ type=require
+depend fmri=library/expat@2.2,5.11-@PVER@ type=require
 depend fmri=library/glib2@2.34.1,5.11-@PVER@ type=require
 depend fmri=library/gmp@6.0.0,5.11-@PVER@ type=require
 depend fmri=library/libffi@3.2,5.11-@PVER@ type=require
