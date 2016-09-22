@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=diffutils
-VER=3.3
+VER=3.5
 PKG=text/gnu-diffutils
 SUMMARY="GNU diffutils - Finds differences between and among files"
 DESC="$SUMMARY"
