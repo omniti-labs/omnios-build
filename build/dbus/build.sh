@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=dbus
-VER=1.10.8
+VER=1.11.4
 PKG=dbus ##IGNORE##
 SUMMARY="$PROG - IPC-based message notifications"
 DESC="$SUMMARY"
