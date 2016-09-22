@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2015 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=gettext                  # App name
-VER=0.19.7                  # App version
+VER=0.19.8.1                  # App version
 PKG=text/gnu-gettext          # Package name (without prefix)
 SUMMARY="gettext - GNU gettext utility"
 DESC="GNU gettext - GNU gettext utility ($VER)"
