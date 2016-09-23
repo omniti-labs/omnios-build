@@ -1,2 +1,3 @@
 old-msgfmt.patch -p0
 nolibthreads.patch -T -p1
+major-cast.patch -p0
