@@ -1244,10 +1244,8 @@ wait_for_prebuilt() {
     nightly_pid=`ls -lt $PREBUILT_ILLUMOS/log/nightly.lock | awk -F. '{print $4}'`
     # Wait for nightly to be finished if it's running.
     logmsg "Waiting for illumos nightly build $nightly_pid to be finished."
-    logmsg "Because logcmd is weird, printing date/time before and after pwait."
-    logcmd date
-    logcmd pwait $nightly_pid
-    logcmd date
+    logmsg "Time spent waiting via time(1) printed below."
+    logcmd "`/bin/time pwait $nightly_pid`"
     if [ -h $PREBUILT_ILLUMOS/log/nightly.lock ]; then
         logmsg "Nightly lock present, but build not running.  Bailing."
         if [[ -z $BATCH ]]; then
