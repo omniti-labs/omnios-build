@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=make
-VER=4.1
+VER=4.2.1
 VERHUMAN=$VER
 PKG=developer/build/gnu-make
 SUMMARY="gmake - GNU make"
