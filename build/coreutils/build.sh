@@ -40,8 +40,11 @@ DEPENDS_IPS="library/gmp system/library"
 CPPFLAGS="-I/usr/include/gmp"
 PREFIX=/usr/gnu
 reset_configure_opts
+CONFIGURE_OPTS="$CONFIGURE_OPTS --with-openssl=auto"
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --libexecdir=/usr/lib --bindir=/usr/gnu/bin"
 CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --libexecdir=/usr/lib/$ISAPART64"
+
+export ac_cv_func_inotify_init=no
 
 link_in_usr_bin() {
     logmsg "Making links to /usr/bin"
