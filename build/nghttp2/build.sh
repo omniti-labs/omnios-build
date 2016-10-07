@@ -28,13 +28,18 @@
 . ../../lib/functions.sh
 
 PROG=nghttp2
-VER=1.12.0
+VER=1.15.0
 VERHUMAN=$VER
 PKG=library/nghttp2
 SUMMARY="Nghttp2: HTTP/2 C Library"
 DESC="$SUMMARY"
 
 CONFIGURE_OPTS="--enable-lib-only"
+
+export ZLIB_CFLAGS="-I/usr/include"
+export ZLIB_LIBS="-L/usr/lib"
+export OPENSSL_CFLAGS="-I/usr/include"
+export OPENSSL_LIBS="-L/usr/lib"
 
 init
 download_source $PROG $PROG $VER
