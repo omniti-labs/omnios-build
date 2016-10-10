@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=libxslt
-VER=1.1.28
+VER=1.1.29
 PKG=library/libxslt
 SUMMARY="The XSLT library"
 DESC="$SUMMARY"
