@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=grep       # App name
-VER=2.24         # App version
+VER=2.26         # App version
 PKG=text/gnu-grep    # Package name (without prefix)
 SUMMARY="ggrep - GNU grep utilities"
 DESC="$SUMMARY $VER"
