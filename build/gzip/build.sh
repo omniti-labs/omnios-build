@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=gzip
-VER=1.6
+VER=1.8
 VERHUMAN=$VER
 PKG=compress/gzip
 SUMMARY="The GNU Zip (gzip) compression utility"

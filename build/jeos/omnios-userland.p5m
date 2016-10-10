@@ -4,7 +4,7 @@ set name=pkg.summary value="Incorporation to constrain OmniOS user-land packages
 set name=pkg.description value="This package constrains OmniOS user-land packages to the same build as osnet-incorporation."
 depend fmri=archiver/gnu-tar@1.29,5.11-@PVER@ type=incorporate
 depend fmri=compress/bzip2@1.0.6,5.11-@PVER@ type=incorporate
-depend fmri=compress/gzip@1.6,5.11-@PVER@ type=incorporate
+depend fmri=compress/gzip@1.8,5.11-@PVER@ type=incorporate
 depend fmri=compress/p7zip@9.20.1,5.11-@PVER@ type=incorporate
 depend fmri=compress/unzip@6.0,5.11-@PVER@ type=incorporate
 depend fmri=compress/xz@5.2,5.11-@PVER@ type=incorporate
