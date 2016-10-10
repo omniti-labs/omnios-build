@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2015 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=iperf
-VER=3.1.2
+VER=3.1.3
 VERHUMAN=$VER
 PKG=network/test/iperf
 SUMMARY="iperf network testing tool"
