@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=dbus
-VER=1.11.4
+VER=1.11.6
 PKG=dbus ##IGNORE##
 SUMMARY="$PROG - IPC-based message notifications"
 DESC="$SUMMARY"
