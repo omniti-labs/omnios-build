@@ -34,6 +34,10 @@ PKG=data/iso-codes
 SUMMARY="ISO code lists and translations"
 DESC="$SUMMARY"
 
+# As of 3.70, iso-codes needs Python3 to build. Make sure python3 is around.
+BUILD_DEPENDS_IPS="omniti/runtime/python-34"
+export PATH=/opt/python34/bin:$PATH
+
 BUILDARCH=32
 
 # Upstream doesn't ship any of the translations, so we won't either
