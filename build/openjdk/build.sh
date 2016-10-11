@@ -68,6 +68,9 @@ J2RE_INSTALLTMP=
 J2SDK_INSTALLTMP=
 
 download_hg() {
+    if [[ ! -d $TMPDIR ]]; then
+	mkdir $TMPDIR
+    fi
     pushd $TMPDIR > /dev/null
     if [[ -d $BUILDDIR ]]; then
         logmsg "Removing existing checkout"
@@ -106,7 +109,14 @@ install_x11_headers() {
 fetch_source() {
     logmsg "Fetching JDK source"
     pushd $TMPDIR/$BUILDDIR > /dev/null
-    logcmd sh ./get_source.sh
+    i=1
+    # Make sure this list of directories is current with your OpenJDK
+    # get_source.sh/README.
+    while [[ ! -d corba || ! -d langtools || ! -d hotspot || ! -d jaxp || ! -d jdk || ! -d jaxws ]]; do
+	logmsg "Running get_source (try $i)"
+	logcmd sh ./get_source.sh
+	i=`expr $i + 1`
+    done
     popd > /dev/null
 }
 
