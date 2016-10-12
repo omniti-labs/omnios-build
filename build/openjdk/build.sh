@@ -109,13 +109,19 @@ install_x11_headers() {
 fetch_source() {
     logmsg "Fetching JDK source"
     pushd $TMPDIR/$BUILDDIR > /dev/null
-    i=1
+    i=0
     # Make sure this list of directories is current with your OpenJDK
     # get_source.sh/README.
     while [[ ! -d corba || ! -d langtools || ! -d hotspot || ! -d jaxp || ! -d jdk || ! -d jaxws ]]; do
+	i=`expr $i + 1`
 	logmsg "Running get_source (try $i)"
 	logcmd sh ./get_source.sh
-	i=`expr $i + 1`
+	# Limit to 10 tries
+	if [[ $i == 10 ]]; then
+		logmsg "Mercurial problems with OpenJDK source. Got directories:"
+		logcmd ls -Fd corba langtools hotspot jaxp jaxws jdk
+		logerr "--- get_source failed after $i tries"
+	fi
     done
     popd > /dev/null
 }
