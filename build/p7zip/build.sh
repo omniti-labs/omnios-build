@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=p7zip
-VER=9.20.1
+VER=16.02
 VERHUMAN=$VER
 PKG=compress/p7zip
 SUMMARY="The p7zip compression and archiving utility"
