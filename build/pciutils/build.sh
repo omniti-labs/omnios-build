@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2015 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=pciutils
-VER=3.4.1
+VER=3.5.2
 VERHUMAN=$VER
 PKG=system/pciutils
 SUMMARY="Programs (lspci, setpci) for inspecting and manipulating configuration of PCI devices"
