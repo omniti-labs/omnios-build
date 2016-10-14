@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=readline
-VER=6.3
+VER=7.0
 VERHUMAN=$VER
 PKG=library/readline
 SUMMARY="GNU readline"
