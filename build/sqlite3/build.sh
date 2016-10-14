@@ -21,15 +21,15 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=sqlite-autoconf
-VER=3120000
-VERHUMAN=3.12.0
+VER=3150000
+VERHUMAN=3.15.0
 PKG=database/sqlite-3
 SUMMARY="SQL database engine library"
 DESC="$SUMMARY"
