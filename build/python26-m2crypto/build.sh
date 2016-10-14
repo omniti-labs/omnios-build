@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=M2Crypto
-VER=0.24.0
+VER=0.25.1
 PKG=library/python-2/m2crypto
 SUMMARY="Python interface for openssl"
 DESC="M2Crypto provides a python interface to the openssl library."
