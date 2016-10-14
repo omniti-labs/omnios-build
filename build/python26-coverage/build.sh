@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=coverage
-VER=4.0.3
+VER=4.2
 PKG=library/python-2/coverage-26
 SUMMARY="Code coverage measurement for Python"
 DESC="$SUMMARY"
