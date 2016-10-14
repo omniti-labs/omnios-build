@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=pylint
-VER=1.5.5
+VER=1.6.4
 PKG=library/python-2/pylint-26
 SUMMARY="python code static checker"
 DESC="$SUMMARY"
