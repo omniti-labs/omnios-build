@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=screen
-VER=4.3.1
+VER=4.4.0
 PKG=terminal/screen
 SUMMARY="GNU Screen terminal multiplexer"
 DESC="$SUMMARY"

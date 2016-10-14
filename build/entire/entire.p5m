@@ -359,7 +359,7 @@ depend fmri=system/xopen/xcu4@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/zones/brand/ipkg@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/zones/brand/lipkg@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/zones@0.5.11,5.11-@PVER@ type=require
-depend fmri=terminal/screen@4.3.1,5.11-@PVER@ type=require
+depend fmri=terminal/screen@4.4,5.11-@PVER@ type=require
 depend fmri=text/doctools@0.5.11,5.11-@PVER@ type=require
 depend fmri=text/gawk@4.1,5.11-@PVER@ type=require
 depend fmri=text/gnu-diffutils@3.5,5.11-@PVER@ type=require
