@@ -1,1 +1,3 @@
-all-patches -p0
+first-patches -p0
+0014-by-hand -p0
+rest-of-patches -p0

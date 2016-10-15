@@ -21,20 +21,24 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
-# Patches are obtained from ftp://ftp.vim.org/pub/vim/patches/7.4/
+# Patches are obtained from ftp://ftp.vim.org/pub/vim/patches/8.0/
 # To update, append each patch to patches/all-patches and set the
 # PATCHLEVEL variable below to match the number of the most recent
 # patch, removing any zero padding.
+#
+# NOTE:  Patches 0001 and 0002 were included in the tarball afterwards.  Do
+# not apply those.  Also, patch 0014 is severely broken, so we built it by hand
+# and patches subsequent to 0014 should be put in patches/rest-of-patches.
 
 PROG=vim
-VER=7.4
-PATCHLEVEL=45
+VER=8.0
+PATCHLEVEL=41
 PKG=editor/vim
 SUMMARY="Vi IMproved"
 DESC="$SUMMARY version $VER"
@@ -43,6 +47,10 @@ BUILDDIR=${PROG}${VER/./}     # Location of extracted source
 BUILDARCH=32
 
 DEPENDS_IPS="system/extended-system-utilities system/library system/library/math"
+
+# VIM 8.0 source exposes either a bug in illumos msgfmt(1), OR it contains
+# a GNU-ism we are strict about.  Either way, use GNU msgfmt for now.
+export MSGFMT=/usr/gnu/bin/msgfmt
 
 # We're only shipping 32-bit so forgo isaexec
 CONFIGURE_OPTS="

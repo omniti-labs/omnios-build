@@ -1,0 +1,250 @@
+diff -ruN ../vim-8.0.0013/src/Makefile ./src/Makefile
+--- ../vim-8.0.0013/src/Makefile	2016-10-14 17:32:36.042984891 +0000
++++ ./src/Makefile	2016-10-14 17:53:58.410855381 +0000
+@@ -2048,7 +2048,7 @@
+ 	test40 test41 test42 test43 test44 test45 test48 test49 \
+ 	test50 test51 test52 test53 test54 test55 test56 test57 test58 test59 \
+ 	test60 test64 test65 test66 test67 test68 test69 \
+-	test70 test71 test72 test73 test74 test75 test76 test77 test78 test79 \
++	test70 test72 test73 test74 test75 test76 test77 test78 test79 \
+ 	test80 test82 test83 test84 test85 test86 test87 test88 test89 \
+ 	test90 test91 test92 test93 test94 test95 test97 test98 test99 \
+ 	test100 test101 test103 test104 test107 test108:
+diff -ruN ../vim-8.0.0013/src/testdir/Make_all.mak ./src/testdir/Make_all.mak
+--- ../vim-8.0.0013/src/testdir/Make_all.mak	2016-10-14 17:32:36.043235170 +0000
++++ ./src/testdir/Make_all.mak	2016-10-14 17:51:58.237682022 +0000
+@@ -53,7 +53,6 @@
+ 	test68.out \
+ 	test69.out \
+ 	test70.out \
+-	test71.out \
+ 	test73.out \
+ 	test75.out \
+ 	test76.out \
+diff -ruN ../vim-8.0.0013/src/testdir/test71.in ./src/testdir/test71.in
+--- ../vim-8.0.0013/src/testdir/test71.in	2014-08-09 09:12:57.000000000 +0000
++++ ./src/testdir/test71.in	1969-12-31 19:00:00.000000000 +0000
+@@ -1,94 +0,0 @@
+-Test for encryption.
+-The test data is in another file to avoid problems with 'encoding', especially
+-cp932.
+-
+-STARTTEST
+-:so small.vim
+-:set enc=latin1
+-:bwipe!
+-:r test71a.in
+-:/^start of text/+1
+-:let text_lines = getline('.', line('.') + 2)
+-:/^start of cm=zip bytes/+1
+-:let cm0_bytes = getline('.', '.')
+-:/^start of cm=blowfish bytes/+1
+-:let cm1_bytes = getline('.', '.')
+-:/^start of cm=blowfish2 bytes/+1
+-:let cm2_bytes = getline('.', '.')
+-:bwipe!
+-:call append(0, text_lines)
+-:$d
+-:X
+-foobar
+-foobar
+-:w! Xtestfile
+-:bwipe!
+-:e Xtestfile
+-foobar
+-:let cm0_read_back = getline('.', '$')
+-:set key=
+-:set cryptmethod=blowfish
+-:" If the blowfish test fails 'cryptmethod' will be 'zip' now.
+-:%s/^/\=&cryptmethod == 'blowfish' ? "OK " : "blowfish test failed "/
+-:X
+-barfoo
+-barfoo
+-:w! Xtestfile
+-:bwipe!
+-:e Xtestfile
+-barfoo
+-:let cm1_read_back = getline('.', '$')
+-:set key=
+-:set cryptmethod=blowfish2
+-:" If the blowfish test fails 'cryptmethod' will be 'zip' now.
+-:%s/^/\=&cryptmethod == 'blowfish2' ? "OK " : "blowfish test failed "/
+-:X
+-bar2foo
+-bar2foo
+-:w! Xtestfile
+-:bwipe!
+-:e Xtestfile
+-bar2foo
+-:let cm2_read_back = getline('.', '$')
+-:bwipe!
+-:set bin noeol key=
+-:call append(0, cm0_bytes)
+-:$d
+-:set fenc=latin1
+-:w! Xtestfile
+-:bwipe!
+-:set nobin
+-:e Xtestfile
+-foofoo
+-:let cm0_read_bin = getline('.', '$')
+-:bwipe!
+-:set bin noeol key=
+-:call append(0, cm1_bytes)
+-:$d
+-:set fenc=latin1
+-:w! Xtestfile
+-:bwipe!
+-:set nobin
+-:e Xtestfile
+-barbar
+-:let cm1_read_bin = getline('.', '$')
+-:bwipe!
+-:set bin noeol key=
+-:call append(0, cm2_bytes)
+-:$d
+-:set fenc=latin1
+-:w! Xtestfile
+-:bwipe!
+-:set nobin
+-:e Xtestfile
+-barburp
+-:call append(0, cm1_read_bin)
+-:call append(0, cm0_read_bin)
+-:call append(0, cm2_read_back)
+-:call append(0, cm1_read_back)
+-:call append(0, cm0_read_back)
+-:set key= fenc=latin1
+-:w! test.out
+-:qa!
+-ENDTEST
+-
+diff -ruN ../vim-8.0.0013/src/testdir/test71.ok ./src/testdir/test71.ok
+--- ../vim-8.0.0013/src/testdir/test71.ok	2014-08-09 09:28:07.000000000 +0000
++++ ./src/testdir/test71.ok	1969-12-31 19:00:00.000000000 +0000
+@@ -1,15 +0,0 @@
+-01234567890123456789012345678901234567
+-line 2  foo bar blah
+-line 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-OK 01234567890123456789012345678901234567
+-OK line 2  foo bar blah
+-OK line 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-OK OK 01234567890123456789012345678901234567
+-OK OK line 2  foo bar blah
+-OK OK line 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-1234567890
+-a·bbccddeÎff
+-asdfasdfasdf
+-0001112223333
+-abcdefghijklmnopqrstuvwxyz
+-!@#$%^&*()_+=-`~
+diff -ruN ../vim-8.0.0013/src/testdir/test71a.in ./src/testdir/test71a.in
+--- ../vim-8.0.0013/src/testdir/test71a.in	2014-08-09 09:49:07.000000000 +0000
++++ ./src/testdir/test71a.in	1969-12-31 19:00:00.000000000 +0000
+@@ -1,18 +0,0 @@
+-
+-start of text
+-01234567890123456789012345678901234567
+-line 2  foo bar blah
+-line 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-end of text
+-
+-start of cm=zip bytes
+-VimCrypt~01!lV'ﬁ}Mg†Í£V©ÁE#3é2UÈó
+-end of cm=zip bytes
+-
+-start of cm=blowfish bytes
+-VimCrypt~02!k)æó#›Súı=∫‡»#•M¥ÜJ√AÕ•M¥Ü!Äõı·“Çò˜⁄
+-end of cm=blowfish bytes
+-
+-start of cm=blowfish2 bytes
+-VimCrypt~03!—N„;”¿†^C)˜.∂´FS‡ã6“[TÀßÖÿæ9Å2Q≥Ã@óﬂö≠Iv™.ÿ…Óû`Ω$Ø%–
+-end of cm=blowfish2 bytes
+diff -ruN ../vim-8.0.0013/src/testdir/test_crypt.vim ./src/testdir/test_crypt.vim
+--- ../vim-8.0.0013/src/testdir/test_crypt.vim	2016-10-14 17:32:36.041628133 +0000
++++ ./src/testdir/test_crypt.vim	2016-10-14 18:00:19.306956415 +0000
+@@ -1,5 +1,8 @@
+ " Tests for encryption.
+-" TODO: include tests from test71.
++
++if !has('cryptv')
++  finish
++endif
+ 
+ func Common_head_only(text)
+   " This was crashing Vim
+@@ -19,3 +22,62 @@
+ func Test_head_only_3()
+   call Common_head_only('VimCrypt~03!abc')
+ endfunc
++
++func Crypt_uncrypt(method)
++  exe "set cryptmethod=" . a:method
++  " If the blowfish test fails 'cryptmethod' will be 'zip' now.
++  call assert_equal(a:method, &cryptmethod)
++
++  split Xtest.txt
++  let text = ['01234567890123456789012345678901234567',
++	\ 'line 2  foo bar blah',
++	\ 'line 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx']
++  call setline(1, text)
++  call feedkeys(":X\<CR>foobar\<CR>foobar\<CR>", 'xt')
++  w!
++  bwipe!
++  call feedkeys(":split Xtest.txt\<CR>foobar\<CR>", 'xt')
++  call assert_equal(text, getline(1, 3))
++  set key= cryptmethod&
++  bwipe!
++  call delete('Xtest.txt')
++endfunc
++
++func Test_crypt_zip()
++  call Crypt_uncrypt('zip')
++endfunc
++
++func Test_crypt_blowfish()
++  call Crypt_uncrypt('blowfish')
++endfunc
++
++func Test_crypt_blowfish2()
++  call Crypt_uncrypt('blowfish2')
++endfunc
++
++func Uncrypt_stable(method, crypted_text, key, uncrypted_text)
++  split Xtest.txt
++  set bin noeol key= fenc=latin1
++  exe "set cryptmethod=" . a:method
++  call setline(1, a:crypted_text)
++  w!
++  bwipe!
++  set nobin
++  call feedkeys(":split Xtest.txt\<CR>" . a:key . "\<CR>", 'xt')
++  call assert_equal(a:uncrypted_text, getline(1, len(a:uncrypted_text)))
++  bwipe!
++  call delete('Xtest.txt')
++  set key=
++endfunc
++
++func Test_uncrypt_zip()
++  call Uncrypt_stable('zip', "VimCrypt~01!\u0006\u001clV'\u00de}Mg\u00a0\u00ea\u00a3V\u00a9\u00e7\u0007E#3\u008e2U\u00e9\u0097", "foofoo", ["1234567890", "a√°bbccdde√´ff"])
++endfunc
++
++func Test_uncrypt_blowfish()
++  call Uncrypt_stable('blowfish', "VimCrypt~02!k)\u00be\u0017\u0097#\u0016\u00ddS\u009c\u00f5=\u00ba\u00e0\u00c8#\u00a5M\u00b4\u0086J\u00c3A\u00cd\u00a5M\u00b4\u0086!\u0080\u0015\u009b\u00f5\u000f\u00e1\u00d2\u0019\u0082\u0016\u0098\u00f7\u000d\u00da", "barbar", ["asdfasdfasdf", "0001112223333"])
++endfunc
++
++func Test_uncrypt_blowfish2()
++  call Uncrypt_stable('blowfish', "VimCrypt~03!\u001e\u00d1N\u00e3;\u00d3\u00c0\u00a0^C)\u0004\u00f7\u007f.\u00b6\u00abF\u000eS\u0019\u00e0\u008b6\u00d2[T\u00cb\u00a7\u0085\u00d8\u00be9\u000b\u00812\u000bQ\u00b3\u00cc@\u0097\u000f\u00df\u009a\u00adIv\u00aa.\u00d8\u00c9\u00ee\u009e`\u00bd$\u00af%\u00d0", "barburp", ["abcdefghijklmnopqrstuvwxyz", "!@#$%^&*()_+=-`~"])
++endfunc
+diff -ruN ../vim-8.0.0013/src/version.c ./src/version.c
+--- ../vim-8.0.0013/src/version.c	2016-10-14 17:32:50.865827064 +0000
++++ ./src/version.c	2016-10-14 17:51:18.753058249 +0000
+@@ -765,6 +765,8 @@
+ static int included_patches[] =
+ {   /* Add new patch number below this line */
+ /**/
++    14,
++/**/
+     13,
+ /**/
+     12,

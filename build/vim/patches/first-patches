@@ -1,0 +1,1012 @@
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0003
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0003
+Problem:    getwinvar() returns wrong Value of boolean and number options,
+            especially non big endian systems. (James McCoy)
+Solution:   Cast the pointer to long or int. (closes #1060)
+Files:      src/option.c, src/testdir/test_bufwintabinfo.vim
+
+
+*** ../vim-8.0.0002/src/option.c	2016-09-02 19:26:03.000000000 +0200
+--- src/option.c	2016-09-12 19:20:38.051099762 +0200
+***************
+*** 12363,12370 ****
+  	    {
+  		if (opt->flags & P_STRING)
+  		    dict_add_nr_str(d, opt->fullname, 0L, *(char_u **)varp);
+  		else
+! 		    dict_add_nr_str(d, opt->fullname, *varp, NULL);
+  	    }
+  	}
+      }
+--- 12363,12372 ----
+  	    {
+  		if (opt->flags & P_STRING)
+  		    dict_add_nr_str(d, opt->fullname, 0L, *(char_u **)varp);
++ 		else if (opt->flags & P_NUM)
++ 		    dict_add_nr_str(d, opt->fullname, *(long *)varp, NULL);
+  		else
+! 		    dict_add_nr_str(d, opt->fullname, *(int *)varp, NULL);
+  	    }
+  	}
+      }
+*** ../vim-8.0.0002/src/testdir/test_bufwintabinfo.vim	2016-08-27 21:14:58.000000000 +0200
+--- src/testdir/test_bufwintabinfo.vim	2016-09-12 19:31:06.346360420 +0200
+***************
+*** 87,95 ****
+--- 87,103 ----
+  endfunc
+  
+  function Test_get_win_options()
++   if has('folding')
++     set foldlevel=999
++   endif
++   set list
+    let opts = getwinvar(1, '&')
+    call assert_equal(v:t_dict, type(opts))
+    call assert_equal(0, opts.linebreak)
++   call assert_equal(1, opts.list)
++   if has('folding')
++     call assert_equal(999, opts.foldlevel)
++   endif
+    if has('signs')
+      call assert_equal('auto', opts.signcolumn)
+    endif
+***************
+*** 97,103 ****
+--- 105,116 ----
+    let opts = gettabwinvar(1, 1, '&')
+    call assert_equal(v:t_dict, type(opts))
+    call assert_equal(0, opts.linebreak)
++   call assert_equal(1, opts.list)
+    if has('signs')
+      call assert_equal('auto', opts.signcolumn)
+    endif
++   set list&
++   if has('folding')
++     set foldlevel=0
++   endif
+  endfunc
+*** ../vim-8.0.0002/src/version.c	2016-09-12 16:30:42.348454179 +0200
+--- src/version.c	2016-09-12 19:24:10.184148642 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     3,
+  /**/
+
+-- 
+If VIM were a woman, I'd marry her.  Slim, organized, helpful
+and beautiful; what's not to like?     --David A. Rogers
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0004
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0004
+Problem:    A string argument for function() that is not a function name
+            results in an error message with NULL. (Christian Brabandt)
+Solution:   Use the argument for the error message.
+Files:      src/evalfunc.c, src/testdir/test_expr.vim
+
+
+*** ../vim-8.0.0003/src/evalfunc.c	2016-09-10 13:39:30.000000000 +0200
+--- src/evalfunc.c	2016-09-13 23:04:02.917786784 +0200
+***************
+*** 3612,3618 ****
+  
+      if (s == NULL || *s == NUL || (use_string && VIM_ISDIGIT(*s))
+  					 || (is_funcref && trans_name == NULL))
+! 	EMSG2(_(e_invarg2), s);
+      /* Don't check an autoload name for existence here. */
+      else if (trans_name != NULL && (is_funcref
+  				? find_func(trans_name) == NULL
+--- 3612,3618 ----
+  
+      if (s == NULL || *s == NUL || (use_string && VIM_ISDIGIT(*s))
+  					 || (is_funcref && trans_name == NULL))
+! 	EMSG2(_(e_invarg2), use_string ? get_tv_string(&argvars[0]) : s);
+      /* Don't check an autoload name for existence here. */
+      else if (trans_name != NULL && (is_funcref
+  				? find_func(trans_name) == NULL
+*** ../vim-8.0.0003/src/testdir/test_expr.vim	2016-09-04 21:41:26.000000000 +0200
+--- src/testdir/test_expr.vim	2016-09-13 23:03:20.426385157 +0200
+***************
+*** 439,444 ****
+--- 439,447 ----
+    let s:fref = function(s:f)
+    call assert_equal(v:t_string, s:fref('x'))
+    call assert_fails("call function('s:f')", 'E700:')
++ 
++   call assert_fails("call function('foo()')", 'E475:')
++   call assert_fails("call function('foo()')", 'foo()')
+  endfunc
+  
+  func Test_funcref()
+*** ../vim-8.0.0003/src/version.c	2016-09-12 19:51:07.689659657 +0200
+--- src/version.c	2016-09-14 22:06:19.364036465 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     4,
+  /**/
+
+-- 
+    A KNIGHT rides into shot and hacks him to the ground.  He rides off.
+    We stay for a moment on the glade.  A MIDDLE-AGED LADY in a C. & A.
+    twin-set emerges from the trees and looks in horror at the body of her
+    HUSBAND.
+MRS HISTORIAN: FRANK!
+                 "Monty Python and the Holy Grail" PYTHON (MONTY) PICTURES LTD
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0005
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0005
+Problem:    Netbeans test fails with Python 3. (Jonathonf)
+Solution:   Encode the string before sending it. (closes #1070)
+Files:      src/testdir/test_netbeans.py
+
+
+*** ../vim-8.0.0004/src/testdir/test_netbeans.py	2016-09-09 15:27:58.000000000 +0200
+--- src/testdir/test_netbeans.py	2016-09-14 22:22:03.574860055 +0200
+***************
+*** 52,58 ****
+                  return
+  
+              if len(response) > 0:
+!                 self.request.sendall(response)
+                  # Write the respoinse into the file, so that the test can knows
+                  # the command was sent.
+                  with open("Xnetbeans", "a") as myfile:
+--- 52,58 ----
+                  return
+  
+              if len(response) > 0:
+!                 self.request.sendall(response.encode('utf-8'))
+                  # Write the respoinse into the file, so that the test can knows
+                  # the command was sent.
+                  with open("Xnetbeans", "a") as myfile:
+*** ../vim-8.0.0004/src/version.c	2016-09-14 22:16:09.863803610 +0200
+--- src/version.c	2016-09-14 22:22:39.922351477 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     5,
+  /**/
+
+-- 
+In his lifetime van Gogh painted 486 oil paintings. Oddly enough, 8975
+of them are to be found in the United States.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0006
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0006
+Problem:    ":lb" is interpreted as ":lbottom" while the documentation says it
+            means ":lbuffer".
+Solution:   Adjust the order of the commands. (haya14busa, closes #1093)
+Files:      src/ex_cmds.h
+
+
+*** ../vim-8.0.0005/src/ex_cmds.h	2016-08-29 22:42:20.000000000 +0200
+--- src/ex_cmds.h	2016-09-20 21:31:38.097546014 +0200
+***************
+*** 730,741 ****
+  EX(CMD_later,		"later",	ex_later,
+  			TRLBAR|EXTRA|NOSPC|CMDWIN,
+  			ADDR_LINES),
+- EX(CMD_lbottom,		"lbottom",	ex_cbottom,
+- 			TRLBAR,
+- 			ADDR_LINES),
+  EX(CMD_lbuffer,		"lbuffer",	ex_cbuffer,
+  			BANG|RANGE|NOTADR|WORD1|TRLBAR,
+  			ADDR_LINES),
+  EX(CMD_lcd,		"lcd",		ex_cd,
+  			BANG|FILE1|TRLBAR|CMDWIN,
+  			ADDR_LINES),
+--- 730,741 ----
+  EX(CMD_later,		"later",	ex_later,
+  			TRLBAR|EXTRA|NOSPC|CMDWIN,
+  			ADDR_LINES),
+  EX(CMD_lbuffer,		"lbuffer",	ex_cbuffer,
+  			BANG|RANGE|NOTADR|WORD1|TRLBAR,
+  			ADDR_LINES),
++ EX(CMD_lbottom,		"lbottom",	ex_cbottom,
++ 			TRLBAR,
++ 			ADDR_LINES),
+  EX(CMD_lcd,		"lcd",		ex_cd,
+  			BANG|FILE1|TRLBAR|CMDWIN,
+  			ADDR_LINES),
+*** ../vim-8.0.0005/src/version.c	2016-09-15 11:44:23.361477614 +0200
+--- src/version.c	2016-09-20 21:33:28.468757112 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     6,
+  /**/
+
+-- 
+"Intelligence has much less practical application than you'd think."
+		  -- Scott Adams, Dilbert.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0007
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0007
+Problem:    Vim 7.4 is still mentioned in a few places.
+Solution:   Update to Vim 8.  (Uncle Bill, closes #1094)
+Files:      src/INSTALLpc.txt, src/vimtutor, uninstal.txt
+
+
+*** ../vim-8.0.0006/src/INSTALLpc.txt	2016-09-06 21:57:36.000000000 +0200
+--- src/INSTALLpc.txt	2016-09-21 22:36:29.535664962 +0200
+***************
+*** 722,761 ****
+  After you've built the Vim binaries as described above, you're ready to
+  install Vim on your system.  However, if you've obtained the Vim sources
+  using Git, Mercurial or by downloading them as a unix tar file, you must
+! first create a "vim74" directory.  If you instead downloaded the sources as
+  zip files, you can skip this setup as the zip archives already have the
+  correct directory structure.
+  
+!   A.  Create a Vim "runtime" subdirectory named "vim74"
+    -----------------------------------------------------
+    If you obtained your Vim sources as zip files, you can skip this step.
+    Otherwise, continue reading.
+  
+    Go to the directory that contains the Vim "src" and "runtime"
+!   directories and create a new subdirectory named "vim74".
+  
+!   Copy the "runtime" files into "vim74":
+!      copy runtime\* vim74
+  
+!   B.  Copy the new binaries into the "vim74" directory
+    ----------------------------------------------------
+    Regardless of how you installed the Vim sources, you need to copy the
+!   new binaries you created above into "vim74":
+  
+!      copy src\*.exe vim74
+!      copy src\GvimExt\gvimext.dll vim74
+!      copy src\xxd\xxd.exe vim74
+  
+!   C.  Move the "vim74" directory into the Vim installation subdirectory
+    ---------------------------------------------------------------------
+!   Move the "vim74" subdirectory into the subdirectory where you want Vim
+    to be installed.  Typically, this subdirectory will be named "vim".
+!   If you already have a "vim74" subdirectory in "vim", delete it first
+    by running its uninstal.exe program.
+  
+    D.  Install Vim
+    ---------------
+!   "cd" to your Vim installation subdirectory "vim\vim74" and run the
+    "install.exe" program.  It will ask you a number of questions about
+    how you would like to have your Vim setup.  Among these are:
+    - You can tell it to write a "_vimrc" file with your preferences in the
+--- 722,761 ----
+  After you've built the Vim binaries as described above, you're ready to
+  install Vim on your system.  However, if you've obtained the Vim sources
+  using Git, Mercurial or by downloading them as a unix tar file, you must
+! first create a "vim80" directory.  If you instead downloaded the sources as
+  zip files, you can skip this setup as the zip archives already have the
+  correct directory structure.
+  
+!   A.  Create a Vim "runtime" subdirectory named "vim80"
+    -----------------------------------------------------
+    If you obtained your Vim sources as zip files, you can skip this step.
+    Otherwise, continue reading.
+  
+    Go to the directory that contains the Vim "src" and "runtime"
+!   directories and create a new subdirectory named "vim80".
+  
+!   Copy the "runtime" files into "vim80":
+!      copy runtime\* vim80
+  
+!   B.  Copy the new binaries into the "vim80" directory
+    ----------------------------------------------------
+    Regardless of how you installed the Vim sources, you need to copy the
+!   new binaries you created above into "vim80":
+  
+!      copy src\*.exe vim80
+!      copy src\GvimExt\gvimext.dll vim80
+!      copy src\xxd\xxd.exe vim80
+  
+!   C.  Move the "vim80" directory into the Vim installation subdirectory
+    ---------------------------------------------------------------------
+!   Move the "vim80" subdirectory into the subdirectory where you want Vim
+    to be installed.  Typically, this subdirectory will be named "vim".
+!   If you already have a "vim80" subdirectory in "vim", delete it first
+    by running its uninstal.exe program.
+  
+    D.  Install Vim
+    ---------------
+!   "cd" to your Vim installation subdirectory "vim\vim80" and run the
+    "install.exe" program.  It will ask you a number of questions about
+    how you would like to have your Vim setup.  Among these are:
+    - You can tell it to write a "_vimrc" file with your preferences in the
+*** ../vim-8.0.0006/src/vimtutor	2010-05-15 13:04:10.000000000 +0200
+--- src/vimtutor	2016-09-21 22:37:47.659112782 +0200
+***************
+*** 11,22 ****
+  
+  # Vim could be called "vim" or "vi".  Also check for "vimN", for people who
+  # have Vim installed with its version number.
+! # We anticipate up to a future Vim 8 version :-).
+! seq="vim vim8 vim75 vim74 vim73 vim72 vim71 vim70 vim7 vim6 vi"
+  if test "$1" = "-g"; then 
+    # Try to use the GUI version of Vim if possible, it will fall back
+    # on Vim if Gvim is not installed.
+!   seq="gvim gvim8 gvim75 gvim74 gvim73 gvim72 gvim71 gvim70 gvim7 gvim6 $seq"
+    shift
+  fi
+  
+--- 11,22 ----
+  
+  # Vim could be called "vim" or "vi".  Also check for "vimN", for people who
+  # have Vim installed with its version number.
+! # We anticipate up to a future Vim 8.1 version :-).
+! seq="vim vim81 vim80 vim8 vim74 vim73 vim72 vim71 vim70 vim7 vim6 vi"
+  if test "$1" = "-g"; then 
+    # Try to use the GUI version of Vim if possible, it will fall back
+    # on Vim if Gvim is not installed.
+!   seq="gvim gvim81 gvim80 gvim8 gvim74 gvim73 gvim72 gvim71 gvim70 gvim7 gvim6 $seq"
+    shift
+  fi
+  
+*** ../vim-8.0.0006/uninstal.txt	2013-07-06 14:09:16.000000000 +0200
+--- uninstal.txt	2016-09-21 22:38:10.850948887 +0200
+***************
+*** 55,62 ****
+     skip the next step.
+  
+  5. Delete the distributed files.  If you followed the directions, these will
+!    be located in a directory like "C:\vim\vim74".  If the $VIM environment
+!    variable is set, the directory will be $VIM\vim74.  Delete the "vim74"
+     directory and all that is in it.  Warning: If you changed any of the
+     distributed files, or added some of your own files, you might want to save
+     these first.  But normally you would not have changed or added files here.
+--- 55,62 ----
+     skip the next step.
+  
+  5. Delete the distributed files.  If you followed the directions, these will
+!    be located in a directory like "C:\vim\vim80".  If the $VIM environment
+!    variable is set, the directory will be $VIM\vim80.  Delete the "vim80"
+     directory and all that is in it.  Warning: If you changed any of the
+     distributed files, or added some of your own files, you might want to save
+     these first.  But normally you would not have changed or added files here.
+*** ../vim-8.0.0006/src/version.c	2016-09-20 21:39:11.358199163 +0200
+--- src/version.c	2016-09-21 22:39:49.286253378 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     7,
+  /**/
+
+-- 
+I'd like to meet the man who invented sex and see what he's working on now.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0008
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0008
+Problem:    Popup complete test is disabled.
+Solution:   Enable the test and change the assert. (Hirohito Higashi)
+Files:      src/testdir/test_popup.vim
+
+
+*** ../vim-8.0.0007/src/testdir/test_popup.vim	2016-09-05 20:52:36.000000000 +0200
+--- src/testdir/test_popup.vim	2016-09-22 21:23:32.478284340 +0200
+***************
+*** 17,32 ****
+  endfunc
+  
+  func! Test_popup_complete2()
+!   " Insert match immediately, if there is only one match
+!   "  <c-e> Should select a character from the line below
+!   " TODO: test disabled because the code change has been reverted.
+!   throw "Skipped: Bug with <c-e> and popupmenu not fixed yet"
+    new
+    inoremap <f5> <c-r>=ListMonths()<cr>
+    call append(1, ["December2015"])
+    :1
+    call feedkeys("aD\<f5>\<C-E>\<C-E>\<C-E>\<C-E>\<enter>\<esc>", 'tx')
+!   call assert_equal(["December2015", "", "December2015"], getline(1,3))
+    %d
+    bw!
+  endfu
+--- 17,34 ----
+  endfunc
+  
+  func! Test_popup_complete2()
+!   " Although the popupmenu is not visible, this does not mean completion mode
+!   " has ended. After pressing <f5> to complete the currently typed char, Vim
+!   " still stays in the first state of the completion (:h ins-completion-menu),
+!   " although the popupmenu wasn't shown <c-e> will remove the inserted
+!   " completed text (:h complete_CTRL-E), while the following <c-e> will behave
+!   " like expected (:h i_CTRL-E)
+    new
+    inoremap <f5> <c-r>=ListMonths()<cr>
+    call append(1, ["December2015"])
+    :1
+    call feedkeys("aD\<f5>\<C-E>\<C-E>\<C-E>\<C-E>\<enter>\<esc>", 'tx')
+!   call assert_equal(["Dece", "", "December2015"], getline(1,3))
+    %d
+    bw!
+  endfu
+*** ../vim-8.0.0007/src/version.c	2016-09-21 22:41:21.301603417 +0200
+--- src/version.c	2016-09-22 21:24:38.145827386 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     8,
+  /**/
+
+-- 
+Yah, well, we had to carve our electrons out of driftwood we'd
+find.  In the winter.  Uphill.  Both ways.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0009
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0009
+Problem:    Unnecessary workaround for AppVeyor.
+Solution:   Revert patch 7.4.990. (Christian Brabandt)
+Files:      appveyor.yml
+
+
+*** ../vim-8.0.0008/appveyor.yml	2016-09-02 22:23:53.000000000 +0200
+--- appveyor.yml	2016-09-25 20:20:56.657530826 +0200
+***************
+*** 16,24 ****
+  
+  before_build:
+    - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 /release'
+-   # Work around for Python 2.7.11's bug
+-   - reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7-32 /s /reg:32
+-   - reg copy HKLM\SOFTWARE\Python\PythonCore\2.7 HKLM\SOFTWARE\Python\PythonCore\2.7-32 /s /reg:64
+  
+  build_script:
+    - src/appveyor.bat
+--- 16,21 ----
+*** ../vim-8.0.0008/src/version.c	2016-09-22 21:27:08.360782126 +0200
+--- src/version.c	2016-09-25 20:21:15.549387313 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     9,
+  /**/
+
+-- 
+Apologies for taking up the bandwidth with the apology.  Anything else I
+can apologise for ...... er no can't think of anything, sorry about that.
+		Andy Hunt (Member of British Olympic Apology Squad)
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0010
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0010
+Problem:    Crash when editing file that starts with crypt yeader. (igor2x)
+Solution:   Check for length of text. (Christian Brabandt) Add a test.
+Files:      src/fileio.c, src/testdir/test_crypt.vim, src/Makefile,
+            src/testdir/Make_all.mak
+
+
+*** ../vim-8.0.0009/src/fileio.c	2016-09-03 16:58:56.000000000 +0200
+--- src/fileio.c	2016-09-25 20:45:03.194238557 +0200
+***************
+*** 3011,3016 ****
+--- 3011,3019 ----
+  
+  	    /* Remove cryptmethod specific header from the text. */
+  	    header_len = crypt_get_header_len(method);
++ 	    if (*sizep <= header_len)
++ 		/* invalid header, buffer can't be encrypted */
++ 		return NULL;
+  	    *filesizep += header_len;
+  	    *sizep -= header_len;
+  	    mch_memmove(ptr, ptr + header_len, (size_t)*sizep);
+*** ../vim-8.0.0009/src/testdir/test_crypt.vim	2016-09-25 20:50:18.387694352 +0200
+--- src/testdir/test_crypt.vim	2016-09-25 20:49:42.123986969 +0200
+***************
+*** 0 ****
+--- 1,21 ----
++ " Tests for encryption.
++ " TODO: include tests from test71.
++ 
++ func Common_head_only(text)
++   " This was crashing Vim
++   split Xtest.txt
++   call setline(1, a:text)
++   wq
++   call feedkeys(":split Xtest.txt\<CR>foobar\<CR>", "tx")
++   call delete('Xtest.txt')
++   call assert_match('VimCrypt', getline(1))
++   bwipe!
++ endfunc
++ 
++ func Test_head_only_2()
++   call Common_head_only('VimCrypt~02!abc')
++ endfunc
++ 
++ func Test_head_only_3()
++   call Common_head_only('VimCrypt~03!abc')
++ endfunc
+*** ../vim-8.0.0009/src/Makefile	2016-09-12 13:41:08.000000000 +0200
+--- src/Makefile	2016-09-25 20:38:05.889563491 +0200
+***************
+*** 2066,2071 ****
+--- 2066,2072 ----
+  	test_channel \
+  	test_charsearch \
+  	test_cmdline \
++ 	test_crypt \
+  	test_cscope \
+  	test_cursor_func \
+  	test_delete \
+*** ../vim-8.0.0009/src/testdir/Make_all.mak	2016-09-07 20:37:01.000000000 +0200
+--- src/testdir/Make_all.mak	2016-09-25 20:38:28.705380237 +0200
+***************
+*** 149,154 ****
+--- 149,155 ----
+  	    test_channel.res \
+  	    test_charsearch.res \
+  	    test_cmdline.res \
++ 	    test_crypt.res \
+  	    test_cscope.res \
+  	    test_diffmode.res \
+  	    test_digraph.res \
+*** ../vim-8.0.0009/src/version.c	2016-09-25 20:21:58.333062395 +0200
+--- src/version.c	2016-09-25 20:50:47.543459277 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     10,
+  /**/
+
+-- 
+   LAUNCELOT leaps into SHOT with a mighty cry and runs the GUARD through and
+   hacks him to the floor.  Blood.  Swashbuckling music (perhaps).
+   LAUNCELOT races through into the castle screaming.
+SECOND SENTRY: Hey!
+                 "Monty Python and the Holy Grail" PYTHON (MONTY) PICTURES LTD
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0011
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0011
+Problem:    On OSX Test_pipe_through_sort_all() sometimes fails.
+Solution:   Add the test to the list of flaky tests.
+Files:      src/testdir/runtest.vim
+
+*** ../vim-8.0.0010/src/testdir/runtest.vim	2016-09-12 13:29:37.000000000 +0200
+--- src/testdir/runtest.vim	2016-09-25 21:01:20.110404552 +0200
+***************
+*** 148,153 ****
+--- 148,154 ----
+        \ 'Test_reltime()',
+        \ 'Test_nb_basic()',
+        \ 'Test_communicate()',
++       \ 'Test_pipe_through_sort_all()'
+        \ 'Test_pipe_through_sort_some()'
+        \ ]
+  
+*** ../vim-8.0.0010/src/version.c	2016-09-25 20:54:46.549538851 +0200
+--- src/version.c	2016-09-25 21:01:17.658424012 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     11,
+  /**/
+
+-- 
+FIRST GUARD: Ah!  Now ... we're not allowed to ...
+   SIR LAUNCELOT runs him through,  grabs his spear and stabs the other
+   guard who collapses in a heap.  Hiccoughs quietly.
+                 "Monty Python and the Holy Grail" PYTHON (MONTY) PICTURES LTD
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0012
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0012
+Problem:    Typos in comments.
+Solution:   Change "its" to "it's". (Matthew Brener, closes #1088)
+Files:      src/evalfunc.c, src/main.aap, src/nbdebug.c, src/netbeans.c,
+            src/quickfix.c, src/workshop.c, src/wsdebug.c
+
+
+*** ../vim-8.0.0011/src/evalfunc.c	2016-09-14 22:16:09.859803666 +0200
+--- src/evalfunc.c	2016-09-25 21:41:24.523287983 +0200
+***************
+*** 6874,6880 ****
+  	return;
+  
+  #ifdef FEAT_LIBCALL
+!     /* The first two args must be strings, otherwise its meaningless */
+      if (argvars[0].v_type == VAR_STRING && argvars[1].v_type == VAR_STRING)
+      {
+  	string_in = NULL;
+--- 6874,6880 ----
+  	return;
+  
+  #ifdef FEAT_LIBCALL
+!     /* The first two args must be strings, otherwise it's meaningless */
+      if (argvars[0].v_type == VAR_STRING && argvars[1].v_type == VAR_STRING)
+      {
+  	string_in = NULL;
+*** ../vim-8.0.0011/src/main.aap	2016-02-27 18:04:31.000000000 +0100
+--- src/main.aap	2016-09-25 21:41:24.523287983 +0200
+***************
+*** 69,75 ****
+                      --with-mac-arch=$arch
+                      --cache-file=auto/config.cache
+  
+!     # Configure arguments: create an empty "config.arg" file when its missing
+      config.arg:
+          :touch {exist} config.arg
+  
+--- 69,75 ----
+                      --with-mac-arch=$arch
+                      --cache-file=auto/config.cache
+  
+!     # Configure arguments: create an empty "config.arg" file when it's missing
+      config.arg:
+          :touch {exist} config.arg
+  
+*** ../vim-8.0.0011/src/nbdebug.c	2016-08-29 22:42:20.000000000 +0200
+--- src/nbdebug.c	2016-09-25 21:41:24.523287983 +0200
+***************
+*** 41,47 ****
+  
+  /*
+   * nbdebug_wait	-   This function can be used to delay or stop execution of vim.
+!  *		    Its normally used to delay startup while attaching a
+   *		    debugger to a running process. Since workshop starts gvim
+   *		    from a background process this is the only way to debug
+   *		    startup problems.
+--- 41,47 ----
+  
+  /*
+   * nbdebug_wait	-   This function can be used to delay or stop execution of vim.
+!  *		    It's normally used to delay startup while attaching a
+   *		    debugger to a running process. Since workshop starts gvim
+   *		    from a background process this is the only way to debug
+   *		    startup problems.
+*** ../vim-8.0.0011/src/netbeans.c	2016-08-29 22:42:20.000000000 +0200
+--- src/netbeans.c	2016-09-25 21:41:24.523287983 +0200
+***************
+*** 2156,2162 ****
+  	else if (streq((char *)cmd, "save"))
+  	{
+  	    /*
+! 	     * NOTE - This command is obsolete wrt NetBeans. Its left in
+  	     * only for historical reasons.
+  	     */
+  	    if (buf == NULL || buf->bufp == NULL)
+--- 2156,2162 ----
+  	else if (streq((char *)cmd, "save"))
+  	{
+  	    /*
+! 	     * NOTE - This command is obsolete wrt NetBeans. It's left in
+  	     * only for historical reasons.
+  	     */
+  	    if (buf == NULL || buf->bufp == NULL)
+***************
+*** 2242,2248 ****
+  
+      /*
+       * Is this needed? I moved the netbeans_Xt_connect() later during startup
+!      * and it may no longer be necessary. If its not needed then needupdate
+       * and do_update can also be removed.
+       */
+      if (buf != NULL && buf->initDone && do_update)
+--- 2242,2248 ----
+  
+      /*
+       * Is this needed? I moved the netbeans_Xt_connect() later during startup
+!      * and it may no longer be necessary. If it's not needed then needupdate
+       * and do_update can also be removed.
+       */
+      if (buf != NULL && buf->initDone && do_update)
+***************
+*** 2856,2862 ****
+  }
+  
+  /*
+!  * Send a button release event back to netbeans. Its up to netbeans
+   * to decide what to do (if anything) with this event.
+   */
+      void
+--- 2856,2862 ----
+  }
+  
+  /*
+!  * Send a button release event back to netbeans. It's up to netbeans
+   * to decide what to do (if anything) with this event.
+   */
+      void
+***************
+*** 3453,3459 ****
+  
+  
+  /*
+!  * This message is printed after NetBeans opens a new file. Its
+   * similar to the message readfile() uses, but since NetBeans
+   * doesn't normally call readfile, we do our own.
+   */
+--- 3453,3459 ----
+  
+  
+  /*
+!  * This message is printed after NetBeans opens a new file. It's
+   * similar to the message readfile() uses, but since NetBeans
+   * doesn't normally call readfile, we do our own.
+   */
+*** ../vim-8.0.0011/src/quickfix.c	2016-09-01 15:40:55.000000000 +0200
+--- src/quickfix.c	2016-09-25 21:41:24.523287983 +0200
+***************
+*** 3569,3575 ****
+  	STRCAT(name, p + 2);
+  	if (mch_getperm(name) < 0
+  #ifdef HAVE_LSTAT
+! 		    /* Don't accept a symbolic link, its a security risk. */
+  		    && mch_lstat((char *)name, &sb) < 0
+  #endif
+  		)
+--- 3569,3575 ----
+  	STRCAT(name, p + 2);
+  	if (mch_getperm(name) < 0
+  #ifdef HAVE_LSTAT
+! 		    /* Don't accept a symbolic link, it's a security risk. */
+  		    && mch_lstat((char *)name, &sb) < 0
+  #endif
+  		)
+*** ../vim-8.0.0011/src/workshop.c	2016-08-29 22:42:21.000000000 +0200
+--- src/workshop.c	2016-09-25 21:41:24.523287983 +0200
+***************
+*** 71,77 ****
+  
+  /*
+   * The following enum is from <gp_dbx/gp_dbx_common.h>. We can't include it
+!  * here because its C++.
+   */
+  enum
+  {
+--- 71,77 ----
+  
+  /*
+   * The following enum is from <gp_dbx/gp_dbx_common.h>. We can't include it
+!  * here because it's C++.
+   */
+  enum
+  {
+***************
+*** 1752,1758 ****
+   *			directory. This is a Sun Visual WorkShop requirement!
+   *
+   * Note:		We override a user's $VIM because it won't have the
+!  *			WorkShop specific files. S/he may not like this but its
+   *			better than getting the wrong files (especially as the
+   *			user is likely to have $VIM set to 5.4 or later).
+   */
+--- 1752,1758 ----
+   *			directory. This is a Sun Visual WorkShop requirement!
+   *
+   * Note:		We override a user's $VIM because it won't have the
+!  *			WorkShop specific files. S/he may not like this but it's
+   *			better than getting the wrong files (especially as the
+   *			user is likely to have $VIM set to 5.4 or later).
+   */
+*** ../vim-8.0.0011/src/wsdebug.c	2016-08-29 22:42:21.000000000 +0200
+--- src/wsdebug.c	2016-09-25 21:41:24.523287983 +0200
+***************
+*** 47,53 ****
+  
+  /*
+   * wsdebug_wait	-   This function can be used to delay or stop execution of vim.
+!  *		    Its normally used to delay startup while attaching a
+   *		    debugger to a running process. Since workshop starts gvim
+   *		    from a background process this is the only way to debug
+   *		    startup problems.
+--- 47,53 ----
+  
+  /*
+   * wsdebug_wait	-   This function can be used to delay or stop execution of vim.
+!  *		    It's normally used to delay startup while attaching a
+   *		    debugger to a running process. Since workshop starts gvim
+   *		    from a background process this is the only way to debug
+   *		    startup problems.
+*** ../vim-8.0.0011/src/version.c	2016-09-25 21:02:58.873621345 +0200
+--- src/version.c	2016-09-25 21:42:28.570784588 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     12,
+  /**/
+
+-- 
+A vacation is a period of travel during which you find that you
+took twice as many clothes and half as much money as you needed.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0013
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0013 (after 8.0.0011)
+Problem:    Missing comma in list.
+Solution:   Add the comma.
+Files:      src/testdir/runtest.vim
+
+
+*** ../vim-8.0.0012/src/testdir/runtest.vim	2016-09-25 21:02:58.873621345 +0200
+--- src/testdir/runtest.vim	2016-09-25 22:26:25.141880622 +0200
+***************
+*** 148,154 ****
+        \ 'Test_reltime()',
+        \ 'Test_nb_basic()',
+        \ 'Test_communicate()',
+!       \ 'Test_pipe_through_sort_all()'
+        \ 'Test_pipe_through_sort_some()'
+        \ ]
+  
+--- 148,154 ----
+        \ 'Test_reltime()',
+        \ 'Test_nb_basic()',
+        \ 'Test_communicate()',
+!       \ 'Test_pipe_through_sort_all()',
+        \ 'Test_pipe_through_sort_some()'
+        \ ]
+  
+*** ../vim-8.0.0012/src/version.c	2016-09-25 21:44:59.445600117 +0200
+--- src/version.c	2016-09-25 22:27:03.213581523 +0200
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     13,
+  /**/
+
+-- 
+        **  Hello and Welcome to the Psychiatric Hotline **
+If you are obsessive-compulsive, please press 1 repeatedly.
+If you are co-dependent, please ask someone to press 2.
+If you have multiple personalities, please press 3, 4, 5 and 6.
+If you are paranoid-delusional, we know who you are and what you want
+       - just stay on the line so we can trace the call.
+If you are schizophrenic, listen carefully and a little voice will
+       tell you which number to press next.
+If you are manic-depressive, it doesn't matter which number you press
+       - no one will answer.
+If you suffer from panic attacks, push every button you can find.
+If you are sane, please hold on - we have the rest of humanity on the
+        other line and they desparately want to ask you a few questions.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
