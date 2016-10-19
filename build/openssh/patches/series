@@ -1,4 +1,5 @@
 sshd_config.patch 
+kexinit-leak.patch
 0001-Add-missing-priv.h-include-in-port-solaris.h.patch 
 0002-Skip-config-check.patch 
 0003-PAM-Support.patch 
