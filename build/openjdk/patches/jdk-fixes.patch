@@ -29,20 +29,13 @@ diff --git a/make/sun/awt/Makefile b/make/sun/awt/Makefile
 diff --git a/make/sun/awt/mawt.gmk b/make/sun/awt/mawt.gmk
 --- jdk/make/sun/awt/mawt.gmk
 +++ jdk/make/sun/awt/mawt.gmk
-@@ -240,13 +240,14 @@
-                         $(wildcard /usr/include/X11/extensions))
- endif
- 
--ifeq ($(PLATFORM), macosx))
-+ifeq ($(PLATFORM), macosx)
-   CPPFLAGS += -I$(OPENWIN_HOME)/include/X11/extensions \
-               -I$(OPENWIN_HOME)/include 
+@@ -246,7 +246,8 @@
  endif
  
  ifeq ($(PLATFORM), solaris)
 -  CPPFLAGS += -I$(OPENWIN_HOME)/include/X11/extensions
 +  CPPFLAGS += -I$(OPENWIN_HOME)/include/X11/extensions \
-+              -I$(ALT_OPENWIN_HOME)/include 
++               -I$(ALT_OPENWIN_HOME)/include
  endif
  
  ifeq ($(PLATFORM), macosx)
