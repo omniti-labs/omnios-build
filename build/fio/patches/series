@@ -1,0 +1,3 @@
+Makefile.patch
+os-solaris.h.patch
+fio2gnuplot.patch

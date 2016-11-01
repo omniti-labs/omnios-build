@@ -1,0 +1,10 @@
+--- fio-2.12.pristine/os/os-solaris.h	Mon Jun 13 21:42:44 2016
++++ fio-2.12/os/os-solaris.h	Wed Jul 13 21:12:33 2016
+@@ -12,6 +12,7 @@
+ #include <sys/mman.h>
+ #include <sys/dkio.h>
+ #include <sys/byteorder.h>
++#include <limits.h>
+ 
+ #include "../file.h"
+ 
