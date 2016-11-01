@@ -1,0 +1,24 @@
+--- fio-2.12.pristine/Makefile	Mon Jun 13 21:42:44 2016
++++ fio-2.12/Makefile	Wed Jul 20 19:16:13 2016
+@@ -281,16 +281,19 @@
+ endif
+
+ ifeq ($(CONFIG_TARGET_OS), SunOS)
+-	INSTALL = ginstall
++	INSTALL = /usr/gnu/bin/install
+ else
+ 	INSTALL = install
+ endif
+-prefix = $(INSTALL_PREFIX)
++prefix = /usr
+ bindir = $(prefix)/bin
+ 
+ ifeq ($(CONFIG_TARGET_OS), Darwin)
+ mandir = /usr/share/man
+ sharedir = /usr/share/fio
++else ifeq ($(CONFIG_TARGET_OS), SunOS)
++mandir = $(prefix)/share/man
++sharedir = $(prefix)/share/fio
+ else
+ mandir = $(prefix)/man
+ sharedir = $(prefix)/share/fio
