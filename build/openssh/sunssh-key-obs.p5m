@@ -1,0 +1,5 @@
+set name=pkg.fmri value=network/ssh/ssh-key@0.5.11,5.11-@PVER@
+set name=pkg.renamed value=true
+set name=pkg.description value="SunSSH keys (obsolete)"
+set name=pkg.summary value="SunSSH keys (obsolete)"
+depend fmri=network/openssh type=require
