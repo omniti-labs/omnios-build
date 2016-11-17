@@ -78,8 +78,12 @@ DEPENDS_IPS="developer/build/gnu-make developer/dtrace service/network/tftp"
 GIT=/usr/bin/git
 CHECKOUTDIR=$TMPDIR/$BUILDDIR
 IMG_DSET=rpool/kayak_image
-PKGURL=$PKGSRVR
+# NOTE: If PKGURL is specified, allow it to be different than the destination
+# PKGSRVR.
+PKGURL=${PKGURL:=$PKGSRVR}
 export PKGURL
+logmsg "Grabbing packages from $PKGURL."
+logmsg "Publishing kayak & kayak-kernel to $PKGSRVR."
 
 clone_source() {
     logmsg "kayak -> $CHECKOUTDIR/kayak"
