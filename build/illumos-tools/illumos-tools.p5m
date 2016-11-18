@@ -4,6 +4,7 @@ set name=pkg.summary value="Single meta-package containing required tools to bui
 set name=pkg.description value="Single meta-package containing required tools to build illumos."
 depend fmri=developer/as type=require
 depend fmri=developer/astdev type=require
+depend fmri=developer/bmake type=require
 depend fmri=developer/build/make type=require
 depend fmri=developer/build/onbld type=require
 depend fmri=developer/gcc44 type=require
