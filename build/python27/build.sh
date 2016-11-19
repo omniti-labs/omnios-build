@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -31,8 +31,8 @@ CC=gcc
 CXX=g++
 
 PROG=Python
-VER=2.6.8
-PKG=runtime/python-26
+VER=2.7.11
+PKG=runtime/python-27
 SUMMARY="$PROG"
 DESC="$SUMMARY"
 
@@ -92,25 +92,26 @@ make_prog64() {
     post_config
     [[ -n $NO_PARALLEL_MAKE ]] && MAKE_JOBS=""
     logmsg "--- make"
-    logcmd $MAKE $MAKE_JOBS DFLAGS=-64 DESTSHARED=/usr/lib/python2.6/lib-dynload || \
+    logcmd $MAKE $MAKE_JOBS DFLAGS=-64 DESTSHARED=/usr/lib/python2.7/lib-dynload || \
         logerr "--- Make failed"
 }
 
 make_install32() {
     make_install
     rm $DESTDIR/usr/bin/i386/python || logerr "--- cannot remove arch hardlink"
-    mv $DESTDIR/usr/lib/python2.6/config/Makefile $DESTDIR/usr/lib/python2.6/config/Makefile.32 || logerr "--- Makefile backup (32)"
+    # mv $DESTDIR/usr/lib/python2.7/config/Makefile $DESTDIR/usr/lib/python2.7/config/Makefile.32 || logerr "--- Makefile backup (32)"
 }
 make_install64() {
     logmsg "--- make install"
-    logcmd $MAKE DESTDIR=${DESTDIR} install DESTSHARED=/usr/lib/python2.6/lib-dynload || \
+    logcmd $MAKE DESTDIR=${DESTDIR} install DESTSHARED=/usr/lib/python2.7/lib-dynload || \
         logerr "--- Make install failed"
     rm $DESTDIR/usr/bin/amd64/python || logerr "--- cannot remove arch hardlink"
-    rm $DESTDIR/usr/lib/python2.6/config/libpython2.6.a || logerr "--- cannot remove static lib"
-    # XXX KEBE SAYS Remove this line once 2.7 is the default!
-    (cd $DESTDIR/usr/bin && ln -s python2.6 python) ||  logerr "--- could not setup python softlink"
-    mv $DESTDIR/usr/lib/python2.6/config/Makefile $DESTDIR/usr/lib/python2.6/config/Makefile.64 || logerr "--- Makefile backup (64)"
-    mv $DESTDIR/usr/lib/python2.6/config/Makefile.32 $DESTDIR/usr/lib/python2.6/config/Makefile || logerr "--- Makefile restore (32)"
+    rm $DESTDIR/usr/lib/python2.7/config/libpython2.7.a || logerr "--- cannot remove static lib"
+    # XXX KEBE SAYS Uncomment me eventually...
+    # (cd $DESTDIR/usr/bin && ln -s python2.7 python) ||  logerr "--- could not setup python softlink"
+    # XXX KEBE SAYS Python2.7 appears to honor $LIB/amd64 for 64-bit python...
+    # mv $DESTDIR/usr/lib/python2.7/config/Makefile $DESTDIR/usr/lib/python2.7/config/Makefile.64 || logerr "--- Makefile backup (64)"
+    # mv $DESTDIR/usr/lib/python2.7/config/Makefile.32 $DESTDIR/usr/lib/python2.7/config/Makefile || logerr "--- Makefile restore (32)"
 }
 
 install_license(){
