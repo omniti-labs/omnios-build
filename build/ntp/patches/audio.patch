@@ -1,11 +1,11 @@
---- libntp/audio.c.orig	Wed Jan 27 10:59:27 2016
-+++ libntp/audio.c	Wed Jan 27 10:59:34 2016
+--- libntp/audio.c.orig	Mon Nov 21 14:20:18 2016
++++ libntp/audio.c	Mon Nov 21 14:20:31 2016
 @@ -55,7 +55,7 @@
  #ifdef PCM_STYLE_SOUND
  # define INIT_FILE "/etc/ntp.audio"
  int agc =	SOUND_MIXER_WRITE_RECLEV; /* or IGAIN or LINE */
--int monitor =	SOUND_MIXER_WRITE_VOLUME; /* or OGAIN */
-+static int monitor =	SOUND_MIXER_WRITE_VOLUME; /* or OGAIN */
+-int audiomonitor =     SOUND_MIXER_WRITE_VOLUME; /* or OGAIN */
++static int audiomonitor =     SOUND_MIXER_WRITE_VOLUME; /* or OGAIN */
  int devmask = 0;
  int recmask = 0;
  char cf_c_dev[100], cf_i_dev[100], cf_agc[100], cf_monitor[100];
