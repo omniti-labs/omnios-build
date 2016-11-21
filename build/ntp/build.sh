@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2015 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=ntp
-VER=4.2.8p8
+VER=4.2.8p9
 VERHUMAN=$VER
 PKG=service/network/ntp
 SUMMARY="Network Time Services"
