@@ -38,7 +38,7 @@
 
 PROG=vim
 VER=8.0
-PATCHLEVEL=41
+PATCHLEVEL=95
 PKG=editor/vim
 SUMMARY="Vi IMproved"
 DESC="$SUMMARY version $VER"
