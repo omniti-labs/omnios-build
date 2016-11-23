@@ -21,13 +21,10 @@ license license license=PSF
 <transform file path=usr/bin/amd64/python2-config -> drop>
 <transform file path=usr/bin/amd64/smtpd.py -> drop>
 <transform link path=usr/share/man/man1/python.1 -> drop>
-# For bootstrapping purposes...
-<transform depend uri=pkg://omnios/runtime/python-27 -> drop>
 
 # Prevents pkgdepend from freaking out.
 
-#<transform file path=usr/bin/amd64/smtpd.py -> set pkg.depend.bypass-generate .*>
-#<transform file path=usr/bin/i386/smtpd.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/lib/python2.7/lib2to3/tests/pytree_idempotency.py -> set pkg.depend.bypass-generate .*>
 <transform file path=usr/lib/python2.7/cProfile.py -> set pkg.depend.bypass-generate .*>
 <transform file path=usr/lib/python2.7/cgi.py -> set pkg.depend.bypass-generate .*>
 <transform file path=usr/lib/python2.7/pdb.py -> set pkg.depend.bypass-generate .*>
