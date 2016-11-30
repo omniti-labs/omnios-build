@@ -34273,3 +34273,1872 @@ Those who live by the sword get shot by those who don't.
 ///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
 \\\  an exciting new programming language -- http://www.Zimbu.org        ///
  \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0096
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0096
+Problem:    When the input or output is not a tty Vim appears to hang.
+Solution:   Add the --ttyfail argument.  Also add the "ttyin" and "ttyout"
+            features to be able to check in Vim script.
+Files:      src/globals.h, src/structs.h, src/main.c, src/evalfunc.c,
+            runtime/doc/starting.txt, runtime/doc/eval.txt
+
+
+*** ../vim-8.0.0095/src/globals.h	2016-11-10 20:01:41.181582995 +0100
+--- src/globals.h	2016-11-24 14:47:12.106114198 +0100
+***************
+*** 643,648 ****
+--- 643,650 ----
+  EXTERN int	really_exiting INIT(= FALSE);
+  				/* TRUE when we are sure to exit, e.g., after
+  				 * a deadly signal */
++ EXTERN int	stdout_isatty INIT(= TRUE);	/* is stdout a terminal? */
++ 
+  #if defined(FEAT_AUTOCHDIR)
+  EXTERN int	test_autochdir INIT(= FALSE);
+  #endif
+*** ../vim-8.0.0095/src/structs.h	2016-11-17 17:25:28.212093109 +0100
+--- src/structs.h	2016-11-24 14:47:01.506180720 +0100
+***************
+*** 3225,3232 ****
+  #endif
+  
+      int		want_full_screen;
+-     int		stdout_isatty;		/* is stdout a terminal? */
+      int		not_a_term;		/* no warning for missing term? */
+      char_u	*term;			/* specified terminal name */
+  #ifdef FEAT_CRYPT
+      int		ask_for_key;		/* -x argument */
+--- 3225,3232 ----
+  #endif
+  
+      int		want_full_screen;
+      int		not_a_term;		/* no warning for missing term? */
++     int		tty_fail;		/* exit if not a tty */
+      char_u	*term;			/* specified terminal name */
+  #ifdef FEAT_CRYPT
+      int		ask_for_key;		/* -x argument */
+*** ../vim-8.0.0095/src/main.c	2016-08-29 22:42:20.000000000 +0200
+--- src/main.c	2016-11-24 14:46:47.594268023 +0100
+***************
+*** 973,979 ****
+       * (needed for :! to * work). mch_check_win() will also handle the -d or
+       * -dev argument.
+       */
+!     paramp->stdout_isatty = (mch_check_win(paramp->argc, paramp->argv) != FAIL);
+      TIME_MSG("window checked");
+  
+      /*
+--- 973,979 ----
+       * (needed for :! to * work). mch_check_win() will also handle the -d or
+       * -dev argument.
+       */
+!     stdout_isatty = (mch_check_win(paramp->argc, paramp->argv) != FAIL);
+      TIME_MSG("window checked");
+  
+      /*
+***************
+*** 1828,1833 ****
+--- 1828,1834 ----
+  				/* "--literal" take files literally */
+  				/* "--nofork" don't fork */
+  				/* "--not-a-term" don't warn for not a term */
++ 				/* "--ttyfail" exit if not a term */
+  				/* "--noplugin[s]" skip plugins */
+  				/* "--cmd <cmd>" execute cmd before vimrc */
+  		if (STRICMP(argv[0] + argv_idx, "help") == 0)
+***************
+*** 1857,1862 ****
+--- 1858,1865 ----
+  		    p_lpl = FALSE;
+  		else if (STRNICMP(argv[0] + argv_idx, "not-a-term", 10) == 0)
+  		    parmp->not_a_term = TRUE;
++ 		else if (STRNICMP(argv[0] + argv_idx, "ttyfail", 7) == 0)
++ 		    parmp->tty_fail = TRUE;
+  		else if (STRNICMP(argv[0] + argv_idx, "cmd", 3) == 0)
+  		{
+  		    want_argument = TRUE;
+***************
+*** 2489,2495 ****
+  	if (!input_isatty)
+  	    silent_mode = TRUE;
+      }
+!     else if (parmp->want_full_screen && (!parmp->stdout_isatty || !input_isatty)
+  #ifdef FEAT_GUI
+  	    /* don't want the delay when started from the desktop */
+  	    && !gui.starting
+--- 2492,2498 ----
+  	if (!input_isatty)
+  	    silent_mode = TRUE;
+      }
+!     else if (parmp->want_full_screen && (!stdout_isatty || !input_isatty)
+  #ifdef FEAT_GUI
+  	    /* don't want the delay when started from the desktop */
+  	    && !gui.starting
+***************
+*** 2504,2510 ****
+  	 * input buffer so fast I can't even kill the process in under 2
+  	 * minutes (and it beeps continuously the whole time :-)
+  	 */
+! 	if (netbeans_active() && (!parmp->stdout_isatty || !input_isatty))
+  	{
+  	    mch_errmsg(_("Vim: Error: Failure to start gvim from NetBeans\n"));
+  	    exit(1);
+--- 2507,2513 ----
+  	 * input buffer so fast I can't even kill the process in under 2
+  	 * minutes (and it beeps continuously the whole time :-)
+  	 */
+! 	if (netbeans_active() && (!stdout_isatty || !input_isatty))
+  	{
+  	    mch_errmsg(_("Vim: Error: Failure to start gvim from NetBeans\n"));
+  	    exit(1);
+***************
+*** 2517,2527 ****
+  	    exit(1);
+  	}
+  #endif
+! 	if (!parmp->stdout_isatty)
+  	    mch_errmsg(_("Vim: Warning: Output is not to a terminal\n"));
+  	if (!input_isatty)
+  	    mch_errmsg(_("Vim: Warning: Input is not from a terminal\n"));
+  	out_flush();
+  	if (scriptin[0] == NULL)
+  	    ui_delay(2000L, TRUE);
+  	TIME_MSG("Warning delay");
+--- 2520,2532 ----
+  	    exit(1);
+  	}
+  #endif
+! 	if (!stdout_isatty)
+  	    mch_errmsg(_("Vim: Warning: Output is not to a terminal\n"));
+  	if (!input_isatty)
+  	    mch_errmsg(_("Vim: Warning: Input is not from a terminal\n"));
+  	out_flush();
++ 	if (parmp->tty_fail && (!stdout_isatty || !input_isatty))
++ 	    exit(1);
+  	if (scriptin[0] == NULL)
+  	    ui_delay(2000L, TRUE);
+  	TIME_MSG("Warning delay");
+***************
+*** 3287,3292 ****
+--- 3292,3298 ----
+  #endif
+      main_msg(_("-T <terminal>\tSet terminal type to <terminal>"));
+      main_msg(_("--not-a-term\t\tSkip warning for input/output not being a terminal"));
++     main_msg(_("--ttyfail\t\tExit if input or output is not a terminal"));
+      main_msg(_("-u <vimrc>\t\tUse <vimrc> instead of any .vimrc"));
+  #ifdef FEAT_GUI
+      main_msg(_("-U <gvimrc>\t\tUse <gvimrc> instead of any .gvimrc"));
+*** ../vim-8.0.0095/src/evalfunc.c	2016-11-10 20:01:41.189582944 +0100
+--- src/evalfunc.c	2016-11-24 14:47:35.001970494 +0100
+***************
+*** 5959,5964 ****
+--- 5959,5968 ----
+  	}
+  	else if (STRICMP(name, "vim_starting") == 0)
+  	    n = (starting != 0);
++ 	else if (STRICMP(name, "ttyin") == 0)
++ 	    n = mch_input_isatty();
++ 	else if (STRICMP(name, "ttyout") == 0)
++ 	    n = stdout_isatty;
+  #ifdef FEAT_MBYTE
+  	else if (STRICMP(name, "multi_byte_encoding") == 0)
+  	    n = has_mbyte;
+*** ../vim-8.0.0095/runtime/doc/starting.txt	2016-09-12 12:45:48.000000000 +0200
+--- runtime/doc/starting.txt	2016-11-24 14:39:52.460879969 +0100
+***************
+*** 421,426 ****
+--- 421,430 ----
+  		not connected to a terminal.  This will avoid the warning and
+  		the two second delay that would happen. {not in Vi}
+  
++ 							*--ttyfail*
++ --ttyfail	When the stdin or stdout is not a terminal (tty) then exit
++ 		right away.
++ 
+  							*-d*
+  -d		Start in diff mode, like |vimdiff|.
+  		{not in Vi} {not available when compiled without the |+diff|
+*** ../vim-8.0.0095/runtime/doc/eval.txt	2016-10-15 15:39:34.693059595 +0200
+--- runtime/doc/eval.txt	2016-11-24 14:53:43.191657088 +0100
+***************
+*** 8405,8410 ****
+--- 8416,8423 ----
+  timers			Compiled with |timer_start()| support.
+  title			Compiled with window title support |'title'|.
+  toolbar			Compiled with support for |gui-toolbar|.
++ ttyin			input is a terminal (tty)
++ ttyout			output is a terminal (tty)
+  unix			Unix version of Vim.
+  user_commands		User-defined commands.
+  vertsplit		Compiled with vertically split windows |:vsplit|.
+*** ../vim-8.0.0095/src/version.c	2016-11-21 20:55:54.458792774 +0100
+--- src/version.c	2016-11-24 14:40:18.220710851 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     96,
+  /**/
+
+-- 
+George:  "I just got a new set of golf clubs for my wife!"
+  John:  "Great trade!"
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0097
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0097
+Problem:    When a channel callback consumes a lot of time Vim becomes
+            unresponsive. (skywind)
+Solution:   Bail out of checking channel readahead after 100 msec.
+Files:      src/os_unix.c, src/misc2.c, src/vim.h, src/os_win32.c
+
+
+*** ../vim-8.0.0096/src/os_unix.c	2016-11-17 17:25:28.212093109 +0100
+--- src/os_unix.c	2016-11-24 17:10:57.847711807 +0100
+***************
+*** 376,396 ****
+  	RealWaitForChar(read_cmd_fd, p_wd, NULL, NULL);
+  }
+  
+- #if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+- /*
+-  * Return time in msec since "start_tv".
+-  */
+-     static long
+- elapsed(struct timeval *start_tv)
+- {
+-     struct timeval  now_tv;
+- 
+-     gettimeofday(&now_tv, NULL);
+-     return (now_tv.tv_sec - start_tv->tv_sec) * 1000L
+- 	 + (now_tv.tv_usec - start_tv->tv_usec) / 1000L;
+- }
+- #endif
+- 
+  /*
+   * mch_inchar(): low level input function.
+   * Get a characters from the keyboard.
+--- 376,381 ----
+***************
+*** 411,420 ****
+      int		did_start_blocking = FALSE;
+      long	wait_time;
+      long	elapsed_time = 0;
+! #if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+!     struct timeval  start_tv;
+  
+!     gettimeofday(&start_tv, NULL);
+  #endif
+  
+      /* repeat until we got a character or waited long enough */
+--- 396,405 ----
+      int		did_start_blocking = FALSE;
+      long	wait_time;
+      long	elapsed_time = 0;
+! #ifdef ELAPSED_FUNC
+!     ELAPSED_TYPE start_tv;
+  
+!     ELAPSED_INIT(start_tv);
+  #endif
+  
+      /* repeat until we got a character or waited long enough */
+***************
+*** 438,445 ****
+  	    else
+  		/* going to block after p_ut */
+  		wait_time = p_ut;
+! #if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+! 	    elapsed_time = elapsed(&start_tv);
+  #endif
+  	    wait_time -= elapsed_time;
+  	    if (wait_time < 0)
+--- 423,430 ----
+  	    else
+  		/* going to block after p_ut */
+  		wait_time = p_ut;
+! #ifdef ELAPSED_FUNC
+! 	    elapsed_time = ELAPSED_FUNC(start_tv);
+  #endif
+  	    wait_time -= elapsed_time;
+  	    if (wait_time < 0)
+***************
+*** 1554,1571 ****
+  
+  #ifdef FEAT_X11
+  
+! # if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H) \
+  	&& (defined(FEAT_XCLIPBOARD) || defined(FEAT_TITLE))
+  
+- static void xopen_message(struct timeval *start_tv);
+- 
+  /*
+   * Give a message about the elapsed time for opening the X window.
+   */
+      static void
+! xopen_message(struct timeval *start_tv)
+  {
+!     smsg((char_u *)_("Opening the X display took %ld msec"), elapsed(start_tv));
+  }
+  # endif
+  #endif
+--- 1539,1554 ----
+  
+  #ifdef FEAT_X11
+  
+! # if defined(ELAPSED_TIMEVAL) \
+  	&& (defined(FEAT_XCLIPBOARD) || defined(FEAT_TITLE))
+  
+  /*
+   * Give a message about the elapsed time for opening the X window.
+   */
+      static void
+! xopen_message(long elapsed_msec)
+  {
+!     smsg((char_u *)_("Opening the X display took %ld msec"), elapsed_msec);
+  }
+  # endif
+  #endif
+***************
+*** 1864,1874 ****
+  #endif
+  	if (x11_display != NULL)
+  	{
+! # if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+  	    if (p_verbose > 0)
+  	    {
+  		verbose_enter();
+! 		xopen_message(&start_tv);
+  		verbose_leave();
+  	    }
+  # endif
+--- 1847,1857 ----
+  #endif
+  	if (x11_display != NULL)
+  	{
+! # ifdef ELAPSED_FUNC
+  	    if (p_verbose > 0)
+  	    {
+  		verbose_enter();
+! 		xopen_message(ELAPSED_FUNC(start_tv));
+  		verbose_leave();
+  	    }
+  # endif
+***************
+*** 4630,4637 ****
+  		    ga_init2(&ga, 1, BUFLEN);
+  
+  		noread_cnt = 0;
+! # if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+! 		gettimeofday(&start_tv, NULL);
+  # endif
+  		for (;;)
+  		{
+--- 4613,4620 ----
+  		    ga_init2(&ga, 1, BUFLEN);
+  
+  		noread_cnt = 0;
+! # ifdef ELAPSED_FUNC
+! 		ELAPSED_INIT(start_tv);
+  # endif
+  		for (;;)
+  		{
+***************
+*** 4666,4673 ****
+  			  /* Get extra characters when we don't have any.
+  			   * Reset the counter and timer. */
+  			  noread_cnt = 0;
+! # if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+! 			  gettimeofday(&start_tv, NULL);
+  # endif
+  			  len = ui_inchar(ta_buf, BUFLEN, 10L, 0);
+  		      }
+--- 4649,4656 ----
+  			  /* Get extra characters when we don't have any.
+  			   * Reset the counter and timer. */
+  			  noread_cnt = 0;
+! # ifdef ELAPSED_FUNC
+! 			  ELAPSED_INIT(start_tv);
+  # endif
+  			  len = ui_inchar(ta_buf, BUFLEN, 10L, 0);
+  		      }
+***************
+*** 4886,4895 ****
+  			if (got_int)
+  			    break;
+  
+! # if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+  			if (wait_pid == 0)
+  			{
+! 			    long	    msec = elapsed(&start_tv);
+  
+  			    /* Avoid that we keep looping here without
+  			     * checking for a CTRL-C for a long time.  Don't
+--- 4869,4878 ----
+  			if (got_int)
+  			    break;
+  
+! # ifdef ELAPSED_FUNC
+  			if (wait_pid == 0)
+  			{
+! 			    long	msec = ELAPSED_FUNC(start_tv);
+  
+  			    /* Avoid that we keep looping here without
+  			     * checking for a CTRL-C for a long time.  Don't
+***************
+*** 5632,5646 ****
+      /* May retry getting characters after an event was handled. */
+  # define MAY_LOOP
+  
+! # if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+      /* Remember at what time we started, so that we know how much longer we
+       * should wait after being interrupted. */
+- #  define USE_START_TV
+      long	    start_msec = msec;
+!     struct timeval  start_tv;
+  
+      if (msec > 0)
+! 	gettimeofday(&start_tv, NULL);
+  # endif
+  
+      /* Handle being called recursively.  This may happen for the session
+--- 5615,5628 ----
+      /* May retry getting characters after an event was handled. */
+  # define MAY_LOOP
+  
+! # ifdef ELAPSED_FUNC
+      /* Remember at what time we started, so that we know how much longer we
+       * should wait after being interrupted. */
+      long	    start_msec = msec;
+!     ELAPSED_TYPE  start_tv;
+  
+      if (msec > 0)
+! 	ELAPSED_INIT(start_tv);
+  # endif
+  
+      /* Handle being called recursively.  This may happen for the session
+***************
+*** 5947,5955 ****
+  	/* We're going to loop around again, find out for how long */
+  	if (msec > 0)
+  	{
+! # ifdef USE_START_TV
+  	    /* Compute remaining wait time. */
+! 	    msec = start_msec - elapsed(&start_tv);
+  # else
+  	    /* Guess we got interrupted halfway. */
+  	    msec = msec / 2;
+--- 5929,5937 ----
+  	/* We're going to loop around again, find out for how long */
+  	if (msec > 0)
+  	{
+! # ifdef ELAPSED_FUNC
+  	    /* Compute remaining wait time. */
+! 	    msec = start_msec - ELAPSED_FUNC(start_tv);
+  # else
+  	    /* Guess we got interrupted halfway. */
+  	    msec = msec / 2;
+***************
+*** 7046,7056 ****
+  #if defined(HAVE_SETJMP_H)
+  	int (*oldIOhandler)();
+  #endif
+! # if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+! 	struct timeval  start_tv;
+  
+  	if (p_verbose > 0)
+! 	    gettimeofday(&start_tv, NULL);
+  # endif
+  
+  	/* Ignore X errors while opening the display */
+--- 7028,7038 ----
+  #if defined(HAVE_SETJMP_H)
+  	int (*oldIOhandler)();
+  #endif
+! # ifdef ELAPSED_FUNC
+! 	ELAPSED_TYPE  start_tv;
+  
+  	if (p_verbose > 0)
+! 	    ELAPSED_INIT(start_tv);
+  # endif
+  
+  	/* Ignore X errors while opening the display */
+***************
+*** 7092,7102 ****
+  	/* Catch terminating error of the X server connection. */
+  	(void)XSetIOErrorHandler(x_IOerror_handler);
+  
+! # if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+  	if (p_verbose > 0)
+  	{
+  	    verbose_enter();
+! 	    xopen_message(&start_tv);
+  	    verbose_leave();
+  	}
+  # endif
+--- 7074,7084 ----
+  	/* Catch terminating error of the X server connection. */
+  	(void)XSetIOErrorHandler(x_IOerror_handler);
+  
+! # ifdef ELAPSED_FUNC
+  	if (p_verbose > 0)
+  	{
+  	    verbose_enter();
+! 	    xopen_message(ELAPSED_FUNC(start_tv));
+  	    verbose_leave();
+  	}
+  # endif
+*** ../vim-8.0.0096/src/misc2.c	2016-11-10 20:01:41.193582919 +0100
+--- src/misc2.c	2016-11-24 16:57:53.768987660 +0100
+***************
+*** 6263,6265 ****
+--- 6263,6296 ----
+  # endif
+  }
+  #endif
++ 
++ #ifdef ELAPSED_TIMEVAL  /* proto is defined in vim.h */
++ /*
++  * Return time in msec since "start_tv".
++  */
++     long
++ elapsed(struct timeval *start_tv)
++ {
++     struct timeval  now_tv;
++ 
++     gettimeofday(&now_tv, NULL);
++     return (now_tv.tv_sec - start_tv->tv_sec) * 1000L
++ 	 + (now_tv.tv_usec - start_tv->tv_usec) / 1000L;
++ }
++ #endif
++ 
++ #ifdef ELAPSED_TICKCOUNT
++ /*
++  * Return time in msec since "start_tick".
++  */
++     long
++ elapsed(DWORD start_tick)
++ {
++     DWORD	now = GetTickCount();
++ 
++     if (now < start_tick)
++ 	/* overflow */
++ 	return (long)now;
++     return (long)now - (long)start_tick;
++ }
++ #endif
+*** ../vim-8.0.0096/src/vim.h	2016-11-10 20:01:41.201582868 +0100
+--- src/vim.h	2016-11-24 16:58:55.288576323 +0100
+***************
+*** 2503,2506 ****
+--- 2503,2522 ----
+  # define OPEN_CHR_FILES
+  #endif
+  
++ #if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
++ # define ELAPSED_TIMEVAL
++ # define ELAPSED_INIT(v) gettimeofday(&v, NULL)
++ # define ELAPSED_FUNC(v) elapsed(&v)
++ # define ELAPSED_TYPE struct timeval
++     long elapsed(struct timeval *start_tv);
++ #else
++ # if defined(WIN32)
++ #  define ELAPSED_TICKCOUNT
++ #  define ELAPSED_INIT(v) v = GetTickCount
++ #  define ELAPSED_FUNC(v) elapsed(v)
++ #  define ELAPSED_TYPE DWORD
++     long elapsed(DWORD start_tick);
++ # endif
++ #endif
++ 
+  #endif /* VIM__H */
+*** ../vim-8.0.0096/src/os_win32.c	2016-11-19 17:28:41.577810144 +0100
+--- src/os_win32.c	2016-11-24 16:46:08.177711935 +0100
+***************
+*** 4287,4295 ****
+  		    /* Get extra characters when we don't have any.  Reset the
+  		     * counter and timer. */
+  		    noread_cnt = 0;
+- # if defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+- 		    gettimeofday(&start_tv, NULL);
+- # endif
+  		    len = ui_inchar(ta_buf, BUFLEN, 10L, 0);
+  		}
+  		if (ta_len > 0 || len > 0)
+--- 4287,4292 ----
+*** ../vim-8.0.0096/src/channel.c	2016-11-17 17:25:28.208093136 +0100
+--- src/channel.c	2016-11-24 17:04:11.666462247 +0100
+***************
+*** 3815,3820 ****
+--- 3815,3825 ----
+      int		ret = FALSE;
+      int		r;
+      ch_part_T	part = PART_SOCK;
++ #ifdef ELAPSED_FUNC
++     ELAPSED_TYPE  start_tv;
++ 
++     ELAPSED_INIT(start_tv);
++ #endif
+  
+      ++safe_to_invoke_callback;
+  
+***************
+*** 3859,3865 ****
+  	    r = may_invoke_callback(channel, part);
+  	    if (r == OK)
+  		ret = TRUE;
+! 	    if (channel_unref(channel) || r == OK)
+  	    {
+  		/* channel was freed or something was done, start over */
+  		channel = first_channel;
+--- 3864,3877 ----
+  	    r = may_invoke_callback(channel, part);
+  	    if (r == OK)
+  		ret = TRUE;
+! 	    if (channel_unref(channel) || (r == OK
+! #ifdef ELAPSED_FUNC
+! 			/* Limit the time we loop here to 100 msec, otherwise
+! 			 * Vim becomes unresponsive when the callback takes
+! 			 * more than a bit of time. */
+! 			&& ELAPSED_FUNC(start_tv) < 100L
+! #endif
+! 			))
+  	    {
+  		/* channel was freed or something was done, start over */
+  		channel = first_channel;
+*** ../vim-8.0.0096/src/version.c	2016-11-24 15:09:03.413856612 +0100
+--- src/version.c	2016-11-24 17:16:25.453392518 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     97,
+  /**/
+
+-- 
+hundred-and-one symptoms of being an internet addict:
+39. You move into a new house and decide to Netscape before you landscape.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0098
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0098 (after 8.0.0097)
+Problem:    Can't build on MS-Windows.
+Solution:   Add missing parenthesis.
+Files:      src/vim.h
+
+
+*** ../vim-8.0.0097/src/vim.h	2016-11-24 17:22:46.150837087 +0100
+--- src/vim.h	2016-11-24 17:31:56.371175210 +0100
+***************
+*** 2512,2518 ****
+  #else
+  # if defined(WIN32)
+  #  define ELAPSED_TICKCOUNT
+! #  define ELAPSED_INIT(v) v = GetTickCount
+  #  define ELAPSED_FUNC(v) elapsed(v)
+  #  define ELAPSED_TYPE DWORD
+      long elapsed(DWORD start_tick);
+--- 2512,2518 ----
+  #else
+  # if defined(WIN32)
+  #  define ELAPSED_TICKCOUNT
+! #  define ELAPSED_INIT(v) v = GetTickCount()
+  #  define ELAPSED_FUNC(v) elapsed(v)
+  #  define ELAPSED_TYPE DWORD
+      long elapsed(DWORD start_tick);
+*** ../vim-8.0.0097/src/version.c	2016-11-24 17:22:46.154837060 +0100
+--- src/version.c	2016-11-24 17:32:38.990891710 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     98,
+  /**/
+
+-- 
+"Oh, no!  NOT the Spanish Inquisition!"
+"NOBODY expects the Spanish Inquisition!!!"
+				-- Monty Python sketch --
+"Oh, no!  NOT another option!"
+"EVERYBODY expects another option!!!"
+				-- Discussion in vim-dev mailing list --
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0099
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0099
+Problem:    Popup menu always appears above the cursor when it is in the lower
+            half of the screen. (Matt Gardner)
+Solution:   Compute the available space better. (Hirohito Higashi,
+            closes #1241)
+Files:      src/popupmnu.c
+
+
+*** ../vim-8.0.0098/src/popupmnu.c	2016-11-04 22:08:26.014082864 +0100
+--- src/popupmnu.c	2016-11-24 17:37:44.964839700 +0100
+***************
+*** 105,111 ****
+  
+      /* Put the pum below "row" if possible.  If there are few lines decide on
+       * where there is more room. */
+!     if (row - above_row >= below_row - row)
+      {
+  	/* pum above "row" */
+  
+--- 105,112 ----
+  
+      /* Put the pum below "row" if possible.  If there are few lines decide on
+       * where there is more room. */
+!     if (row + 2 >= below_row - pum_height
+! 			    && row - above_row > (below_row - above_row) / 2)
+      {
+  	/* pum above "row" */
+  
+*** ../vim-8.0.0098/src/version.c	2016-11-24 17:33:12.430669286 +0100
+--- src/version.c	2016-11-24 17:38:35.820495843 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     99,
+  /**/
+
+-- 
+Microsoft is to software what McDonalds is to gourmet cooking
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0100
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0100
+Problem:    Options that are a file name may contain non-filename characters.
+Solution:   Check for more invalid characters.
+Files:      src/option.c
+
+
+*** ../vim-8.0.0099/src/option.c	2016-11-10 20:01:41.197582893 +0100
+--- src/option.c	2016-11-24 17:58:37.652276224 +0100
+***************
+*** 5880,5886 ****
+       * separator (slash and/or backslash), wildcards and characters that are
+       * often illegal in a file name. */
+      else if ((options[opt_idx].flags & P_NFNAME)
+! 			 && vim_strpbrk(*varp, (char_u *)"/\\*?[|<>") != NULL)
+      {
+  	errmsg = e_invarg;
+      }
+--- 5880,5886 ----
+       * separator (slash and/or backslash), wildcards and characters that are
+       * often illegal in a file name. */
+      else if ((options[opt_idx].flags & P_NFNAME)
+! 		    && vim_strpbrk(*varp, (char_u *)"/\\*?[|;&<>\r\n") != NULL)
+      {
+  	errmsg = e_invarg;
+      }
+*** ../vim-8.0.0099/src/version.c	2016-11-24 17:47:03.865021031 +0100
+--- src/version.c	2016-11-24 17:59:26.683951638 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     100,
+  /**/
+
+-- 
+hundred-and-one symptoms of being an internet addict:
+40. You tell the cab driver you live at
+    http://123.elm.street/house/bluetrim.html
+41. You actually try that 123.elm.street address.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0101
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0101
+Problem:    Some options are not strictly checked.
+Solution:   Add flags for strickter checks.
+Files:      src/option.c
+
+
+*** ../vim-8.0.0100/src/option.c	2016-11-24 18:30:55.715444785 +0100
+--- src/option.c	2016-11-24 21:38:32.823206218 +0100
+***************
+*** 992,998 ****
+  			    (char_u *)NULL, PV_NONE,
+  #endif
+  			    {(char_u *)FALSE, (char_u *)0L} SCRIPTID_INIT},
+!     {"dictionary",  "dict", P_STRING|P_EXPAND|P_VI_DEF|P_ONECOMMA|P_NODUP,
+  #ifdef FEAT_INS_EXPAND
+  			    (char_u *)&p_dict, PV_DICT,
+  #else
+--- 992,998 ----
+  			    (char_u *)NULL, PV_NONE,
+  #endif
+  			    {(char_u *)FALSE, (char_u *)0L} SCRIPTID_INIT},
+!     {"dictionary",  "dict", P_STRING|P_EXPAND|P_VI_DEF|P_ONECOMMA|P_NODUP|P_NFNAME,
+  #ifdef FEAT_INS_EXPAND
+  			    (char_u *)&p_dict, PV_DICT,
+  #else
+***************
+*** 2058,2064 ****
+  			    {(char_u *)NULL, (char_u *)0L}
+  #endif
+  			    SCRIPTID_INIT},
+!     {"printexpr", "pexpr",  P_STRING|P_VI_DEF,
+  #ifdef FEAT_POSTSCRIPT
+  			    (char_u *)&p_pexpr, PV_NONE,
+  			    {(char_u *)"", (char_u *)0L}
+--- 2058,2064 ----
+  			    {(char_u *)NULL, (char_u *)0L}
+  #endif
+  			    SCRIPTID_INIT},
+!     {"printexpr", "pexpr",  P_STRING|P_VI_DEF|P_SECURE,
+  #ifdef FEAT_POSTSCRIPT
+  			    (char_u *)&p_pexpr, PV_NONE,
+  			    {(char_u *)"", (char_u *)0L}
+***************
+*** 7021,7026 ****
+--- 7021,7027 ----
+  
+  
+  #if defined(FEAT_TOOLBAR) && !defined(FEAT_GUI_W32)
++     /* 'toolbar' */
+      else if (varp == &p_toolbar)
+      {
+  	if (opt_strings_flags(p_toolbar, p_toolbar_values,
+***************
+*** 7235,7240 ****
+--- 7236,7242 ----
+  #endif
+  
+  #if defined(FEAT_RENDER_OPTIONS)
++     /* 'renderoptions' */
+      else if (varp == &p_rop && gui.in_use)
+      {
+  	if (!gui_mch_set_rendering_options(p_rop))
+***************
+*** 7262,7280 ****
+      else
+      {
+  	p = NULL;
+! 	if (varp == &p_ww)
+  	    p = (char_u *)WW_ALL;
+! 	if (varp == &p_shm)
+  	    p = (char_u *)SHM_ALL;
+! 	else if (varp == &(p_cpo))
+  	    p = (char_u *)CPO_ALL;
+! 	else if (varp == &(curbuf->b_p_fo))
+  	    p = (char_u *)FO_ALL;
+  #ifdef FEAT_CONCEAL
+! 	else if (varp == &curwin->w_p_cocu)
+  	    p = (char_u *)COCU_ALL;
+  #endif
+! 	else if (varp == &p_mouse)
+  	{
+  #ifdef FEAT_MOUSE
+  	    p = (char_u *)MOUSE_ALL;
+--- 7264,7282 ----
+      else
+      {
+  	p = NULL;
+! 	if (varp == &p_ww) /* 'whichwrap' */
+  	    p = (char_u *)WW_ALL;
+! 	if (varp == &p_shm) /* 'shortmess' */
+  	    p = (char_u *)SHM_ALL;
+! 	else if (varp == &(p_cpo)) /* 'cpoptions' */
+  	    p = (char_u *)CPO_ALL;
+! 	else if (varp == &(curbuf->b_p_fo)) /* 'formatoptions' */
+  	    p = (char_u *)FO_ALL;
+  #ifdef FEAT_CONCEAL
+! 	else if (varp == &curwin->w_p_cocu) /* 'concealcursor' */
+  	    p = (char_u *)COCU_ALL;
+  #endif
+! 	else if (varp == &p_mouse) /* 'mouse' */
+  	{
+  #ifdef FEAT_MOUSE
+  	    p = (char_u *)MOUSE_ALL;
+***************
+*** 7284,7290 ****
+  #endif
+  	}
+  #if defined(FEAT_GUI)
+! 	else if (varp == &p_go)
+  	    p = (char_u *)GO_ALL;
+  #endif
+  	if (p != NULL)
+--- 7286,7292 ----
+  #endif
+  	}
+  #if defined(FEAT_GUI)
+! 	else if (varp == &p_go) /* 'guioptions' */
+  	    p = (char_u *)GO_ALL;
+  #endif
+  	if (p != NULL)
+*** ../vim-8.0.0100/src/version.c	2016-11-24 18:30:55.715444785 +0100
+--- src/version.c	2016-11-24 19:54:59.141485534 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     101,
+  /**/
+
+-- 
+hundred-and-one symptoms of being an internet addict:
+42. Your virtual girlfriend finds a new net sweetheart with a larger bandwidth.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0102
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0102 (after 8.0.0101)
+Problem:    Cannot set 'dictionary' to a path.
+Solution:   Allow for slash and backslash.  Add a test (partly by Daisuke
+            Suzuki, closes #1279, closes #1284)
+Files:      src/option.c, src/testdir/test_options.vim
+
+
+*** ../vim-8.0.0101/src/option.c	2016-11-24 21:46:15.747996856 +0100
+--- src/option.c	2016-11-25 22:01:14.532613523 +0100
+***************
+*** 452,461 ****
+  #define P_NFNAME       0x400000L /* only normal file name chars allowed */
+  #define P_INSECURE     0x800000L /* option was set from a modeline */
+  #define P_PRI_MKRC    0x1000000L /* priority for :mkvimrc (setting option has
+! 				   side effects) */
+  #define P_NO_ML       0x2000000L /* not allowed in modeline */
+  #define P_CURSWANT    0x4000000L /* update curswant required; not needed when
+  				  * there is a redraw flag */
+  
+  #define ISK_LATIN1  (char_u *)"@,48-57,_,192-255"
+  
+--- 452,462 ----
+  #define P_NFNAME       0x400000L /* only normal file name chars allowed */
+  #define P_INSECURE     0x800000L /* option was set from a modeline */
+  #define P_PRI_MKRC    0x1000000L /* priority for :mkvimrc (setting option has
+! 				    side effects) */
+  #define P_NO_ML       0x2000000L /* not allowed in modeline */
+  #define P_CURSWANT    0x4000000L /* update curswant required; not needed when
+  				  * there is a redraw flag */
++ #define P_NDNAME      0x8000000L /* only normal dir name chars allowed */
+  
+  #define ISK_LATIN1  (char_u *)"@,48-57,_,192-255"
+  
+***************
+*** 992,998 ****
+  			    (char_u *)NULL, PV_NONE,
+  #endif
+  			    {(char_u *)FALSE, (char_u *)0L} SCRIPTID_INIT},
+!     {"dictionary",  "dict", P_STRING|P_EXPAND|P_VI_DEF|P_ONECOMMA|P_NODUP|P_NFNAME,
+  #ifdef FEAT_INS_EXPAND
+  			    (char_u *)&p_dict, PV_DICT,
+  #else
+--- 993,999 ----
+  			    (char_u *)NULL, PV_NONE,
+  #endif
+  			    {(char_u *)FALSE, (char_u *)0L} SCRIPTID_INIT},
+!     {"dictionary",  "dict", P_STRING|P_EXPAND|P_VI_DEF|P_ONECOMMA|P_NODUP|P_NDNAME,
+  #ifdef FEAT_INS_EXPAND
+  			    (char_u *)&p_dict, PV_DICT,
+  #else
+***************
+*** 5876,5886 ****
+  	errmsg = e_secure;
+      }
+  
+!     /* Check for a "normal" file name in some options.  Disallow a path
+!      * separator (slash and/or backslash), wildcards and characters that are
+!      * often illegal in a file name. */
+!     else if ((options[opt_idx].flags & P_NFNAME)
+  		    && vim_strpbrk(*varp, (char_u *)"/\\*?[|;&<>\r\n") != NULL)
+      {
+  	errmsg = e_invarg;
+      }
+--- 5877,5889 ----
+  	errmsg = e_secure;
+      }
+  
+!     /* Check for a "normal" directory or file name in some options.  Disallow a
+!      * path separator (slash and/or backslash), wildcards and characters that
+!      * are often illegal in a file name. */
+!     else if (((options[opt_idx].flags & P_NFNAME)
+  		    && vim_strpbrk(*varp, (char_u *)"/\\*?[|;&<>\r\n") != NULL)
++ 	  || ((options[opt_idx].flags & P_NDNAME)
++ 		    && vim_strpbrk(*varp, (char_u *)"*?[|;&<>\r\n") != NULL))
+      {
+  	errmsg = e_invarg;
+      }
+*** ../vim-8.0.0101/src/testdir/test_options.vim	2016-11-04 16:41:16.559153991 +0100
+--- src/testdir/test_options.vim	2016-11-25 21:54:48.015372273 +0100
+***************
+*** 106,108 ****
+--- 106,123 ----
+    call assert_fails(":set kmp=trunc\x00name", "E544:")
+    call assert_fails(":set kmp=trunc\x00name", "trunc")
+  endfunc
++ 
++ func Test_dictionary()
++   " Check that it's possible to set the option.
++   set dictionary=/usr/share/dict/words
++   call assert_equal('/usr/share/dict/words', &dictionary)
++   set dictionary=/usr/share/dict/words,/and/there
++   call assert_equal('/usr/share/dict/words,/and/there', &dictionary)
++   set dictionary=/usr/share/dict\ words
++   call assert_equal('/usr/share/dict words', &dictionary)
++ 
++   " Check rejecting weird characters.
++   call assert_fails("set dictionary=/not&there", "E474:")
++   call assert_fails("set dictionary=/not>there", "E474:")
++   call assert_fails("set dictionary=/not.*there", "E474:")
++ endfunc
+*** ../vim-8.0.0101/src/version.c	2016-11-24 21:46:15.747996856 +0100
+--- src/version.c	2016-11-25 21:57:55.062002830 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     102,
+  /**/
+
+-- 
+hundred-and-one symptoms of being an internet addict:
+47. You are so familiar with the WWW that you find the search engines useless.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0103
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0103
+Problem:    May not process channel readahead. (skywind)
+Solution:   If there is readahead don't block on input.
+Files:      src/channel.c, src/proto/channel.pro, src/os_unix.c,
+            src/os_win32.c, src/misc2.c
+
+
+*** ../vim-8.0.0102/src/channel.c	2016-11-24 17:22:46.154837060 +0100
+--- src/channel.c	2016-11-26 15:03:44.386121667 +0100
+***************
+*** 3900,3905 ****
+--- 3900,3930 ----
+  }
+  
+  /*
++  * Return TRUE if any channel has readahead.  That means we should not block on
++  * waiting for input.
++  */
++     int
++ channel_any_readahead(void)
++ {
++     channel_T	*channel = first_channel;
++     ch_part_T	part = PART_SOCK;
++ 
++     while (channel != NULL)
++     {
++ 	if (channel_has_readahead(channel, part))
++ 	    return TRUE;
++ 	if (part < PART_ERR)
++ 	    ++part;
++ 	else
++ 	{
++ 	    channel = channel->ch_next;
++ 	    part = PART_SOCK;
++ 	}
++     }
++     return FALSE;
++ }
++ 
++ /*
+   * Mark references to lists used in channels.
+   */
+      int
+*** ../vim-8.0.0102/src/proto/channel.pro	2016-10-09 17:27:56.863388510 +0200
+--- src/proto/channel.pro	2016-11-26 15:03:47.522100708 +0100
+***************
+*** 44,49 ****
+--- 44,50 ----
+  int channel_select_setup(int maxfd_in, void *rfds_in, void *wfds_in);
+  int channel_select_check(int ret_in, void *rfds_in, void *wfds_in);
+  int channel_parse_messages(void);
++ int channel_any_readahead(void);
+  int set_ref_in_channel(int copyID);
+  ch_part_T channel_part_send(channel_T *channel);
+  ch_part_T channel_part_read(channel_T *channel);
+*** ../vim-8.0.0102/src/os_unix.c	2016-11-24 17:22:46.146837112 +0100
+--- src/os_unix.c	2016-11-26 15:06:11.005142143 +0100
+***************
+*** 462,467 ****
+--- 462,471 ----
+  	/* Checking if a job ended requires polling.  Do this every 100 msec. */
+  	if (has_pending_job() && (wait_time < 0 || wait_time > 100L))
+  	    wait_time = 100L;
++ 	/* If there is readahead then parse_queued_messages() timed out and we
++ 	 * should call it again soon. */
++ 	if ((wait_time < 0 || wait_time > 100L) && channel_any_readahead())
++ 	    wait_time = 10L;
+  #endif
+  
+  	/*
+*** ../vim-8.0.0102/src/os_win32.c	2016-11-24 17:22:46.150837087 +0100
+--- src/os_win32.c	2016-11-26 15:09:12.055933715 +0100
+***************
+*** 1351,1359 ****
+  	    DWORD dwWaitTime = dwEndTime - dwNow;
+  
+  #ifdef FEAT_JOB_CHANNEL
+! 	    /* Check channel while waiting input. */
+  	    if (dwWaitTime > 100)
+  		dwWaitTime = 100;
+  #endif
+  #ifdef FEAT_MZSCHEME
+  	    if (mzthreads_allowed() && p_mzq > 0
+--- 1351,1365 ----
+  	    DWORD dwWaitTime = dwEndTime - dwNow;
+  
+  #ifdef FEAT_JOB_CHANNEL
+! 	    /* Check channel while waiting for input. */
+  	    if (dwWaitTime > 100)
++ 	    {
+  		dwWaitTime = 100;
++ 		/* If there is readahead then parse_queued_messages() timed out
++ 		 * and we should call it again soon. */
++ 		if (channel_any_readahead())
++ 		    dwWaitTime = 10;
++ 	    }
+  #endif
+  #ifdef FEAT_MZSCHEME
+  	    if (mzthreads_allowed() && p_mzq > 0
+*** ../vim-8.0.0102/src/misc2.c	2016-11-24 17:22:46.150837087 +0100
+--- src/misc2.c	2016-11-26 14:52:17.202709633 +0100
+***************
+*** 6264,6270 ****
+  }
+  #endif
+  
+! #ifdef ELAPSED_TIMEVAL  /* proto is defined in vim.h */
+  /*
+   * Return time in msec since "start_tv".
+   */
+--- 6264,6270 ----
+  }
+  #endif
+  
+! #ifdef ELAPSED_TIMEVAL  /* no PROTO here, proto is defined in vim.h */
+  /*
+   * Return time in msec since "start_tv".
+   */
+***************
+*** 6288,6296 ****
+  {
+      DWORD	now = GetTickCount();
+  
+-     if (now < start_tick)
+- 	/* overflow */
+- 	return (long)now;
+      return (long)now - (long)start_tick;
+  }
+  #endif
+--- 6288,6293 ----
+*** ../vim-8.0.0102/src/version.c	2016-11-25 22:04:09.607397081 +0100
+--- src/version.c	2016-11-26 15:02:23.754660704 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     103,
+  /**/
+
+-- 
+CVS sux, men don't like commitment
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0104
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0104
+Problem:    Value of 'thesaurus' option not checked properly.
+Solution:   Add P_NDNAME flag. (Daisuke Suzuki)
+Files:      src/option.c, src/testdir/test_options.vim
+
+
+*** ../vim-8.0.0103/src/option.c	2016-11-25 22:04:09.607397081 +0100
+--- src/option.c	2016-11-26 17:35:20.089224386 +0100
+***************
+*** 2660,2666 ****
+      {"textwidth",   "tw",   P_NUM|P_VI_DEF|P_VIM|P_RBUF,
+  			    (char_u *)&p_tw, PV_TW,
+  			    {(char_u *)0L, (char_u *)0L} SCRIPTID_INIT},
+!     {"thesaurus",   "tsr",  P_STRING|P_EXPAND|P_VI_DEF|P_ONECOMMA|P_NODUP,
+  #ifdef FEAT_INS_EXPAND
+  			    (char_u *)&p_tsr, PV_TSR,
+  #else
+--- 2660,2666 ----
+      {"textwidth",   "tw",   P_NUM|P_VI_DEF|P_VIM|P_RBUF,
+  			    (char_u *)&p_tw, PV_TW,
+  			    {(char_u *)0L, (char_u *)0L} SCRIPTID_INIT},
+!     {"thesaurus",   "tsr",  P_STRING|P_EXPAND|P_VI_DEF|P_ONECOMMA|P_NODUP|P_NDNAME,
+  #ifdef FEAT_INS_EXPAND
+  			    (char_u *)&p_tsr, PV_TSR,
+  #else
+*** ../vim-8.0.0103/src/testdir/test_options.vim	2016-11-25 22:04:09.607397081 +0100
+--- src/testdir/test_options.vim	2016-11-26 17:41:00.722891085 +0100
+***************
+*** 107,123 ****
+    call assert_fails(":set kmp=trunc\x00name", "trunc")
+  endfunc
+  
+! func Test_dictionary()
+    " Check that it's possible to set the option.
+!   set dictionary=/usr/share/dict/words
+!   call assert_equal('/usr/share/dict/words', &dictionary)
+!   set dictionary=/usr/share/dict/words,/and/there
+!   call assert_equal('/usr/share/dict/words,/and/there', &dictionary)
+!   set dictionary=/usr/share/dict\ words
+!   call assert_equal('/usr/share/dict words', &dictionary)
+  
+    " Check rejecting weird characters.
+!   call assert_fails("set dictionary=/not&there", "E474:")
+!   call assert_fails("set dictionary=/not>there", "E474:")
+!   call assert_fails("set dictionary=/not.*there", "E474:")
+  endfunc
+--- 107,131 ----
+    call assert_fails(":set kmp=trunc\x00name", "trunc")
+  endfunc
+  
+! func Check_dir_option(name)
+    " Check that it's possible to set the option.
+!   exe 'set ' . a:name . '=/usr/share/dict/words'
+!   call assert_equal('/usr/share/dict/words', eval('&' . a:name))
+!   exe 'set ' . a:name . '=/usr/share/dict/words,/and/there'
+!   call assert_equal('/usr/share/dict/words,/and/there', eval('&' . a:name))
+!   exe 'set ' . a:name . '=/usr/share/dict\ words'
+!   call assert_equal('/usr/share/dict words', eval('&' . a:name))
+  
+    " Check rejecting weird characters.
+!   call assert_fails("set " . a:name . "=/not&there", "E474:")
+!   call assert_fails("set " . a:name . "=/not>there", "E474:")
+!   call assert_fails("set " . a:name . "=/not.*there", "E474:")
+! endfunc
+! 
+! func Test_dictionary()
+!   call Check_dir_option('dictionary')
+! endfunc
+! 
+! func Test_thesaurus()
+!   call Check_dir_option('thesaurus')
+  endfunc
+*** ../vim-8.0.0103/src/version.c	2016-11-26 15:13:29.410218034 +0100
+--- src/version.c	2016-11-26 17:36:23.568793629 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     104,
+  /**/
+
+-- 
+Never go to the toilet in a paperless office.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0105
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0105
+Problem:    When using ch_read() with zero timeout, can't tell the difference
+            between reading an empty line and nothing available.
+Solution:   Add ch_canread().
+Files:      src/evalfunc.c, src/channel.c, src/proto/channel.pro,
+            src/testdir/test_channel.vim, src/testdir/shared.vim,
+            runtime/doc/eval.txt, runtime/doc/channel.txt
+
+
+*** ../vim-8.0.0104/src/evalfunc.c	2016-11-24 15:09:03.409856638 +0100
+--- src/evalfunc.c	2016-11-29 20:23:04.633430178 +0100
+***************
+*** 76,81 ****
+--- 76,82 ----
+  static void f_ceil(typval_T *argvars, typval_T *rettv);
+  #endif
+  #ifdef FEAT_JOB_CHANNEL
++ static void f_ch_canread(typval_T *argvars, typval_T *rettv);
+  static void f_ch_close(typval_T *argvars, typval_T *rettv);
+  static void f_ch_close_in(typval_T *argvars, typval_T *rettv);
+  static void f_ch_evalexpr(typval_T *argvars, typval_T *rettv);
+***************
+*** 499,504 ****
+--- 500,506 ----
+      {"ceil",		1, 1, f_ceil},
+  #endif
+  #ifdef FEAT_JOB_CHANNEL
++     {"ch_canread",	1, 1, f_ch_canread},
+      {"ch_close",	1, 1, f_ch_close},
+      {"ch_close_in",	1, 1, f_ch_close_in},
+      {"ch_evalexpr",	2, 3, f_ch_evalexpr},
+***************
+*** 1779,1784 ****
+--- 1781,1801 ----
+  
+  #ifdef FEAT_JOB_CHANNEL
+  /*
++  * "ch_canread()" function
++  */
++     static void
++ f_ch_canread(typval_T *argvars, typval_T *rettv)
++ {
++     channel_T *channel = get_channel_arg(&argvars[0], TRUE, TRUE, 0);
++ 
++     rettv->vval.v_number = 0;
++     if (channel != NULL)
++ 	rettv->vval.v_number = channel_has_readahead(channel, PART_SOCK)
++ 			    || channel_has_readahead(channel, PART_OUT)
++ 			    || channel_has_readahead(channel, PART_ERR);
++ }
++ 
++ /*
+   * "ch_close()" function
+   */
+      static void
+*** ../vim-8.0.0104/src/channel.c	2016-11-26 15:13:29.402218088 +0100
+--- src/channel.c	2016-11-29 20:13:58.177247346 +0100
+***************
+*** 2603,2609 ****
+  /*
+   * Return TRUE if "channel" has JSON or other typeahead.
+   */
+!     static int
+  channel_has_readahead(channel_T *channel, ch_part_T part)
+  {
+      ch_mode_T	ch_mode = channel->ch_part[part].ch_mode;
+--- 2603,2609 ----
+  /*
+   * Return TRUE if "channel" has JSON or other typeahead.
+   */
+!     int
+  channel_has_readahead(channel_T *channel, ch_part_T part)
+  {
+      ch_mode_T	ch_mode = channel->ch_part[part].ch_mode;
+*** ../vim-8.0.0104/src/proto/channel.pro	2016-11-26 15:13:29.402218088 +0100
+--- src/proto/channel.pro	2016-11-29 20:14:03.549209705 +0100
+***************
+*** 25,30 ****
+--- 25,31 ----
+  int channel_collapse(channel_T *channel, ch_part_T part, int want_nl);
+  int channel_can_write_to(channel_T *channel);
+  int channel_is_open(channel_T *channel);
++ int channel_has_readahead(channel_T *channel, ch_part_T part);
+  char *channel_status(channel_T *channel, int req_part);
+  void channel_info(channel_T *channel, dict_T *dict);
+  void channel_close(channel_T *channel, int invoke_close_cb);
+*** ../vim-8.0.0104/src/testdir/test_channel.vim	2016-11-17 17:25:28.212093109 +0100
+--- src/testdir/test_channel.vim	2016-11-29 21:52:55.853041485 +0100
+***************
+*** 58,63 ****
+--- 58,66 ----
+    " string with ][ should work
+    call assert_equal('this][that', ch_evalexpr(handle, 'echo this][that'))
+  
++   " nothing to read now
++   call assert_equal(0, ch_canread(handle))
++ 
+    " sending three messages quickly then reading should work
+    for i in range(3)
+      call ch_sendexpr(handle, 'echo hello ' . i)
+***************
+*** 368,374 ****
+    endif
+    call ch_setoptions(handle, {'mode': 'raw'})
+  
+!   " The message are sent raw, we do our own JSON strings here.
+    call ch_sendraw(handle, "[1, \"hello!\"]\n", {'callback': 'Ch_handleRaw1'})
+    call WaitFor('g:Ch_reply1 != ""')
+    call assert_equal("[1, \"got it\"]", g:Ch_reply1)
+--- 371,377 ----
+    endif
+    call ch_setoptions(handle, {'mode': 'raw'})
+  
+!   " The messages are sent raw, we do our own JSON strings here.
+    call ch_sendraw(handle, "[1, \"hello!\"]\n", {'callback': 'Ch_handleRaw1'})
+    call WaitFor('g:Ch_reply1 != ""')
+    call assert_equal("[1, \"got it\"]", g:Ch_reply1)
+***************
+*** 431,437 ****
+      return
+    endif
+    call ch_log('Test_raw_pipe()')
+!   let job = job_start(s:python . " test_channel_pipe.py", {'mode': 'raw'})
+    call assert_equal(v:t_job, type(job))
+    call assert_equal("run", job_status(job))
+  
+--- 434,443 ----
+      return
+    endif
+    call ch_log('Test_raw_pipe()')
+!   " Add a dummy close callback to avoid that messages are dropped when calling
+!   " ch_canread().
+!   let job = job_start(s:python . " test_channel_pipe.py",
+! 	\ {'mode': 'raw', 'close_cb': {chan -> 0}})
+    call assert_equal(v:t_job, type(job))
+    call assert_equal("run", job_status(job))
+  
+***************
+*** 458,463 ****
+--- 464,472 ----
+      call assert_equal("something\n", substitute(msg, "\r", "", 'g'))
+  
+      call ch_sendraw(job, "double this\n")
++     let g:handle = job_getchannel(job)
++     call WaitFor('ch_canread(g:handle)')
++     unlet g:handle
+      let msg = ch_readraw(job)
+      call assert_equal("this\nAND this\n", substitute(msg, "\r", "", 'g'))
+  
+*** ../vim-8.0.0104/src/testdir/shared.vim	2016-10-27 20:00:03.665357405 +0200
+--- src/testdir/shared.vim	2016-11-29 20:25:10.408554811 +0100
+***************
+*** 88,94 ****
+  
+      call call(function(a:testfunc), [port])
+    catch
+!     call assert_false(1, "Caught exception: " . v:exception)
+    finally
+      call s:kill_server(a:cmd)
+    endtry
+--- 88,94 ----
+  
+      call call(function(a:testfunc), [port])
+    catch
+!     call assert_false(1, 'Caught exception: "' . v:exception . '" in ' . v:throwpoint)
+    finally
+      call s:kill_server(a:cmd)
+    endtry
+*** ../vim-8.0.0104/runtime/doc/eval.txt	2016-11-24 15:09:03.413856612 +0100
+--- runtime/doc/eval.txt	2016-11-29 21:45:28.872201614 +0100
+***************
+*** 2008,2013 ****
+--- 2009,2015 ----
+  call({func}, {arglist} [, {dict}])
+  				any	call {func} with arguments {arglist}
+  ceil({expr})			Float	round {expr} up
++ ch_canread({handle})		Number	check if there is something to read
+  ch_close({handle})		none	close {handle}
+  ch_close_in({handle})		none	close in part of {handle}
+  ch_evalexpr({handle}, {expr} [, {options}])
+***************
+*** 2979,2994 ****
+  		don't fit, a vertical layout is used anyway.  For some systems
+  		the horizontal layout is always used.
+  
+  ch_close({handle})						*ch_close()*
+  		Close {handle}.  See |channel-close|.
+! 		{handle} can be Channel or a Job that has a Channel.
+  		A close callback is not invoked.
+  
+  		{only available when compiled with the |+channel| feature}
+  
+  ch_close_in({handle})						*ch_close_in()*
+  		Close the "in" part of {handle}.  See |channel-close-in|.
+! 		{handle} can be Channel or a Job that has a Channel.
+  		A close callback is not invoked.
+  
+  		{only available when compiled with the |+channel| feature}
+--- 2981,3008 ----
+  		don't fit, a vertical layout is used anyway.  For some systems
+  		the horizontal layout is always used.
+  
++ ch_canread({handle})						*ch_canread()*
++ 		Return non-zero when there is something to read from {handle}.
++ 		{handle} can be a Channel or a Job that has a Channel.
++ 
++ 		This is useful to read from a channel at a convenient time,
++ 		e.g. from a timer.
++ 
++ 		Note that messages are dropped when the channel does not have
++ 		a callback.  Add a close callback to avoid that.
++ 
++ 		{only available when compiled with the |+channel| feature}
++ 
+  ch_close({handle})						*ch_close()*
+  		Close {handle}.  See |channel-close|.
+! 		{handle} can be a Channel or a Job that has a Channel.
+  		A close callback is not invoked.
+  
+  		{only available when compiled with the |+channel| feature}
+  
+  ch_close_in({handle})						*ch_close_in()*
+  		Close the "in" part of {handle}.  See |channel-close-in|.
+! 		{handle} can be a Channel or a Job that has a Channel.
+  		A close callback is not invoked.
+  
+  		{only available when compiled with the |+channel| feature}
+***************
+*** 2997,3003 ****
+  		Send {expr} over {handle}.  The {expr} is encoded
+  		according to the type of channel.  The function cannot be used
+  		with a raw channel.  See |channel-use|.
+! 		{handle} can be Channel or a Job that has a Channel.
+  								*E917*
+  		{options} must be a Dictionary.  It must not have a "callback"
+  		entry.  It can have a "timeout" entry to specify the timeout
+--- 3011,3017 ----
+  		Send {expr} over {handle}.  The {expr} is encoded
+  		according to the type of channel.  The function cannot be used
+  		with a raw channel.  See |channel-use|.
+! 		{handle} can be a Channel or a Job that has a Channel.
+  								*E917*
+  		{options} must be a Dictionary.  It must not have a "callback"
+  		entry.  It can have a "timeout" entry to specify the timeout
+***************
+*** 3011,3017 ****
+  
+  ch_evalraw({handle}, {string} [, {options}])		*ch_evalraw()*
+  		Send {string} over {handle}.
+! 		{handle} can be Channel or a Job that has a Channel.
+  
+  		Works like |ch_evalexpr()|, but does not encode the request or
+  		decode the response.  The caller is responsible for the
+--- 3025,3031 ----
+  
+  ch_evalraw({handle}, {string} [, {options}])		*ch_evalraw()*
+  		Send {string} over {handle}.
+! 		{handle} can be a Channel or a Job that has a Channel.
+  
+  		Works like |ch_evalexpr()|, but does not encode the request or
+  		decode the response.  The caller is responsible for the
+***************
+*** 3024,3030 ****
+  
+  ch_getbufnr({handle}, {what})				 *ch_getbufnr()*
+  		Get the buffer number that {handle} is using for {what}.
+! 		{handle} can be Channel or a Job that has a Channel.
+  		{what} can be "err" for stderr, "out" for stdout or empty for
+  		socket output.
+  		Returns -1 when there is no buffer.
+--- 3038,3044 ----
+  
+  ch_getbufnr({handle}, {what})				 *ch_getbufnr()*
+  		Get the buffer number that {handle} is using for {what}.
+! 		{handle} can be a Channel or a Job that has a Channel.
+  		{what} can be "err" for stderr, "out" for stdout or empty for
+  		socket output.
+  		Returns -1 when there is no buffer.
+***************
+*** 3070,3077 ****
+  		|ch_logfile()|.
+  		When {handle} is passed the channel number is used for the
+  		message.
+! 		{handle} can be Channel or a Job that has a Channel.  The
+! 		Channel must open.
+  
+  ch_logfile({fname} [, {mode}])					*ch_logfile()*
+  		Start logging channel activity to {fname}.
+--- 3084,3091 ----
+  		|ch_logfile()|.
+  		When {handle} is passed the channel number is used for the
+  		message.
+! 		{handle} can be a Channel or a Job that has a Channel.  The
+! 		Channel must be open for the channel number to be used.
+  
+  ch_logfile({fname} [, {mode}])					*ch_logfile()*
+  		Start logging channel activity to {fname}.
+***************
+*** 3098,3104 ****
+  
+  ch_read({handle} [, {options}])					*ch_read()*
+  		Read from {handle} and return the received message.
+! 		{handle} can be Channel or a Job that has a Channel.
+  		See |channel-more|.
+  		{only available when compiled with the |+channel| feature}
+  
+--- 3112,3118 ----
+  
+  ch_read({handle} [, {options}])					*ch_read()*
+  		Read from {handle} and return the received message.
+! 		{handle} can be a Channel or a Job that has a Channel.
+  		See |channel-more|.
+  		{only available when compiled with the |+channel| feature}
+  
+***************
+*** 3112,3118 ****
+  		according to the type of channel.  The function cannot be used
+  		with a raw channel.
+  		See |channel-use|.				*E912*
+! 		{handle} can be Channel or a Job that has a Channel.
+  
+  		{only available when compiled with the |+channel| feature}
+  
+--- 3126,3132 ----
+  		according to the type of channel.  The function cannot be used
+  		with a raw channel.
+  		See |channel-use|.				*E912*
+! 		{handle} can be a Channel or a Job that has a Channel.
+  
+  		{only available when compiled with the |+channel| feature}
+  
+***************
+*** 3133,3139 ****
+  			"timeout"	default read timeout in msec
+  			"mode"		mode for the whole channel
+  		See |ch_open()| for more explanation.
+! 		{handle} can be Channel or a Job that has a Channel.
+  
+  		Note that changing the mode may cause queued messages to be
+  		lost.
+--- 3147,3153 ----
+  			"timeout"	default read timeout in msec
+  			"mode"		mode for the whole channel
+  		See |ch_open()| for more explanation.
+! 		{handle} can be a Channel or a Job that has a Channel.
+  
+  		Note that changing the mode may cause queued messages to be
+  		lost.
+***************
+*** 3147,3153 ****
+  			"open"		channel can be used
+  			"buffered"	channel can be read, not written to
+  			"closed"	channel can not be used
+! 		{handle} can be Channel or a Job that has a Channel.
+  		"buffered" is used when the channel was closed but there is
+  		still data that can be obtained with |ch_read()|.
+  
+--- 3161,3167 ----
+  			"open"		channel can be used
+  			"buffered"	channel can be read, not written to
+  			"closed"	channel can not be used
+! 		{handle} can be a Channel or a Job that has a Channel.
+  		"buffered" is used when the channel was closed but there is
+  		still data that can be obtained with |ch_read()|.
+  
+***************
+*** 3708,3716 ****
+  		is zero remove the item from the |List| or |Dictionary|.
+  		{expr2} must be a |string| or |Funcref|.
+  		
+! 		if {expr2} is a |string|, inside {expr2} |v:val| has the value
+  		of the current item.  For a |Dictionary| |v:key| has the key
+! 		of the current item.
+  		Examples: >
+  			call filter(mylist, 'v:val !~ "OLD"')
+  <		Removes the items where "OLD" appears. >
+--- 3722,3731 ----
+  		is zero remove the item from the |List| or |Dictionary|.
+  		{expr2} must be a |string| or |Funcref|.
+  		
+! 		If {expr2} is a |string|, inside {expr2} |v:val| has the value
+  		of the current item.  For a |Dictionary| |v:key| has the key
+! 		of the current item and for a |List| |v:key| has the index of
+! 		the current item.
+  		Examples: >
+  			call filter(mylist, 'v:val !~ "OLD"')
+  <		Removes the items where "OLD" appears. >
+*** ../vim-8.0.0104/runtime/doc/channel.txt	2016-09-12 12:45:25.000000000 +0200
+--- runtime/doc/channel.txt	2016-11-29 21:43:53.144857530 +0100
+***************
+*** 418,424 ****
+  message that is available: >
+  	let output = ch_read(channel, {'timeout': 0})
+  When no message was available then the result is v:none for a JSON or JS mode
+! channels, an empty string for a RAW or NL channel.
+  
+  To read all output from a RAW channel that is available: >
+  	let output = ch_readraw(channel)
+--- 418,428 ----
+  message that is available: >
+  	let output = ch_read(channel, {'timeout': 0})
+  When no message was available then the result is v:none for a JSON or JS mode
+! channels, an empty string for a RAW or NL channel.  You can use |ch_canread()|
+! to check if there is something to read.
+! 
+! Note that when there is no callback message are dropped.  To avoid that add a
+! close callback to the channel.
+  
+  To read all output from a RAW channel that is available: >
+  	let output = ch_readraw(channel)
+***************
+*** 465,470 ****
+--- 469,479 ----
+  Without the handler you need to read the output with |ch_read()| or
+  |ch_readraw()|. You can do this in the close callback, see |read-in-close-cb|.
+  
++ Note that if the job exits before you read the output, the output may be lost.
++ This depends on the system (on Unix this happens because closing the write end
++ of a pipe causes the read end to get EOF).  To avoid this make the job sleep
++ for a short while before it exits.
++ 
+  The handler defined for "out_cb" will not receive stderr.  If you want to
+  handle that separately, add an "err_cb" handler: >
+      let job = job_start(command, {"out_cb": "MyHandler",
+*** ../vim-8.0.0104/src/version.c	2016-11-26 17:45:50.040909819 +0100
+--- src/version.c	2016-11-29 20:14:29.545027586 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     105,
+  /**/
+
+-- 
+hundred-and-one symptoms of being an internet addict:
+55. You ask your doctor to implant a gig in your brain.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
+To: vim_dev@googlegroups.com
+Subject: Patch 8.0.0106
+Fcc: outbox
+From: Bram Moolenaar <Bram@moolenaar.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+------------
+
+Patch 8.0.0106 (after 8.0.0100)
+Problem:    Cannot use a semicolon in 'backupext'. (Jeff)
+Solution:   Allow for a few more characters when "secure" isn't set.
+Files:      src/option.c
+
+
+*** ../vim-8.0.0105/src/option.c	2016-11-26 17:45:50.040909819 +0100
+--- src/option.c	2016-11-29 22:05:29.171482041 +0100
+***************
+*** 5879,5887 ****
+  
+      /* Check for a "normal" directory or file name in some options.  Disallow a
+       * path separator (slash and/or backslash), wildcards and characters that
+!      * are often illegal in a file name. */
+      else if (((options[opt_idx].flags & P_NFNAME)
+! 		    && vim_strpbrk(*varp, (char_u *)"/\\*?[|;&<>\r\n") != NULL)
+  	  || ((options[opt_idx].flags & P_NDNAME)
+  		    && vim_strpbrk(*varp, (char_u *)"*?[|;&<>\r\n") != NULL))
+      {
+--- 5879,5889 ----
+  
+      /* Check for a "normal" directory or file name in some options.  Disallow a
+       * path separator (slash and/or backslash), wildcards and characters that
+!      * are often illegal in a file name. Be more permissive if "secure" is off.
+!      */
+      else if (((options[opt_idx].flags & P_NFNAME)
+! 		    && vim_strpbrk(*varp, (char_u *)(secure
+! 			    ? "/\\*?[|;&<>\r\n" : "/\\*?[<>\r\n")) != NULL)
+  	  || ((options[opt_idx].flags & P_NDNAME)
+  		    && vim_strpbrk(*varp, (char_u *)"*?[|;&<>\r\n") != NULL))
+      {
+*** ../vim-8.0.0105/src/version.c	2016-11-29 21:54:41.120260177 +0100
+--- src/version.c	2016-11-29 22:07:10.726739408 +0100
+***************
+*** 766,767 ****
+--- 766,769 ----
+  {   /* Add new patch number below this line */
++ /**/
++     106,
+  /**/
+
+-- 
+ERROR 047: Keyboard not found.  Press RETURN to continue.
+
+ /// Bram Moolenaar -- Bram@Moolenaar.net -- http://www.Moolenaar.net   \\\
+///        sponsor Vim, vote for features -- http://www.Vim.org/sponsor/ \\\
+\\\  an exciting new programming language -- http://www.Zimbu.org        ///
+ \\\            help me help AIDS victims -- http://ICCF-Holland.org    ///
