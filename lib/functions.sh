@@ -1024,7 +1024,7 @@ python_build() {
         logerr "--- install failed"
     popd > /dev/null
 
-    mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages ||
+    mv $DESTDIR/usr/lib/python$PYTHONVER/site-packages $DESTDIR/usr/lib/python$PYTHONVER/vendor-packages ||
         logerr "Cannot move from site-packages to vendor-packages"
 }
 

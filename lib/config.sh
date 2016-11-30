@@ -98,8 +98,10 @@ PERL_MAKE_TEST=1
 #############################################################################
 # Python
 #############################################################################
+: ${PYTHONVER:=2.6}
+: ${PYTHONPKGVER:=`echo $PYTHONVER | sed 's/\.//g'`}
 PYTHONPATH=/usr
-PYTHON=$PYTHONPATH/bin/python2.6
+PYTHON=$PYTHONPATH/bin/python$PYTHONVER
 PYTHONLIB=$PYTHONPATH/lib
 
 
