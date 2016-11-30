@@ -176,6 +176,15 @@ build() {
             # Else we just have a manifest to import
             else
                 echo "Simple manifest to import... importing to $PKGSRVR"
+		RPATH=`echo $PKGSRVR | sed -e 's/^file:\/*/\//'`
+		if [[ "$RPATH" != "$PKGSRVR" ]]; then
+		    if [[ ! -d $RPATH ]]; then
+			pkgrepo create -s $RPATH || \
+			    logerr "Could not create publisher $RPATH"
+			pkgrepo add-publisher -s $RPATH $PKGPUBLISHER || \
+			    logerr "Could not set publisher $PKGPUBLISHER on repo $RPATH"
+		    fi
+		fi
                 pkgsend -s $PKGSRVR publish $SCRIPT.final || \
                     bail "pkgsend failed"
                 rm $SCRIPT.final
