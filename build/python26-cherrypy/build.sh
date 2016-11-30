@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -29,7 +29,7 @@
 
 PROG=CherryPy
 VER=3.2.2
-PKG=library/python-2/cherrypy
+PKG=library/python-2/cherrypy-26
 SUMMARY="cherrypy - A Minimalist Python Web Framework"
 DESC="$SUMMARY"
 

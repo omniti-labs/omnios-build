@@ -29,7 +29,7 @@
 
 PROG=ply
 VER=3.9
-PKG=library/python-2/ply
+PKG=library/python-2/ply-26
 SUMMARY="ply - Python lex and yacc"
 DESC="$SUMMARY"
 

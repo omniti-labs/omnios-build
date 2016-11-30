@@ -1,0 +1,5 @@
+set name=pkg.fmri value=library/python-2/ply@3.9-@PVER@
+set name=pkg.renamed value=true
+set name=pkg.description value="ply - Python lex and yacc"
+set name=pkg.summary value="ply - Python lex and yacc"
+depend fmri=library/python-2/ply-26 type=require

@@ -29,7 +29,7 @@
 
 PROG=pybonjour
 VER=1.1.1
-PKG=library/python-2/pybonjour
+PKG=library/python-2/pybonjour-26
 SUMMARY="pure-Python interface bonjour/DNS-SD implementation"
 DESC="$SUMMARY"
 

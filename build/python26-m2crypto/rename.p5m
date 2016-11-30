@@ -1,0 +1,5 @@
+set name=pkg.fmri value=library/python-2/m2crypto@0.24.0-@PVER@
+set name=pkg.renamed value=true
+set name=pkg.description value="Python interface for openssl"
+set name=pkg.summary value="Python interface for openssl"
+depend fmri=library/python-2/m2crypto-26 type=require

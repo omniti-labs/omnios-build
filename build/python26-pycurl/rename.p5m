@@ -1,0 +1,5 @@
+set name=pkg.fmri value=library/python-2/pycurl@7.43.0-@PVER@
+set name=pkg.renamed value=true
+set name=pkg.description value="Python bindings for libcurl"
+set name=pkg.summary value="Python bindings for libcurl"
+depend fmri=library/python-2/pycurl-26 type=require

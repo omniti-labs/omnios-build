@@ -29,7 +29,7 @@
 
 PROG=M2Crypto
 VER=0.24.0
-PKG=library/python-2/m2crypto
+PKG=library/python-2/m2crypto-26
 SUMMARY="Python interface for openssl"
 DESC="M2Crypto provides a python interface to the openssl library."
 
