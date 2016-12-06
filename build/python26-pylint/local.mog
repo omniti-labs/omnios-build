@@ -1,7 +1,8 @@
 license COPYING license=GPL
 
 # Prevents pkgdepend from freaking out.
-<transform file path=usr/bin/epylint -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/bin/pylint -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/bin/pyreverse -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/bin/symilar -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/bin/epylint -> drop>
+<transform file path=usr/bin/pylint -> drop>
+<transform file path=usr/bin/pylint-gui -> drop>
+<transform file path=usr/bin/pyreverse -> drop>
+<transform file path=usr/bin/symilar -> drop>

@@ -1,1 +1,2 @@
 license LICENSE.txt license=Apache2
+<transform link path=usr/bin/pyrexc -> drop>

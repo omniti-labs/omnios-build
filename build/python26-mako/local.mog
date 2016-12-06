@@ -1,4 +1,3 @@
 license LICENSE license=MIT
 
-# Prevents pkgdepend from freaking out.
-<transform file path=usr/bin/mako-render -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/bin/mako-render -> drop>

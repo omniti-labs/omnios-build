@@ -1,6 +1,6 @@
 license PKG-INFO license=BSD
 
 # Prevents pkgdepend from freaking out.
-<transform file path=usr/bin/coverage -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/bin/coverage -> drop>
 <transform file path=usr/bin/coverage-2.6 -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/bin/coverage2 -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/bin/coverage2 -> drop>
