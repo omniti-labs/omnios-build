@@ -29,12 +29,18 @@
 
 PROG=Mako
 VER=1.0.4
-PKG=library/python-2/mako-26
 SUMMARY="Mako - a python templating language"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="runtime/python-26 library/python-2/setuptools-26"
+# Pardon the copy/paste, but we have to do this twice (2.6 & 2.7) for now.
+# And the only way buildctl detects packages is by grepping for PKG assignment.
 
+OLDPV=$PYTHONVER
+
+set_python_version 2.6
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+PKG=library/python-2/mako-26
+RUN_DEPENDS_IPS="runtime/python-26 library/python-2/setuptools-26"
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -42,3 +48,17 @@ prep_build
 python_build
 make_package
 clean_up
+
+set_python_version 2.7
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+PKG=library/python-2/mako-27
+RUN_DEPENDS_IPS="runtime/python-27 library/python-2/setuptools-27"
+init
+download_source $PROG $PROG $VER
+patch_source
+prep_build
+python_build
+make_package
+clean_up
+
+set_python_version $OLDPV
