@@ -2,5 +2,5 @@ license COPYING-LGPL license=LGPL
 license COPYING-MIT license=MIT
 
 # Prevents pkgdepend from freaking out.
-<transform file -> edit path usr/share/doc/pycurl usr/share/doc/pycurl-26>
-<transform file path=usr/share/doc/pycurl-26/examples/linksys.py -> set pkg.depend.bypass-generate .* >
+<transform file -> edit path usr/share/doc/pycurl usr/share/doc/pycurl-$(PYTHONPKGVER)>
+<transform file path=usr/share/doc/pycurl-$(PYTHONPKGVER)/examples/linksys.py -> set pkg.depend.bypass-generate .* >
