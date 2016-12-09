@@ -29,12 +29,18 @@
 
 PROG=coverage
 VER=4.2
-PKG=library/python-2/coverage-26
 SUMMARY="Code coverage measurement for Python"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="runtime/python-26"
+# Pardon the copy/paste, but we have to do this twice (2.6 & 2.7) for now.
+# And the only way buildctl detects packages is by grepping for PKG assignment.
 
+OLDPV=$PYTHONVER
+
+set_python_version 2.6
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+RUN_DEPENDS_IPS="runtime/python-26"
+PKG=library/python-2/coverage-26
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -42,3 +48,17 @@ prep_build
 python_build
 make_package
 clean_up
+
+set_python_version 2.7
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+RUN_DEPENDS_IPS="runtime/python-27"
+PKG=library/python-2/coverage-27
+init
+download_source $PROG $PROG $VER
+patch_source
+prep_build
+python_build
+make_package
+clean_up
+
+set_python_version $OLDPV
