@@ -29,12 +29,18 @@
 
 PROG=lxml
 VER=3.6.4
-PKG=library/python-2/lxml-26
 SUMMARY="lxml - Powerful and Pythonic XML processing library"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="runtime/python-26 library/libxml2 library/libxslt"
+# Pardon the copy/paste, but we have to do this twice (2.6 & 2.7) for now.
+# And the only way buildctl detects packages is by grepping for PKG assignment.
 
+OLDPV=$PYTHONVER
+
+set_python_version 2.6
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+PKG=library/python-2/lxml-26
+RUN_DEPENDS_IPS="runtime/python-26 library/libxml2 library/libxslt"
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -43,3 +49,18 @@ python_build
 strip_install -x
 make_package
 clean_up
+
+set_python_version 2.7
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+PKG=library/python-2/lxml-27
+RUN_DEPENDS_IPS="runtime/python-27 library/libxml2 library/libxslt"
+init
+download_source $PROG $PROG $VER
+patch_source
+prep_build
+python_build
+strip_install -x
+make_package
+clean_up
+
+set_python_version $OLDPV
