@@ -72,6 +72,7 @@ depend fmri=library/python-2/numpy-27@1.11,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/ply-26@3.9,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/ply-27@3.9,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/pybonjour-26@1.1.1,5.11-@PVER@ type=incorporate
+depend fmri=library/python-2/pybonjour-27@1.1.1,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/pycurl-26@7.43,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/pyopenssl-26@0.11,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/pyrex-26@0.9.9,5.11-@PVER@ type=incorporate
