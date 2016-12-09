@@ -29,13 +29,20 @@
 
 PROG=M2Crypto
 VER=0.24.0
-PKG=library/python-2/m2crypto-26
 SUMMARY="Python interface for openssl"
 DESC="M2Crypto provides a python interface to the openssl library."
 
-DEPENDS_IPS="runtime/python-26 library/security/openssl@1.0.2"
 BUILD_DEPENDS_IPS="swig"
 
+# Pardon the copy/paste, but we have to do this twice (2.6 & 2.7) for now.
+# And the only way buildctl detects packages is by grepping for PKG assignment.
+
+OLDPV=$PYTHONVER
+
+set_python_version 2.6
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+PKG=library/python-2/m2crypto-26
+RUN_DEPENDS_IPS="runtime/python-26 library/security/openssl@1.0.2"
 init
 download_source $PROG $PROG $VER
 patch_source
@@ -43,3 +50,17 @@ prep_build
 python_build
 make_package
 clean_up
+
+set_python_version 2.7
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+PKG=library/python-2/m2crypto-27
+RUN_DEPENDS_IPS="runtime/python-27 library/security/openssl@1.0.2"
+init
+download_source $PROG $PROG $VER
+patch_source
+prep_build
+python_build
+make_package
+clean_up
+
+set_python_version $OLDPV
