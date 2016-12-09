@@ -685,7 +685,7 @@ make_package() {
         LOCAL_MOG_FILE=$SRCDIR/local.mog
     fi
     logmsg "--- Applying transforms"
-    $PKGMOGRIFY $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_INT2
+    $PKGMOGRIFY $XFORM_ARGS $P5M_INT $MY_MOG_FILE $GLOBAL_MOG_FILE $LOCAL_MOG_FILE $* | $PKGFMT -u > $P5M_INT2
     logmsg "--- Resolving dependencies"
     (
         set -e
@@ -1254,6 +1254,15 @@ wait_for_prebuilt() {
         clean_up
         exit 1
     fi
+}
+
+# Change the PYTHON version so we can perform version-agile Python tricks.
+set_python_version() {
+    PYTHONVER=$1
+    PYTHONPKGVER=`echo $PYTHONVER | sed 's/\.//g'`
+    # Assume PYTHONPATH from config.sh is a constant.
+    PYTHON=$PYTHONPATH/bin/python$PYTHONVER
+    PYTHONLIB=$PYTHONPATH/lib
 }
 
 # Vim hints

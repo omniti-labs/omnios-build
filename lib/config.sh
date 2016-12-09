@@ -96,7 +96,7 @@ PERL_MAKE_TEST=1
 
 
 #############################################################################
-# Python
+# Python -- NOTE, these can be changed at runtime via set_python_version().
 #############################################################################
 : ${PYTHONVER:=2.6}
 : ${PYTHONPKGVER:=`echo $PYTHONVER | sed 's/\.//g'`}
