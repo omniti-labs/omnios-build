@@ -149,6 +149,7 @@ depend fmri=library/python-2/m2crypto-27@0.24,5.11-@PVER@ type=require
 depend fmri=library/python-2/mako-26@1.0,5.11-@PVER@ type=require
 depend fmri=library/python-2/mako-27@1.0,5.11-@PVER@ type=require
 depend fmri=library/python-2/numpy-26@1.11,5.11-@PVER@ type=require
+depend fmri=library/python-2/numpy-27@1.11,5.11-@PVER@ type=require
 depend fmri=library/python-2/ply-26@3.9,5.11-@PVER@ type=require
 depend fmri=library/python-2/pybonjour-26@1.1.1,5.11-@PVER@ type=require
 depend fmri=library/python-2/pycurl-26@7.43,5.11-@PVER@ type=require

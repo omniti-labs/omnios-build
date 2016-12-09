@@ -1,20 +1,20 @@
 license LICENSE.txt license=BSD
 
 # Prevents pkgdepend from freaking out.
-<transform file path=usr/bin/f2py2.6 -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/docs/usersguide/setup_example.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/__init__.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/auxfuncs.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/capi_maps.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/cb_rules.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/cfuncs.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/common_rules.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/crackfortran.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/diagnose.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/f2py2e.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/f90mod_rules.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/func2subr.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/rules.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/f2py/use_rules.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/distutils/cpuinfo.py -> set pkg.depend.bypass-generate .* >
-<transform file path=usr/lib/python2.6/vendor-packages/numpy/distutils/system_info.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/bin/f2py$(PYTHONVER) -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/docs/usersguide/setup_example.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/__init__.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/auxfuncs.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/capi_maps.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/cb_rules.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/cfuncs.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/common_rules.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/crackfortran.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/diagnose.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/f2py2e.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/f90mod_rules.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/func2subr.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/rules.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/f2py/use_rules.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/distutils/cpuinfo.py -> set pkg.depend.bypass-generate .* >
+<transform file path=usr/lib/python$(PYTHONVER)/vendor-packages/numpy/distutils/system_info.py -> set pkg.depend.bypass-generate .* >
