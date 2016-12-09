@@ -23,5 +23,5 @@
 # Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
-license usr/lib/python2.6/vendor-packages/cherrypy/LICENSE.txt license=BSD
+license usr/lib/python$(PYTHONVER)/vendor-packages/cherrypy/LICENSE.txt license=BSD
 <transform file path=usr/bin/cherryd -> drop>
