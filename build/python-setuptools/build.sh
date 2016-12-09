@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -29,12 +29,18 @@
 
 PROG=setuptools
 VER=0.6.11
-PKG=library/python-2/setuptools-26
 SUMMARY="setuptools - yet another python packaging requirement"
 DESC="$SUMMARY"
 
-DEPENDS_IPS="runtime/python-26"
+# Pardon the copy/paste, but we have to do this twice (2.6 & 2.7) for now.
+# And the only way buildctl detects packages is by grepping for PKG assignment.
 
+OLDPV=$PYTHONVER
+
+set_python_version 2.6
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+RUN_DEPENDS_IPS="runtime/python-26"
+PKG=library/python-2/setuptools-26
 init
 prep_build
 mkdir -p $DESTDIR/usr/lib/python2.6/vendor-packages
@@ -44,3 +50,19 @@ PYTHONPATH=$DESTDIR/usr/lib/python2.6/vendor-packages \
         setuptools
 make_package
 clean_up
+
+set_python_version 2.7
+XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
+RUN_DEPENDS_IPS="runtime/python-27"
+PKG=library/python-2/setuptools-27
+init
+prep_build
+mkdir -p $DESTDIR/usr/lib/python2.7/vendor-packages
+PYTHONPATH=$DESTDIR/usr/lib/python2.7/vendor-packages \
+    python2.7 ez_setup.py --always-copy \
+        --install-dir $DESTDIR/usr/lib/python2.7/vendor-packages/ \
+        setuptools
+make_package
+clean_up
+
+set_python_version $OLDPV
