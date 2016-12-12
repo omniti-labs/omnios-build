@@ -76,6 +76,7 @@ depend fmri=library/python-2/pybonjour-27@1.1.1,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/pycurl-26@7.43,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/pycurl-27@7.43,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/pyopenssl-26@0.11,5.11-@PVER@ type=incorporate
+depend fmri=library/python-2/pyopenssl-27@0.11,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/pyrex-26@0.9.9,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/setuptools-26@0.6.11,5.11-@PVER@ type=incorporate
 depend fmri=library/python-2/setuptools-27@0.6.11,5.11-@PVER@ type=incorporate
