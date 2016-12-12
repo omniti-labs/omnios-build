@@ -99,7 +99,14 @@ make_prog64() {
 make_install32() {
     make_install
     rm $DESTDIR/usr/bin/i386/python || logerr "--- cannot remove arch hardlink"
-    # mv $DESTDIR/usr/lib/python2.7/config/Makefile $DESTDIR/usr/lib/python2.7/config/Makefile.32 || logerr "--- Makefile backup (32)"
+    # Copy off _sysconfigdata.py
+    sed 's/^/    /g' < $DESTDIR/usr/lib/python2.7/_sysconfigdata.py > \
+	    /tmp/_sysconfigdata-32-$$.py
+
+
+    # Move pyconfig.h header to 32-bit-specific version.
+    mv $DESTDIR/usr/include/python2.7/pyconfig.h \
+    	$DESTDIR/usr/include/python2.7/pyconfig-32.h
 }
 make_install64() {
     logmsg "--- make install"
@@ -109,9 +116,29 @@ make_install64() {
     rm $DESTDIR/usr/lib/python2.7/config/libpython2.7.a || logerr "--- cannot remove static lib"
     # XXX KEBE SAYS Uncomment me eventually...
     # (cd $DESTDIR/usr/bin && ln -s python2.7 python) ||  logerr "--- could not setup python softlink"
-    # XXX KEBE SAYS Python2.7 appears to honor $LIB/amd64 for 64-bit python...
-    # mv $DESTDIR/usr/lib/python2.7/config/Makefile $DESTDIR/usr/lib/python2.7/config/Makefile.64 || logerr "--- Makefile backup (64)"
-    # mv $DESTDIR/usr/lib/python2.7/config/Makefile.32 $DESTDIR/usr/lib/python2.7/config/Makefile || logerr "--- Makefile restore (32)"
+    # Copy off _sysconfigdata.py
+    sed 's/^/    /g' < $DESTDIR/usr/lib/python2.7/_sysconfigdata.py > \
+	    /tmp/_sysconfigdata-64-$$.py
+    # Generate 32/64-bit agile _sysconfigdata.py
+    echo "import sys" > $DESTDIR/usr/lib/python2.7/_sysconfigdata.py
+    echo "" >> $DESTDIR/usr/lib/python2.7/_sysconfigdata.py
+    echo "if sys.maxsize > 2**32:" >> \
+	    $DESTDIR/usr/lib/python2.7/_sysconfigdata.py
+    cat /tmp/_sysconfigdata-64-$$.py \
+	    >> $DESTDIR/usr/lib/python2.7/_sysconfigdata.py
+    echo "else:" >> $DESTDIR/usr/lib/python2.7/_sysconfigdata.py
+    cat /tmp/_sysconfigdata-32-$$.py \
+	    >> $DESTDIR/usr/lib/python2.7/_sysconfigdata.py
+    # Clean up the 32/64 stragglers.
+    rm -f /tmp/_sysconfigdata-*-$$.py
+    # Postprocessing steps in either IPS or the omnios-build system create
+    # the .pyo and .pyc files.
+
+    # Move pyconfig.h header to 64-bit-specific version.
+    mv $DESTDIR/usr/include/python2.7/pyconfig.h \
+    	$DESTDIR/usr/include/python2.7/pyconfig-64.h
+
+    logcmd cp $SRCDIR/files/pyconfig.h $DESTDIR/usr/include/python2.7/pyconfig.h
 }
 
 install_license(){
