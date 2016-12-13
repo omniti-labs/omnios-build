@@ -18,4 +18,5 @@
 18-osconf-long.patch 
 19-recvfrom_into.patch 
 20-bsddb-harmful.patch 
+21-CVE-2016-1000110.patch
 ncurses-setup.patch 

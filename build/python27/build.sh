@@ -31,7 +31,7 @@ CC=gcc
 CXX=g++
 
 PROG=Python
-VER=2.7.11
+VER=2.7.12
 PKG=runtime/python-27
 SUMMARY="$PROG"
 DESC="$SUMMARY"
