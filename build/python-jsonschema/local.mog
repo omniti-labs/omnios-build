@@ -1,0 +1,2 @@
+license COPYING license=BSD
+<transform file path=usr/bin/jsonschema -> drop>
