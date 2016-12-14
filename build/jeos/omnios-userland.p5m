@@ -36,6 +36,7 @@ depend fmri=developer/versioning/sccs@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=developer/versioning/git@2.8,5.11-@PVER@ type=incorporate
 depend fmri=developer/versioning/mercurial@3,5.11-@PVER@ type=incorporate
 depend fmri=driver/virtualization/kvm@1.0,5.11-@PVER@ type=incorporate
+depend fmri=driver/tuntap@1.3,5.11-@PVER@ type=incorporate
 depend fmri=editor/vim@7.4,5.11-@PVER@ type=incorporate
 depend fmri=file/gnu-coreutils@8.25,5.11-@PVER@ type=incorporate
 depend fmri=file/gnu-findutils@4.6,5.11-@PVER@ type=incorporate
