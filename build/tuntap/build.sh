@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -33,6 +33,9 @@ PKG=driver/tuntap
 VERHUMAN=$VER
 SUMMARY="TUN/TAP driver for Solaris"
 DESC="TUN/TAP drive for Solaris based on Universal TUN/TAP Driver"
+
+# tuntap needs GNU tar.
+TAR=gtar
 
 init
 download_source $PROG $PROG $VER
