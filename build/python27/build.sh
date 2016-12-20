@@ -42,7 +42,7 @@ DEPENDS_IPS="system/library/gcc-5-runtime library/zlib library/libffi@$FFIVERS
 	library/ncurses library/security/openssl"
 
 export CCSHARED="-fPIC"
-CFLAGS="$CFLAGS -std=gnu89"
+CFLAGS="$CFLAGS -std=c99"
 LDFLAGS32="-L/usr/gnu/lib -R/usr/gnu/lib"
 LDFLAGS64="-L/usr/gnu/lib/amd64 -R/usr/gnu/lib/amd64"
 CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses -D_LARGEFILE64_SOURCE"
