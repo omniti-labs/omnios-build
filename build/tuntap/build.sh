@@ -31,8 +31,8 @@ PROG=tuntap
 VER=1.3.3
 PKG=driver/tuntap
 VERHUMAN=$VER
-SUMMARY="TUN/TAP driver for Solaris"
-DESC="TUN/TAP drive for Solaris based on Universal TUN/TAP Driver"
+SUMMARY="TUN/TAP driver for OmniOS"
+DESC="TUN/TAP driver for OmniOS based on the Universal TUN/TAP Driver"
 
 # tuntap needs GNU tar.
 TAR=gtar
