@@ -37,6 +37,19 @@ DESC="TUN/TAP driver for OmniOS based on the Universal TUN/TAP Driver"
 # tuntap needs GNU tar.
 TAR=gtar
 
+# do not build 64bit objects when compiling for 32bit objects
+CONFIGURE_OPTS_32="--disable-64bit"
+
+# Re-define make_clean() to always run 'make clean' due to there because
+# 'make distclean' in tun/tap's Makefile does not run 'make clean', and
+# thus keeps 32bit objects around when we try to compile 64bit ones.
+make_clean() {
+    pushd $TMPDIR/$BUILDDIR > /dev/null
+    logcmd $MAKE clean
+    logcmd $MAKE distclean
+    popd > /dev/null
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source
