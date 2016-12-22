@@ -16,6 +16,7 @@ depend fmri=developer/build/autoconf@2.69,5.11-@PVER@ type=incorporate
 depend fmri=developer/build/automake@1.15,5.11-@PVER@ type=incorporate
 depend fmri=developer/build/gnu-make@4.2,5.11-@PVER@ type=incorporate
 depend fmri=developer/build/libtool@2.4,5.11-@PVER@ type=incorporate
+depend fmri=developer/ccache@3.3.3,5.11-@PVER@ type=incorporate
 depend fmri=developer/dtrace/toolkit@0.99,5.11-@PVER@ type=incorporate
 depend fmri=developer/gcc44@4.4.4,5.11-@PVER@ type=incorporate
 depend fmri=developer/gcc44/libgmp-gcc44@5.0.2,5.11-@PVER@ type=incorporate
