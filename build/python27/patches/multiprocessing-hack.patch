@@ -1,0 +1,10 @@
+--- Python-2.7.13/Modules/_multiprocessing/multiprocessing.h.orig	Wed Dec 21 18:38:23 2016
++++ Python-2.7.13/Modules/_multiprocessing/multiprocessing.h	Wed Dec 21 18:38:27 2016
+@@ -7,6 +7,7 @@
+ /* The control message API is only available on Solaris 
+    if XPG 4.2 or later is requested. */
+ #define _XOPEN_SOURCE 500
++#define _XPG6 /* Evil hack that Python2.6 for OmniOS also needed. */
+ #endif
+ 
+ #include "Python.h"
