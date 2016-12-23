@@ -26,6 +26,7 @@
 <transform dir  path=var/.* -> set group sys>
 <transform file path=lib/svc/method/ntp$ -> set mode 0555>
 <transform file path=lib/svc/manifest/network/ntp.xml$ -> set mode 0444>
+<transform file path=etc/inet/ntp.conf -> set preserve true>
 <transform dir  path=etc/security.* -> drop>
 <transform file path=etc/security/.*/ntp$ -> set mode 0444>
 <transform file path=usr/sbin/.* -> set mode 0555>
