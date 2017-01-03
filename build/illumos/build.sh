@@ -98,7 +98,9 @@ clone_source(){
             logerr "--- Failed to clone source"
     fi
     pushd illumos-omnios 
-    ILLUMOS_VERSION="VERSION=\'omnios\-`$GIT log --pretty=format:'%h' -n 1`'" 
+    OMNIOS_BRANCH=`$GIT branch | awk '{print $2}'`
+    OMNIOS_HEAD=`$GIT log --pretty=format:'%h' -n 1`
+    ILLUMOS_VERSION="VERSION='omnios-${OMNIOS_BRANCH}-${OMNIOS_HEAD}'" 
     RELEASE_DATE=`$GIT show --format=format:%ai | awk '{print $1; exit;}' | tr - .` 
     echo $ILLUMOS_VERSION
     popd > /dev/null 
