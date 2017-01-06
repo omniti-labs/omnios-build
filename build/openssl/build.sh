@@ -37,6 +37,20 @@ DESC="$SUMMARY"
 DEPENDS_IPS="SUNWcs system/library system/library/gcc-5-runtime library/zlib@1.2.8"
 BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/sunstudio12.1"
 
+# Generic configure optons for both 32 and 64bit variants
+OPENSSL_CONFIG_OPTS="
+		--pk11-libname=/usr/lib/libpkcs11.so.1 
+		shared
+		threads
+		zlib
+		enable-ssl2"
+
+# Configure options specific to a 32bit build
+OPENSSL_CONFIG_32_OPTS=""
+
+# Configure options specific to a 64bit build
+OPENSSL_CONFIG_64_OPTS="enable-ec_nistp_64_gcc_128"
+
 NO_PARALLEL_MAKE=1
 
 make_prog() {
@@ -57,8 +71,10 @@ configure32() {
       SSLPLAT=solaris-x86-gcc
     fi
     logmsg "--- Configure (32-bit) $SSLPLAT"
-    logcmd ./Configure $SSLPLAT --pk11-libname=/usr/lib/libpkcs11.so.1 shared threads zlib enable-ssl2 --prefix=$PREFIX ||
-        logerr "Failed to run configure"
+    logcmd ./Configure $SSLPLAT --prefix=$PREFIX \
+	${OPENSSL_CONFIG_OPTS} \
+	${OPENSSL_CONFIG_32_OPTS} \
+        || logerr "Failed to run configure"
     SHARED_LDFLAGS="-shared -Wl,-z,text"
 }
 configure64() {
@@ -68,9 +84,10 @@ configure64() {
       SSLPLAT=solaris64-x86_64-gcc
     fi
     logmsg "--- Configure (64-bit) $SSLPLAT"
-    logcmd ./Configure $SSLPLAT --pk11-libname=/usr/lib/64/libpkcs11.so.1 shared threads zlib enable-ssl2 \
-        --prefix=$PREFIX ||
-        logerr "Failed ot run configure"
+    logcmd ./Configure $SSLPLAT --prefix=$PREFIX \
+	${OPENSSL_CONFIG_OPTS} \
+	${OPENSSL_CONFIG_64_OPTS} \
+        || logerr "Failed to run configure"
     SHARED_LDFLAGS="-m64 -shared -Wl,-z,text"
 }
 
