@@ -2,4 +2,4 @@ set name=pkg.fmri value=library/python-2/mako@1.0.4-@PVER@
 set name=pkg.renamed value=true
 set name=pkg.description value="Mako - a python templating language"
 set name=pkg.summary value="Mako - a python templating language"
-depend fmri=library/python-2/mako-26 type=require
+depend fmri=library/python-2/mako-27 type=require

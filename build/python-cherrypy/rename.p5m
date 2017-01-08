@@ -2,4 +2,4 @@ set name=pkg.fmri value=library/python-2/cherrypy@3.2.2-@PVER@
 set name=pkg.renamed value=true
 set name=pkg.description value="cherrypy - A Minimalist Python Web Framework"
 set name=pkg.summary value="cherrypy - A Minimalist Python Web Framework"
-depend fmri=library/python-2/cherrypy-26 type=require
+depend fmri=library/python-2/cherrypy-27 type=require

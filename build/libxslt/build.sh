@@ -40,8 +40,8 @@ CFLAGS64="$CFLAGS64 -D_LARGEFILE_SOURCE"
 LDFLAGS="-lpthread"
 
 CONFIGURE_OPTS="--disable-static --with-pic --with-threads --without-crypto"
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --with-python=/usr/bin/$ISAPART/python2.6"
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --with-python=/usr/bin/$ISAPART64/python2.6"
+CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --with-python=/usr/bin/$ISAPART/python2.7"
+CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --with-python=/usr/bin/$ISAPART64/python2.7"
 
 NO_PARALLEL_MAKE="true"
 

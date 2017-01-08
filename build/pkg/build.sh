@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -48,7 +48,7 @@ HEADERS="libbrand.h libuutil.h libzonecfg.h"
 BRAND_CFLAGS="-I./gate-include"
 
 BUILD_DEPENDS_IPS="developer/versioning/git developer/versioning/mercurial system/zones/internal"
-DEPENDS_IPS="runtime/python-26@2.6.7"
+DEPENDS_IPS="runtime/python-27"
 
 crib_headers(){
     # Use PREBUILT_ILLUMOS if available, otherwise, just pull off the

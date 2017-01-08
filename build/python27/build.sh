@@ -114,8 +114,7 @@ make_install64() {
         logerr "--- Make install failed"
     rm $DESTDIR/usr/bin/amd64/python || logerr "--- cannot remove arch hardlink"
     rm $DESTDIR/usr/lib/python2.7/config/libpython2.7.a || logerr "--- cannot remove static lib"
-    # XXX KEBE SAYS Uncomment me eventually...
-    # (cd $DESTDIR/usr/bin && ln -s python2.7 python) ||  logerr "--- could not setup python softlink"
+    (cd $DESTDIR/usr/bin && ln -s python2.7 python) ||  logerr "--- could not setup python softlink"
     # Copy off _sysconfigdata.py
     sed 's/^/    /g' < $DESTDIR/usr/lib/python2.7/_sysconfigdata.py > \
 	    /tmp/_sysconfigdata-64-$$.py

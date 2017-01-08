@@ -36,5 +36,5 @@ depend fmri=system/library/mozilla-nss/header-nss type=require
 depend fmri=system/header type=require
 depend fmri=system/management/snmp/net-snmp type=require
 depend fmri=text/gnu-gettext type=require
-depend fmri=library/python-2/python-extra-26 type=require
+depend fmri=library/python-2/python-extra-27 type=require
 depend fmri=pkg://omnios/runtime/python-27 type=require

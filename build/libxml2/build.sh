@@ -35,12 +35,14 @@ DESC="$SUMMARY"
 
 DEPENDS_IPS="compress/xz system/library/gcc-5-runtime library/zlib"
 BUILD_DEPENDS_IPS="$DEPENDS_IPS developer/sunstudio12.1"
+# Keep python tied to the version we're supporting, to aid future changes.
+CONFIGURE_OPTS="--with-python=/usr/bin/python2.7"
 
 fix_python_install() {
-    logcmd mkdir -p $DESTDIR/usr/lib/python2.6/vendor-packages
-    logcmd mv $DESTDIR/usr/lib/python2.6/site-packages/* $DESTDIR/usr/lib/python2.6/vendor-packages/ || logerr "failed relocating python install"
-    logcmd rm -f $DESTDIR/usr/lib/python2.6/vendor-packages/64/drv_libxml2.py
-    logcmd rm -rf $DESTDIR/usr/lib/python2.6/site-packages || logerr "failed removing bad python install"
+    logcmd mkdir -p $DESTDIR/usr/lib/python2.7/vendor-packages
+    logcmd mv $DESTDIR/usr/lib/python2.7/site-packages/* $DESTDIR/usr/lib/python2.7/vendor-packages/ || logerr "failed relocating python install"
+    logcmd rm -f $DESTDIR/usr/lib/python2.7/vendor-packages/64/drv_libxml2.py
+    logcmd rm -rf $DESTDIR/usr/lib/python2.7/site-packages || logerr "failed removing bad python install"
     logcmd rm -rf $DESTDIR/usr/include/amd64 || logerr "failed removing bad includes install"
 }
 
@@ -71,7 +73,7 @@ make_install64() {
         logerr "libtool libxml2mod.la patch failed"
 
     logcmd $MAKE DESTDIR=${DESTDIR} \
-        PYTHON_SITE_PACKAGES=/usr/lib/python2.6/site-packages/64 \
+        PYTHON_SITE_PACKAGES=/usr/lib/python2.7/site-packages/64 \
         install || \
         logerr "--- Make install failed"
 }

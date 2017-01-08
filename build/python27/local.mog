@@ -1,29 +1,10 @@
 <transform file path=license$ -> drop>
 license license license=PSF
 
-# Drop some things for now because they conflict with still-in-use Python 2.6
-<transform file path=usr/bin/2to3 -> drop>
-<transform file path=usr/bin/idle -> drop>
-<transform file path=usr/bin/pydoc -> drop>
-<transform file path=usr/bin/python-config -> drop>
-<transform file path=usr/bin/python2-config -> drop>
-<transform file path=usr/bin/smtpd.py -> drop>
-<transform file path=usr/bin/i386/2to3 -> drop>
-<transform file path=usr/bin/i386/idle -> drop>
-<transform file path=usr/bin/i386/pydoc -> drop>
-<transform link path=usr/bin/i386/python-config -> drop>
-<transform file path=usr/bin/i386/python2-config -> drop>
-<transform file path=usr/bin/i386/smtpd.py -> drop>
-<transform file path=usr/bin/amd64/2to3 -> drop>
-<transform file path=usr/bin/amd64/idle -> drop>
-<transform file path=usr/bin/amd64/pydoc -> drop>
-<transform link path=usr/bin/amd64/python-config -> drop>
-<transform file path=usr/bin/amd64/python2-config -> drop>
-<transform file path=usr/bin/amd64/smtpd.py -> drop>
-<transform link path=usr/share/man/man1/python.1 -> drop>
-
 # Prevents pkgdepend from freaking out.
 
+<transform file path=usr/bin/amd64/smtpd.py -> set pkg.depend.bypass-generate .*>
+<transform file path=usr/bin/i386/smtpd.py -> set pkg.depend.bypass-generate .*>
 <transform file path=usr/lib/python2.7/lib2to3/tests/pytree_idempotency.py -> set pkg.depend.bypass-generate .*>
 <transform file path=usr/lib/python2.7/cProfile.py -> set pkg.depend.bypass-generate .*>
 <transform file path=usr/lib/python2.7/cgi.py -> set pkg.depend.bypass-generate .*>

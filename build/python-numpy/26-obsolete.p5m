@@ -1,0 +1,2 @@
+set name=pkg.fmri value=library/python-2/numpy-26@1.11.2-@PVER@
+set name=pkg.obsolete value=true

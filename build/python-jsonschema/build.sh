@@ -32,12 +32,9 @@ VER=2.5.1
 SUMMARY="An implementation of JSON Schema validation for Python"
 DESC="$SUMMARY"
 
-# Pardon the copy/paste, but we have to do this for 2.7 for now.
-# And the only way buildctl detects packages is by grepping for PKG assignment.
-
-OLDPV=$PYTHONVER
-
-set_python_version 2.7
+# In the future when we upgrade python again, be sure to wrap the following     
+# around with set_python_version and reassign PKG and RUN_DEPENDS_IPS.          
+# The only way buildctl detects packages is by grepping for PKG assignment.
 XFORM_ARGS="-D PYTHONVER=$PYTHONVER"
 PKG=library/python-2/jsonschema-27
 RUN_DEPENDS_IPS="runtime/python-27"
@@ -48,5 +45,3 @@ prep_build
 python_build
 make_package
 clean_up
-
-set_python_version $OLDPV
