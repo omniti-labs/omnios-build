@@ -35,7 +35,6 @@ DESC="PycURL provides a thin layer of Python bindings on top of libcurl."
 # In the future when we upgrade python again, be sure to wrap the following
 # around with set_python_version and reassign PKG and RUN_DEPENDS_IPS.
 # The only way buildctl detects packages is by grepping for PKG assignment.
-set_python_version 2.7
 XFORM_ARGS="-D PYTHONPKGVER=$PYTHONPKGVER"
 PKG=library/python-2/pycurl-27
 RUN_DEPENDS_IPS="runtime/python-27 library/security/openssl@1.0.2 web/curl"
