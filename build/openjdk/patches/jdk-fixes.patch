@@ -185,15 +185,6 @@ diff --git a/src/share/native/sun/java2d/cmm/lcms/cmsxform.c b/src/share/native/
  static
  void CachedXFORM(_cmsTRANSFORM* p,
                   const void* in,
-@@ -521,7 +521,7 @@
-             return NULL;
-         }
- 
--        // Float transforms don't use caché, always are non-NULL
-+        // Float transforms don't use cache, always are non-NULL
-         p ->xform = FloatXFORM;
-     }
-     else {
 @@ -558,16 +558,16 @@
              if (*dwFlags & cmsFLAGS_NOCACHE) {
  
