@@ -3,3 +3,4 @@ extract.c.patch
 overflow.patch
 CVE-2015-7696.patch
 CVE-2015-7697.patch
+CVE-2016-9844.patch
