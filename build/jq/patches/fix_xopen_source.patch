@@ -1,0 +1,10 @@
+--- jq-1.5/builtin.c.orig	2017-01-19 21:44:19.224798101 +0000
++++ jq-1.5/builtin.c	2017-01-19 21:44:24.645567558 +0000
+@@ -1,6 +1,6 @@
+ #define _BSD_SOURCE
+ #define _GNU_SOURCE
+-#define _XOPEN_SOURCE
++//#define _XOPEN_SOURCE
+ #include <sys/time.h>
+ #include <stdlib.h>
+ #include <stddef.h>
