@@ -1,0 +1,6 @@
+set name=pkg.fmri value=pkg://@PKGPUBLISHER@/incorporation/smartos-guest@1,5.11-@PVER@
+set name=pkg.depend.install-hold value=core-os.omnios
+set name=pkg.summary value="Meta-package containing tools to make OmniOS a good SmartOS guest"
+set name=pkg.description value="Meta-package containing tools to make OmniOS a good SmartOS guest"
+depend fmri=system/management/mdata-client type=require
+depend fmri=text/jq type=require
