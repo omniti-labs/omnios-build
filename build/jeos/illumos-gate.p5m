@@ -376,6 +376,7 @@ depend fmri=developer/object-file@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=developer/opensolaris/osnet@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=developer/tnf@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=diagnostic/cpu-counters@0.5.11,5.11-@PVER@ type=incorporate
+depend fmri=diagnostic/diskinfo@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=diagnostic/latencytop@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=diagnostic/powertop@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=driver/audio/audio810@0.5.11,5.11-@PVER@ type=incorporate
