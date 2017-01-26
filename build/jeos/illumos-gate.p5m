@@ -712,6 +712,7 @@ depend fmri=storage/storage-server@0.1,5.11-@PVER@ type=incorporate
 depend fmri=storage/svm@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/accounting/legacy@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/boot/grub@0.97,5.11-@PVER@ type=incorporate
+depend fmri=system/boot/loader@1.1,5.11-@PVER@ type=incorporate
 depend fmri=system/boot/network@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/boot/real-mode@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/boot/wanboot/internal@0.5.11,5.11-@PVER@ type=incorporate
