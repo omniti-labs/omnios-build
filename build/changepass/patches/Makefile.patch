@@ -1,0 +1,15 @@
+--- cgipaf-1.3.3/Makefile.in.orig	Tue Jan 31 16:45:21 2017
++++ cgipaf-1.3.3/Makefile.in	Tue Jan 31 16:47:03 2017
+@@ -37,8 +37,10 @@
+ changepass: changepass.c ${CHPASSOBJS} ${inc_files}
+ 	$(CC) $(CFLAGS) -o changepass changepass.c ${CHPASSOBJS} @LIBS@ ${ARG} ${HAVE_CHPASS_CRYPT}
+ 
+-install: all
+-	 su root -c "/bin/sh ./install.sh"
++install: changepass
++	mkdir -p  $(DESTDIR)/usr/sbin/ $(DESTDIR)/usr/share/man/man8/
++	cp changepass $(DESTDIR)/usr/sbin/changepass
++	cp changepass.man $(DESTDIR)/usr/share/man/man8/changepass.8
+ 
+ pass.o: pass.c pass.h
+ 	$(CC) $(CFLAGS) $(ARG) -c pass.c
