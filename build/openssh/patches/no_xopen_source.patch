@@ -1,0 +1,14 @@
+--- a/configure.ac.orig	Thu Feb  2 03:30:53 2017
++++ b/configure.ac	Thu Feb  2 03:31:28 2017
+@@ -1771,11 +1771,7 @@
+ 	warn \
+ ])
+ 
+-dnl Wide character support.  Linux man page says it needs _XOPEN_SOURCE.
+-saved_CFLAGS="$CFLAGS"
+-CFLAGS="$CFLAGS -D_XOPEN_SOURCE"
+ AC_CHECK_FUNCS([mblen mbtowc nl_langinfo wcwidth])
+-CFLAGS="$saved_CFLAGS"
+ 
+ TEST_SSH_UTF8=${TEST_SSH_UTF8:=yes}
+ AC_MSG_CHECKING([for utf8 locale support])
