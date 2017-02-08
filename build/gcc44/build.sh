@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -29,13 +29,20 @@
 
 PROG=gcc
 VER=4.4.4
-COMMIT=bcf43ddb4958677ebd7dd6daba9d526d2865df10
-VERHUMAN="$VER from ${COMMIT:0:10}"
+#
+# The ILLUMOSVER is the suffix of the tag gcc-4.4.4-<ILLUMOSVER>.
+# It takes the form "il-N" for some number N.  These are announced to the
+# illumos developer's list, and it is expected that OmniTI will keep a
+# copy at mirrors.omniti.com, or local maintainers keep it whereever they
+# keep their local mirrors.
+#
+ILLUMOSVER=il-4
+VERHUMAN="${VER}-${ILLUMOSVER}"
 PKG=developer/gcc44
-SUMMARY="gcc ${VER} (richlowe il-4_4_4 branch)"
+SUMMARY="gcc ${VER} (illumos il-4_4_4 branch, tag gcc-4.4.4-${ILLUMOSVER})"
 DESC="GCC with the patches from Codesourcery/Sun Microsystems used in the 3.4.3 and 4.3.3 shipped with Solaris. The il-* branches contain the Solaris patches rebased forward across GCC versions in an attempt to bring them up to date."
 
-BUILDDIR=${PROG}-il-4_4_4
+BUILDDIR=${PROG}-gcc-4.4.4-${ILLUMOSVER}
 
 export LD_LIBRARY_PATH=/opt/gcc-${VER}/lib
 # Build gcc44 only with itself...
@@ -46,8 +53,6 @@ DEPENDS_IPS="developer/gcc44/libgmp-gcc44 developer/gcc44/libmpfr-gcc44 develope
 	     developer/gnu-binutils developer/library/lint developer/linker system/library/gcc-5-runtime"
 BUILD_DEPENDS_IPS="$DEPENDS_IPS"
 
-NO_PARALLEL_MAKE=1
-
 # This stuff is in its own domain
 PKGPREFIX=""
 
@@ -55,6 +60,7 @@ BUILDARCH=32
 PREFIX=/opt/gcc-${VER}
 reset_configure_opts
 CC=gcc
+TAR=gtar
 
 LD_FOR_TARGET=/bin/ld
 export LD_FOR_TARGET
@@ -75,7 +81,7 @@ LDFLAGS32="-R/opt/gcc-${VER}/lib"
 export LD_OPTIONS="-zignore -zcombreloc -Bdirect -i"
 
 init
-download_source gcc44 ${PROG}-il-4_4_4
+download_source gcc44 ${PROG}-gcc-4.4.4-${ILLUMOSVER}
 patch_source
 prep_build
 build
