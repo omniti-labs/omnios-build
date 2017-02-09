@@ -28,13 +28,16 @@
 . ../../lib/functions.sh
 
 PROG=nghttp2
-VER=1.18.0
+VER=1.19.0
 VERHUMAN=$VER
 PKG=library/nghttp2
 SUMMARY="Nghttp2: HTTP/2 C Library"
 DESC="$SUMMARY"
 
-CONFIGURE_OPTS="--enable-lib-only"
+CFLAGS="-O2"
+CONFIGURE_OPTS="\
+    --enable-lib-only \
+    --disable-silent-rules"
 
 export ZLIB_CFLAGS="-I/usr/include"
 export ZLIB_LIBS="-L/usr/lib"
