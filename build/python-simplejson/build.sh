@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=simplejson
-VER=3.8.2
+VER=3.10.0
 SUMMARY="simplejson - Python interface to JSON for Python 2.7"
 DESC="$SUMMARY"
 

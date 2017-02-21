@@ -152,7 +152,7 @@ depend fmri=library/python-2/pycurl-27@7.43,5.11-@PVER@ type=require
 depend fmri=library/python-2/pyopenssl-27@0.11,5.11-@PVER@ type=require
 depend fmri=library/python-2/pyrex-27@0.9.9,5.11-@PVER@ type=require
 depend fmri=library/python-2/setuptools-27@0.6.11,5.11-@PVER@ type=require
-depend fmri=library/python-2/simplejson-27@3.8,5.11-@PVER@ type=require
+depend fmri=library/python-2/simplejson-27@3.10,5.11-@PVER@ type=require
 depend fmri=library/readline@7.0,5.11-@PVER@ type=require
 depend fmri=library/security/openssl@1.0.2,5.11-@PVER@ type=require
 depend fmri=library/security/tcp-wrapper@7.6,5.11-@PVER@ type=require
