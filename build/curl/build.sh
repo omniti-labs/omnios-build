@@ -21,17 +21,19 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=curl       # App name
-VER=7.52.1      # App version
+VER=7.53.0      # App version
 PKG=web/curl    # Package name (without prefix)
 SUMMARY="$PROG - command line tool for transferring data with URL syntax"
 DESC="$SUMMARY"
+
+NO_PARALLEL_MAKE=1
 
 DEPENDS_IPS="web/ca-bundle library/security/openssl@1.0.2 library/zlib
     library/libidn"
