@@ -139,7 +139,7 @@ depend fmri=library/libtool/libltdl@2.4,5.11-@PVER@ type=require
 depend fmri=library/libxml2@2.9,5.11-@PVER@ type=require
 depend fmri=library/libxslt@1.1.29,5.11-@PVER@ type=require
 depend fmri=library/ncurses@6,5.11-@PVER@ type=require
-depend fmri=library/nghttp2@1.18.0,5.11-@PVER@ type=require
+depend fmri=library/nghttp2@1.19.0,5.11-@PVER@ type=require
 depend fmri=library/nspr@4.12,5.11-@PVER@ type=require
 depend fmri=library/pcre@8.39,5.11-@PVER@ type=require
 depend fmri=library/python-2/cherrypy-27@3.2.2,5.11-@PVER@ type=require
