@@ -28,7 +28,6 @@ depend fmri=runtime/perl type=require
 depend fmri=runtime/perl-64 type=require
 depend fmri=runtime/perl/module/sun-solaris type=require
 depend fmri=system/library/math type=require
-depend fmri=system/library/install type=require
 depend fmri=system/library/dbus type=require
 depend fmri=system/library/libdbus type=require
 depend fmri=system/library/libdbus-glib type=require

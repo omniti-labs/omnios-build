@@ -40,9 +40,6 @@ depend fmri=driver/tuntap@1.3,5.11-@PVER@ type=incorporate
 depend fmri=editor/vim@8.0,5.11-@PVER@ type=incorporate
 depend fmri=file/gnu-coreutils@8.25,5.11-@PVER@ type=incorporate
 depend fmri=file/gnu-findutils@4.6,5.11-@PVER@ type=incorporate
-depend fmri=install/distribution-constructor@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=install/installadm@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=install/js2ai@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=library/c++/sigcpp@2.10,5.11-@PVER@ type=incorporate
 depend fmri=library/expat@2.2,5.11-@PVER@ type=incorporate
 depend fmri=library/glib2@2.34.3,5.11-@PVER@ type=incorporate
@@ -96,17 +93,9 @@ depend fmri=shell/bash@4.4,5.11-@PVER@ type=incorporate
 depend fmri=shell/pipe-viewer@1.6,5.11-@PVER@ type=incorporate
 depend fmri=shell/tcsh@6.19.0,5.11-@PVER@ type=incorporate
 depend fmri=shell/zsh@5.2,5.11-@PVER@ type=incorporate
-depend fmri=system/install@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/install/auto-install@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/install/auto-install/auto-install-common@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/install/configuration@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/install/kayak@1.1,5.11-@PVER@ type=incorporate
 depend fmri=system/install/kayak-kernel@1.1,5.11-@PVER@ type=incorporate
-depend fmri=system/install/media/internal@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/install/tests@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/install/text-install@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/kvm@1.0,5.11-@PVER@ type=incorporate
-depend fmri=system/library/boot-management@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/c++/sunpro@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/dbus@1.11.6,5.11-@PVER@ type=incorporate
 depend fmri=system/library/g++-4-runtime@4.8.1,5.11-@PVER@ type=incorporate
@@ -117,7 +106,6 @@ depend fmri=system/library/iconv/unicode@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/iconv/utf-8@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/iconv/utf-8/manual@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/iconv/xsh4/latin@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/library/install@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/libdbus@1.11.6,5.11-@PVER@ type=incorporate
 depend fmri=system/library/libdbus-glib@0.108,5.11-@PVER@ type=incorporate
 depend fmri=system/library/mozilla-nss@3.26,5.11-@PVER@ type=incorporate
