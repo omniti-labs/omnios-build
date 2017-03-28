@@ -3,4 +3,3 @@ ins-ntpd.patch -p0
 noextra.patch -p0
 timing.patch -p0
 no-arc4random-addrandom.patch
-audio.patch -p0
