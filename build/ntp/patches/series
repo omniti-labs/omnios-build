@@ -2,4 +2,3 @@ etcfix.patch -p0
 ins-ntpd.patch -p0
 noextra.patch -p0
 timing.patch -p0
-audio.patch -p0
