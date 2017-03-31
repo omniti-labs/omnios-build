@@ -21,20 +21,21 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2016 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=nghttp2
-VER=1.19.0
+VER=1.21.0
 VERHUMAN=$VER
 PKG=library/nghttp2
 SUMMARY="Nghttp2: HTTP/2 C Library"
 DESC="$SUMMARY"
 
 CFLAGS="-O2"
+LDFLAGS="-lm"
 CONFIGURE_OPTS="\
     --enable-lib-only \
     --disable-silent-rules"
