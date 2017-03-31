@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pciutils
-VER=3.5.2
+VER=3.5.4
 VERHUMAN=$VER
 PKG=system/pciutils
 SUMMARY="Programs (lspci, setpci) for inspecting and manipulating configuration of PCI devices"
