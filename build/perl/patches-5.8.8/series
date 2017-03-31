@@ -1,2 +1,0 @@
-perl.c.patch -p0
-t_op_getppid.t.patch -p0

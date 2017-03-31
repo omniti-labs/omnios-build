@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2011-2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # We need this for the Sun assembler
@@ -35,7 +35,7 @@ export SHELL
 
 case $DEPVER in
     "")
-	DEPVER=5.16.1
+	DEPVER=5.24.1
         logmsg "no version specified, using $DEPVER"
         ;;
 esac
@@ -50,67 +50,99 @@ PREFIX=/usr/perl5/${VER}
 
 BUILD_DEPENDS_IPS="text/gnu-sed"
 
-if [[ $VER == "5.8.8" ]]; then
-    PATCHDIR="patches-5.8.8"
-fi
+#
+# Perl build configuration options that are common to each
+# of the 32 and 64 bit variants.
+#
+PERL_BUILD_OPTS_COMMON="-des \
+        -Dusethreads \
+        -Duseshrplib \
+        -Dusedtrace \
+        -Dusemultiplicity \
+        -Duselargefiles \
+        -Duse64bitint \
+        -Dmyhostname=localhost \
+        -Umydomain \
+        -Umyuname \
+        -Dcf_by=omnios-builder \
+        -Dcf_email=omnios-builder@omniti.com \
+        -Dcc=gcc \
+        -Dld=/usr/ccs/bin/ld \
+        -Doptimize=-O3"
 
 catalog() {
     pushd $DESTDIR > /dev/null
+    logmsg "Creating catalog file"
+
     find . | cut -c3- > $TMPDIR/$1
     popd > /dev/null
 }
 build_mogs() {
     pushd $TMPDIR/$BUILDDIR > /dev/null
-    ./miniperl $SRCDIR/make_mog.pl $TMPDIR $DESTDIR
+    logmsg "Building MOG files"
+
+    logcmd ./miniperl $SRCDIR/make_mog.pl $TMPDIR $DESTDIR
     cat $TMPDIR/nodocs.mog $TMPDIR/no64.mog > $TMPDIR/perl.mog
     cat $TMPDIR/no32.mog $TMPDIR/no64.mog > $TMPDIR/perl-docs.mog
     cat $TMPDIR/no32.mog $TMPDIR/nodocs.mog > $TMPDIR/perl-64.mog
     popd > /dev/null
 }
 links() {
-    mkdir -p $DESTDIR/usr/bin
-    for firstclass in perl perldoc cpan
-    do
-        ln -s ../perl5/${VER}/bin/$firstclass $DESTDIR/usr/bin/$firstclass
+    logmsg "Creating symlinks"
+    logcmd mkdir -p $DESTDIR/usr/bin
+    logcmd mkdir -p $DESTDIR/usr/perl5/bin
+
+    perlexe=$(find ${PREFIX}/bin -maxdepth 1 -type f -perm -o+x)
+
+    for path in $perlexe; do
+        file=$(basename $path)
+
+        logcmd ln -s \
+            ../perl5/${VER}/bin/$file $DESTDIR/usr/bin/$file
+        logcmd ln -s \
+            ../${VER}/bin/$file $DESTDIR/usr/perl5/bin/$file
     done
-    mkdir -p $DESTDIR/usr/perl5/bin
-    ln -s ../${VER}/bin/perl $DESTDIR/usr/perl5/bin/perl
 }
 
 build32() {
     pushd $TMPDIR/$BUILDDIR > /dev/null
     logmsg "Building 32-bit"
+
     logmsg "--- make (dist)clean"
     logcmd make distclean || \
         logmsg "--- *** WARNING *** make (dist)clean Failed"
+
     logmsg "--- configure (32-bit)"
-    logcmd $SHELL Configure -Dusethreads -Duseshrplib -Dusemultiplicity -Duselargefiles \
-	-Duse64bitint -Dmyhostname="localhost" \
-        -Dcc=gcc -Dld=/usr/ccs/bin/ld -Dccflags="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_TS_ERRNO" \
-        -Doptimize="-O3" \
-        -Dvendorprefix=${PREFIX} -Dprefix=${PREFIX} \
-        -Dbin=${PREFIX}/bin/$ISAPART \
-        -Dsitebin=${PREFIX}/bin/$ISAPART \
-        -Dvendorbin=${PREFIX}/bin/$ISAPART \
+    logcmd $SHELL Configure ${PERL_BUILD_OPTS_COMMON} \
+	-Dccflags="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_TS_ERRNO" \
+        -Dprefix=${PREFIX} \
+        -Dvendorprefix=${PREFIX} \
+        -Dbin=${PREFIX}/bin/${ISAPART} \
+        -Dsitebin=${PREFIX}/bin/${ISAPART} \
+        -Dvendorbin=${PREFIX}/bin/${ISAPART} \
         -Dscriptdir=${PREFIX}/bin \
         -Dsitescript=${PREFIX}/bin \
         -Dvendorscript=${PREFIX}/bin \
-	-Dprivlib=${PREFIX}/lib \
-	-Dsitelib=/usr/perl5/site_perl/${VER} \
-	-Dvendorlib=/usr/perl5/vendor_perl/${VER} \
-        -des || \
+        -Dprivlib=${PREFIX}/lib \
+        -Dsitelib=/usr/perl5/site_perl/${VER} \
+        -Dvendorlib=/usr/perl5/vendor_perl/${VER} \
+	|| \
     logerr "--- Configure failed"
-    gsed -i 's/-fstack-protector//g;' config.sh
+    logcmd gsed -i 's/-fstack-protector-strong//g;' config.sh
+
     logmsg "--- make"
     logcmd gmake -j 8 || \
     logcmd gmake || \
         logerr "--- Make failed"
+
     #logmsg "--- make test"
     #logcmd gmake test || \
     #    logerr "--- Make test failed"
+
     logmsg "--- make install"
     logcmd gmake install DESTDIR=${DESTDIR} || \
         logerr "--- Make install failed"
+
     # We make the isastubs after 32bit so we can seem them in the catalog
     make_isa_stub
 
@@ -121,43 +153,47 @@ build32() {
 build64() {
     pushd $TMPDIR/$BUILDDIR > /dev/null
     logmsg "Building 64-bit"
+
     logmsg "--- make (dist)clean"
     logcmd make distclean || \
         logmsg "--- *** WARNING *** make (dist)clean Failed"
+
     logmsg "--- configure (64-bit)"
-    logcmd $SHELL Configure -Dusethreads -Duseshrplib -Dusemultiplicity -Duselargefiles \
-	-Duse64bitint -Dmyhostname="localhost" \
-        -Dcc=gcc -Dld=/usr/ccs/bin/ld -Dccflags="-D_LARGEFILE64_SOURCE -m64 -D_TS_ERRNO" \
+    logcmd $SHELL Configure ${PERL_BUILD_OPTS_COMMON} \
+        -Dccflags="-D_LARGEFILE64_SOURCE -m64 -D_TS_ERRNO" \
         -Dlddlflags="-G -64" \
-        -Dldflags="" \
-        -Doptimize="-O3" \
-        -Dvendorprefix=${PREFIX} -Dprefix=${PREFIX} \
-        -Dbin=${PREFIX}/bin/$ISAPART64 \
-        -Dsitebin=${PREFIX}/bin/$ISAPART64 \
-        -Dvendorbin=${PREFIX}/bin/$ISAPART64 \
+        -Dprefix=${PREFIX} \
+        -Dvendorprefix=${PREFIX} \
+        -Dbin=${PREFIX}/bin/${ISAPART64} \
+        -Dsitebin=${PREFIX}/bin/${ISAPART64} \
+        -Dvendorbin=${PREFIX}/bin/${ISAPART64} \
         -Dscriptdir=${PREFIX}/bin \
         -Dsitescript=${PREFIX}/bin \
         -Dvendorscript=${PREFIX}/bin \
-	-Dprivlib=${PREFIX}/lib \
+        -Dprivlib=${PREFIX}/lib \
         -Dsitelib=/usr/perl5/site_perl/${VER} \
         -Dvendorlib=/usr/perl5/vendor_perl/${VER} \
-        -des || \
+        || \
     logerr "--- Configure failed"
-    gsed -i 's/-fstack-protector//g;' config.sh
-    gsed -i -e '/^lddlflags/{s/-G -m64//;}' config.sh
+    logcmd gsed -i 's/-fstack-protector-strong//g;' config.sh
+    logcmd gsed -i 's/mydomain="\.undef"/mydomain="undef"/g;' config.sh
+    logcmd gsed -i -e '/^lddlflags/{s/-G -m64//;}' config.sh
+
     logmsg "--- make"
     logcmd gmake -j 8 || \
     logcmd gmake || \
         logerr "--- Make failed"
+
     #logmsg "--- make test"
     #logcmd gmake test || \
     #    logerr "--- Make test failed"
+
     logmsg "--- make install"
     logcmd gmake install DESTDIR=${DESTDIR} || \
         logerr "--- Make install failed"
 
     pushd $DESTDIR/$PREFIX/bin > /dev/null
-    gsed -i 's:usr/perl5/5.16.1/bin/amd64:usr/perl5/5.16.1/bin:g' \
+    logcmd gsed -i "s:usr/perl5/${VER}/bin/amd64:usr/perl5/${VER}/bin:g" \
         `find . -type f | xargs file | grep script | cut -f1 -d:`
     popd > /dev/null
     popd > /dev/null
@@ -190,4 +226,4 @@ DESC="$SUMMARY"
 DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-64.mog
 
-clean_up
+#clean_up

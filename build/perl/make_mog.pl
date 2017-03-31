@@ -28,7 +28,7 @@ my $destdir = shift;
 open(A, "$tmpdir/perl.32.bit");
 while(<A>) {
     chomp;
-    if(/\/man\// || /pod/) { $docs{$_}++; }
+    if(/\/man\// || /\.pod$/) { $docs{$_}++; }
     else {$a{$_}++;}
 }
 close(A);

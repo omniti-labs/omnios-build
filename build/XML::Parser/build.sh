@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 if [ -z "$DEPVER" ]; then
-    DEPVER=5.16.1
+    DEPVER=5.24.1
 fi
 
 AUTHORID=TODDR
