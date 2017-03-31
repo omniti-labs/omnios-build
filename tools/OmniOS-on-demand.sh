@@ -157,8 +157,12 @@ build_gates() {
 	# Also clobber kayak's special rpool.
 	export KAYAK_CLOBBER=1
 
-	./buildctl list-build | awk '{print $2}' | grep -v kayak >/tmp/blist.$$
-	./buildctl list-build | awk '{print $2}' | grep kayak >>/tmp/blist.$$
+	# The kayak-kernel bits MUST go at the end, because it depends on
+	# everything else having been built already.  This is a hack.
+	./buildctl list-build | awk '{print $2}' | grep -v kayak-kernel \
+	    > /tmp/blist.$$
+	./buildctl list-build | awk '{print $2}' | grep kayak-kernel \
+	    >> /tmp/blist.$$
 	./buildctl -lb build `cat /tmp/blist.$$`
 	rm -f /tmp/blist.$$
 

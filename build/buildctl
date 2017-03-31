@@ -17,7 +17,6 @@ declare -A targets
 declare -A fulltargets
 # list of packages already built.
 declare -A already_built
-DEPENDENCY_CHECK="n"
 
 add_target() {
 	local pkg=$1
@@ -142,20 +141,6 @@ build() {
             logmsg "--- Setting new environment"
             . environment
         fi
-	if [[ -f dependencies && "$DEPENDENCY_CHECK" = "y" ]]; then
-	    for dep in `cat dependencies`
-	    do
-		logmsg "--------- Dependency on $dep"
-		if [[ "${already_built[$dep]}" = "1" ]]; then
-		    logmsg "----------- (already resolved)"
-		else
-		    logmsg "----------- (needs building)"
-		    pushd .. > /dev/null || bail "Cannot pop up"
-		    build $dep
-		    popd > /dev/null
-		fi
-	    done
-	fi
         SCRIPT=$(basename ${targets[$1]})
         if [[ -n $(echo $SCRIPT | grep ".p5m$") ]]; then
             echo "Found a manifest file. Preparing it for publishing."
@@ -256,7 +241,6 @@ case "$1" in
 	tobuild=$*
 	if [ -z "$tobuild" ] || [ "$tobuild" == "all" ]; then
 		batch_flag="-b"
-		DEPENDENCY_CHECK="y"
 		for tgt in "${!fulltargets[@]}"; do
                         # Uncomment the echo line if you want to see a
                         # one-package-per-line status of what's building in

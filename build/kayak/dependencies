@@ -1,7 +1,0 @@
-release/name
-file/gnu-coreutils
-system/prerequisite/gnu
-library/libidn
-release/notices
-text/less
-illumos-gate
