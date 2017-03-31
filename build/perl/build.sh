@@ -226,4 +226,4 @@ DESC="$SUMMARY"
 DEPENDS_IPS="=runtime/perl@${VER},5.11-${PVER} runtime/perl@${VER},5.11-${PVER}"
 make_package $TMPDIR/perl-64.mog
 
-#clean_up
+clean_up
