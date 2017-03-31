@@ -22,5 +22,5 @@
 # Copyright (c) 2010, 2011, Oracle and/or its affiliates. All rights reserved.
 #
 
-set name=pkg.fmri value=pkg:/install/installadm@0.5.11-@PVER@
+set name=pkg.fmri value=install/installadm@0.5.11-@PVER@
 set name=pkg.obsolete value=true
