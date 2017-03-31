@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=pcre
-VER=8.39
+VER=8.40
 VERHUMAN=$VER
 PKG=library/pcre
 SUMMARY="Perl-Compatible Regular Expressions"
