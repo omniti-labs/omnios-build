@@ -46,7 +46,7 @@ BUILDDIR=${PROG}-gcc-4.4.4-${ILLUMOSVER}
 
 export LD_LIBRARY_PATH=/opt/gcc-${VER}/lib
 # Build gcc44 only with itself...
-PATH=/usr/perl5/5.16.1/bin:/opt/gcc-${VER}/bin:$PATH
+PATH=/usr/perl5/${PERLVER}/bin:/opt/gcc-${VER}/bin:$PATH
 export PATH
 
 DEPENDS_IPS="developer/gcc44/libgmp-gcc44 developer/gcc44/libmpfr-gcc44 developer/gcc44/libmpc-gcc44

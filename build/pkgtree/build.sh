@@ -42,7 +42,7 @@ TAR=gtar
 build() {
     pushd $TMPDIR/$BUILDDIR > /dev/null
 
-    VENDOR_DIR="${DESTDIR}${PREFIX}/perl5/vendor_perl/5.16.1"
+    VENDOR_DIR="${DESTDIR}${PREFIX}/perl5/vendor_perl/${PERLVER}"
     logmsg "Copying files"
     logcmd mkdir -p $VENDOR_DIR || logerr "--- Failed to make vendor_perl dir"
     pushd lib/perl5 > /dev/null
@@ -52,7 +52,7 @@ build() {
     logcmd rsync -a bin/ ${DESTDIR}${PREFIX}/bin/ || logerr "--- Failed to install bins"
 
     MAN_DIR="${DESTDIR}${PREFIX}/share/man/man1"
-    POD2MAN="/usr/perl5/5.16.1/bin/pod2man"
+    POD2MAN="/usr/perl5/${PERLVER}/bin/pod2man"
     logmsg "Creating man page"
     logcmd mkdir -p $MAN_DIR || logerr "--- Failed to make man1 dir"
     logcmd $POD2MAN bin/pkgtree $MAN_DIR/pkgtree.1 || logerr "--- Failed to make man page"

@@ -42,8 +42,8 @@ reset_configure_opts
 
 NO_PARALLEL_MAKE=1
 
-# Only 5.16.1 and later will get individual module builds
-PERLVERLIST="5.16.1"
+# Only 5.24.1 and later will get individual module builds
+PERLVER=5.24.1
 
 # Add any additional deps here; perl runtime added below
 #BUILD_DEPENDS_IPS=
@@ -51,11 +51,11 @@ PERLVERLIST="5.16.1"
 
 # We require a Perl version to use for this build and there is no default
 case $DEPVER in
-    5.16.1)
+    5.24.1)
         RUN_DEPENDS_IPS="$RUN_DEPENDS_IPS runtime/perl"
         ;;
     "")
-        logerr "You must specify a version with -d DEPVER. Valid versions: $PERLVERLIST"
+        logerr "You must specify a version with -d DEPVER. Valid versions: $PERLVER"
         ;;
 esac
 

@@ -273,8 +273,8 @@ depend fmri=network/telnet@0.5.11,5.11-@PVER@ type=require
 depend fmri=package/pkg@0.5.11,5.11-@PVER@ type=require
 depend fmri=release/name@0.5.11,5.11-@PVER@ type=require
 depend fmri=release/notices@0.5.11,5.11-@PVER@ type=require
-depend fmri=runtime/perl@5.16.1,5.11-@PVER@ type=require
-depend fmri=runtime/perl/manual@5.16.1,5.11-@PVER@ type=require
+depend fmri=runtime/perl@5.24.1,5.11-@PVER@ type=require
+depend fmri=runtime/perl/manual@5.24.1,5.11-@PVER@ type=require
 depend fmri=runtime/perl/module/sun-solaris@0.5.11,5.11-@PVER@ type=require
 depend fmri=runtime/python-27@2.7,5.11-@PVER@ type=require
 depend fmri=security/sudo@1.8,5.11-@PVER@ type=require
