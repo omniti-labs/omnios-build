@@ -18,7 +18,7 @@
 # Usage:
 #
 # sudo-bits KAYAK_CLOBBER IMG_DSET CHECKOUTDIR PREBUILT_ILLUMOS DESTDIR \
-#   PKGURL VER OLDUSER
+#   PKGURL VER OLDUSER BATCHMODE
 #
 # Basically, we pass everything on the command line to avoid environment
 # scraping that sudo normally does.
@@ -32,6 +32,7 @@ DESTDIR=$5
 export PKGURL=$6
 VER=$7
 OLDUSER=$8
+BATCHMODE=$9
 
 export ROOT_OK=yes
 
@@ -45,6 +46,11 @@ mv build.log /tmp/bl.$$
 mv /tmp/bl.$$ build.log
 chown $OLDUSER build.log
 
+# Honor (and possibly set) the BATCH flag.
+if [[ $BATCHMODE == 1 ]]; then
+    BATCH=1
+fi
+
 if [[ "$UID" != "0" ]]; then
     logerr "--- The sudo-bits script needs to be run as root."
 fi
@@ -57,12 +63,12 @@ fi
 
 if [[ ! -z $KAYAK_CLOBBER && $KAYAK_CLOBBER != 0 ]]; then
     logmsg "Clobbering $IMG_DSET"
-    /sbin/zfs destroy -r $IMG_DSET
+    logcmd /sbin/zfs destroy -r $IMG_DSET
     # Do create here as well, so the next check isn't so noisy...
-    /sbin/zfs create $IMG_DSET
+    logcmd /sbin/zfs create $IMG_DSET
 fi
 if [[ -z "`zfs list $IMG_DSET`" ]]; then
-    /sbin/zfs create $IMG_DSET
+    logcmd /sbin/zfs create $IMG_DSET
 fi
 pushd $CHECKOUTDIR/kayak > /dev/null || logerr "Cannot change to src dir"
 logmsg "Building miniroot"
