@@ -38,6 +38,13 @@ else
     OLDUSER=`whoami`
 fi
 
+# Explicitly figure out BATCH so the sudo-bits can honor it.
+if [[ ${BATCH} == 1 ]]; then
+    BATCHMODE=1
+else
+    BATCHMODE=0
+fi
+
 # Set up VERSION now in the environment for Kayak's makefiles if needed.
 # NOTE: This is currently dependent on PREBUILT_ILLUMOS as a way to prevent
 # least-surprise.  We may want to promote this to "do it all the time!"
@@ -98,7 +105,7 @@ DEPENDS_IPS=""
 clone_source
 logmsg "Now building $PKG"
 $SUDO ./sudo-bits.sh $KAYAK_CLOBBER $IMG_DSET $CHECKOUTDIR $PREBUILT_ILLUMOS \
-    $DESTDIR $PKGURL $VER $OLDUSER
+    $DESTDIR $PKGURL $VER $OLDUSER $BATCHMODE
 if [[ $? != 0 ]]; then
     logerr "--- sudo-bits sub-script failed."
 fi
