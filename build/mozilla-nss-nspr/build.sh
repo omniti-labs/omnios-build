@@ -21,16 +21,16 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2014 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=nss
-VER=3.26
+VER=3.30.1
 # Include NSPR version since we're downloading a combined tarball.
-NSPRVER=4.12
+NSPRVER=4.14
 # But set BUILDDIR to just be the NSS version.
 BUILDDIR=$PROG-$VER
 VERHUMAN=$VER
