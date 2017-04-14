@@ -1,0 +1,10 @@
+--- pristine/nss/Makefile       Thu Apr 13 23:02:29 2017
++++ nss-3.30.1/nss/Makefile    Thu Apr 13 23:04:32 2017
+@@ -95,6 +95,7 @@
+ NSPR_CONFIGURE_ENV := $(filter-out -arch x86_64,$(NSPR_CONFIGURE_ENV))
+ NSPR_CONFIGURE_ENV := $(filter-out -arch i386,$(NSPR_CONFIGURE_ENV))
+ NSPR_CONFIGURE_ENV := $(filter-out -arch ppc,$(NSPR_CONFIGURE_ENV))
++NSPR_CONFIGURE_ENV := $(filter-out -Wall -Wno-format,$(NSPR_CONFIGURE_ENV))
+ 
+ #
+ # Some pwd commands on Windows (for example, the pwd
