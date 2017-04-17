@@ -29,7 +29,7 @@
 . ../../lib/functions.sh
 
 PROG=pkg-config
-VER=0.29.1
+VER=0.29.2
 VERHUMAN=$VER
 PKG=developer/pkg-config
 SUMMARY="A tool for generating compiler command line options"
