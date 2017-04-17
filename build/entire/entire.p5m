@@ -126,7 +126,7 @@ depend fmri=driver/usb@0.5.11,5.11-@PVER@ type=require
 depend fmri=driver/virtualization/kvm@1.0.3-@PVER@ type=require
 depend fmri=driver/xvm/pv@0.5.11,5.11-@PVER@ type=require
 depend fmri=editor/vim@8.0,5.11-@PVER@ type=require
-depend fmri=file/gnu-coreutils@8.25,5.11-@PVER@ type=require
+depend fmri=file/gnu-coreutils@8.27,5.11-@PVER@ type=require
 depend fmri=file/gnu-findutils@4.6,5.11-@PVER@ type=require
 depend fmri=install/beadm@0.5.11,5.11-@PVER@ type=require
 depend fmri=library/c++/sigcpp@2.10,5.11-@PVER@ type=require
