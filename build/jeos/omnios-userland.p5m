@@ -97,7 +97,7 @@ depend fmri=system/install/kayak@1.1,5.11-@PVER@ type=incorporate
 depend fmri=system/install/kayak-kernel@1.1,5.11-@PVER@ type=incorporate
 depend fmri=system/kvm@1.0,5.11-@PVER@ type=incorporate
 depend fmri=system/library/c++/sunpro@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/library/dbus@1.11.6,5.11-@PVER@ type=incorporate
+depend fmri=system/library/dbus@1.11.12,5.11-@PVER@ type=incorporate
 depend fmri=system/library/g++-4-runtime@4.8.1,5.11-@PVER@ type=incorporate
 depend fmri=system/library/gcc-4-runtime@4.8.1,5.11-@PVER@ type=incorporate
 depend fmri=system/library/g++-5-runtime@5.1,5.11-@PVER@ type=incorporate
