@@ -370,7 +370,7 @@ depend fmri=text/gnu-grep@3.0,5.11-@PVER@ type=require
 depend fmri=text/gnu-patch@2.7,5.11-@PVER@ type=require
 depend fmri=text/gnu-sed@4.2.1,5.11-@PVER@ type=require
 depend fmri=text/groff@1.21,5.11-@PVER@ type=require
-depend fmri=text/less@481,5.11-@PVER@ type=require
+depend fmri=text/less@487,5.11-@PVER@ type=require
 depend fmri=text/locale@0.5.11,5.11-@PVER@ type=require
 depend fmri=web/ca-bundle@2.0,5.11-@PVER@ type=require
 depend fmri=web/curl@7,5.11-@PVER@ type=require
