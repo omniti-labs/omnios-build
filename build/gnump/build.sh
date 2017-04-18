@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=gmp
-VER=6.1.1
+VER=6.1.2
 VERHUMAN=$VER
 PKG=library/gmp
 SUMMARY="GNU MP $VER"

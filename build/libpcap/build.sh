@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=libpcap
-VER=1.7.4
+VER=1.8.1
 VERHUMAN=$VER
 PKG=system/library/pcap
 SUMMARY="libpcap - a packet capture library"

@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=coreutils          # App name
-VER=8.25                # App version
+VER=8.27                # App version
 PKG=file/gnu-coreutils  # Package name (without prefix)
 SUMMARY="coreutils - GNU core utilities"
 DESC="GNU core utilities ($VER)"

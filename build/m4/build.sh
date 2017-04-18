@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=m4
-VER=1.4.17
+VER=1.4.18
 PKG=developer/macro/gnu-m4
 SUMMARY="GNU m4"
 DESC="GNU m4 - A macro processor (gm4)"

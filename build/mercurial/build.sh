@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=mercurial
-VER=3.9.2
+VER=4.1.2
 PKG=developer/versioning/mercurial
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
