@@ -294,7 +294,7 @@ depend fmri=service/storage/removable-media@0.5.11,5.11-@PVER@ type=require
 depend fmri=shell/bash@4.4,5.11-@PVER@ type=require
 depend fmri=shell/pipe-viewer@1.6,5.11-@PVER@ type=require
 depend fmri=shell/tcsh@6.20.0,5.11-@PVER@ type=require
-depend fmri=shell/zsh@5.2,5.11-@PVER@ type=require
+depend fmri=shell/zsh@5.3,5.11-@PVER@ type=require
 depend fmri=system/accounting/legacy@0.5.11,5.11-@PVER@ type=require
 depend fmri=system/boot/grub@0.97,5.11-@PVER@ type=require
 depend fmri=system/boot/loader@1.1,5.11-@PVER@ type=require
