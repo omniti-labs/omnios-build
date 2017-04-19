@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=numpy
-VER=1.11.2
+VER=1.12.1
 SUMMARY="numpy - package for scientific computing with Python"
 DESC="$SUMMARY"
 

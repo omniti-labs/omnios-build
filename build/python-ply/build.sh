@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=ply
-VER=3.9
+VER=3.10
 SUMMARY="ply - Python lex and yacc"
 DESC="$SUMMARY"
 

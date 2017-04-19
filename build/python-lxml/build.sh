@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=lxml
-VER=3.6.4
+VER=3.7.2
 SUMMARY="lxml - Powerful and Pythonic XML processing library"
 DESC="$SUMMARY"
 
