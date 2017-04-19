@@ -158,7 +158,7 @@ depend fmri=library/readline@7.0,5.11-@PVER@ type=require
 depend fmri=library/security/openssl@1.0.2,5.11-@PVER@ type=require
 depend fmri=library/security/tcp-wrapper@7.6,5.11-@PVER@ type=require
 depend fmri=library/security/trousers@0.3.8,5.11-@PVER@ type=require
-depend fmri=library/zlib@1.2.7,5.11-@PVER@ type=require
+depend fmri=library/zlib@1.2.11,5.11-@PVER@ type=require
 depend fmri=locale/af@0.5.11,5.11-@PVER@ type=require
 depend fmri=locale/ar@0.5.11,5.11-@PVER@ type=require
 depend fmri=locale/as@0.5.11,5.11-@PVER@ type=require
