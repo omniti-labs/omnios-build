@@ -134,4 +134,4 @@ depend fmri=text/groff@1.22.3,5.11-@PVER@ type=incorporate
 depend fmri=text/less@487,5.11-@PVER@ type=incorporate
 depend fmri=web/ca-bundle@5.11,5.11-@PVER@ type=incorporate
 depend fmri=web/curl@7,5.11-@PVER@ type=incorporate
-depend fmri=web/wget@1.18,5.11-@PVER@ type=incorporate
+depend fmri=web/wget@1.19,5.11-@PVER@ type=incorporate
