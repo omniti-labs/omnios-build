@@ -21,17 +21,20 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=screen
-VER=4.4.0
+VER=4.5.1
 PKG=terminal/screen
 SUMMARY="GNU Screen terminal multiplexer"
 DESC="$SUMMARY"
+
+# GNU tar for this package.
+TAR=gtar
 
 BUILDARCH=32
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --with-sys-screenrc=/etc/screenrc --enable-colors256 LDFLAGS=-lxnet"
