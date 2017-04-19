@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=sed
-VER=4.2.2
+VER=4.4
 PKG=text/gnu-sed
 SUMMARY="gsed - GNU implementation of sed, the Unix stream editor"
 DESC="$SUMMARY"
