@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2015 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=tcsh
-VER=6.19.00
+VER=6.20.00
 VERHUMAN=$VER
 PKG=shell/tcsh
 SUMMARY="Tenex C-shell (tcsh)"
