@@ -44,3 +44,7 @@
 <transform link path=usr/share.* -> drop>
 
 <transform file path=usr/lib/dbus-daemon$ -> drop>
+<transform file path=usr/lib/cmake/DBus1/DBus1Config.cmake$ -> drop>
+<transform file path=usr/lib/cmake/DBus1/DBus1ConfigVersion.cmake$ -> drop>
+<transform file path=usr/lib/amd64/cmake/DBus1/DBus1Config.cmake$ -> drop>
+<transform file path=usr/lib/amd64/cmake/DBus1/DBus1ConfigVersion.cmake$ -> drop>
