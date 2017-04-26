@@ -50,14 +50,14 @@ move_libs() {
     logcmd mv $DESTDIR/usr/lib/amd64/lib* $DESTDIR/lib/amd64 || \
         logerr "failed to move libs (64-bit)"
     pushd $DESTDIR/usr/lib >/dev/null
-    logcmd ln -s ../../lib/libz.so.1.2.8 libz.so
-    logcmd ln -s ../../lib/libz.so.1.2.8 libz.so.1
-    logcmd ln -s ../../lib/libz.so.1.2.8 libz.so.1.2.8
+    logcmd ln -s ../../lib/libz.so.$VER libz.so
+    logcmd ln -s ../../lib/libz.so.$VER libz.so.1
+    logcmd ln -s ../../lib/libz.so.$VER libz.so.$VER
     popd >/dev/null
     pushd $DESTDIR/usr/lib/amd64 >/dev/null
-    logcmd ln -s ../../../lib/64/libz.so.1.2.8 libz.so
-    logcmd ln -s ../../../lib/64/libz.so.1.2.8 libz.so.1
-    logcmd ln -s ../../../lib/64/libz.so.1.2.8 libz.so.1.2.8
+    logcmd ln -s ../../../lib/64/libz.so.$VER libz.so
+    logcmd ln -s ../../../lib/64/libz.so.$VER libz.so.1
+    logcmd ln -s ../../../lib/64/libz.so.$VER libz.so.$VER
     popd>/dev/null
 }
 
