@@ -30,7 +30,7 @@
 PROG=pci.ids
 FORMAT=2.2
 
-PCIIDS_PATH=usr/src/cmd/hwdata/${PROG}
+PCIIDS_PATH=usr/src/data/hwdata/${PROG}
 LOCAL_PCIIDS=${PREBUILT_ILLUMOS}/${PCIIDS_PATH}
 BRANCH=$(git branch | fgrep \* | awk '{print $2}')
 GITHUB_PREFIX=https://github.com/omniti-labs/illumos-omnios/raw
