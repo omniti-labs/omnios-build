@@ -370,7 +370,7 @@ depend fmri=system/boot/wanboot@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/data/hardware-registry@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/data/keyboard/keytables@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/data/terminfo@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=system/data/zoneinfo@2016.8,5.11-@PVER@ type=incorporate
+depend fmri=system/data/zoneinfo@2017.2,5.11-@PVER@ type=incorporate
 depend fmri=system/dtrace/tests@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/extended-system-utilities@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/fault-management/eversholt-utilities@0.5.11,5.11-@PVER@ type=incorporate
