@@ -108,8 +108,8 @@ depend fmri=system/library/iconv/utf-8/manual@0.5.11,5.11-@PVER@ type=incorporat
 depend fmri=system/library/iconv/xsh4/latin@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/libdbus@1.11.12,5.11-@PVER@ type=incorporate
 depend fmri=system/library/libdbus-glib@0.108,5.11-@PVER@ type=incorporate
-depend fmri=system/library/mozilla-nss@3.30.1,5.11-@PVER@ type=incorporate
-depend fmri=system/library/mozilla-nss/header-nss@3.30.1,5.11-@PVER@ type=incorporate
+depend fmri=system/library/mozilla-nss@3.30,5.11-@PVER@ type=incorporate
+depend fmri=system/library/mozilla-nss/header-nss@3.30,5.11-@PVER@ type=incorporate
 depend fmri=library/mtsk@0.5.11,5.11-@PVER@ type=incorporate
 depend fmri=system/library/pcap@1.8.1,5.11-@PVER@ type=incorporate
 depend fmri=system/management/ec2-api-tools@1.7.5,5.11-@PVER@ type=incorporate
