@@ -20,7 +20,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2016 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Copyright (c) 2015 by Delphix. All rights reserved.
 #
 #############################################################################
@@ -28,7 +28,7 @@
 #############################################################################
 
 # Default branch
-RELVER=151021
+RELVER=151023
 PVER=0.$RELVER
 
 # Which server to fetch files from.
