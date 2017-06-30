@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2013 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -30,14 +30,12 @@
 PROG=cabundle   # App name
 VER=5.11        # App version
 VERHUMAN=$VER   # Human-readable version
-NSSVER=3.14.3   # Keep this in sync with the version of system/library/mozilla-nss
+NSSVER=3.30.2   # Keep this in sync with the version of system/library/mozilla-nss
 PKG=web/ca-bundle  # Package name (without prefix)
 SUMMARY="$PROG - Bundle of SSL Root CA certificates"
 DESC="SSL Root CA certificates extracted from mozilla-nss $NSSVER source, plus OmniTI CA cert."
 
 BUILDARCH=32
-
-DEPENDS_IPS="=system/library/mozilla-nss@$NSSVER"
 
 build_pem() {
   logmsg "Extracting certdata.txt from nss-$NSSVER source"
@@ -48,11 +46,11 @@ build_pem() {
   BUILDDIR=$BUILDDIR_ORIG
   logcmd mkdir -p $TMPDIR/$BUILDDIR
   pushd $TMPDIR/$BUILDDIR > /dev/null
-  logcmd cp $TMPDIR/nss-$NSSVER/mozilla/security/nss/lib/ckfw/builtins/certdata.txt . || \
+  logcmd cp $TMPDIR/nss-$NSSVER/nss/lib/ckfw/builtins/certdata.txt . || \
     logerr "--- Failed to copy certdata.txt file"
   logcmd $SRCDIR/mk-ca-bundle.pl -n cacert.pem || \
     logerr "--- Failed to convert certdata.txt into PEM format"
-  logcmd cp $TMPDIR/nss-$NSSVER/mozilla/security/nss/COPYING license || \
+  logcmd cp $TMPDIR/nss-$NSSVER/nss/COPYING license || \
     logerr "--- Failed to copy license file"
   popd > /dev/null
 }
@@ -82,16 +80,25 @@ install_pem() {
 
 # Install the OmniTI CA cert separately, to be used by pkg(1)
 install_omniti_cacert() {
-  logmsg "Installing OmniTI CA cert for pkg(1) use"
-  local cert="$SRCDIR/files/OmniTI_CA.pem"
-  local subj_hash=`openssl x509 -hash -noout -in $cert`.0
+  logmsg "Installing OmniTI CA certs for pkg(1) use"
   logcmd mkdir -p $DESTDIR/etc/ssl/pkg
-  logcmd cp -p $cert $DESTDIR/etc/ssl/pkg/ || \
-    logerr "--- Failed to copy CA cert"
-  pushd $DESTDIR/etc/ssl/pkg/ > /dev/null
-  logcmd ln -s OmniTI_CA.pem $subj_hash || \
-    logerr "--- Failed to create subject hash link"
-  popd > /dev/null
+
+  for cert in $SRCDIR/files/*.pem; do
+    local file=$( basename $cert )
+    subj_hash=`openssl x509 -hash -noout -in $cert`.0
+
+    logmsg "--- Copying $file"
+    logcmd cp -p $cert $DESTDIR/etc/ssl/pkg/ || \
+      logerr "--- Failed to copy CA cert $file"
+
+    logcmd chmod 444 $DESTDIR/etc/ssl/pkg/$file || \
+      logerr "--- Failed to chmod CA cert $file"
+
+    pushd $DESTDIR/etc/ssl/pkg/ > /dev/null
+    logcmd ln -s $file $subj_hash || \
+      logerr "--- Failed to create subject hash link for $file"
+    popd > /dev/null
+  done
 }
 
 init
