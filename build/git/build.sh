@@ -29,12 +29,14 @@
 . ../../lib/functions.sh
 
 PROG=git
-VER=2.8.0
+VER=2.8.6
 PKG=developer/versioning/git
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
+MAKE=gmake
 
-BUILD_DEPENDS_IPS="compatibility/ucb developer/build/autoconf"
+
+BUILD_DEPENDS_IPS="compatibility/ucb developer/build/autoconf developer/build/gnu-make"
 
 DEPENDS_IPS="runtime/python-26 \
              web/curl \
