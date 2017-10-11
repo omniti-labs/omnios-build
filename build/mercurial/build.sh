@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=mercurial
-VER=3.5.2
+VER=4.2.3
 PKG=developer/versioning/mercurial
 SUMMARY="$PROG - a free and open source, distributed version control system"
 DESC="$SUMMARY"
@@ -69,7 +69,7 @@ python_build() {
         logerr "--- install failed"
     popd > /dev/null
 
-    mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages ||
+    #mv $DESTDIR/usr/lib/python2.6/site-packages $DESTDIR/usr/lib/python2.6/vendor-packages || 
         logerr "Cannot move from site-packages to vendor-packages"
 }
 
@@ -79,4 +79,4 @@ patch_source
 prep_build
 python_build
 make_package
-clean_up
+#clean_up
