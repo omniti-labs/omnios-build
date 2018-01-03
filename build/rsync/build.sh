@@ -28,7 +28,10 @@
 . ../../lib/functions.sh
 
 PROG=rsync
-VER=3.1.2
+# rsync is no longer rolling patches into new releases, but still pushing
+# them to git. The minor version here is the date of the last commit to
+# git://git.samba.org/rsync.git when packaging.
+VER=3.1.2.20171203
 VERHUMAN=$VER
 PKG=network/rsync
 SUMMARY="rsync - faster, flexible replacement for rcp"

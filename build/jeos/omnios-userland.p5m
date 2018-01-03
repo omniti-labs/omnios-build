@@ -33,7 +33,7 @@ depend fmri=developer/parser/bison@3.0,5.11-@PVER@ type=incorporate
 depend fmri=developer/sunstudio12.1@12.1,5.11-@PVER@ type=incorporate
 depend fmri=developer/swig@2.0.12,5.11-@PVER@ type=incorporate
 depend fmri=developer/versioning/sccs@0.5.11,5.11-@PVER@ type=incorporate
-depend fmri=developer/versioning/git@2.13,5.11-@PVER@ type=incorporate
+depend fmri=developer/versioning/git@2.14,5.11-@PVER@ type=incorporate
 depend fmri=developer/versioning/mercurial@4,5.11-@PVER@ type=incorporate
 depend fmri=driver/virtualization/kvm@1.0,5.11-@PVER@ type=incorporate
 depend fmri=driver/tuntap@1.3,5.11-@PVER@ type=incorporate
