@@ -28,20 +28,22 @@
 . ../../lib/functions.sh
 
 PROG=rsync
-VER=3.1.2
+# rsync version
+RSYNCVER=3.1.2
+# version for FMRI - rysnc version + rollout for patches
+VER=3.1.2.1
 VERHUMAN=$VER
 PKG=network/rsync
 SUMMARY="rsync - faster, flexible replacement for rcp"
 DESC="rsync - faster, flexible replacement for rcp"
 
-# Patch level
-PVER=2.$RELVER
+BUILDDIR=$PROG-$RSYNCVER
 
 REMOVE_PREVIOUS=1
 BUILDARCH=32
 CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --bindir=/usr/bin --with-included-popt"
 init
-download_source $PROG $PROG $VER
+download_source $PROG $PROG $RSYNCVER
 patch_source
 prep_build
 build
